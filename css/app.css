@@ -5208,3 +5208,67 @@ body.deck-setup-active{
     object-fit:contain!important;opacity:1!important;filter:none!important;border-radius:50%!important
   }
 }
+
+
+/* ========================================================================== */
+/* Grandis Legacy VS AI v5.43 — dedicated mobile Racial resource column.      */
+/* Four existing resources remain untouched; Racial occupies its own 12% cell.*/
+/* ========================================================================== */
+.mobile-racial-zone{display:none!important}
+@media(max-width:760px){
+  /* 22 / 22 / 22 / 22 / 12 proportional split, with grid gaps accounted for
+     by fr units so the row never overflows the viewport. */
+  .v96-app .field{
+    grid-template-columns:minmax(0,22fr) minmax(0,22fr) minmax(0,22fr) minmax(0,22fr) minmax(0,12fr)!important;
+  }
+  .v96-app .field .resource-rail{display:contents!important}
+  .v96-app .field--opponent .zone{grid-row:1!important}
+  .v96-app .field--player .zone{grid-row:2!important}
+
+  /* The legacy v5.42 inside-Main-Deck presentation is explicitly neutralized. */
+  .v96-app .mobile-racial-resource{display:none!important}
+  .v96-app .zone[data-zone-type="Main Deck"] .zoneCard>img{
+    position:absolute!important;top:50%!important;left:50%!important;right:auto!important;bottom:auto!important;
+    transform:translate(-50%,-50%)!important;margin:0!important;
+  }
+  .v96-app .zone[data-zone-type="Main Deck"] .zoneCard>b{
+    left:0!important;right:0!important;width:auto!important;
+  }
+
+  .v96-app .mobile-racial-zone{
+    display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+    width:auto!important;height:54px!important;min-height:54px!important;padding:2px 0!important;
+    overflow:hidden!important;background:rgba(4,13,21,.42)!important;
+  }
+  .v96-app .mobile-racial-zone>span{
+    display:block!important;width:100%!important;text-align:center!important;
+    font-size:5.6px!important;line-height:1!important;letter-spacing:0!important;text-transform:uppercase!important;
+    color:#f2f5f8!important;white-space:nowrap!important;overflow:hidden!important;
+  }
+  .v96-app .mobile-racial-token-stack{
+    flex:1 1 auto!important;min-height:0!important;width:100%!important;
+    display:grid!important;grid-template-columns:1fr!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;
+    place-items:center!important;gap:0!important;padding:1px 0!important;
+  }
+  .v96-app .mobile-racial-token-stack img{
+    position:static!important;inset:auto!important;transform:none!important;margin:0!important;
+    width:18px!important;height:18px!important;max-width:18px!important;max-height:18px!important;
+    object-fit:contain!important;opacity:1!important;filter:none!important;border:0!important;border-radius:50%!important;
+  }
+}
+
+/* Desktop remains exactly four resource zones. The dedicated mobile Racial
+   cell and old embedded mobile Racial markup cannot affect desktop geometry. */
+@media(min-width:761px){
+  .v96-app .mobile-racial-zone,.v96-app .mobile-racial-resource{display:none!important}
+  .v96-app .zone[data-zone-type="Main Deck"] .zoneCard>img{
+    left:50%!important;right:auto!important;transform:translateX(-50%)!important;
+  }
+  /* Remove the decorative lower gold stroke; individual controls keep borders. */
+  .v96-app .desktop-player-footer{
+    border:0!important;border-bottom:0!important;box-shadow:none!important;outline:0!important;
+    background:transparent!important;
+  }
+  .v96-app .desktop-player-footer::before,.v96-app .desktop-player-footer::after{display:none!important}
+  .v96-app .main-stage{border-bottom-color:#17222b!important}
+}

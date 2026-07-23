@@ -1,0 +1,5 @@
+Summary
+Update VS AI to v5.43
+
+Description
+Move mobile Racial Tokens into a dedicated fifth resource column using a 22/22/22/22/12 split, restore the existing Main Deck container without embedded token markup, preserve the desktop resource layout, and remove the unnecessary lower golden stroke beneath Player / Full Battle Log. Application Runtime Sync advances to v2.28 and UI Design Lock to v2.31; Runtime Foundation remains v1.74 and PvP is unchanged.
