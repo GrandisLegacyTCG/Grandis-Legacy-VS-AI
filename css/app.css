@@ -4662,7 +4662,7 @@ body.deck-setup-active{
 
 
 /* ========================================================================== */
-/* Grandis Legacy VS AI v5.38 — responsive Deck Setup and mobile battlefield. */
+/* Grandis Legacy VS AI v5.39 — responsive Deck Setup and mobile battlefield. */
 /* UI-only: gameplay/runtime authority is unchanged.                           */
 /* ========================================================================== */
 
@@ -4995,4 +4995,51 @@ body.deck-setup-active{
   .v96-app .phase-actions{grid-template-rows:24px 30px!important;gap:3px!important}
   .v96-app .phase-actions .reposition,.v96-app .phase-actions .cancel-action{height:24px!important;min-height:24px!important;font-size:6.5px!important}
   .v96-app .phase-actions .next-phase{height:30px!important;min-height:30px!important;font-size:8px!important}
+}
+
+
+/* VS AI v5.39 — transparent Response diagnostics and straight mobile hands. */
+.response-option.unavailable{opacity:.56;filter:saturate(.35);border-style:dashed!important}
+.response-option.unavailable .response-option-preview{cursor:zoom-in!important}
+.response-option.unavailable .response-option-select{border-color:#6e5b63!important;background:#2a1d24!important;color:#ffd2dc!important;cursor:pointer!important}
+.response-option.available{order:0}.response-option.unavailable{order:1}
+.response-unavailable-intro{margin:0 0 10px;color:#c7d7e8;line-height:1.45}
+.response-reason-list{margin:0;padding-left:20px;color:#f0f4f8;line-height:1.55}
+.response-reason-list li+li{margin-top:6px}
+@media(max-width:760px){
+  .v96-app .hand-area--player .handPanel,.v96-app .hand-area--opponent .strip.v94-strip{overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:thin!important}
+  .v96-app .handCards,.v96-app .strip.v94-strip .backs{justify-content:flex-start!important;gap:6px!important;perspective:none!important;width:max-content!important;min-width:100%!important;padding-left:10px!important;padding-right:10px!important}
+  .v96-app .hand-card,.v96-app .opponent-hand-slot{margin-left:0!important;transform:none!important;transform-origin:center!important;transition:filter .15s ease!important}
+  .v96-app .hand-card:hover,.v96-app .hand-card:focus-within{transform:none!important;filter:brightness(1.06)!important}
+  .v96-app .opponent-hand-slot{transform:none!important}
+  .response-option-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .response-option-preview img{height:112px!important;object-fit:contain!important;background:#07111b!important}
+}
+
+
+/* ========================================================================== */
+/* Grandis Legacy VS AI v5.40 — compact mobile status/actions and footer flow. */
+/* Mobile only; desktop Hero action buttons and battlefield placement remain.  */
+/* ========================================================================== */
+.mobile-status-summary,.mobile-hero-action-trigger,.mobile-player-footer{display:none!important}
+.mobile-hero-action-menu{display:grid;gap:8px}
+.mobile-action-choice{width:100%;display:grid;gap:3px;text-align:left;border:1px solid #4b6b82;border-radius:10px;background:#102235;color:#f7fbff;padding:10px 12px;cursor:pointer}
+.mobile-action-choice strong{color:#f4cf62;font-size:14px}.mobile-action-choice span{font-size:11px;color:#c9d9e8}.mobile-action-choice small{font-size:10px;line-height:1.35;color:#9fb1c2}.mobile-action-choice.is-disabled{opacity:.68;cursor:default;border-style:dashed}
+@media(max-width:760px){
+  .v96-app .gl-app{grid-template-rows:auto auto auto auto auto!important}
+  .v96-app .main-stage{grid-row:3!important;grid-template-rows:24px 48px auto 6px auto 108px!important}
+  .v96-app .phase-panel{grid-row:4!important}
+  .v96-app .mobile-player-footer{grid-row:5!important;display:flex!important;width:100%!important;height:28px!important;padding:0 3px!important;align-items:stretch!important;gap:5px!important}
+  .v96-app .desktop-player-footer{display:none!important}
+  .v96-app .mobile-player-footer .player-name--self{height:28px!important;max-width:none!important;flex:1 1 70%!important;align-self:stretch!important;border-radius:7px!important;padding:3px 8px!important;font-size:10px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+  .v96-app .mobile-player-footer .player-name--self span{font-size:7px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+  .v96-app .mobile-player-footer .battle-log-bottom-button{flex:0 0 30%!important;width:auto!important;height:28px!important;margin:0!important;border-radius:7px!important;font-size:7px!important;padding:0 4px!important}
+
+  .v96-app .hero-indicator-stack{display:none!important}
+  .v96-app .hero-status-overlay{top:5px!important;left:5px!important;right:auto!important;z-index:22!important;transform:none!important}
+  .v96-app .mobile-status-summary{display:grid!important;place-items:center!important;width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;padding:0!important;border-radius:50%!important;border:1px solid #b89b34!important;background:#101824!important;color:#ffd45f!important;font-size:13px!important;font-weight:950!important;line-height:1!important;box-shadow:0 2px 8px rgba(0,0,0,.55)!important}
+  .v96-app .heroActions{display:none!important}
+  .v96-app .mobile-hero-action-trigger{position:absolute!important;display:grid!important;place-items:center!important;right:5px!important;top:5px!important;z-index:23!important;width:24px!important;height:24px!important;min-width:24px!important;min-height:24px!important;padding:0!important;border-radius:50%!important;border:1px solid #6b7f91!important;background:#101824!important;color:#99a9b8!important;font-size:13px!important;font-weight:950!important;line-height:1!important;box-shadow:0 2px 8px rgba(0,0,0,.55)!important}
+  .v96-app .mobile-hero-action-trigger.is-available{border-color:#d8b440!important;background:#392d08!important;color:#ffda67!important;box-shadow:0 0 10px rgba(244,199,63,.32)!important}
+  .v96-app .mobile-hero-action-trigger span{position:absolute!important;right:-4px!important;top:-5px!important;display:grid!important;place-items:center!important;width:13px!important;height:13px!important;border-radius:50%!important;background:#f4cf62!important;color:#151006!important;font-size:7px!important}
 }

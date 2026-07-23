@@ -12,7 +12,8 @@ module.exports = {
   attachmentLifecyclePolicy: require('./attachment-lifecycle-policy'),
   healPolicy: require('./heal-policy'),
   deckoutPolicy: require('./deckout-policy'),
-  localAiIntegrationPolicy: require('./local-ai-integration-policy')
+  localAiIntegrationPolicy: require('./local-ai-integration-policy'),
+  responseAvailabilityPolicy: require('./response-availability-policy')
 };
 
 module.exports.cardInstanceFinalizationPolicy = require('./card-instance-finalization-policy');

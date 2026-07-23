@@ -1,4 +1,4 @@
-# Grandis Legacy VS AI v5.35
+# Grandis Legacy VS AI v5.40
 
 Static browser build prepared for **GitHub Pages**. No Node.js server, database, or Northflank service is required to play VS AI.
 
@@ -18,8 +18,14 @@ Static browser build prepared for **GitHub Pages**. No Node.js server, database,
 
 All application paths are relative, `.nojekyll` is included, and the game runs entirely in the player browser.
 
-## v5.38 note
-- Desktop Deck Setup removes repeated labels, uses an 80/20 deck-picker/import row, shows full Hero artwork, and moves a highlighted Deck Builder button to the lower-left.
-- Mobile Deck Setup uses a compact `DECK SETUP / NOT STARTED` header, normal scrolling, small Import Deck controls, and hides Deck Builder.
-- Mobile battlefield keeps Card Played visible while reducing unused vertical space and keeping phase actions reachable.
-- Gameplay/runtime behavior is unchanged from v5.37.
+## v5.40 highlights
+- Response Window shows every Defense/Response card currently in Hand.
+- Legal responses remain selectable; unavailable responses stay visible and explain why they cannot be used.
+- Runtime Foundation remains v1.74. Application Runtime Sync advances to v2.25 and UI Design Lock to v2.28 for the approved mobile interaction layout.
+- Mobile Hero statuses are consolidated under one `!` indicator.
+- Mobile Racial Trait, Hero Ability, and Legacy Ability access is consolidated under one compact action button.
+- Player/deck metadata and Full Battle Log remain one row and move below Next Phase on mobile.
+- Public Deck Builder v2.0 is bundled for desktop Deck Setup and reuses the shared VS AI card thumbnails.
+- Mobile Player and opponent Hands use straight, horizontally scrollable rows instead of a fan.
+- The approved v5.38 responsive Deck Setup and compact mobile battlefield remain included.
+- PvP is unchanged and remains outside this package.

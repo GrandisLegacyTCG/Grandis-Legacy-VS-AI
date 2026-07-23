@@ -1,9 +1,9 @@
-/* Grandis Legacy Browser Runtime Authority v1.73.
+/* Grandis Legacy Browser Runtime Authority v1.74.
    Owns exact-once transactions, mandatory-choice lifecycle, attachment identity, and invariant gates.
    UI and animation code may render the resulting state but must not finalize cards or choices independently. */
 (function(global){
   'use strict';
-  var VERSION='v1.73-browser';
+  var VERSION='v1.74-browser';
   function ensure(state){
     state.runtimeRevision=Number(state.runtimeRevision||0);
     state.runtimeCardDestinationLedger=state.runtimeCardDestinationLedger&&typeof state.runtimeCardDestinationLedger==='object'?state.runtimeCardDestinationLedger:{};
@@ -106,6 +106,17 @@
     var lineage=activeLineage(hero,heroCard,heroClass);
     return legal.some(function(cls){return lineage.indexOf(cls)!==-1;});
   }
+  function explainSourceLegality(cardObj,hero,heroCard,heroClass,ctx){
+    ctx=ctx||{};var reasons=[];
+    if(!hero)return['No source Hero is available.'];
+    if(Number(hero.hp||0)<=0)return['The source Hero is defeated.'];
+    if(!cardLegalForLineage(cardObj,hero,heroCard,heroClass))reasons.push('The Hero Class/Lineage cannot use this card.');
+    var req=cardObj&&cardObj.requirement||{},src=cardObj&&cardObj.source_requirement||{},canon=cardObj&&cardObj.canonical_legality||{},gates=[req.rank_gate,src.rank_gate,canon.rank_gate,canon.source_requirement&&canon.source_requirement.rank_gate].filter(Boolean),min=1;
+    gates.forEach(function(g){min=Math.max(min,Number(g.min_active_rank||1));});if(Number(ctx.hero_rank||1)<min)reasons.push('Requires Rank '+min+' or higher.');
+    if(ctx.attachment_available===false)reasons.push('No empty Attachment Slot is available.');
+    var ultimate=req.ultimate||src.ultimate||{};if(ultimate.is_ultimate){var owners=ultimate.owner_lineage_card_ids||[];if(!owners.length||owners.indexOf(hero.card_id||hero.base_card_id)===-1)reasons.push('Only the printed Ultimate owner lineage can use this card.');}
+    return reasons;
+  }
   function selectClassRow(map, hero, cardObj, ctx){
     map=map||{}; ctx=ctx||{}; var hc=String(ctx.heroClass||''), heroCard=ctx.heroCard||{};
     if(!cardLegalForLineage(cardObj,hero,heroCard,hc)) return null;
@@ -163,5 +174,5 @@
     return {legal:true,total:total,applied:Math.max(0,total-current),overflow:Math.max(0,raw-total),threshold:threshold,triggers_rank_up:raw>=threshold};
   }
   function venomDetonationDamage(duration,multiplier){ return Math.max(0,Number(duration||0))*Math.max(0,Number(multiplier||0)); }
-  global.GL_RULES_RUNTIME={version:'v1.5',authorityContract:{mode:'SINGLE_RUNTIME_AUTHORITY',clientRole:'INTENT_RENDER_ANIMATE_ONLY',releaseGate:'MANDATORY_SYNC_PARITY'},activeLineage:activeLineage,cardLegalClasses:cardLegalClasses,cardLegalForLineage:cardLegalForLineage,selectClassRow:selectClassRow,mappedNumber:mappedNumber,dynamicManaCost:dynamicManaCost,scalingDamage:scalingDamage,nextRankThreshold:nextRankThreshold,resolveTributeExp:resolveTributeExp,venomDetonationDamage:venomDetonationDamage};
+  global.GL_RULES_RUNTIME={version:'v1.6',authorityContract:{mode:'SINGLE_RUNTIME_AUTHORITY',clientRole:'INTENT_RENDER_ANIMATE_ONLY',releaseGate:'MANDATORY_SYNC_PARITY'},activeLineage:activeLineage,cardLegalClasses:cardLegalClasses,cardLegalForLineage:cardLegalForLineage,selectClassRow:selectClassRow,mappedNumber:mappedNumber,dynamicManaCost:dynamicManaCost,scalingDamage:scalingDamage,nextRankThreshold:nextRankThreshold,resolveTributeExp:resolveTributeExp,venomDetonationDamage:venomDetonationDamage,explainSourceLegality:explainSourceLegality};
 })(typeof window!=='undefined'?window:globalThis);

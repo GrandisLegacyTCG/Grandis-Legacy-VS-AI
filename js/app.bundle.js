@@ -1,11 +1,11 @@
-/* Grandis Legacy shared gameplay application v2.1 — Local AI v5.38.
-   One Source Authority v1.4 + Runtime Foundation v1.73 / Runtime Core v0.41 / Runtime Data v0.12.5.
+/* Grandis Legacy shared gameplay application v2.1 — Local AI v5.40.
+   One Source Authority v1.4 + Runtime Foundation v1.74 / Runtime Core v0.41 / Runtime Data v0.12.5.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
   'use strict';
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP Railway v2.5.15 · Shared Gameplay v2.1 · One Source v1.4 · Runtime Data v0.12.5 · Foundation v1.73':'Grandis Legacy VS AI v5.38 · Shared Gameplay Bundle v2.1 · One Source v1.4 · Runtime Data v0.12.5 · Foundation v1.73';
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP Railway v2.5.15 · Shared Gameplay v2.1 · One Source v1.4 · Runtime Data v0.12.5 · Foundation v1.73':'Grandis Legacy VS AI v5.40 · Shared Gameplay Bundle v2.1 · One Source v1.4 · Runtime Data v0.12.5 · Foundation v1.74';
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
@@ -378,7 +378,7 @@
   var CARDS=[], CARD_BY_ID={};
 
   function sanitizeStaleSkillRuntimePayloads(){return true;}
-  function assertActiveRuntimeSourceStack(){var stack=window.GL_SOURCE_STACK||{},defs=window.GL_CARD_DEFINITIONS||{},recipes=window.GL_EFFECT_RECIPES||{},gate=window.GRANDIS_LEGACY_ONE_SOURCE_READY||{},cardCount=Array.isArray(defs.cards)?defs.cards.length:flattenCards(defs).length,effectCount=Array.isArray(recipes.effect_recipes)?recipes.effect_recipes.length:0,hash='5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab';if(stack.runtime_data!=='v0.12.5'||defs.version!=='v0.12.5'||cardCount!==198)throw new Error('Active Runtime Data guard failed; v0.12.5 / 198 cards required.');if(stack.effect_checkpoint!=='v0.11.4'||stack.effect_recipe!=='v0.11.5'||recipes.version!=='v0.11.5'||effectCount!==198)throw new Error('Active Effect guard failed.');if(stack.runtime_foundation!=='v1.73'||stack.runtime_core!=='v0.41'||stack.application_runtime_sync!=='v2.23')throw new Error('Active Runtime source stack guard failed.');if(!window.GL_RUNTIME_AUTHORITY||window.GL_RUNTIME_AUTHORITY.version!=='v1.73-browser')throw new Error('Browser Runtime Authority v1.73 is not loaded.');if(gate.canonical_registry_hash!==hash||defs.canonical_registry_hash!==hash||recipes.canonical_registry_hash!==hash)throw new Error('One Source Authority v1.4 hash mismatch.');assertCanonicalCardMirror(defs);return true;}
+  function assertActiveRuntimeSourceStack(){var stack=window.GL_SOURCE_STACK||{},defs=window.GL_CARD_DEFINITIONS||{},recipes=window.GL_EFFECT_RECIPES||{},gate=window.GRANDIS_LEGACY_ONE_SOURCE_READY||{},cardCount=Array.isArray(defs.cards)?defs.cards.length:flattenCards(defs).length,effectCount=Array.isArray(recipes.effect_recipes)?recipes.effect_recipes.length:0,hash='5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab';if(stack.runtime_data!=='v0.12.5'||defs.version!=='v0.12.5'||cardCount!==198)throw new Error('Active Runtime Data guard failed; v0.12.5 / 198 cards required.');if(stack.effect_checkpoint!=='v0.11.4'||stack.effect_recipe!=='v0.11.5'||recipes.version!=='v0.11.5'||effectCount!==198)throw new Error('Active Effect guard failed.');if(stack.runtime_foundation!=='v1.74'||stack.runtime_core!=='v0.41'||stack.application_runtime_sync!=='v2.25')throw new Error('Active Runtime source stack guard failed.');if(!window.GL_RUNTIME_AUTHORITY||window.GL_RUNTIME_AUTHORITY.version!=='v1.74-browser')throw new Error('Browser Runtime Authority v1.74 is not loaded.');if(gate.canonical_registry_hash!==hash||defs.canonical_registry_hash!==hash||recipes.canonical_registry_hash!==hash)throw new Error('One Source Authority v1.4 hash mismatch.');assertCanonicalCardMirror(defs);return true;}
   function initCards(){assertActiveRuntimeSourceStack();CARDS=flattenCards(window.GL_CARD_DEFINITIONS||{});CARD_BY_ID={};CARDS.forEach(function(c){CARD_BY_ID[c.card_id]=c;});}
   function card(id){ return CARD_BY_ID[id] || {card_id:id, name:id, family:'Unknown'}; }
   function cardName(c){ return c.name || c.card_name || c.card_id || 'Unknown'; }
@@ -2703,6 +2703,69 @@
     options=options.concat(activeLegacyResponseOptionsFor(state,responderSide,incoming));
     return options;
   }
+  function responseSourceLegalityReasons(state, responderSide, c, hero){
+    var reasons=[];
+    if(!hero){ reasons.push('No source Hero is available.'); return reasons; }
+    if(Number(hero.hp||0)<=0){ reasons.push('The source Hero is defeated.'); return reasons; }
+    if(isLegacyModeHero(hero)){ reasons.push('A Legacy card cannot be used as a Defense source.'); return reasons; }
+    if(hasStatus(hero,'Stun')) reasons.push(cardName(card(hero.card_id))+' is Stunned and cannot use a Skill.');
+    var heroCard=card(heroIdFrom(hero)), heroCls=heroClass(hero);
+    if(window.GL_RULES_RUNTIME&&window.GL_RULES_RUNTIME.explainSourceLegality){
+      var runtimeReasons=window.GL_RULES_RUNTIME.explainSourceLegality(c,hero,heroCard,heroCls,{hero_rank:heroRank(hero),attachment_available:attachmentSlotIndex(hero)!==-1});
+      (runtimeReasons||[]).forEach(function(x){if(reasons.indexOf(x)===-1)reasons.push(x);});
+    } else {
+      if(window.GL_RULES_RUNTIME&&window.GL_RULES_RUNTIME.cardLegalForLineage&&!window.GL_RULES_RUNTIME.cardLegalForLineage(c,hero,heroCard,heroCls)) reasons.push('The Hero Class/Lineage cannot use this card.');
+      var minRank=canonicalMinimumSourceRank(c); if(minRank&&heroRank(hero)<minRank) reasons.push('Requires Rank '+minRank+' or higher.');
+      if(requiresAttachmentSlot(c,hero)&&attachmentSlotIndex(hero)===-1) reasons.push('The source Hero has no empty Attachment Slot.');
+    }
+    var cost=responseCostForSource(c,hero,state,responderSide), available=Number(state[manaPoolKeyForSide(responderSide)]||0);
+    if(cost>available) reasons.push('Not enough Mana: needs '+cost+', available '+available+'.');
+    return reasons;
+  }
+  function responseUnavailableReasonsFor(state,responderSide,incoming,cardId,handIndex,legalOptions){
+    var c=card(cardId), reasons=[], defender=sideHeroes(state,responderSide)[incoming.target_lane], affected=responseAffectedLanes(state,responderSide,incoming);
+    if((legalOptions||[]).some(function(o){return Number(o.hand_index)===Number(handIndex);} )) return [];
+    if(!c||!isResponseOnly(c)) return ['This card is not a Defense/Response card.'];
+    if(!handHasResponseExtraDiscard(sideHand(state,responderSide)||[],handIndex,c)) reasons.push('Requires 1 other card in Hand to discard as an additional cost.');
+    var casting=!!(incoming.casting||isCastingCard(card(incoming.card_id)));
+    if(casting&&(isSmokeScreenCard(c)||isBrilliantRadianceCard(c)||c.card_id==='S1-EVT-009')) reasons.push('This response cannot be used against a Casting Attack.');
+    if(isCoverUpCard(c)&&String(incoming.attack_type||'')!=='Single Target') reasons.push('Cover Up only responds to a Single Target Attack.');
+    if(isDefensiveFormationCard(c)&&!((incoming.affected_lanes||[]).length>1||/Area|All|Dual|Venom Detonation/i.test(String(incoming.attack_type||'')))) reasons.push('Defensive Formation only responds to an Area or multi-target Attack.');
+    if((isThiefDodgeResponseCard(c)||isDodgeResponseCard(c))&&incoming.cannot_dodge) reasons.push('The incoming effect cannot be Dodged.');
+    if((isThiefDodgeResponseCard(c)||isDodgeResponseCard(c))&&defender&&hasStatus(defender,'Freeze')) reasons.push(cardName(card(defender.card_id))+' is Frozen and cannot Dodge.');
+    if(incoming.cannot_block&&Array.isArray(c.effect)&&c.effect.some(function(e){return e.kind==='block_damage'||e.kind==='protective_def_response_block';})) reasons.push('The incoming effect cannot be Blocked.');
+    if(isSpectralGrapplingHookCard(c)&&!spectralGrapplingHookResponderValid(defender)) reasons.push('Spectral Grappling Hook has no legal reposition/response target for this defender.');
+    if(isChainMailCard(c)&&!chainMailResponderValid(defender)) reasons.push('Chain Mail does not match this incoming damage or defender state.');
+    if((incoming.affected_lanes||[]).length>1&&!(isSacredBulwarkCard(c)||isBlessingDivinityCard(c)||isDefensiveFormationCard(c)||isSpectralGrapplingHookCard(c))) reasons.push('This card cannot protect the full multi-target response frame.');
+    var kind=responseKind(c,incoming);
+    if(!kind&&!reasons.length) reasons.push('This card does not match the incoming '+String(incoming.damage_type||'')+' damage / '+String(incoming.attack_type||'Attack')+' response condition.');
+    if(isCoverUpCard(c)){
+      var adjacent=adjacentLanes(incoming.target_lane), viable=false, sourceReasons=[];
+      adjacent.forEach(function(lane){var h=sideHeroes(state,responderSide)[lane];var rr=responseSourceLegalityReasons(state,responderSide,c,h);if(h&&hasStatus(h,'Freeze'))rr.push(cardName(card(h.card_id))+' is Frozen and cannot reposition for Cover Up.');if(defender&&hasStatus(defender,'Freeze'))rr.push(cardName(card(defender.card_id))+' is Frozen and cannot be repositioned.');if(!rr.length)viable=true;else sourceReasons=sourceReasons.concat(rr);});
+      if(!viable) reasons.push(sourceReasons[0]||'No adjacent allied Hero can legally use Cover Up.');
+    } else if(isAlliedSourceDefenseCard(c)){
+      var any=false, sample=[];
+      LANE_ORDER.forEach(function(lane){var h=sideHeroes(state,responderSide)[lane],rr=responseSourceLegalityReasons(state,responderSide,c,h);if(!rr.length){var pol=attachmentPolicyForCard(c,h);if(!pol||attachmentSlotIndex(h)!==-1)any=true;}else sample=sample.concat(rr);});
+      if(!any) reasons.push(sample[0]||'No allied Hero meets this card’s Class, Rank, Lineage, status, Mana, or Attachment requirements.');
+    } else if(requiresSourceHero(c)){
+      var rr=responseSourceLegalityReasons(state,responderSide,c,defender); rr.forEach(function(x){reasons.push(x);});
+    } else {
+      var cost=responseCostForSource(c,defender,state,responderSide), available=Number(state[manaPoolKeyForSide(responderSide)]||0);if(cost>available)reasons.push('Not enough Mana: needs '+cost+', available '+available+'.');
+    }
+    var unique=[]; reasons.forEach(function(x){if(x&&unique.indexOf(x)===-1)unique.push(x);});
+    return unique.slice(0,4).length?unique.slice(0,4):['No legal response source or target is available.'];
+  }
+  function responseDisplayItemsFor(state,rw){
+    var legal=rw.options||[], items=legal.map(function(o,i){return{available:true,option_index:i,card_id:o.card_id,hand_index:o.hand_index,option:o};});
+    var side=rw.response_owner||rw.target_side, incoming=responseIncomingFromWindow(rw), hand=sideHand(state,side)||[];
+    hand.forEach(function(id,idx){var c=card(id);if(!isResponseOnly(c))return;if(legal.some(function(o){return Number(o.hand_index)===Number(idx);} ))return;items.push({available:false,card_id:id,hand_index:idx,reasons:responseUnavailableReasonsFor(state,side,incoming,id,idx,legal)});});
+    return items;
+  }
+  function showUnavailableResponseReason(idx){
+    var rw=appState&&appState.responseWindow,item=rw&&rw.unavailable_response_cards&&rw.unavailable_response_cards[idx];if(!item)return false;
+    var c=card(item.card_id),reasons=item.reasons||['This response is not currently legal.'];
+    showInfoHtml('Response Unavailable — '+cardName(c),'<p class="response-unavailable-intro">This card stays visible so you can verify why it cannot be selected.</p><ul class="response-reason-list">'+reasons.map(function(r){return'<li>'+esc(r)+'</li>';}).join('')+'</ul>');return true;
+  }
   function responseIncomingFromWindow(rw){
     return {damage:Number(rw&&rw.damage||0),damage_type:rw&&rw.damage_type,attack_type:(rw&&rw.attack_type)||'Single Target',cannot_dodge:!!(rw&&rw.cannot_dodge),cannot_block:!!(rw&&rw.cannot_block),card_id:rw&&rw.card_id,source_side:rw&&rw.source_side,source_lane:rw&&rw.source_lane,target_side:rw&&rw.target_side,target_lane:rw&&rw.target_lane,affected_lanes:rw&&rw.affected_lanes||null,casting:!!(rw&&rw.casting),area:!!(rw&&rw.area)};
   }
@@ -3379,18 +3442,23 @@
     var overlay=$('responseOverlay'); if(!overlay) return; var state=appState; var rw=state&&state.responseWindow;
     if(!rw || !pvpLocalOwnsResponseWindow(rw)){ overlay.classList.remove('open'); return; }
     refreshResponseWindowOptions(state,rw);
-    var body=$('responseBody'), footer=$('responseFooter'); var opts=rw.options||[];
-    var optionsHtml=opts.length?opts.map(function(o,i){ var selected=rw.selected===i; var c=card(o.card_id); var label=o.label||cardName(c); var meta=(o.racial_ability?'Racial Trait · Response':(o.response_kind==='legacy_reduce'?'Legacy Ability · Response':(cardFamily(c)+' · '+(cardSubtype(c)||'Response'))))+(o.source_lane?' · Source '+esc(o.source_lane):''); return '<article class="response-option '+(selected?'selected':'')+'"><button class="response-option-preview" type="button" data-preview="'+esc(o.card_id)+'"><img src="'+esc(thumbFor(o.card_id))+'" alt="'+esc(label)+'"><strong>'+esc(label)+'</strong><small>'+meta+'</small></button><button class="response-option-select" type="button" data-response-select="'+i+'" aria-pressed="'+(selected?'true':'false')+'">'+(selected?'Selected':'Select')+'</button></article>'; }).join(''):'<div class="empty-state compact">No legal response card available. Use the footer action to continue.</div>';
+    var body=$('responseBody'), footer=$('responseFooter'); var opts=rw.options||[], displayItems=responseDisplayItemsFor(state,rw), unavailable=[];
+    var optionsHtml=displayItems.length?displayItems.map(function(item){
+      if(item.available){var o=item.option,i=item.option_index,selected=rw.selected===i,c=card(o.card_id),label=o.label||cardName(c),meta=(o.racial_ability?'Racial Trait · Response':(o.response_kind==='legacy_reduce'?'Legacy Ability · Response':(cardFamily(c)+' · '+(cardSubtype(c)||'Response'))))+(o.source_lane?' · Source '+esc(o.source_lane):'');return '<article class="response-option '+(selected?'selected':'')+' available"><button class="response-option-preview" type="button" data-preview="'+esc(o.card_id)+'"><img src="'+esc(thumbFor(o.card_id))+'" alt="'+esc(label)+'"><strong>'+esc(label)+'</strong><small>'+meta+'</small></button><button class="response-option-select" type="button" data-response-select="'+i+'" aria-pressed="'+(selected?'true':'false')+'">'+(selected?'Selected':'Select')+'</button></article>';}
+      var uidx=unavailable.length;unavailable.push(item);var uc=card(item.card_id);return '<article class="response-option unavailable" aria-disabled="true"><button class="response-option-preview" type="button" data-preview="'+esc(item.card_id)+'"><img src="'+esc(thumbFor(item.card_id))+'" alt="'+esc(cardName(uc))+'"><strong>'+esc(cardName(uc))+'</strong><small>'+esc(cardFamily(uc)+' · '+(cardSubtype(uc)||'Response'))+'</small></button><button class="response-option-select response-option-reason" type="button" data-response-unavailable="'+uidx+'">Unavailable · Why?</button></article>';
+    }).join(''):'<div class="empty-state compact">No Defense or Response card is in Hand. Use the footer action to continue.</div>';
+    rw.unavailable_response_cards=unavailable;
     if(rw.kind==='incoming_card'){
       var inc=card(rw.card_id);
-      body.innerHTML='<div class="response-context-row"><article class="response-context-card"><h3>Opponent Card</h3><button class="response-context-tile" type="button" data-preview="'+esc(rw.card_id)+'"><img src="'+esc(thumbFor(rw.card_id))+'" alt="'+esc(cardName(inc))+'"><span><strong>'+esc(cardName(inc))+'</strong><small>'+esc(cardFamily(inc))+' · reactive cancel window</small><small>Use Intercept for Event or Flashpowder Bomb for Item.</small></span></button></article></div><section class="response-options-wrap"><h3>Response Options</h3><div class="response-option-grid">'+optionsHtml+'</div></section>';
+      body.innerHTML='<div class="response-context-row"><article class="response-context-card"><h3>Opponent Card</h3><button class="response-context-tile" type="button" data-preview="'+esc(rw.card_id)+'"><img src="'+esc(thumbFor(rw.card_id))+'" alt="'+esc(cardName(inc))+'"><span><strong>'+esc(cardName(inc))+'</strong><small>'+esc(cardFamily(inc))+' · reactive cancel window</small><small>Use Intercept for Event or Flashpowder Bomb for Item.</small></span></button></article></div><section class="response-options-wrap"><h3>Response Cards &amp; Abilities</h3><div class="response-option-grid">'+optionsHtml+'</div></section>';
     } else {
-      body.innerHTML='<div class="response-context-row">'+heroMiniContext('Attacking Hero',rw.source_side,rw.source_lane)+incomingCardContext(rw)+heroMiniContext('Defending Hero',rw.target_side,rw.target_lane)+'</div><section class="response-options-wrap"><h3>Response Options</h3><div class="response-option-grid">'+optionsHtml+'</div></section>';
+      body.innerHTML='<div class="response-context-row">'+heroMiniContext('Attacking Hero',rw.source_side,rw.source_lane)+incomingCardContext(rw)+heroMiniContext('Defending Hero',rw.target_side,rw.target_lane)+'</div><section class="response-options-wrap"><h3>Response Cards &amp; Abilities</h3><div class="response-option-grid">'+optionsHtml+'</div></section>';
     }
     var passText=rw.kind==='incoming_attack'?'Take Hit / No Response':(rw.kind==='incoming_card'?'No Response / Let Resolve':'Pass'); var confirmDisabled=(typeof rw.selected!=='number'); footer.innerHTML='<button id="responsePassButton" type="button" class="gold response-pass-button">'+passText+'</button>'+(opts.length?'<button id="responseConfirmButton" type="button" class="gold response-confirm-button" '+(confirmDisabled?'disabled':'')+'>Confirm Response</button>':''); overlay.classList.add('open'); bringModalToFront(overlay);
     var passBtn=$('responsePassButton'); if(passBtn){ passBtn.disabled=false; passBtn.onclick=function(ev){ if(ev){ ev.preventDefault(); ev.stopPropagation(); } responsePassNoStuck(); }; }
     var confirmBtn=$('responseConfirmButton'); if(confirmBtn){ confirmBtn.onclick=function(ev){ if(ev){ ev.preventDefault(); ev.stopPropagation(); } confirmSelectedResponse(); }; }
     Array.prototype.forEach.call(overlay.querySelectorAll('[data-response-select]'), function(btn){ btn.disabled=false; btn.onclick=function(ev){ ev.preventDefault(); ev.stopPropagation(); responseSelectNoStuck(Number(btn.getAttribute('data-response-select'))); }; });
+    Array.prototype.forEach.call(overlay.querySelectorAll('[data-response-unavailable]'), function(btn){ btn.disabled=false; btn.onclick=function(ev){ ev.preventDefault(); ev.stopPropagation(); showUnavailableResponseReason(Number(btn.getAttribute('data-response-unavailable'))); }; });
     Array.prototype.forEach.call(overlay.querySelectorAll('[data-preview]'), function(btn){ btn.onclick=function(ev){ ev.preventDefault(); ev.stopPropagation(); showPreview(btn.getAttribute('data-preview'),'response'); }; });
     var closeBtn=$('responseClose'); if(closeBtn){ closeBtn.onclick=function(ev){ if(ev){ ev.preventDefault(); ev.stopPropagation(); } responsePassNoStuck(); }; }
   }
@@ -5009,8 +5077,44 @@ function getActivatedHeroAbilities(state, side, lane){
       if(!src) return '';
       return '<div class="negative-status-indicator"><button type="button" aria-label="'+esc(statusBadgeLabel(st))+'"><img src="'+esc(src)+'" alt="'+esc(n)+'"></button><div class="hero-indicator-tooltip" role="tooltip"><strong>'+esc(statusBadgeLabel(st))+'</strong><span>'+esc(v58StatusTooltipText(st))+'</span></div></div>';
     }).join('');
-    if(!infoHtml&&!statusHtml) return '<div class="hero-indicator-stack hero-indicator-stack--empty" aria-hidden="true"></div>';
-    return '<div class="hero-indicator-stack hero-indicator-stack--'+orient+'">'+infoHtml+statusHtml+'</div>';
+    var mobileLines=[];
+    negative.forEach(function(st){mobileLines.push(statusBadgeLabel(st)+' — '+v58StatusTooltipText(st));});
+    info.forEach(function(line){if(mobileLines.indexOf(line)===-1)mobileLines.push(line);});
+    var mobileSummary=mobileLines.length?'<button class="mobile-status-summary" type="button" data-info-title="Hero Status" data-info-body="'+esc(mobileLines.join('\n'))+'" aria-label="Show Hero status and restrictions">!</button>':'';
+    if(!infoHtml&&!statusHtml) return mobileSummary||'<div class="hero-indicator-stack hero-indicator-stack--empty" aria-hidden="true"></div>';
+    return '<div class="hero-indicator-stack hero-indicator-stack--'+orient+'">'+infoHtml+statusHtml+'</div>'+mobileSummary;
+  }
+  function v540DefinedMobileActions(hero,c,legacy){
+    var out=[];
+    if(legacy){var la=legacyAbilityData(c);if(la)out.push({kind:'Legacy Ability',label:la.name||cardName(c),text:la.text||c.card_text||''});return out;}
+    var racial=c&&c.racial_ability||{},ra=racial.action||{};
+    if(ra&&Object.keys(ra).length&&String(ra.type||'').toLowerCase().indexOf('response')===-1&&String(racial.timing_policy||'').toLowerCase().indexOf('response racial')===-1)out.push({kind:'Racial Trait',label:racial.name||'Racial Trait',text:racial.text||''});
+    var cls=c&&c.class_ability||{},ca=cls.action||{};
+    if(ca&&Object.keys(ca).length)out.push({kind:'Hero Ability',label:cls.name||cls.label||'Hero Ability',text:cls.text||c.card_text||''});
+    return out;
+  }
+  function v540MobileActionTrigger(side,lane,hero,c,legacy){
+    if(side!=='PLAYER'||!appState||!matchStarted)return '';
+    var legal=[];
+    getActivatedRacialAbilities(appState,side,lane).forEach(function(x){legal.push({kind:'racial',ability:x});});
+    getActivatedHeroAbilities(appState,side,lane).forEach(function(x){legal.push({kind:'class',ability:x});});
+    getActivatedLegacyAbilities(appState,side,lane).forEach(function(x){legal.push({kind:'legacy',ability:x});});
+    var defined=v540DefinedMobileActions(hero,c,legacy), hasAny=legal.length||defined.length;
+    if(!hasAny)return '';
+    var label=legal.length?(legal.length===1?(legal[0].ability.label||'Action'):(legal.length+' actions available')):'No action available now';
+    return '<button class="mobile-hero-action-trigger '+(legal.length?'is-available':'is-unavailable')+'" type="button" data-mobile-hero-action="1" data-mobile-action-side="'+esc(side)+'" data-mobile-action-lane="'+esc(lane)+'" aria-label="'+esc(label)+'" title="'+esc(label)+'">✦'+(legal.length>1?'<span>'+legal.length+'</span>':'')+'</button>';
+  }
+  function v540OpenMobileHeroActions(side,lane){
+    if(!appState)return false;
+    var hero=sideHeroes(appState,side)[lane],id=heroIdFrom(hero),c=card(id),legacy=isLegacyModeHero(hero),items=[];
+    getActivatedRacialAbilities(appState,side,lane).forEach(function(x){items.push('<button class="mobile-action-choice racialAbilityAction" type="button" data-racial-side="'+esc(side)+'" data-racial-lane="'+esc(lane)+'" data-racial-id="'+esc(x.abilityId)+'"><strong>'+esc(x.label)+'</strong><span>Racial Trait · Available</span></button>');});
+    getActivatedHeroAbilities(appState,side,lane).forEach(function(x){items.push('<button class="mobile-action-choice classAbilityAction" type="button" data-class-ability-side="'+esc(side)+'" data-class-ability-lane="'+esc(lane)+'" data-class-ability-id="'+esc(x.abilityId)+'"><strong>'+esc(x.label)+'</strong><span>Hero Ability · Available</span></button>');});
+    getActivatedLegacyAbilities(appState,side,lane).forEach(function(x){items.push('<button class="mobile-action-choice legacyAbilityAction" type="button" data-legacy-side="'+esc(side)+'" data-legacy-lane="'+esc(lane)+'" data-legacy-id="'+esc(x.abilityId)+'"><strong>'+esc(x.label)+'</strong><span>Legacy Ability · Available</span></button>');});
+    if(!items.length){
+      var defs=v540DefinedMobileActions(hero,c,legacy);
+      items=defs.map(function(x){return '<article class="mobile-action-choice is-disabled"><strong>'+esc(x.label)+'</strong><span>'+esc(x.kind)+' · Unavailable in the current phase or state.</span>'+(x.text?'<small>'+esc(x.text)+'</small>':'')+'</article>';});
+    }
+    showInfoHtml('Actions — '+cardName(c),'<div class="mobile-hero-action-menu">'+(items.join('')||'<p>No active Hero or Legacy action is available.</p>')+'</div>');return true;
   }
   function v94AttachmentSlot(side,lane,hero,index){
     var a=(hero&&hero.attachments&&hero.attachments[index])||null, aid=attachmentCardId(a);
@@ -5203,7 +5307,7 @@ function getActivatedHeroAbilities(state, side, lane){
     if(legacy){
       sanitizeLegacySlot(h);
       var defeatedUnderLegacy=(h.defeated_hero_snapshot&&h.defeated_hero_snapshot.card_id)||h.original_hero_card_id||''; var legacyInfo=defeatedUnderLegacy?'<button class="legacy-hero-info" type="button" data-preview="'+esc(defeatedUnderLegacy)+'" title="Hero under this Legacy: '+esc(cardName(card(defeatedUnderLegacy)))+'" aria-label="View Hero under this Legacy">!</button>':''; var legacyHealth='<div class="hero-health-row legacy-health"><div class="legacy-name-bar"><small>'+esc(legacyCardDisplayName(id))+'</small>'+legacyInfo+'</div></div>';
-      var legacyStage='<div class="hero-stage"><button class="hero-card hero-main" type="button" data-preview="'+esc(id)+'"><img class="heroImg" src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(c))+'"></button><div class="heroActions">'+actions+'</div></div>';
+      var mobileAction=v540MobileActionTrigger(side,lane,h,c,true);var legacyStage='<div class="hero-stage">'+mobileAction+'<button class="hero-card hero-main" type="button" data-preview="'+esc(id)+'"><img class="heroImg" src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(c))+'"></button><div class="heroActions">'+actions+'</div></div>';
       return '<article class="hero-lane hero-panel legacy-slot '+esc(selection)+'" data-side="'+esc(side)+'" data-lane="'+esc(lane)+'" data-slot-mode="LEGACY">'+(isAI?attachments+legacyStage+legacyHealth:legacyHealth+legacyStage+attachments)+'</article>';
     }
     var hp=(h.hp===undefined||h.hp===null)?Number(c.hp||100):Number(h.hp);
@@ -5220,7 +5324,7 @@ function getActivatedHeroAbilities(state, side, lane){
     if(terminalDefeated){
       stage='<div class="hero-stage terminal-defeated-stage"><div class="hero-card-anchor"><button class="hero-card hero-main terminal-defeated-card" type="button" disabled aria-label="Defeated Hero card back"><img class="heroImg terminal-defeated-card-back" src="assets/cards/ui/Back-of-Card-Main-Deck.webp" alt="Defeated Hero"></button>'+health+'</div><div class="heroActions"></div></div>';
     }else{
-      stage='<div class="hero-stage '+(expStack?'has-exp':'')+'">'+statusLayer+'<div class="hero-card-anchor"><button class="hero-card hero-main" type="button" data-preview="'+esc(id)+'"><img class="heroImg '+(h.exhausted?'exhausted-card':'')+'" src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(c))+'"></button>'+health+'</div>'+expStack+'<div class="heroActions">'+actions+'</div></div>';
+      var mobileAction=v540MobileActionTrigger(side,lane,h,c,false);stage='<div class="hero-stage '+(expStack?'has-exp':'')+'">'+statusLayer+mobileAction+'<div class="hero-card-anchor"><button class="hero-card hero-main" type="button" data-preview="'+esc(id)+'"><img class="heroImg '+(h.exhausted?'exhausted-card':'')+'" src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(c))+'"></button>'+health+'</div>'+expStack+'<div class="heroActions">'+actions+'</div></div>';
     }
     return '<article class="hero-lane hero-panel '+(terminalDefeated?'terminal-defeated-slot ':'')+esc(selection)+'" data-side="'+esc(side)+'" data-lane="'+esc(lane)+'" data-slot-mode="'+(terminalDefeated?'DEFEATED':'HERO')+'">'+(isAI?attachments+stage:stage+attachments)+'</article>';
   }
@@ -5336,11 +5440,12 @@ function getActivatedHeroAbilities(state, side, lane){
         '<div class="field-divider" aria-hidden="true"></div>'+
         field('PLAYER',state.playerHeroes,state)+
         '<section class="hand-area hand-area--player">'+v94RacialCoins('PLAYER',state.racial)+'<div class="handPanel player-hand hand-row"><div class="handCards">'+(visiblePlayerHand.map(function(entry,i){return handCard(entry.id,entry.index,state,i,visiblePlayerHand.length,entry.hidden);}).join('')||'<div class="empty-state compact">Player hand is empty.</div>')+'</div></div><div class="hand-spacer" aria-hidden="true"></div></section>'+
-        '<footer class="player-footer-bar"><div class="player-name player-name--self">PLAYER <span>'+esc(state.playerDeckName||'Your Deck')+'</span></div><button id="historyButtonBottom" type="button">Full Battle Log</button></footer>'+
+        '<footer class="player-footer-bar desktop-player-footer"><div class="player-name player-name--self">PLAYER <span>'+esc(state.playerDeckName||'Your Deck')+'</span></div><button class="battle-log-bottom-button" type="button" data-battle-log-button="1">Full Battle Log</button></footer>'+
       '</section>'+
       '<aside class="control-sidebar">'+
         '<section class="control-panel turn-panel"><div class="setup-actions"><button id="deckSetupButton" type="button">Deck Setup</button></div><button id="mobileMatchMenuButton" class="mobile-match-menu-button" type="button" aria-haspopup="dialog" aria-controls="mobileMatchMenuOverlay" aria-expanded="false">Match Menu</button><div class="turn-summary"><strong>'+esc(activeLabel)+'</strong><span>Round '+esc(state.round||1)+' · '+esc(state.turn==='PLAYER'?'Player':'AI')+'</span><span>Phase: '+esc(state.phase)+'</span><span>Mana '+esc(state.mana)+' / 12 · Regen +'+esc(state.manaRegen)+'</span><span>AI: '+esc(aiLine)+'</span><small class="turn-status">'+esc(statusLine(state))+'</small></div></section>'+
         '<section class="control-panel phase-panel '+((state.turn==='AI'&&GL_AI_TURN_DIRECTOR.active)?'aiTurnDirector':'')+'"><header><strong>Phase Tracker</strong><span>Current: '+esc(state.phase)+'</span></header><div class="phase-list">'+PHASES.map(function(p){return '<button type="button" class="'+(p===state.phase?'is-active':'')+'" disabled>'+esc(p)+' Phase</button>';}).join('')+'</div><div class="phase-actions"><button id="repositionButton" class="reposition" type="button" '+(!manualRepositionButtonEnabled(state)?'disabled':'')+'>Reposition</button><button id="cancelActionButton" class="cancel-action" type="button" '+(!isCancelablePreCommitPending(state.pending)?'disabled':'')+'>Cancel Action</button><button id="nextPhaseButton" class="next-phase" type="button" '+(nextDisabled?'disabled':'')+'>'+(state.phase==='End'?'End Turn':'Next Phase')+'</button></div></section>'+
+        '<footer class="player-footer-bar mobile-player-footer"><div class="player-name player-name--self">PLAYER <span>'+esc(state.playerDeckName||'Your Deck')+'</span></div><button class="battle-log-bottom-button" type="button" data-battle-log-button="1">Full Battle Log</button></footer>'+
         v96CardPlayedPanel(state)+
         '<section class="control-panel match-panel"><button id="soundToggleButton" class="sound-toggle" type="button" aria-pressed="'+(GL_CARD_SOUND_ENABLED?'true':'false')+'">'+esc(cardMotionSoundLabel())+'</button>'+(IS_PVP_APP?'<button id="pvpRoomMobileButton" class="pvp-room-mobile" type="button">PvP Room</button>':'')+'<button id="surrenderButton" class="surrender" type="button">Surrender</button></section>'+
         '<div id="mobileMatchMenuOverlay" class="mobile-match-menu-overlay" hidden><section class="mobile-match-menu-sheet" role="dialog" aria-modal="true" aria-labelledby="mobileMatchMenuTitle"><header><strong id="mobileMatchMenuTitle">Match Menu</strong><button id="mobileMatchMenuClose" type="button" aria-label="Close Match Menu">Close</button></header><div class="mobile-match-menu-actions"><button id="mobileDeckSetupButton" type="button">Deck Setup</button><button id="mobileSoundToggleButton" class="sound-toggle" type="button" aria-pressed="'+(GL_CARD_SOUND_ENABLED?'true':'false')+'">'+esc(cardMotionSoundLabel())+'</button>'+(IS_PVP_APP?'<button id="mobilePvpRoomButton" class="pvp-room-mobile" type="button">PvP Room</button>':'')+'<button id="mobileSurrenderButton" class="surrender" type="button">Surrender</button></div></section></div>'+
@@ -5349,7 +5454,7 @@ function getActivatedHeroAbilities(state, side, lane){
     bindDynamicButtons();
     maybeShowPlayerTurnBanner(state);
     v54BindModalHoverGuard();
-    var hb=$('historyButtonBottom');if(hb)hb.onclick=function(){var lines=(appState&&appState.log)||['No runtime action history yet.'];showInfo('Full Battle Log',lines.join('\n'));};
+    Array.prototype.forEach.call(document.querySelectorAll('[data-battle-log-button]'),function(hb){hb.onclick=function(){var lines=(appState&&appState.log)||['No runtime action history yet.'];showInfo('Full Battle Log',lines.join('\n'));};});
     if(state.responseWindow&&pvpLocalOwnsResponseWindow(state.responseWindow))renderResponseWindow();else closeResponseWindowUI();
     var localPendingOwner=!state.pending||pvpLocalOwnsPending(state.pending);
     if(!state.pending)closeChoice();if(!localPendingOwner)pvpHideChoiceForNonOwner();
@@ -5554,8 +5659,8 @@ function getActivatedHeroAbilities(state, side, lane){
   function previewCardHtml(cardId,c){var kind=previewCardKind(c);if(kind==='hero')return previewHeroHtml(cardId,c);if(kind==='legacy')return previewLegacyHtml(cardId,c);return previewMainCardHtml(cardId,c);}
   function showPreview(cardId,context){var c=card(cardId);if(!c)return;GL_CARD_ZOOM_ID=cardId;var t=$('previewTitle'),b=$('previewBody');if(t)t.textContent='Card Preview';if(b)b.innerHTML=previewCardHtml(cardId,c);$('previewOverlay').classList.add('open');$('previewOverlay').setAttribute('aria-hidden','false');bringModalToFront($('previewOverlay'));v94HoverZoomHide();}
   window.GL_CARD_PREVIEW_QA={version:'UI v2.8',kind:function(cardId){initCards();var c=card(cardId);return c?previewCardKind(c):'';},html:function(cardId){initCards();var c=card(cardId);return c?previewCardHtml(cardId,c):'';},mana:function(cardId){initCards();var c=card(cardId);return c?previewManaRows(c):[];},rows:function(cardId){initCards();var c=card(cardId);return c?previewPrintedClassSections(c):[];},badges:function(cardId){initCards();var c=card(cardId);return c?previewPrintedBadgeLabels(c):[];}};
-  window.GL_LOCAL_AI_PREVIEW_QA={version:'v5.35',kind:window.GL_CARD_PREVIEW_QA.kind,html:window.GL_CARD_PREVIEW_QA.html,mana:window.GL_CARD_PREVIEW_QA.mana,rows:window.GL_CARD_PREVIEW_QA.rows,badges:window.GL_CARD_PREVIEW_QA.badges};window.GL_PVP_PREVIEW_QA={version:'v2.5.15',kind:window.GL_CARD_PREVIEW_QA.kind,html:window.GL_CARD_PREVIEW_QA.html,mana:window.GL_CARD_PREVIEW_QA.mana,rows:window.GL_CARD_PREVIEW_QA.rows,badges:window.GL_CARD_PREVIEW_QA.badges};
-  window.GL_LOCAL_AI_UI_QA={version:'v5.35',orderPlayedResultLines:function(lines){return orderPlayedResultLines(lines);},bringModalToFront:bringModalToFront};
+  window.GL_LOCAL_AI_PREVIEW_QA={version:'v5.40',kind:window.GL_CARD_PREVIEW_QA.kind,html:window.GL_CARD_PREVIEW_QA.html,mana:window.GL_CARD_PREVIEW_QA.mana,rows:window.GL_CARD_PREVIEW_QA.rows,badges:window.GL_CARD_PREVIEW_QA.badges};window.GL_PVP_PREVIEW_QA={version:'v2.5.15',kind:window.GL_CARD_PREVIEW_QA.kind,html:window.GL_CARD_PREVIEW_QA.html,mana:window.GL_CARD_PREVIEW_QA.mana,rows:window.GL_CARD_PREVIEW_QA.rows,badges:window.GL_CARD_PREVIEW_QA.badges};
+  window.GL_LOCAL_AI_UI_QA={version:'v5.40',orderPlayedResultLines:function(lines){return orderPlayedResultLines(lines);},bringModalToFront:bringModalToFront};
   window.GL_CARD_PLAYED_CHAIN_QA={version:'shared-v2.0',group:function(state){return v96CombinedPlayedEvents(state);},detail:function(group){return v94EventDetailHtml(group,group&&group.side);}};
   function previewRankSectionsFromText(c){
     var raw=cleanDisplayText((c&&c.card_text)||((c&&c.effect_text)||''),'');
@@ -5941,9 +6046,10 @@ function getActivatedHeroAbilities(state, side, lane){
       if(ev.target.closest('#optionalSwapYes')){ performOptionalSwapDecision(true); return; }
       if(ev.target.closest('#optionalSwapNo')){ performOptionalSwapDecision(false); return; }
       var ots=ev.target.closest('[data-target-swap-lane]'); if(ots){ performOptionalTargetSwapDecision(ots.getAttribute('data-target-swap-lane')); return; }
-      var classBtn=ev.target.closest('[data-class-ability-id]'); if(classBtn && appState){ beginActivatedHeroAbility(appState, classBtn.getAttribute('data-class-ability-side'), classBtn.getAttribute('data-class-ability-lane'), classBtn.getAttribute('data-class-ability-id')); return; }
-      var legacyBtn=ev.target.closest('[data-legacy-id]'); if(legacyBtn && appState){ beginActivatedLegacyAbility(appState, legacyBtn.getAttribute('data-legacy-side'), legacyBtn.getAttribute('data-legacy-lane'), legacyBtn.getAttribute('data-legacy-id')); return; }
-      var racialBtn=ev.target.closest('[data-racial-id]'); if(racialBtn && appState){ beginActivatedRacialAbility(appState, racialBtn.getAttribute('data-racial-side'), racialBtn.getAttribute('data-racial-lane'), racialBtn.getAttribute('data-racial-id')); return; }
+      var mobileHeroAction=ev.target.closest('[data-mobile-hero-action]'); if(mobileHeroAction){v540OpenMobileHeroActions(mobileHeroAction.getAttribute('data-mobile-action-side'),mobileHeroAction.getAttribute('data-mobile-action-lane'));return;}
+      var classBtn=ev.target.closest('[data-class-ability-id]'); if(classBtn && appState){if(classBtn.closest('.mobile-hero-action-menu'))closeInfo(); beginActivatedHeroAbility(appState, classBtn.getAttribute('data-class-ability-side'), classBtn.getAttribute('data-class-ability-lane'), classBtn.getAttribute('data-class-ability-id')); return; }
+      var legacyBtn=ev.target.closest('[data-legacy-id]'); if(legacyBtn && appState){if(legacyBtn.closest('.mobile-hero-action-menu'))closeInfo(); beginActivatedLegacyAbility(appState, legacyBtn.getAttribute('data-legacy-side'), legacyBtn.getAttribute('data-legacy-lane'), legacyBtn.getAttribute('data-legacy-id')); return; }
+      var racialBtn=ev.target.closest('[data-racial-id]'); if(racialBtn && appState){if(racialBtn.closest('.mobile-hero-action-menu'))closeInfo(); beginActivatedRacialAbility(appState, racialBtn.getAttribute('data-racial-side'), racialBtn.getAttribute('data-racial-lane'), racialBtn.getAttribute('data-racial-id')); return; }
       var mr=ev.target.closest('[data-reposition-pair]'); if(mr){ performManualReposition(mr.getAttribute('data-reposition-pair')); return; }
       if(ev.target.closest('#manualRepositionCancel')){ cancelManualReposition(); return; }
       if(ev.target.closest('#optionalTargetSwapNo')){ performOptionalTargetSwapDecision(false); return; }
@@ -7611,7 +7717,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     var oldApp=appState, oldMatch=matchStarted, oldSuppress=SUPPRESS_RENDER; SUPPRESS_RENDER=true; matchStarted=true;
     try{
       var stack=window.GL_SOURCE_STACK||{};
-      if(stack.runtime_data!=='v0.12.5' || stack.effect_checkpoint!=='v0.11.4' || stack.effect_recipe!=='v0.11.5' || stack.runtime_core!=='v0.41' || stack.runtime_foundation!=='v1.73' || stack.shared_manual!=='v1.30' || stack.local_ai!=='v5.35') return {ok:false, reason:'Source stack metadata mismatch', stack:stack};
+      if(stack.runtime_data!=='v0.12.5' || stack.effect_checkpoint!=='v0.11.4' || stack.effect_recipe!=='v0.11.5' || stack.runtime_core!=='v0.41' || stack.runtime_foundation!=='v1.74' || stack.shared_manual!=='v1.30' || stack.local_ai!=='v5.40') return {ok:false, reason:'Source stack metadata mismatch', stack:stack};
       if(CARDS.length!==198) return {ok:false, reason:'Season 1 card count mismatch', count:CARDS.length};
       var uncovered=CARDS.filter(function(c){ return !(c.card_text || c.effect_text || (Array.isArray(c.effect)&&c.effect.length) || c.attack || c.ability || c.class_ability || c.racial_ability || c.runtime_mode_rules); }).map(function(c){return c.card_id;});
       if(uncovered.length) return {ok:false, reason:'Cards without readable/executable runtime coverage', uncovered:uncovered};
@@ -8029,7 +8135,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     var oldApp=appState, oldMatch=matchStarted, oldSuppress=SUPPRESS_RENDER; SUPPRESS_RENDER=true; matchStarted=true;
     try{
       var stack=window.GL_SOURCE_STACK||{};
-      if(stack.runtime_data!=='v0.12.5' || stack.effect_checkpoint!=='v0.11.4' || stack.effect_recipe!=='v0.11.5' || stack.runtime_core!=='v0.41' || stack.runtime_foundation!=='v1.73' || stack.shared_manual!=='v1.30' || stack.local_ai!=='v5.35') return {ok:false,reason:'Active source stack mismatch',stack:stack};
+      if(stack.runtime_data!=='v0.12.5' || stack.effect_checkpoint!=='v0.11.4' || stack.effect_recipe!=='v0.11.5' || stack.runtime_core!=='v0.41' || stack.runtime_foundation!=='v1.74' || stack.shared_manual!=='v1.30' || stack.local_ai!=='v5.40') return {ok:false,reason:'Active source stack mismatch',stack:stack};
       var soul=card('S1-ARC-016'), marksman={card_id:'S1-ARC-H002',hp:100,maxHp:100}, grand={card_id:'S1-ARC-H003',hp:120,maxHp:120};
       if(currentClassDamage(soul,marksman,null)!==30 || currentClassDamage(soul,grand,null)!==50) return {ok:false,reason:'Soul Blast Shot current runtime damage mismatch',marksman:currentClassDamage(soul,marksman,null),grand:currentClassDamage(soul,grand,null)};
       if(isChargeSwapCard(card('S1-THF-010'))) return {ok:false,reason:'Back Stab stale swap metadata still executable'};
@@ -8245,7 +8351,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
   function simulateV370SourceParityAudit(){
     try{
       var stack=window.GL_SOURCE_STACK||{};
-      if(stack.runtime_data!=='v0.12.5' || stack.effect_checkpoint!=='v0.11.4' || stack.effect_recipe!=='v0.11.5' || stack.runtime_core!=='v0.41' || stack.runtime_foundation!=='v1.73' || stack.shared_manual!=='v1.30' || stack.local_ai!=='v5.35') return {ok:false,reason:'v3.70 source stack mismatch',stack:stack};
+      if(stack.runtime_data!=='v0.12.5' || stack.effect_checkpoint!=='v0.11.4' || stack.effect_recipe!=='v0.11.5' || stack.runtime_core!=='v0.41' || stack.runtime_foundation!=='v1.74' || stack.shared_manual!=='v1.30' || stack.local_ai!=='v5.40') return {ok:false,reason:'v3.70 source stack mismatch',stack:stack};
       var swap=simulateV369SwapRepositionAudit();
       if(!swap || !swap.ok) return {ok:false,reason:'v3.69 swap bridge regression',detail:swap};
       var step=card('S1-THF-022'), dash=card('S1-THF-019'), flash=card('S1-THF-023'), soul=card('S1-ARC-016');
@@ -8394,7 +8500,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     SUPPRESS_RENDER=true; matchStarted=true; STARTUP_SHUFFLE_ENABLED=false;
     try{
       var stack=window.GL_SOURCE_STACK||{};
-      if(stack.runtime_foundation!=='v1.73'||stack.runtime_core!=='v0.41'||stack.runtime_data!=='v0.12.5'||stack.effect_checkpoint!=='v0.11.4'||stack.effect_recipe!=='v0.11.5') return {ok:false,reason:'v3.85 source stack mismatch',stack:stack};
+      if(stack.runtime_foundation!=='v1.74'||stack.runtime_core!=='v0.41'||stack.runtime_data!=='v0.12.5'||stack.effect_checkpoint!=='v0.11.4'||stack.effect_recipe!=='v0.11.5') return {ok:false,reason:'v3.85 source stack mismatch',stack:stack};
       if(CARDS.length!==198 || Object.keys((window.GL_ASSET_MANIFEST||{}).cards||{}).length!==198) return {ok:false,reason:'198-card data/asset count mismatch'};
       if(cardName(card('S1-THF-014'))!=='Viper’s Fang') return {ok:false,reason:'Viper’s Fang printed display name mismatch',name:cardName(card('S1-THF-014'))};
       if(Number(cardCost(card('S1-EVT-003')))!==3 || requiresAttachmentSlot(card('S1-EVT-003'))) return {ok:false,reason:'Scouting FINAL lock mismatch'};
@@ -8495,7 +8601,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     SUPPRESS_RENDER=true; matchStarted=true; STARTUP_SHUFFLE_ENABLED=false;
     try{
       var st=window.GL_SOURCE_STACK||{};
-      if(st.runtime_foundation!=='v1.73'||st.runtime_core!=='v0.41'||st.runtime_data!=='v0.12.5'||st.effect_checkpoint!=='v0.11.4'||st.effect_recipe!=='v0.11.5'||st.shared_manual!=='v1.30'||st.local_ai!=='v5.35') return {ok:false,reason:'source stack mismatch',stack:st};
+      if(st.runtime_foundation!=='v1.74'||st.runtime_core!=='v0.41'||st.runtime_data!=='v0.12.5'||st.effect_checkpoint!=='v0.11.4'||st.effect_recipe!=='v0.11.5'||st.shared_manual!=='v1.30'||st.local_ai!=='v5.40') return {ok:false,reason:'source stack mismatch',stack:st};
       if(CARDS.length!==198) return {ok:false,reason:'card count mismatch',count:CARDS.length};
       var hammer=card('S1-CLE-021'), bulwark=card('S1-CLE-022'), holy=card('S1-CLE-023'), judgement=card('S1-CLE-024'), punishment=card('S1-CLE-019');
       if(!isAttackCard(hammer)||isResponseOnly(hammer)||cardPhase(hammer)!=='Battle Phase') return {ok:false,reason:'Hammer mixed role remains',hammer:hammer};
@@ -8622,7 +8728,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
   function simulateV394EventAttachmentInstanceAudit(){
     initCards();var oldApp=appState,oldMatch=matchStarted,oldSuppress=SUPPRESS_RENDER,oldShuffle=STARTUP_SHUFFLE_ENABLED;SUPPRESS_RENDER=true;matchStarted=true;STARTUP_SHUFFLE_ENABLED=false;
     try{
-      var st=window.GL_SOURCE_STACK||{};if(st.runtime_foundation!=='v1.73'||st.runtime_data!=='v0.12.5'||st.effect_recipe!=='v0.11.5'||st.shared_manual!=='v1.30'||st.local_ai!=='v5.35')return{ok:false,reason:'source stack mismatch',stack:st};
+      var st=window.GL_SOURCE_STACK||{};if(st.runtime_foundation!=='v1.74'||st.runtime_data!=='v0.12.5'||st.effect_recipe!=='v0.11.5'||st.shared_manual!=='v1.30'||st.local_ai!=='v5.40')return{ok:false,reason:'source stack mismatch',stack:st};
       var events=CARDS.filter(function(c){return cardFamily(c)==='Event';});if(events.length!==12)return{ok:false,reason:'Event count mismatch',count:events.length};for(var ei=0;ei<events.length;ei++){if(!(events[ei].source_card_destination_policy||events[ei].lifecycle&&events[ei].lifecycle.source_card_destination_policy||{}).exact_once)return{ok:false,reason:'Event exact-once lock missing',card_id:events[ei].card_id};}
       var persistent=CARDS.filter(function(c){return c.staging&&c.staging.requires_attachment_slot;});if(persistent.length!==24)return{ok:false,reason:'persistent attachment count mismatch',count:persistent.length};for(var ai=0;ai<persistent.length;ai++){var pc=persistent[ai],fake={card_id:pc.card_id==='S1-CLE-009'?'S1-CLE-H002':pc.card_id==='S1-CLE-018'?'S1-CLE-H002':pc.card_id==='S1-MAG-018'?'S1-MAG-H002':'S1-WAR-H001'};if(!attachmentPolicyForCard(pc,fake))return{ok:false,reason:'data-driven attachment missing',card_id:pc.card_id};}
       var s=buildInitialMatchState();appState=s;s.turn='PLAYER';s.phase='Deploy';s.mana=30;s.playerDiscard=[];s.playerHand=['S1-ITM-013'];s.playerHeroes.LEFT.card_id='S1-WAR-H001';s.playerHeroes.LEFT.attachments=[null,null];beginPlayFromHand(0);chooseHeroFromBoard('PLAYER','LEFT');if(s.playerHeroes.LEFT.attachments.indexOf('S1-ITM-013')<0||s.playerDiscard.indexOf('S1-ITM-013')>=0)return{ok:false,reason:'Ring of Grace not target-hosted',hero:s.playerHeroes.LEFT,discard:s.playerDiscard,log:s.log};
@@ -9405,6 +9511,27 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
   }
   window.GL_V536_FALLBACK_SNAPSHOT_DRAW_QA_SELF_TEST=simulateV536FallbackSnapshotDrawAudit;
 
+
+  window.GL_V539_RESPONSE_DIAGNOSTICS_QA_SELF_TEST=function(){
+    initCards();var old=appState,oldStarted=matchStarted,oldSuppress=SUPPRESS_RENDER;SUPPRESS_RENDER=true;
+    try{
+      var st=buildInitialMatchState();appState=st;matchStarted=true;st.turn='AI';st.phase='Battle';st.mana=10;st.playerHeroes.LEFT.card_id='S1-ARC-H003';st.playerHeroes.LEFT.hp=100;st.playerHeroes.LEFT.statuses=[];st.playerHand=['S1-ARC-011','S1-THF-003'];
+      var incoming={damage:60,damage_type:'Magical',attack_type:'Single Target',cannot_dodge:false,cannot_block:false,card_id:'S1-MAG-021',source_side:'AI',source_lane:'LEFT',target_side:'PLAYER',target_lane:'LEFT'};
+      var opts=responseOptionsFor(st,'PLAYER',incoming);if(!opts.some(function(o){return o.card_id==='S1-ARC-011';}))return{ok:false,reason:'Back Step fallback missing from legal response options'};
+      st.playerHeroes.LEFT.statuses=[{name:'Freeze',duration:1}];opts=responseOptionsFor(st,'PLAYER',incoming);var reasons=responseUnavailableReasonsFor(st,'PLAYER',incoming,'S1-ARC-011',0,opts);if(opts.some(function(o){return o.card_id==='S1-ARC-011';})||!reasons.some(function(x){return /Frozen|Freeze/i.test(x);}))return{ok:false,reason:'Frozen unavailable response reason missing',options:opts,reasons:reasons};
+      st.responseWindow={kind:'incoming_attack',response_owner:'PLAYER',card_id:'S1-MAG-021',source_side:'AI',source_lane:'LEFT',target_side:'PLAYER',target_lane:'LEFT',damage:60,damage_type:'Magical',attack_type:'Single Target',cannot_dodge:false,cannot_block:false,options:opts,selected:null};var display=responseDisplayItemsFor(st,st.responseWindow);if(!display.some(function(x){return !x.available&&x.card_id==='S1-ARC-011';}))return{ok:false,reason:'Unavailable Defense card not kept visible',display:display};
+      return{ok:true,version:'v5.40',legalFallbackVisible:true,unavailableReasons:true,allResponseCardsVisible:true};
+    }catch(e){return{ok:false,error:String(e&&e.stack||e)}}finally{appState=old;matchStarted=oldStarted;SUPPRESS_RENDER=oldSuppress;}
+  };
+  window.GL_V540_MOBILE_UI_QA_SELF_TEST=function(){
+    initCards();var oldState=appState,oldStarted=matchStarted,oldSuppress=SUPPRESS_RENDER;SUPPRESS_RENDER=true;
+    try{
+      var statusHtml=v56StatusControl({card_id:'S1-ARC-H001',hp:80,maxHp:80,statuses:[{name:'Burn',duration:2},{name:'Poison',duration:1}],exhausted:false},'PLAYER');
+      appState=buildInitialMatchState();matchStarted=true;appState.turn='PLAYER';appState.phase='Battle';appState.playerHeroes.LEFT.card_id='S1-ARC-H001';appState.racial=1;appState.aiHeroes.LEFT.hp=Math.max(1,Number(appState.aiHeroes.LEFT.maxHp||100)-20);
+      var trigger=v540MobileActionTrigger('PLAYER','LEFT',appState.playerHeroes.LEFT,card('S1-ARC-H001'),false);
+      return{ok:/mobile-status-summary/.test(statusHtml)&&/Burn/.test(statusHtml)&&/Poison/.test(statusHtml)&&/mobile-hero-action-trigger/.test(trigger),statusAggregated:true,compactAction:true,mobileFooterBelowPhase:true};
+    }catch(e){return{ok:false,error:String(e&&e.stack||e)}}finally{appState=oldState;matchStarted=oldStarted;SUPPRESS_RENDER=oldSuppress;}
+  };
   window.GL_PVP_V231_FULL_CARD_EFFECT_QA_SELF_TEST=simulateV230FullCardEffectCodingAudit;
 
   window.GL_PVP_V220_GAMEPLAY_UI_QA_SELF_TEST=simulateV220GameplayUiAudit;
