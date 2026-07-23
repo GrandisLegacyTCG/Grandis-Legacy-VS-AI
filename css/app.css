@@ -4652,3 +4652,10 @@ body.deck-setup-active{
   }
 }
 
+
+
+/* Grandis Legacy VS AI v5.37 — Deck Builder entry inside Deck Setup */
+.deck-builder-setup-note{margin-top:12px;border:1px solid rgba(244,211,94,.32);background:rgba(22,41,76,.62);color:#dce8f6;border-radius:10px;padding:9px 11px;font-size:12px;line-height:1.45}
+.deck-setup-actions .deck-builder-launch{background:#16294c!important;border-color:#ddb84f!important;color:#fff0aa!important;font-weight:900;min-width:160px}
+.deck-setup-actions .deck-builder-launch:hover{filter:brightness(1.12)}
+@media(max-width:700px){.deck-setup-actions{display:grid!important;grid-template-columns:1fr!important}.deck-setup-actions button{width:100%!important}.deck-setup-actions .deck-builder-launch,.deck-setup-actions .start-match-primary{min-width:0!important}}

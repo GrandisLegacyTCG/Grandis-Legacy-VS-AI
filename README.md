@@ -17,3 +17,6 @@ Static browser build prepared for **GitHub Pages**. No Node.js server, database,
 5. Open the published Pages URL after the deployment finishes.
 
 All application paths are relative, `.nojekyll` is included, and the game runs entirely in the player browser.
+
+## v5.37 note
+Holy Blast and Arrow Barrage regression fixtures were corrected and the full test suite now passes. Visible deck controls use **Import Deck** / **Export Deck** without JSON terminology. PvP was not changed.

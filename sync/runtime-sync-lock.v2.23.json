@@ -11,14 +11,14 @@
   "application_runtime_sync": "v2.23",
   "shared_runtime_manual": "v1.30",
   "ui_lock": "v2.26",
-  "local_ai": "v5.35",
+  "local_ai": "v5.37",
   "pvp_railway": "v2.5.15",
   "deck_builder": "v1.14",
-  "shared_gameplay_sha256": "23ef57f3e9cce1d0dea391d6d355949c9ef90bd2b5678fdc40303f2e52e917db",
+  "shared_gameplay_sha256": "f44ee6de8ab50077f3acea906bb5909f0812c68098cb3c276ae8dbbcc3c72261",
   "runtime_authority_sha256": "22a0dbea64f596c279242a66c386ae4122ca93f3ca102d87d5c96736205934a7",
   "runtime_source_browser_sha256": "22a0dbea64f596c279242a66c386ae4122ca93f3ca102d87d5c96736205934a7",
   "static_data_sha256": "9e40c756718f05a119bfeae53c552cd2948559d7a96f3c9d165494096526fe8d",
-  "shared_ui_css_sha256": "f09347000312759fb53efe2d80eb698a0d42a7c40272367a6f45e5b6c387ea73",
+  "shared_ui_css_sha256": "6d78a163ae4af822652ef75574baff428fbd61c526d358688f091253f1ed10b5",
   "locks": {
     "arcane_duelist_lineage_only": true,
     "legality_before_effect_row_fallback": true,
@@ -44,6 +44,21 @@
       "ring_of_grace_targets_heal_recipient": true,
       "same_turn_payoff_required_for_expiring_offensive_attachments": true,
       "planned_follow_up_revalidated_by_runtime": true,
+      "pvp_unchanged": "v2.5.15"
+    },
+    "vs_ai_v5_36": {
+      "global_hero_printed_row_fallback_audit": true,
+      "live_response_option_refresh": true,
+      "card_played_target_snapshot": true,
+      "automatic_player_draw_phase_entry": true,
+      "draw_phase_requires_next_phase_to_deploy": true,
+      "deck_builder_route": "deck-builder/index.html",
+      "pvp_unchanged": "v2.5.15"
+    },
+    "vs_ai_v5_37": {
+      "holy_blast_area_legacy_regression_fixture_corrected": true,
+      "arrow_barrage_raw_and_dragon_scale_coverage": true,
+      "visible_deck_import_json_wording_removed": true,
       "pvp_unchanged": "v2.5.15"
     }
   },

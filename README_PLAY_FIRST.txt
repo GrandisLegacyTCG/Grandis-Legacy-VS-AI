@@ -1,4 +1,1 @@
-Grandis Legacy VS AI v5.35
-
-Open index.html locally, or publish the repository root with GitHub Pages.
-No Northflank service is required for this VS AI build.
+Open index.html through GitHub Pages. Use Deck Setup to select/import a deck or open the bundled Deck Builder.
