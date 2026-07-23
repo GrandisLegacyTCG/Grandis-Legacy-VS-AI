@@ -18,5 +18,8 @@ Static browser build prepared for **GitHub Pages**. No Node.js server, database,
 
 All application paths are relative, `.nojekyll` is included, and the game runs entirely in the player browser.
 
-## v5.37 note
-Holy Blast and Arrow Barrage regression fixtures were corrected and the full test suite now passes. Visible deck controls use **Import Deck** / **Export Deck** without JSON terminology. PvP was not changed.
+## v5.38 note
+- Desktop Deck Setup removes repeated labels, uses an 80/20 deck-picker/import row, shows full Hero artwork, and moves a highlighted Deck Builder button to the lower-left.
+- Mobile Deck Setup uses a compact `DECK SETUP / NOT STARTED` header, normal scrolling, small Import Deck controls, and hides Deck Builder.
+- Mobile battlefield keeps Card Played visible while reducing unused vertical space and keeping phase actions reachable.
+- Gameplay/runtime behavior is unchanged from v5.37.

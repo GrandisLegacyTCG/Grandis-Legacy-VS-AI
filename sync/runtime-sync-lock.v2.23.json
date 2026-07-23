@@ -11,14 +11,14 @@
   "application_runtime_sync": "v2.23",
   "shared_runtime_manual": "v1.30",
   "ui_lock": "v2.26",
-  "local_ai": "v5.37",
+  "local_ai": "v5.38",
   "pvp_railway": "v2.5.15",
   "deck_builder": "v1.14",
-  "shared_gameplay_sha256": "f44ee6de8ab50077f3acea906bb5909f0812c68098cb3c276ae8dbbcc3c72261",
+  "shared_gameplay_sha256": "ce0eed5fcc5bbbb03c541d09867f6e9967c1be9170d16b6fb5d7c7190f6d37c0",
   "runtime_authority_sha256": "22a0dbea64f596c279242a66c386ae4122ca93f3ca102d87d5c96736205934a7",
   "runtime_source_browser_sha256": "22a0dbea64f596c279242a66c386ae4122ca93f3ca102d87d5c96736205934a7",
   "static_data_sha256": "9e40c756718f05a119bfeae53c552cd2948559d7a96f3c9d165494096526fe8d",
-  "shared_ui_css_sha256": "6d78a163ae4af822652ef75574baff428fbd61c526d358688f091253f1ed10b5",
+  "shared_ui_css_sha256": "8e77ad1b14adcdf2b42c017b8a9a8e7830952f2acd21a37de189ce8a3302b435",
   "locks": {
     "arcane_duelist_lineage_only": true,
     "legality_before_effect_row_fallback": true,
@@ -59,6 +59,17 @@
       "holy_blast_area_legacy_regression_fixture_corrected": true,
       "arrow_barrage_raw_and_dragon_scale_coverage": true,
       "visible_deck_import_json_wording_removed": true,
+      "pvp_unchanged": "v2.5.15"
+    },
+    "vs_ai_v5_38": {
+      "desktop_deck_picker_import_ratio": "80/20",
+      "desktop_full_hero_preview": true,
+      "desktop_deck_builder_lower_left_highlighted": true,
+      "mobile_setup_compact_header": true,
+      "mobile_setup_scrollable": true,
+      "mobile_deck_builder_hidden": true,
+      "mobile_card_played_persistent_compact": true,
+      "mobile_phase_actions_sticky_compact": true,
       "pvp_unchanged": "v2.5.15"
     }
   },

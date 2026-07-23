@@ -30,7 +30,7 @@ assert.ok(/data-zone-type="Main Deck"/.test(css)&&/data-zone-type="Legacy Deck"/
 assert.ok(/Printed artwork is the only visible card frame[\s\S]*?hero-card\.hero-main[\s\S]*?border:0!important/.test(css),'card wrappers remain borderless');
 assert.ok(fs.existsSync(path.join(root,'assets/audio/freesound_community-coin-flip-37787.mp3')),'coin audio');
 assert.ok(fs.existsSync(path.join(root,'runtime-source/runtime/core/reducer.js')),'editable runtime source');
-const lock=json('sync/runtime-sync-lock.v2.23.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.application_runtime_sync,'v2.23');assert.strictEqual(lock.local_ai,'v5.37');
+const lock=json('sync/runtime-sync-lock.v2.23.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.application_runtime_sync,'v2.23');assert.strictEqual(lock.local_ai,'v5.38');
 for(const [rel,key] of [['js/app.bundle.js','shared_gameplay_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['runtime-source/runtime/browser/runtime-authority.browser.js','runtime_source_browser_sha256'],['js/static-data.js','static_data_sha256'],['css/app.css','shared_ui_css_sha256']])assert.strictEqual(sha(rel),lock[key],rel+' sync hash');
 for(const file of fs.readdirSync(path.join(root,'starter_deck_examples')).filter(x=>x.endsWith('.json'))){const text=read('starter_deck_examples/'+file);assert.ok(!/One Source Authority v1\.2|Runtime Data v0\.12\.2|ffe0192e/.test(text),'stale starter source metadata '+file)}
 assert.ok(/hero-card-anchor/.test(app)&&/hero-status-overlay/.test(app)&&/hero-health-overlay/.test(css)&&/game-result-summary/.test(css),'v5.35 inherited Hero/HP/status and result hierarchy');
@@ -43,4 +43,4 @@ assert.ok(/data-zone-type=\"Discard Pile\"/.test(css)&&/data-zone-type=\"Mana Po
 assert.ok(/setProperty\('z-index',String\(GL_MODAL_STACK_SEQUENCE\),'important'\)/.test(app),'important modal stack authority');
 assert.ok(/Mobile resource visual centering — Local AI v5\.30/.test(css)&&/left:50%!important/.test(css)&&/transform:translate\(-50%,-50%\)!important/.test(css),'mobile resource artwork centering lock');
 
-console.log('PASS VS AI v5.37 release audit: One Source v1.4, current runtime/card assets, Casting/response/revive semantics, and UI locks.');
+console.log('PASS VS AI v5.38 release audit: One Source v1.4, current runtime/card assets, Casting/response/revive semantics, and UI locks.');

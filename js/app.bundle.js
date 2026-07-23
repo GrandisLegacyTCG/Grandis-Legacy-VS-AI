@@ -1,17 +1,17 @@
-/* Grandis Legacy shared gameplay application v2.1 — Local AI v5.37.
+/* Grandis Legacy shared gameplay application v2.1 — Local AI v5.38.
    One Source Authority v1.4 + Runtime Foundation v1.73 / Runtime Core v0.41 / Runtime Data v0.12.5.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
   'use strict';
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP Railway v2.5.15 · Shared Gameplay v2.1 · One Source v1.4 · Runtime Data v0.12.5 · Foundation v1.73':'Grandis Legacy VS AI v5.37 · Shared Gameplay Bundle v2.1 · One Source v1.4 · Runtime Data v0.12.5 · Foundation v1.73';
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP Railway v2.5.15 · Shared Gameplay v2.1 · One Source v1.4 · Runtime Data v0.12.5 · Foundation v1.73':'Grandis Legacy VS AI v5.38 · Shared Gameplay Bundle v2.1 · One Source v1.4 · Runtime Data v0.12.5 · Foundation v1.73';
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
   var OPENING_HAND_SIZE=6;
   var RACIAL_TOKEN_CAP=2;
-  var GL_ASSET_REV='gl-vs-ai-5.37-osa-1.4';
+  var GL_ASSET_REV='gl-vs-ai-5.38-osa-1.4';
   var GL_CARD_ZOOM_ID=null;
   var GL_LAST_PLAYER_TURN_BANNER_KEY='', GL_PLAYER_TURN_BANNER_TIMER=null;
   var GL_MODAL_HOVER_GUARD_BOUND=false;
@@ -5285,9 +5285,8 @@ function getActivatedHeroAbilities(state, side, lane){
     var root=$('app');
     root.innerHTML=''+
       '<main class="deck-setup-screen runtime-ui-v14-setup">'+
-        '<header class="deck-setup-top"><div><h1>Deck Setup</h1><p>Select current Starter60 deck packages before creating a match.</p></div><div class="setup-status-pill">Match not started</div></header>'+
+        '<header class="deck-setup-top"><h1>DECK SETUP</h1><div class="setup-status-pill">NOT STARTED</div></header>'+
         '<section class="deck-setup-shell">'+deckSetupHtml()+'</section>'+ 
-        '<footer class="deck-setup-note">Board gameplay is hidden until Start Match validates the selected Player and AI starter decks.</footer>'+ 
       '</main>';
     closeChoice();
     bindDeckSetupModal();
@@ -5405,8 +5404,7 @@ function getActivatedHeroAbilities(state, side, lane){
   function deckSetupHtml(){
     return '<div class="deck-setup-grid">'+deckSetupSide('PLAYER',decks.PLAYER)+deckSetupSide('AI',decks.AI)+'</div>'+
       (setupError?'<div class="setup-error">'+esc(setupError)+'</div>':'')+
-      '<div class="deck-builder-setup-note">Build or edit a deck in Deck Builder, export it, then import the deck file here for Player or AI.</div>'+
-      '<div class="deck-setup-actions"><button id="resetDecks" type="button">Reset Starter Decks</button><button id="openDeckBuilderButton" class="deck-builder-launch" type="button">Open Deck Builder</button><button id="startMatchButton" class="start-match-primary" type="button">Start Match</button></div>';
+      '<div class="deck-setup-actions"><button id="openDeckBuilderButton" class="deck-builder-launch" type="button">Open Deck Builder</button><button id="resetDecks" class="reset-decks-button" type="button">Reset Starter Decks</button><button id="startMatchButton" class="start-match-primary" type="button">Start Match</button></div>';
   }
   function deckOptionHtml(side){
     var current=selectedDeckKey[side];
@@ -5416,10 +5414,9 @@ function getActivatedHeroAbilities(state, side, lane){
   }
   function deckSetupSide(side, deck){
     var validation=validateDeck(deck,side); var d=validation.deck||deck;
-    var countLine='Main '+deckEntriesToIds(d.main_deck||[]).length+' / Legacy '+((d.legacy_deck_expanded||[]).length)+' / Packages '+((d.legacy_deck_package_slots||[]).length);
+    var countLine='Main '+deckEntriesToIds(d.main_deck||[]).length+' · Legacy '+((d.legacy_deck_expanded||[]).length)+' · Packages '+((d.legacy_deck_package_slots||[]).length);
     var sideLabel=side==='PLAYER'?'Player':'AI';
-    var sourceLabel=(selectedDeckKey[side]==='IMPORTED')?'Imported deck':((STARTER_DECK_OPTIONS[selectedDeckKey[side]]&&STARTER_DECK_OPTIONS[selectedDeckKey[side]].file)||'starter_deck_examples');
-    return '<section class="deck-side '+esc(side.toLowerCase())+'-deck-side"><header><div><h3>'+esc(sideLabel)+' Deck</h3><small>'+esc(d.deck_name || sideLabel+' Deck')+'</small></div><span class="deck-pill '+(validation.ok?'ok':'bad')+'">'+(validation.ok?'VALID':'INVALID')+'</span></header><label class="deck-select-label">Deck selector<select data-deck-select="'+esc(side)+'">'+deckOptionHtml(side)+'</select></label><div class="deck-source">'+esc(sourceLabel)+'</div><div class="deck-counts">'+esc(countLine)+'</div><div class="formation-preview clean-hero-preview">'+LANE_ORDER.map(function(lane){ var id=d.default_formation&&d.default_formation[lane]; return '<div class="formation-card"><span>'+lane+'</span><button type="button" data-preview="'+esc(id)+'" aria-label="Preview '+esc(lane)+' hero"><img src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(card(id)))+'"></button></div>'; }).join('')+'</div><div class="legacy-package-list">'+(d.legacy_deck_package_slots||[]).map(function(p){return '<span>'+esc(p.slot)+': '+esc(p.lineage||p.progression||p.legacy||'Legacy package')+'</span>';}).join('')+'</div><button class="import-button" type="button" data-import-side="'+esc(side)+'">Import Deck</button><input class="deck-import-input" id="import'+esc(side)+'" type="file" accept="application/json,.json">'+(!validation.ok?'<div class="setup-inline-error">'+esc(validation.errors[0])+'</div>':'')+'</section>';
+    return '<section class="deck-side '+esc(side.toLowerCase())+'-deck-side"><header><h3>'+esc(sideLabel)+' Deck</h3><span class="deck-pill '+(validation.ok?'ok':'bad')+'">'+(validation.ok?'VALID':'INVALID')+'</span></header><div class="deck-picker-row"><select aria-label="'+esc(sideLabel)+' deck selector" data-deck-select="'+esc(side)+'">'+deckOptionHtml(side)+'</select><button class="import-button" type="button" data-import-side="'+esc(side)+'">Import Deck</button></div><input class="deck-import-input" id="import'+esc(side)+'" type="file" accept="application/json,.json"><div class="deck-counts">'+esc(countLine)+'</div><div class="formation-preview clean-hero-preview">'+LANE_ORDER.map(function(lane){ var id=d.default_formation&&d.default_formation[lane]; return '<div class="formation-card"><span>'+lane+'</span><button type="button" data-preview="'+esc(id)+'" aria-label="Preview '+esc(lane)+' hero"><img src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(card(id)))+'"></button></div>'; }).join('')+'</div>'+(!validation.ok?'<div class="setup-inline-error">'+esc(validation.errors[0])+'</div>':'')+'</section>';
   }
   function refreshDeckSetupView(){
     if(!matchStarted){ render(); return; }
@@ -8959,7 +8956,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
       s.pending={type:'optional_magical_surge',side:'PLAYER',decision_side:'PLAYER',card_id:'S1-MAG-001',hand_index:0,source_side:'PLAYER',source_lane:'LEFT',target_side:'AI',target_lane:'LEFT'};s.playerHeroes.LEFT.card_id='S1-MAG-H005';renderMagicalSurgeChoice();
       var surgeHtml=$('choiceBody').innerHTML||'';if(surgeHtml.indexOf('compact-decision-layout')<0||surgeHtml.indexOf('choice-instruction')>=0||surgeHtml.indexOf('S1-MAG-H005')<0)return{ok:false,reason:'Mana Surge popup is not compact Hero-card-first',html:surgeHtml};
       if(V58_STATUS_ICON_ASSETS.Poison!=='assets/status-icons/Icon-Poison.png')return{ok:false,reason:'Official status icon assets not active',assets:V58_STATUS_ICON_ASSETS};
-      return{ok:true,version:'v5.37',playerCardPlayedDetailed:true,tributeInCardPlayed:true,interceptOwnership:true,holyBlastLegacyResume:true,compactQuickReload:true,compactManaSurge:true,officialStatusIcons:true};
+      return{ok:true,version:'v5.38',playerCardPlayedDetailed:true,tributeInCardPlayed:true,interceptOwnership:true,holyBlastLegacyResume:true,compactQuickReload:true,compactManaSurge:true,officialStatusIcons:true};
     }catch(e){return{ok:false,error:String(e&&e.stack||e)};}
     finally{appState=oldApp;matchStarted=oldMatch;SUPPRESS_RENDER=oldSuppress;STARTUP_SHUFFLE_ENABLED=oldShuffle;closeChoice();closeResponseWindowUI();}
   }
@@ -9403,7 +9400,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
       var snap=heroEventSnapshot(s,'PLAYER','LEFT'),evt={target_side:'PLAYER',target_lane:'LEFT',target_snapshot:clone(snap)};s.playerHeroes.LEFT.card_id='S1-ARC-L002';if(actionTargetLine(evt).indexOf(snap.name)<0||actionTargetLine(evt).indexOf('Falconer')>=0)return{ok:false,reason:'Card Played target snapshot changed after Legacy replacement',line:actionTargetLine(evt),snapshot:snap};
       var d=buildInitialMatchState();appState=d;d.preGame=null;d.turn='AI';d.phase='End';d.playerHeroes.LEFT.exhausted=true;var beforeHand=d.playerHand.length,beforeMana=d.mana;beginPlayerTurnDrawPhase(d,'QA AI end to Player Draw');if(d.turn!=='PLAYER'||d.phase!=='Draw'||d.drawPhaseResolvedFor!=='PLAYER'||d.playerHand.length!==beforeHand+1||d.mana!==Math.min(12,beforeMana+d.manaRegen)||d.playerHeroes.LEFT.exhausted)return{ok:false,reason:'Automatic Player Draw Phase transition mismatch',state:{turn:d.turn,phase:d.phase,drawPhaseResolvedFor:d.drawPhaseResolvedFor,hand:d.playerHand.length,beforeHand:beforeHand,mana:d.mana,beforeMana:beforeMana,exhausted:d.playerHeroes.LEFT.exhausted}};
       d.pending=null;d.phase='Draw';finishDrawReplacementChoice(d,'PLAYER');if(d.phase!=='Draw')return{ok:false,reason:'Draw replacement skipped directly to Deploy'};
-      return{ok:true,version:'v5.37',heroCards:heroCards.length,responseCards:responseCards.length,sourceCards:sourceCards.length,auditedPairs:auditedPairs,fallbackPairs:fallbackPairs,responseFallbackPairs:responseFallbackPairs,backStepManaAbsorption:true,responseRefresh:true,targetSnapshot:true,automaticDrawEntry:true,drawWaitsForNextPhase:true};
+      return{ok:true,version:'v5.38',heroCards:heroCards.length,responseCards:responseCards.length,sourceCards:sourceCards.length,auditedPairs:auditedPairs,fallbackPairs:fallbackPairs,responseFallbackPairs:responseFallbackPairs,backStepManaAbsorption:true,responseRefresh:true,targetSnapshot:true,automaticDrawEntry:true,drawWaitsForNextPhase:true};
     }catch(e){return{ok:false,error:String(e&&e.stack||e)}}finally{appState=oldApp;matchStarted=oldMatch;SUPPRESS_RENDER=oldSuppress;}
   }
   window.GL_V536_FALLBACK_SNAPSHOT_DRAW_QA_SELF_TEST=simulateV536FallbackSnapshotDrawAudit;

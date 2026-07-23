@@ -1,0 +1,5 @@
+Summary:
+Update VS AI to v5.38
+
+Description:
+Polish responsive Deck Setup and mobile battlefield UI. Use an 80/20 desktop deck picker and Import Deck layout, show full Hero card artwork, move the highlighted Deck Builder action to the lower-left, enable normal mobile setup scrolling, hide Deck Builder on mobile, and keep Card Played visible in a compact mobile battlefield. Gameplay and PvP are unchanged.

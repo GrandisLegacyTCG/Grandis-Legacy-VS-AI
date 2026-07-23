@@ -4659,3 +4659,340 @@ body.deck-setup-active{
 .deck-setup-actions .deck-builder-launch{background:#16294c!important;border-color:#ddb84f!important;color:#fff0aa!important;font-weight:900;min-width:160px}
 .deck-setup-actions .deck-builder-launch:hover{filter:brightness(1.12)}
 @media(max-width:700px){.deck-setup-actions{display:grid!important;grid-template-columns:1fr!important}.deck-setup-actions button{width:100%!important}.deck-setup-actions .deck-builder-launch,.deck-setup-actions .start-match-primary{min-width:0!important}}
+
+
+/* ========================================================================== */
+/* Grandis Legacy VS AI v5.38 — responsive Deck Setup and mobile battlefield. */
+/* UI-only: gameplay/runtime authority is unchanged.                           */
+/* ========================================================================== */
+
+/* Desktop Deck Setup: remove repeated labels, use an 80/20 picker/import row,
+   preserve full Hero artwork, and separate the Deck Builder action. */
+.deck-setup-screen.runtime-ui-v14-setup{
+  grid-template-rows:auto minmax(0,1fr)!important;
+  gap:8px!important;
+  padding:8px 10px!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .deck-setup-top{
+  min-height:48px!important;
+  padding:7px 12px!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .deck-setup-top h1{
+  font-size:22px!important;
+  letter-spacing:.01em!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .setup-status-pill{
+  padding:6px 11px!important;
+  font-size:11px!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .deck-setup-shell{
+  grid-template-rows:minmax(0,1fr) auto!important;
+  padding:10px 12px!important;
+  overflow:hidden!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .deck-setup-grid{
+  gap:12px!important;
+  overflow:hidden!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .deck-side{
+  grid-template-rows:auto auto auto minmax(0,1fr) auto!important;
+  gap:8px!important;
+  padding:12px!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .deck-side header{
+  min-height:28px!important;
+  align-items:center!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .deck-side h3{
+  font-size:18px!important;
+}
+.deck-picker-row{
+  display:grid!important;
+  grid-template-columns:minmax(0,4fr) minmax(108px,1fr)!important;
+  gap:10px!important;
+  min-width:0!important;
+}
+.deck-picker-row select,
+.deck-picker-row .import-button{
+  width:100%!important;
+  height:42px!important;
+  min-width:0!important;
+  margin:0!important;
+  border-radius:10px!important;
+}
+.deck-picker-row select{
+  border:1px solid #3a506b!important;
+  background:#151f32!important;
+  color:#fff!important;
+  padding:0 12px!important;
+  font-size:15px!important;
+  text-overflow:ellipsis!important;
+}
+.deck-picker-row .import-button{
+  padding:0 12px!important;
+  white-space:nowrap!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .deck-counts{
+  font-size:11px!important;
+  padding:5px 9px!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .formation-preview{
+  min-height:0!important;
+  overflow:visible!important;
+  align-items:stretch!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .formation-card{
+  display:grid!important;
+  grid-template-rows:auto minmax(0,1fr)!important;
+  min-height:0!important;
+  padding:7px!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .formation-card button{
+  min-height:0!important;
+  display:grid!important;
+  place-items:center!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .formation-card img{
+  width:auto!important;
+  max-width:100%!important;
+  height:min(34vh,300px)!important;
+  max-height:100%!important;
+  aspect-ratio:63/88!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  margin:0 auto!important;
+  border:0!important;
+  background:transparent!important;
+}
+.deck-setup-actions{
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:10px!important;
+}
+.deck-setup-actions .deck-builder-launch{
+  margin-right:auto!important;
+  min-width:190px!important;
+  background:linear-gradient(180deg,#244986,#16294c)!important;
+  border-color:#f0cb62!important;
+  color:#fff3b3!important;
+  box-shadow:0 0 0 1px rgba(240,203,98,.18),0 0 18px rgba(54,112,208,.34)!important;
+  font-weight:950!important;
+}
+.deck-setup-actions .deck-builder-launch:hover{
+  filter:brightness(1.15)!important;
+  box-shadow:0 0 0 1px rgba(240,203,98,.32),0 0 24px rgba(54,112,208,.48)!important;
+}
+.deck-setup-actions .reset-decks-button{
+  background:#111a26!important;
+  border-color:#394a5e!important;
+  color:#d2dce8!important;
+}
+.deck-setup-actions .start-match-primary{
+  min-width:180px!important;
+}
+.deck-builder-setup-note,.deck-setup-note,.deck-source,.legacy-package-list,.deck-select-label{display:none!important}
+
+/* Mobile Deck Setup lock: compact one-line header, normal document scrolling,
+   small Import buttons, and no Deck Builder UI. */
+@media(max-width:700px){
+  html,body{min-height:100%!important;overflow-y:auto!important}
+  body.deck-setup-active{overflow-x:hidden!important;overflow-y:auto!important}
+  .deck-setup-screen.runtime-ui-v14-setup{
+    position:relative!important;
+    inset:auto!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:100dvh!important;
+    display:block!important;
+    padding:6px!important;
+    overflow:visible!important;
+  }
+  .deck-setup-screen.runtime-ui-v14-setup .deck-setup-top{
+    min-height:44px!important;
+    flex-direction:row!important;
+    align-items:center!important;
+    padding:7px 10px!important;
+    margin:0 0 6px!important;
+  }
+  .deck-setup-screen.runtime-ui-v14-setup .deck-setup-top h1{
+    font-size:18px!important;
+    white-space:nowrap!important;
+  }
+  .deck-setup-screen.runtime-ui-v14-setup .setup-status-pill{
+    margin-left:auto!important;
+    padding:5px 8px!important;
+    font-size:9px!important;
+  }
+  .deck-setup-screen.runtime-ui-v14-setup .deck-setup-shell{
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    display:block!important;
+    padding:8px!important;
+    overflow:visible!important;
+  }
+  .deck-setup-screen.runtime-ui-v14-setup .deck-setup-grid{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:9px!important;
+    overflow:visible!important;
+  }
+  .deck-setup-screen.runtime-ui-v14-setup .deck-side{
+    display:grid!important;
+    grid-template-rows:auto auto auto auto auto!important;
+    gap:7px!important;
+    overflow:visible!important;
+    padding:10px!important;
+  }
+  .deck-setup-screen.runtime-ui-v14-setup .deck-side h3{font-size:17px!important}
+  .deck-picker-row{
+    grid-template-columns:minmax(0,1fr) 94px!important;
+    gap:7px!important;
+  }
+  .deck-picker-row select,
+  .deck-picker-row .import-button{
+    height:38px!important;
+    font-size:12px!important;
+  }
+  .deck-picker-row .import-button{padding:0 7px!important}
+  .deck-setup-screen.runtime-ui-v14-setup .deck-counts{font-size:10px!important}
+  .deck-setup-screen.runtime-ui-v14-setup .formation-preview{gap:6px!important}
+  .deck-setup-screen.runtime-ui-v14-setup .formation-card{padding:5px!important}
+  .deck-setup-screen.runtime-ui-v14-setup .formation-card span{font-size:9px!important;margin-bottom:3px!important}
+  .deck-setup-screen.runtime-ui-v14-setup .formation-card img{
+    width:100%!important;
+    height:auto!important;
+    max-height:155px!important;
+    aspect-ratio:63/88!important;
+  }
+  .deck-setup-actions{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    gap:7px!important;
+    position:sticky!important;
+    bottom:0!important;
+    z-index:20!important;
+    margin:9px -8px -8px!important;
+    padding:9px 8px calc(9px + env(safe-area-inset-bottom))!important;
+    background:rgba(13,22,36,.96)!important;
+    border-top:1px solid #31445d!important;
+    backdrop-filter:blur(8px)!important;
+  }
+  .deck-setup-actions .deck-builder-launch{display:none!important}
+  .deck-setup-actions button{width:100%!important;height:40px!important;min-width:0!important;font-size:11px!important}
+  .deck-setup-actions .start-match-primary{grid-column:2!important}
+}
+
+/* Mobile battlefield lock: Card Played remains permanently visible and the
+   battlefield is compact enough to track both teams without desktop-scale gaps. */
+@media(max-width:760px){
+  .v96-app .gl-app{gap:3px!important;padding:2px!important}
+  .v96-app .turn-panel{
+    min-height:58px!important;
+    grid-template-columns:72px minmax(0,1fr)!important;
+    gap:5px!important;
+    padding:4px!important;
+  }
+  .v96-app .mobile-match-menu-button{min-height:50px!important;font-size:8px!important}
+  .v96-app .turn-summary{padding:1px 3px!important}
+  .v96-app .turn-summary strong{font-size:14px!important}
+  .v96-app .turn-summary span{font-size:8px!important}
+  .v96-app .turn-summary .turn-status{font-size:7px!important;line-height:1.2!important}
+
+  .v96-app .card-played-panel{
+    min-height:66px!important;
+    max-height:82px!important;
+    grid-template-rows:17px minmax(0,1fr) 17px!important;
+    gap:2px!important;
+    padding:4px!important;
+    position:relative!important;
+    z-index:30!important;
+  }
+  .v96-app .card-played-panel header strong{font-size:10px!important}
+  .v96-app .card-played-panel header span{font-size:7px!important}
+  .v96-app .card-played-panel .full-width{min-height:17px!important;height:17px!important;font-size:7px!important;padding:0!important}
+  .v96-app .played-grid{
+    display:flex!important;
+    align-items:center!important;
+    gap:4px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    min-height:0!important;
+  }
+  .v96-app .combined-played-card{
+    width:38px!important;
+    min-width:38px!important;
+    height:38px!important;
+    flex:0 0 38px!important;
+    padding:1px!important;
+  }
+  .v96-app .combined-played-card img{max-width:25px!important;max-height:34px!important;object-fit:contain!important}
+  .v96-app .combined-played-card em{font-size:5.5px!important}
+
+  .v96-app .main-stage{
+    grid-template-rows:24px 48px auto 6px auto 108px 26px!important;
+    gap:3px!important;
+  }
+  .v96-app .player-name{
+    height:24px!important;
+    padding:2px 8px!important;
+    font-size:10px!important;
+  }
+  .v96-app .player-name span{font-size:7px!important}
+  .v96-app .hand-area{grid-template-columns:45px minmax(0,1fr) 45px!important;padding:0 2px!important}
+  .v96-app .strip.v94-strip .back{width:27px!important;height:40px!important;max-height:40px!important;flex-basis:27px!important}
+  .v96-app .coin{width:20px!important;height:20px!important;min-width:20px!important;min-height:20px!important}
+
+  .v96-app .field--opponent{grid-template-rows:54px 210px!important}
+  .v96-app .field--player{grid-template-rows:210px 54px!important}
+  .v96-app .field .hero-row{
+    height:210px!important;
+    min-height:210px!important;
+    padding:3px!important;
+    gap:3px!important;
+  }
+  .v96-app .zone{height:54px!important;min-height:54px!important;padding:2px 1px!important}
+  .v96-app .zone>span{font-size:6.5px!important}
+  .v96-app .zone em{font-size:5.5px!important}
+  .v96-app .zoneCard{height:37px!important;min-height:37px!important;max-height:37px!important}
+  .v96-app .zoneCard img{max-height:37px!important;max-width:38px!important}
+  .v96-app .zone[data-zone-type="Main Deck"] .zoneCard>b,
+  .v96-app .zone[data-zone-type="Legacy Deck"] .zoneCard>b,
+  .v96-app .zone[data-zone-type="Discard Pile"] .zoneCard>b{font-size:9px!important}
+  .v96-app .zone[data-zone-type="Mana Pool"] .zoneCard>b{font-size:11px!important}
+
+  .v96-app .hero-row--opponent .hero-lane:not(.legacy-slot){grid-template-rows:29px minmax(0,1fr)!important}
+  .v96-app .hero-row--player .hero-lane:not(.legacy-slot){grid-template-rows:minmax(0,1fr) 29px!important}
+  .v96-app .attachment-row{gap:2px!important}
+  .v96-app .attachment-row .slot{font-size:5px!important}
+  .v96-app .hero-card.hero-main{width:clamp(82px,25vw,102px)!important;max-height:170px!important}
+  .v96-app .hero-health-row.hero-health-overlay{transform:scale(.88)!important}
+  .v96-app .hero-status-overlay{transform:scale(.84)!important;transform-origin:top left!important}
+  .v96-app .heroActions{max-width:82px!important}
+  .v96-app .heroActions .actionBtn{max-width:82px!important;font-size:5.5px!important}
+  .v96-app .field-divider{height:6px!important}
+
+  .v96-app .hand-area--player .handCards{height:102px!important;padding:5px 14px 2px!important}
+  .v96-app .hand-card{width:61px!important;min-width:61px!important;max-width:61px!important;height:96px!important;flex-basis:61px!important;grid-template-rows:minmax(0,79px) 14px!important}
+  .v96-app .hand-card .hand-art,.v96-app .hand-card .hand-art img{height:79px!important}
+  .v96-app .player-footer-bar{height:26px!important}
+
+  .v96-app .phase-panel{
+    min-height:116px!important;
+    grid-template-rows:18px 30px 58px!important;
+    gap:4px!important;
+    padding:4px!important;
+    position:sticky!important;
+    bottom:0!important;
+    z-index:100!important;
+    background:rgba(7,17,27,.97)!important;
+    box-shadow:0 -8px 20px rgba(0,0,0,.45)!important;
+  }
+  .v96-app .phase-panel header strong{font-size:9px!important}
+  .v96-app .phase-panel header span{font-size:7px!important}
+  .v96-app .phase-list{gap:3px!important}
+  .v96-app .phase-list button{min-height:30px!important;height:30px!important;font-size:5.8px!important;padding:2px!important}
+  .v96-app .phase-actions{grid-template-rows:24px 30px!important;gap:3px!important}
+  .v96-app .phase-actions .reposition,.v96-app .phase-actions .cancel-action{height:24px!important;min-height:24px!important;font-size:6.5px!important}
+  .v96-app .phase-actions .next-phase{height:30px!important;min-height:30px!important;font-size:8px!important}
+}
