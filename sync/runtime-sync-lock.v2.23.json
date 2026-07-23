@@ -1,0 +1,51 @@
+{
+  "schema_version": "2.23",
+  "canonical_registry_hash": "5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab",
+  "one_source_authority": "v1.4",
+  "one_source_patch": "v1.4.1",
+  "runtime_foundation": "v1.73",
+  "runtime_core": "v0.41",
+  "runtime_data": "v0.12.5",
+  "effect_recipe": "v0.11.5",
+  "effect_checkpoint": "v0.11.4",
+  "application_runtime_sync": "v2.23",
+  "shared_runtime_manual": "v1.30",
+  "ui_lock": "v2.26",
+  "local_ai": "v5.35",
+  "pvp_railway": "v2.5.15",
+  "deck_builder": "v1.14",
+  "shared_gameplay_sha256": "23ef57f3e9cce1d0dea391d6d355949c9ef90bd2b5678fdc40303f2e52e917db",
+  "runtime_authority_sha256": "22a0dbea64f596c279242a66c386ae4122ca93f3ca102d87d5c96736205934a7",
+  "runtime_source_browser_sha256": "22a0dbea64f596c279242a66c386ae4122ca93f3ca102d87d5c96736205934a7",
+  "static_data_sha256": "9e40c756718f05a119bfeae53c552cd2948559d7a96f3c9d165494096526fe8d",
+  "shared_ui_css_sha256": "f09347000312759fb53efe2d80eb698a0d42a7c40272367a6f45e5b6c387ea73",
+  "locks": {
+    "arcane_duelist_lineage_only": true,
+    "legality_before_effect_row_fallback": true,
+    "card_played_audit_sections": true,
+    "hp_offset_global": {
+      "x_px": -4,
+      "y_px_from_v5_29": 5
+    },
+    "pvp_playtest_badge": "lobby_only",
+    "visible_reset_match_controls": false,
+    "coin_animation_alternates_both_faces": true,
+    "coin_final_face_authoritative": true,
+    "deck_setup_full_width": true,
+    "local_turn_banner": "local_player_draw_phase_only",
+    "opponent_turn_banner": false,
+    "legacy_attachment_slot_parity": {
+      "desktop_attachment_height_px": 35,
+      "mobile_attachment_height_px": 34,
+      "legacy_follows_hero": true,
+      "class_specific_offsets": false
+    },
+    "local_ai_tactical_planner_v5_35": {
+      "ring_of_grace_targets_heal_recipient": true,
+      "same_turn_payoff_required_for_expiring_offensive_attachments": true,
+      "planned_follow_up_revalidated_by_runtime": true,
+      "pvp_unchanged": "v2.5.15"
+    }
+  },
+  "version": "v2.23"
+}

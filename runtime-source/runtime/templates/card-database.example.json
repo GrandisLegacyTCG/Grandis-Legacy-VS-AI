@@ -1,0 +1,74 @@
+{
+  "database_version": "example-pre-db-v0.1",
+  "cards": [
+    {
+      "card_id": "EX-ITM-001",
+      "card_name": "Example Potion",
+      "card_type": "Item",
+      "class_access": [
+        "All Classes"
+      ],
+      "rank_access": [
+        "All Ranks"
+      ],
+      "mana_cost": null,
+      "timing": [
+        "Deploy"
+      ],
+      "source_required": false,
+      "target_rule": {
+        "mode": "selected",
+        "side": "ally",
+        "type": "Hero",
+        "count": 1
+      },
+      "effect_recipe": [
+        {
+          "effect": "heal",
+          "amount": 30
+        }
+      ],
+      "zone_after_resolve": "Discard",
+      "assets": {
+        "full": "cards/full/EX-ITM-001.webp",
+        "thumb": "cards/thumbs/EX-ITM-001.webp"
+      }
+    },
+    {
+      "card_id": "EX-ARC-001",
+      "card_name": "Example Shot",
+      "card_type": "Skill",
+      "class_access": [
+        "Archer"
+      ],
+      "rank_access": [
+        "Rank I"
+      ],
+      "mana_cost": 2,
+      "timing": [
+        "Battle"
+      ],
+      "attack_layer": "None",
+      "damage_profile": "Physical",
+      "source_required": true,
+      "target_rule": {
+        "mode": "selected",
+        "side": "opponent",
+        "type": "Hero",
+        "count": 1
+      },
+      "response_window": true,
+      "effect_recipe": [
+        {
+          "effect": "deal_damage",
+          "amount": 20
+        }
+      ],
+      "zone_after_resolve": "Discard",
+      "assets": {
+        "full": "cards/full/EX-ARC-001.webp",
+        "thumb": "cards/thumbs/EX-ARC-001.webp"
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Grandis Legacy Card Schema Template",
+  "type": "object",
+  "required": ["id", "name", "cardType"],
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "cardType": { "enum": ["Hero", "Legacy", "Item", "Event", "Skill"] },
+    "classAccess": { "type": "array", "items": { "type": "string" } },
+    "rankAccess": { "type": "array", "items": { "type": "string" } },
+    "manaCost": { "type": ["number", "null"] },
+    "timing": { "type": "array", "items": { "enum": ["Draw", "Deploy", "Battle", "Reform", "End", "Response"] } },
+    "sourceRequired": { "type": "boolean" },
+    "targetRequired": { "type": "boolean" },
+    "attackLayer": { "enum": ["None", "Area Attack", "Range Attack"] },
+    "damageProfile": { "enum": ["None", "Physical", "Magical"] },
+    "defMechanic": { "enum": ["Block", "Reduce Damage", "Dodge", "Negate", "Redirect", "Cannot Take Any Damage (Immunity)", null] },
+    "attachmentState": { "enum": ["None", "Attached Item", "Consumable Modifier", "Ongoing Effect", "Casting", "Reduce Damage", "Delayed Effect"] },
+    "effectRecipe": { "type": "array", "items": { "type": "object" } },
+    "secondEffect": { "type": ["object", "null"] },
+    "zoneAfterResolve": { "enum": ["Discard", "Attachment Slot", "Legacy Slot", "Field", "Removed", "Pending", null] }
+  }
+}

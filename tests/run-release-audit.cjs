@@ -1,0 +1,46 @@
+'use strict';
+const fs=require('fs');
+const path=require('path');
+const assert=require('assert');
+const crypto=require('crypto');
+const root=path.resolve(__dirname,'..');
+const H='5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab';
+const read=rel=>fs.readFileSync(path.join(root,rel),'utf8');
+const json=rel=>JSON.parse(read(rel));
+const sha=rel=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,rel))).digest('hex');
+const data=json('data/season1/cards.runtime.v0.12.5.json');
+const recipes=json('data/season1/effect-recipes.runtime.v0.11.5.json');
+const legality=json('data/season1/legality-map.runtime.v0.11.4.json');
+const preview=json('data/season1/card-preview.generated.v1.4.0.json');
+for(const doc of [data,recipes,legality,preview]){assert.strictEqual(doc.canonical_registry_hash,H);assert.strictEqual(doc.count,198)}
+const app=read('js/app.bundle.js'),css=read('css/app.css'),stat=read('js/static-data.js'),runtime=read('js/runtime-authority.js'),runtimeSource=read('runtime-source/runtime/browser/runtime-authority.browser.js'),runtimeReducer=read('runtime-source/runtime/core/reducer.js');
+assert.strictEqual(runtime,runtimeSource,'browser runtime must be generated from packaged editable runtime source');
+assert.ok(/One Source Authority v1\.4/.test(stat),'static source version');
+assert.ok(stat.includes(H),'static source hash');
+assert.ok(/runtime_data":"v0\.12\.5/.test(stat)&&/effect_recipe":"v0\.11\.5/.test(stat)&&/runtime_foundation":"v1\.73/.test(stat)&&/runtime_core":"v0\.41/.test(stat),'source stack versions');
+assert.ok(!/GL_PRINTED_PREVIEW_OVERRIDES/.test(app),'no preview wording override');
+const retired=/runtime_v\d+_lock|legacy_runtime_lock|attachment_runtime_lock|source_card_destination_lock|defense_response_exhaust_lock|runtime_hit_definition_lock|LEGACY_FULL_RUNTIME_LOCK|cards\.runtime\.v0\.11\.17|effect-recipes\.runtime\.v0\.10\.12|ffe0192ed4c4bdf56f31098dada2e25caccc2f387b57b8eae68c7051fce51141|One Source Authority v1\.2/i;
+for(const [name,text] of [['app',app],['runtime data',JSON.stringify(data)],['recipes',JSON.stringify(recipes)],['static data',stat]])assert.ok(!retired.test(text),'retired semantic/source reference in '+name);
+assert.ok(/presentationEvents/.test(app)&&/OPENING_HAND/.test(app)&&/MANDATORY_DRAW_PHASE/.test(app),'explicit opening/draw event ledger');
+assert.ok(/crypto\.getRandomValues/.test(app)&&/data-local-start-game/.test(app)&&/LOCAL AI WON THE COIN FLIP/.test(app),'coin fairness/result/start gate');
+assert.ok(/function animationBusy\(\)\{ return !!\(GL_ANIMATION_RUNNING \|\| GL_ANIMATION_QUEUE\.length\); \}/.test(app),'held visual must not lock mandatory choices');
+assert.ok(/additional_discard_from_hand/.test(app)&&/SELECT_RESPONSE_COST_CARD/.test(runtimeReducer),'canonical discard cost support');
+assert.ok(/fanMetrics/.test(app)&&/opacity:\.90!important/.test(css),'fan and 90 percent opacity');
+assert.ok(/data-zone-type="Main Deck"/.test(css)&&/data-zone-type="Legacy Deck"/.test(css)&&/inset:auto 0 7px!important/.test(css),'lower deck count placement');
+assert.ok(/Printed artwork is the only visible card frame[\s\S]*?hero-card\.hero-main[\s\S]*?border:0!important/.test(css),'card wrappers remain borderless');
+assert.ok(fs.existsSync(path.join(root,'assets/audio/freesound_community-coin-flip-37787.mp3')),'coin audio');
+assert.ok(fs.existsSync(path.join(root,'runtime-source/runtime/core/reducer.js')),'editable runtime source');
+const lock=json('sync/runtime-sync-lock.v2.23.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.application_runtime_sync,'v2.23');assert.strictEqual(lock.local_ai,'v5.35');
+for(const [rel,key] of [['js/app.bundle.js','shared_gameplay_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['runtime-source/runtime/browser/runtime-authority.browser.js','runtime_source_browser_sha256'],['js/static-data.js','static_data_sha256'],['css/app.css','shared_ui_css_sha256']])assert.strictEqual(sha(rel),lock[key],rel+' sync hash');
+for(const file of fs.readdirSync(path.join(root,'starter_deck_examples')).filter(x=>x.endsWith('.json'))){const text=read('starter_deck_examples/'+file);assert.ok(!/One Source Authority v1\.2|Runtime Data v0\.12\.2|ffe0192e/.test(text),'stale starter source metadata '+file)}
+assert.ok(/hero-card-anchor/.test(app)&&/hero-status-overlay/.test(app)&&/hero-health-overlay/.test(css)&&/game-result-summary/.test(css),'v5.35 inherited Hero/HP/status and result hierarchy');
+assert.ok(/GL_LOCAL_AI_V534_TACTICAL_AI_QA_SELF_TEST/.test(app)&&/aiBestHealAfterRing/.test(app)&&/aiAttackMatchesSetup/.test(app),'v5.35 tactical AI planner missing');
+assert.ok(/width:46px!important/.test(css)&&/height:21px!important/.test(css)&&/width:34px!important/.test(css)&&/height:5px!important/.test(css)&&/font-size:10px!important/.test(css)&&/left:calc\(71\.6% - 4px\)!important/.test(css)&&/top:calc\(9\.8% \+ 7px\)!important/.test(css)&&/transform-origin:left bottom!important/.test(css)&&/scale\(\.94\)/.test(css),'v5.35 compact HP overlay geometry');
+assert.ok(/mobileMatchMenuOverlay/.test(app)&&/turn-ai:not\(.response-active\)/.test(css),'mobile Match Menu and AI-turn Hand stability');
+assert.ok(/Opponent\/AI turn locks the original Hand card position/.test(app),'AI-turn enlarged hover inspection enabled');
+assert.ok(/url\('..\/assets\/Background\.png'\)/.test(css)&&/background:#151f32/.test(css),'Grandis blue Deck Setup theme');
+assert.ok(/data-zone-type=\"Discard Pile\"/.test(css)&&/data-zone-type=\"Mana Pool\"/.test(css),'Discard lower count and centered Mana CSS');
+assert.ok(/setProperty\('z-index',String\(GL_MODAL_STACK_SEQUENCE\),'important'\)/.test(app),'important modal stack authority');
+assert.ok(/Mobile resource visual centering — Local AI v5\.30/.test(css)&&/left:50%!important/.test(css)&&/transform:translate\(-50%,-50%\)!important/.test(css),'mobile resource artwork centering lock');
+
+console.log('PASS Local AI v5.35 release audit: One Source v1.4, current runtime/card assets, Casting/response/revive semantics, and UI locks.');

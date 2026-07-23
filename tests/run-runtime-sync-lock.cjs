@@ -1,0 +1,15 @@
+'use strict';
+const fs=require('fs');
+const path=require('path');
+const crypto=require('crypto');
+const assert=require('assert');
+const root=path.resolve(__dirname,'..');
+const lock=JSON.parse(fs.readFileSync(path.join(root,'sync/runtime-sync-lock.v2.23.json'),'utf8'));
+const sha=rel=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,rel))).digest('hex');
+const H='5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab';
+assert.strictEqual(lock.canonical_registry_hash,H);
+assert.strictEqual(lock.one_source_authority,'v1.4');
+assert.strictEqual(lock.application_runtime_sync,'v2.23');
+for(const [rel,key] of [['js/app.bundle.js','shared_gameplay_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['runtime-source/runtime/browser/runtime-authority.browser.js','runtime_source_browser_sha256'],['js/static-data.js','static_data_sha256'],['css/app.css','shared_ui_css_sha256']])assert.strictEqual(sha(rel),lock[key],rel);
+assert.strictEqual(lock.local_ai,'v5.35');
+console.log('PASS Application Runtime Sync v2.23 Local AI v5.35 source/deploy lock');

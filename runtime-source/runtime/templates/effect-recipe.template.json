@@ -1,0 +1,15 @@
+{
+  "effectRecipe": [
+    {
+      "effect": "deal_damage",
+      "amount": 0,
+      "damageProfile": "Physical"
+    },
+    {
+      "effect": "apply_status",
+      "status": "Poison",
+      "condition": "attack_connects"
+    }
+  ],
+  "notes": "Template only. Real card data should fill this after card database is ready."
+}
