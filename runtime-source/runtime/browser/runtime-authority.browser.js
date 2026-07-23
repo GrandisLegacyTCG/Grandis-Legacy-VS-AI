@@ -1,9 +1,9 @@
-/* Grandis Legacy Browser Runtime Authority v1.74.
+/* Grandis Legacy Browser Runtime Authority v1.75.
    Owns exact-once transactions, mandatory-choice lifecycle, attachment identity, and invariant gates.
    UI and animation code may render the resulting state but must not finalize cards or choices independently. */
 (function(global){
   'use strict';
-  var VERSION='v1.74-browser';
+  var VERSION='v1.75-browser';
   function ensure(state){
     state.runtimeRevision=Number(state.runtimeRevision||0);
     state.runtimeCardDestinationLedger=state.runtimeCardDestinationLedger&&typeof state.runtimeCardDestinationLedger==='object'?state.runtimeCardDestinationLedger:{};
@@ -66,13 +66,21 @@
   }
   function finishChoiceCommit(state,id){ ensure(state); id=String(id); if(state.runtimeChoiceLedger[id]!=='COMMITTING')throw new Error('Choice is not committing.'); state.runtimeChoiceLedger[id]='RESOLVED'; state.resolvedLegacyChoiceTokens=state.resolvedLegacyChoiceTokens||[]; if(state.resolvedLegacyChoiceTokens.indexOf(id)<0)state.resolvedLegacyChoiceTokens.push(id); state.pending=null; }
   function abortChoiceCommit(state,id){ ensure(state); id=String(id); if(state.runtimeChoiceLedger[id]==='COMMITTING')state.runtimeChoiceLedger[id]='OPEN'; if(state.pending&&state.pending.choice_id===id)state.pending.committing=false; }
+  function castingSourceMatches(casting,currentSource){
+    casting=casting||{};currentSource=currentSource||{};
+    var locked=String(casting.source_progression_id||''),current=String(currentSource.progression_id||'');
+    if(locked&&current)return locked===current;
+    return String(casting.source_hero_card_id||'')===String(currentSource.card_id||'');
+  }
+  function castingShouldRemainExhausted(casting,currentSource){return !!casting&&castingSourceMatches(casting,currentSource);}
+  function castingReleaseUsesCurrentSource(){return true;}
   function inspect(state,helpers){
     ensure(state); var errors=[], slots={};
     (state.activeAttachments||[]).forEach(function(a){var key=a.side+':'+a.lane+':'+a.slot;if(slots[key])errors.push('Two active attachments occupy '+key);slots[key]=a.attachment_id||a.card_id;var hs=a.side==='PLAYER'?state.playerHeroes:state.aiHeroes,h=hs&&hs[a.lane],id=h&&h.attachments&&helpers.attachmentCardId(h.attachments[a.slot]);if(id!==a.card_id)errors.push('Attachment visual/runtime mismatch '+key+' '+a.card_id);});
     if(state.pending&&state.pending.type==='legacy_defeat_choice'&&helpers.isLegacyModeHero((state.pending.side==='PLAYER'?state.playerHeroes:state.aiHeroes)[state.pending.lane]))errors.push('Legacy choice remains open after slot entered Legacy Mode.');
     return{ok:errors.length===0,errors:errors};
   }
-  global.GL_RUNTIME_AUTHORITY={version:VERSION,ensure:ensure,bumpRevision:bumpRevision,finalizeCard:finalizeCard,placeAttachment:placeAttachment,releaseAttachment:releaseAttachment,findAttachment:findAttachment,tickAttachment:tickAttachment,openMandatoryChoice:openMandatoryChoice,beginChoiceCommit:beginChoiceCommit,finishChoiceCommit:finishChoiceCommit,abortChoiceCommit:abortChoiceCommit,inspect:inspect};
+  global.GL_RUNTIME_AUTHORITY={version:VERSION,ensure:ensure,bumpRevision:bumpRevision,finalizeCard:finalizeCard,placeAttachment:placeAttachment,releaseAttachment:releaseAttachment,findAttachment:findAttachment,tickAttachment:tickAttachment,openMandatoryChoice:openMandatoryChoice,beginChoiceCommit:beginChoiceCommit,finishChoiceCommit:finishChoiceCommit,abortChoiceCommit:abortChoiceCommit,castingSourceMatches:castingSourceMatches,castingShouldRemainExhausted:castingShouldRemainExhausted,castingReleaseUsesCurrentSource:castingReleaseUsesCurrentSource,inspect:inspect};
 })(window);
 
 /* Consolidated single browser policy authority. Generated/deploy copies must not redefine GL_RULES_RUNTIME elsewhere. */
@@ -105,17 +113,6 @@
     var legal=cardLegalClasses(cardObj); if(!legal.length) return true;
     var lineage=activeLineage(hero,heroCard,heroClass);
     return legal.some(function(cls){return lineage.indexOf(cls)!==-1;});
-  }
-  function explainSourceLegality(cardObj,hero,heroCard,heroClass,ctx){
-    ctx=ctx||{};var reasons=[];
-    if(!hero)return['No source Hero is available.'];
-    if(Number(hero.hp||0)<=0)return['The source Hero is defeated.'];
-    if(!cardLegalForLineage(cardObj,hero,heroCard,heroClass))reasons.push('The Hero Class/Lineage cannot use this card.');
-    var req=cardObj&&cardObj.requirement||{},src=cardObj&&cardObj.source_requirement||{},canon=cardObj&&cardObj.canonical_legality||{},gates=[req.rank_gate,src.rank_gate,canon.rank_gate,canon.source_requirement&&canon.source_requirement.rank_gate].filter(Boolean),min=1;
-    gates.forEach(function(g){min=Math.max(min,Number(g.min_active_rank||1));});if(Number(ctx.hero_rank||1)<min)reasons.push('Requires Rank '+min+' or higher.');
-    if(ctx.attachment_available===false)reasons.push('No empty Attachment Slot is available.');
-    var ultimate=req.ultimate||src.ultimate||{};if(ultimate.is_ultimate){var owners=ultimate.owner_lineage_card_ids||[];if(!owners.length||owners.indexOf(hero.card_id||hero.base_card_id)===-1)reasons.push('Only the printed Ultimate owner lineage can use this card.');}
-    return reasons;
   }
   function selectClassRow(map, hero, cardObj, ctx){
     map=map||{}; ctx=ctx||{}; var hc=String(ctx.heroClass||''), heroCard=ctx.heroCard||{};
@@ -174,5 +171,5 @@
     return {legal:true,total:total,applied:Math.max(0,total-current),overflow:Math.max(0,raw-total),threshold:threshold,triggers_rank_up:raw>=threshold};
   }
   function venomDetonationDamage(duration,multiplier){ return Math.max(0,Number(duration||0))*Math.max(0,Number(multiplier||0)); }
-  global.GL_RULES_RUNTIME={version:'v1.6',authorityContract:{mode:'SINGLE_RUNTIME_AUTHORITY',clientRole:'INTENT_RENDER_ANIMATE_ONLY',releaseGate:'MANDATORY_SYNC_PARITY'},activeLineage:activeLineage,cardLegalClasses:cardLegalClasses,cardLegalForLineage:cardLegalForLineage,selectClassRow:selectClassRow,mappedNumber:mappedNumber,dynamicManaCost:dynamicManaCost,scalingDamage:scalingDamage,nextRankThreshold:nextRankThreshold,resolveTributeExp:resolveTributeExp,venomDetonationDamage:venomDetonationDamage,explainSourceLegality:explainSourceLegality};
+  global.GL_RULES_RUNTIME={version:'v1.5',authorityContract:{mode:'SINGLE_RUNTIME_AUTHORITY',clientRole:'INTENT_RENDER_ANIMATE_ONLY',releaseGate:'MANDATORY_SYNC_PARITY'},activeLineage:activeLineage,cardLegalClasses:cardLegalClasses,cardLegalForLineage:cardLegalForLineage,selectClassRow:selectClassRow,mappedNumber:mappedNumber,dynamicManaCost:dynamicManaCost,scalingDamage:scalingDamage,nextRankThreshold:nextRankThreshold,resolveTributeExp:resolveTributeExp,venomDetonationDamage:venomDetonationDamage};
 })(typeof window!=='undefined'?window:globalThis);

@@ -1,0 +1,5 @@
+Summary
+Update VS AI to v5.44
+
+Description
+Fix Casting across Draw Phase and Rank Up, keep the source Exhausted while Casting remains active, preserve legal cancellation for Reposition/Stun/defeat/replacement, and recalculate Casting damage from the current Hero at release. Simplify unavailable Response cards to a hover reason, remove the remaining desktop bottom stroke, and increase mobile resource height so card backs and vertical Racial Tokens do not overlap. Runtime Foundation advances to v1.75, Runtime Core to v0.42, Shared Runtime Manual to v1.31, Application Runtime Sync to v2.29, and UI Design Lock to v2.32. PvP is unchanged.

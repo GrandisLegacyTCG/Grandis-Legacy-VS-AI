@@ -38,7 +38,7 @@ All application paths are relative, `.nojekyll` is included, and the game runs e
 - Bundled Public Deck Builder advances to v2.1 with larger Legacy Formation Hero previews.
 
 
-## v5.43 resource/footer correction
+## v5.44 resource/footer correction
 - Mobile resources use a dedicated fifth Racial Token cell: 22 / 22 / 22 / 22 / 12.
 - Racial Tokens are stacked vertically and never embedded in Main Deck.
 - Desktop resource geometry is unchanged and the lower decorative gold stroke is removed.

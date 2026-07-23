@@ -5272,3 +5272,39 @@ body.deck-setup-active{
   .v96-app .desktop-player-footer::before,.v96-app .desktop-player-footer::after{display:none!important}
   .v96-app .main-stage{border-bottom-color:#17222b!important}
 }
+
+
+/* ========================================================================== */
+/* Grandis Legacy VS AI v5.44 — response tooltip, mobile resources, footer.   */
+/* ========================================================================== */
+.response-option.unavailable,.response-option-reason{overflow:visible!important}
+.response-option-reason{position:relative!important;white-space:nowrap!important;line-height:1.15!important}
+.response-option-reason::after{
+  content:attr(data-response-reason);position:absolute;left:50%;bottom:calc(100% + 8px);z-index:4500;
+  width:max-content;max-width:min(360px,70vw);padding:7px 9px;border:1px solid #6d5a22;border-radius:8px;
+  background:#07111b;color:#eef5ff;font-size:10px;line-height:1.35;text-align:left;white-space:normal;
+  box-shadow:0 10px 30px rgba(0,0,0,.72);opacity:0;visibility:hidden;transform:translate(-50%,4px);
+  pointer-events:none;transition:opacity .12s ease,transform .12s ease,visibility .12s ease;
+}
+.response-option-reason:hover::after,.response-option-reason:focus-visible::after,.response-option-reason:focus::after{
+  opacity:1;visibility:visible;transform:translate(-50%,0)
+}
+@media(max-width:760px){
+  .v96-app .field--opponent{grid-template-rows:64px 218px!important}
+  .v96-app .field--player{grid-template-rows:218px 64px!important}
+  .v96-app .zone,.v96-app .mobile-racial-zone{height:64px!important;min-height:64px!important;max-height:64px!important}
+  .v96-app .zone{padding:3px 1px!important}
+  .v96-app .zone>span{height:9px!important;flex-basis:9px!important;font-size:6px!important;line-height:9px!important}
+  .v96-app .zone em{height:7px!important;flex-basis:7px!important;font-size:5.2px!important;line-height:7px!important}
+  .v96-app .zoneCard{height:45px!important;min-height:45px!important;max-height:45px!important;overflow:visible!important}
+  .v96-app .zoneCard img{max-height:45px!important;max-width:44px!important;object-fit:contain!important;object-position:center!important}
+  .v96-app .mobile-racial-zone{padding:3px 0!important;justify-content:flex-start!important;overflow:hidden!important}
+  .v96-app .mobile-racial-zone>span{height:9px!important;flex:0 0 9px!important;font-size:5.5px!important;line-height:9px!important}
+  .v96-app .mobile-racial-token-stack{height:48px!important;min-height:48px!important;flex:0 0 48px!important;display:grid!important;grid-template-rows:22px 22px!important;gap:2px!important;padding:1px 0!important;overflow:hidden!important}
+  .v96-app .mobile-racial-token-stack img{width:20px!important;height:20px!important;max-width:20px!important;max-height:20px!important}
+}
+@media(min-width:761px){
+  .v96-app .main-stage{border-bottom:0!important;border-bottom-width:0!important}
+  .v96-app .desktop-player-footer,.v96-app .player-footer-bar{border-bottom:0!important;box-shadow:none!important}
+  .v96-app .gl-app{border-bottom:0!important}
+}

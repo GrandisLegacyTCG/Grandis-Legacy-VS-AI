@@ -53,7 +53,7 @@ const requiredApp=[
   "casting_stage:resolved?'RESOLVED':'CANCELED'",
   'related_casting_start_event_id',
   "cancelCasting('Canceled by Stun.'",
-  "recordCastingExitEvent(state,pc,'RESOLVED'",
+  "recordCastingExitEvent(state,releaseEventPc,'RESOLVED'",
   'GL_LOCAL_AI_V523_CASTING_CARD_PLAYED_QA_SELF_TEST',
   'hero-card-anchor',
   'hero-status-overlay',
