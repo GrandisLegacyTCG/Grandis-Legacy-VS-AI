@@ -353,8 +353,8 @@ function expandedLegacy(){
 function exportObject(){
   const issues=validationIssues(),slots=state.legacySlots.map(s=>({progression:s.progressionId,legacy:s.legacyId})),expanded=expandedLegacy();
   return {
-    schema_version:'GL-DECK-1.0',builder_version:'2.0-public-deck-builder',deck_name:$('deckName').value.trim()||'New Deck',
-    format:'One Source Authority v1.4 + Public Deck Builder v2.0',main_deck_count:countDeck(),legacy_package_count:completePackageCount(),legacy_deck_count:legacyCardCount(),legacy_deck_label:'Legacy Deck',
+    schema_version:'GL-DECK-1.0',builder_version:'2.1-public-deck-builder',deck_name:$('deckName').value.trim()||'New Deck',
+    format:'One Source Authority v1.4 + Public Deck Builder v2.1',main_deck_count:countDeck(),legacy_package_count:completePackageCount(),legacy_deck_count:legacyCardCount(),legacy_deck_label:'Legacy Deck',
     legacy_deck_package_slots:slots,legacy_deck_expanded:expanded,side_package_count:completePackageCount(),side_deck_count:legacyCardCount(),side_deck_package_slots:slots,side_deck_expanded:expanded,
     is_valid:issues.length===0,validation_issues:issues,validation_warnings:[],
     main_deck:Object.entries(state.deck).map(([id,quantity])=>({card_id:id,card_name:state.byId.get(id)?.name||id,quantity})).sort((a,b)=>a.card_id.localeCompare(b.card_id,undefined,{numeric:true})),

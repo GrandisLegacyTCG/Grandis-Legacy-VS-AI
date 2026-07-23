@@ -1,0 +1,5 @@
+Summary:
+Update VS AI to v5.41
+
+Description:
+Refine the mobile battlefield with a dedicated Hero overlay gutter, one top-left status/info control, one top-right contextual action control, compact Racial Tokens inside the Mana resource area, card-anchored HP overlays, and full footer scrolling. Update the bundled Public Deck Builder to v2.1 with larger Legacy Formation previews. Application Runtime Sync advances to v2.26 and UI Design Lock to v2.29; Runtime Foundation remains v1.74. PvP is unchanged.

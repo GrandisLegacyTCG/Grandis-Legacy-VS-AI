@@ -1,4 +1,4 @@
-# Grandis Legacy VS AI v5.40
+# Grandis Legacy VS AI v5.41
 
 Static browser build prepared for **GitHub Pages**. No Node.js server, database, or Northflank service is required to play VS AI.
 
@@ -18,14 +18,21 @@ Static browser build prepared for **GitHub Pages**. No Node.js server, database,
 
 All application paths are relative, `.nojekyll` is included, and the game runs entirely in the player browser.
 
-## v5.40 highlights
+## v5.41 highlights
 - Response Window shows every Defense/Response card currently in Hand.
 - Legal responses remain selectable; unavailable responses stay visible and explain why they cannot be used.
 - Runtime Foundation remains v1.74. Application Runtime Sync advances to v2.25 and UI Design Lock to v2.28 for the approved mobile interaction layout.
 - Mobile Hero statuses are consolidated under one `!` indicator.
 - Mobile Racial Trait, Hero Ability, and Legacy Ability access is consolidated under one compact action button.
 - Player/deck metadata and Full Battle Log remain one row and move below Next Phase on mobile.
-- Public Deck Builder v2.0 is bundled for desktop Deck Setup and reuses the shared VS AI card thumbnails.
+- Public Deck Builder v2.1 is bundled for desktop Deck Setup and reuses the shared VS AI card thumbnails.
 - Mobile Player and opponent Hands use straight, horizontally scrollable rows instead of a fan.
 - The approved v5.38 responsive Deck Setup and compact mobile battlefield remain included.
 - PvP is unchanged and remains outside this package.
+
+## v5.41 mobile/Deck Builder refinement
+- Mobile Hero art is slightly smaller inside a taller lane with a dedicated top overlay gutter.
+- Exactly one `!` status/info control and one contextual action control are used per Hero/Legacy.
+- Racial Tokens move from beside the Hand into a compact Mana-resource counter on mobile.
+- HP is card-anchored over the printed HP corner, including Exhausted Heroes.
+- Bundled Public Deck Builder advances to v2.1 with larger Legacy Formation Hero previews.

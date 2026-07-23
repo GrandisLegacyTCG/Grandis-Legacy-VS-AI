@@ -5043,3 +5043,96 @@ body.deck-setup-active{
   .v96-app .mobile-hero-action-trigger.is-available{border-color:#d8b440!important;background:#392d08!important;color:#ffda67!important;box-shadow:0 0 10px rgba(244,199,63,.32)!important}
   .v96-app .mobile-hero-action-trigger span{position:absolute!important;right:-4px!important;top:-5px!important;display:grid!important;place-items:center!important;width:13px!important;height:13px!important;border-radius:50%!important;background:#f4cf62!important;color:#151006!important;font-size:7px!important}
 }
+
+
+/* ========================================================================== */
+/* Grandis Legacy VS AI v5.41 — mobile Hero overlay geometry and resources.   */
+/* One info trigger at upper-left, one contextual action at upper-right.      */
+/* ========================================================================== */
+.mobile-racial-resource{display:none!important}
+@media(max-width:760px){
+  /* Give the Hero artwork a dedicated overlay gutter instead of layering
+     status/action buttons directly over the printed card. */
+  .v96-app .field--opponent{grid-template-rows:54px 226px!important}
+  .v96-app .field--player{grid-template-rows:226px 54px!important}
+  .v96-app .field .hero-row{height:226px!important;min-height:226px!important}
+  .v96-app .hero-row--opponent .hero-lane:not(.legacy-slot){grid-template-rows:29px minmax(0,1fr)!important}
+  .v96-app .hero-row--player .hero-lane:not(.legacy-slot){grid-template-rows:minmax(0,1fr) 29px!important}
+  .v96-app .hero-stage{
+    padding:29px 3px 3px!important;
+    align-content:start!important;
+    overflow:visible!important;
+  }
+  .v96-app .hero-card-anchor{
+    max-height:174px!important;
+    align-self:start!important;
+    margin:0 auto!important;
+  }
+  .v96-app .hero-card.hero-main{
+    width:clamp(76px,23.2vw,96px)!important;
+    max-height:164px!important;
+  }
+  .v96-app .hero-card.hero-main .heroImg{object-fit:contain!important}
+
+  /* Exactly one mobile information control. Desktop status icons are hidden. */
+  .v96-app .hero-status-overlay{
+    top:3px!important;left:4px!important;right:auto!important;
+    z-index:220!important;transform:none!important;
+  }
+  .v96-app .hero-status-overlay>.hero-indicator-stack,
+  .v96-app .hero-status-overlay .hero-info-indicator,
+  .v96-app .hero-status-overlay .negative-status-indicator{display:none!important}
+  .v96-app .hero-status-overlay>.mobile-status-summary{
+    display:grid!important;place-items:center!important;
+    width:23px!important;height:23px!important;min-width:23px!important;min-height:23px!important;
+    border:1px solid #c5a33a!important;background:#101824!important;color:#ffd45f!important;
+    border-radius:50%!important;font-size:13px!important;font-weight:950!important;line-height:1!important;
+    box-shadow:0 2px 8px rgba(0,0,0,.58)!important;
+  }
+  .v96-app .hero-status-overlay>.mobile-status-summary~.mobile-status-summary{display:none!important}
+
+  /* Exactly one clickable contextual action control. */
+  .v96-app .mobile-hero-action-trigger{
+    right:4px!important;top:3px!important;z-index:221!important;
+    width:23px!important;height:23px!important;min-width:23px!important;min-height:23px!important;
+    color:#c7d3df!important;background:#101824!important;border-color:#72879a!important;
+    font-size:13px!important;opacity:1!important;
+  }
+  .v96-app .mobile-hero-action-trigger.is-available{
+    color:#ffe079!important;background:#3a2e08!important;border-color:#d8b440!important;
+  }
+
+  /* HP stays upright and directly covers the printed HP in the card corner,
+     including when only the artwork rotates for Exhaust. */
+  .v96-app .hero-card-anchor>.hero-health-row.hero-health-overlay{
+    left:auto!important;right:1px!important;top:2px!important;
+    width:46px!important;height:21px!important;
+    transform:scale(.86)!important;transform-origin:top right!important;
+    margin:0!important;
+  }
+
+  /* The old hand-side Racial Token coins are replaced by a compact counter
+     inside each Mana resource container. */
+  .v96-app .racial-coins--hand{display:none!important}
+  .v96-app .zone[data-zone-type="Mana Pool"]{position:relative!important}
+  .v96-app .mobile-racial-resource{
+    position:absolute!important;right:4px!important;bottom:4px!important;z-index:8!important;
+    display:flex!important;align-items:center!important;gap:1px!important;
+    height:20px!important;min-width:31px!important;padding:1px 3px!important;
+    border:1px solid rgba(220,183,60,.58)!important;border-radius:999px!important;
+    background:rgba(5,12,19,.92)!important;color:#ffe079!important;
+    font-size:8px!important;font-weight:900!important;line-height:1!important;
+    pointer-events:none!important;
+  }
+  .v96-app .mobile-racial-resource img{
+    position:static!important;inset:auto!important;transform:none!important;
+    width:15px!important;height:15px!important;max-width:15px!important;max-height:15px!important;
+    object-fit:contain!important;opacity:1!important;filter:none!important;border-radius:50%!important;
+  }
+  .v96-app .mobile-racial-resource strong{font-size:8px!important;color:#ffe079!important}
+
+  /* Preserve the approved footer order while allowing the final row to be
+     scrolled fully above the Android/browser navigation area. */
+  html,body{overflow-y:auto!important}
+  .v96-app .gl-app{padding-bottom:calc(42px + env(safe-area-inset-bottom,0px))!important}
+}
