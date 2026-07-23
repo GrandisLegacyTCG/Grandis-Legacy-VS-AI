@@ -1,0 +1,5 @@
+Summary:
+Update VS AI mobile Legacy controls to v5.48
+
+Description:
+Keep the Legacy defeated-Hero information control at the top-left of each mobile battlefield slot and the contextual Legacy Ability control at the top-right. Desktop Legacy layout remains unchanged. Gameplay and PvP are unchanged.

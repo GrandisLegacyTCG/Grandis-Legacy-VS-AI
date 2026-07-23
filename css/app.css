@@ -5497,3 +5497,46 @@ body.deck-setup-active{
     overflow:visible!important;
   }
 }
+
+/* ========================================================================== */
+/* Grandis Legacy VS AI v5.48 — mobile Legacy control anchor consistency.     */
+/* Desktop keeps the approved Legacy name-row info button. On mobile, the     */
+/* Legacy info control shares the Hero slot's fixed top-left anchor while the */
+/* contextual action remains fixed at top-right.                              */
+/* ========================================================================== */
+.v96-app .legacy-hero-info--mobile{display:none!important}
+@media(max-width:760px){
+  .v96-app .legacy-name-bar .legacy-hero-info--desktop{display:none!important}
+  .v96-app .hero-stage.legacy-stage>.legacy-hero-info--mobile{
+    position:absolute!important;
+    display:grid!important;
+    place-items:center!important;
+    left:3px!important;
+    right:auto!important;
+    top:2px!important;
+    z-index:221!important;
+    width:18px!important;
+    height:18px!important;
+    min-width:18px!important;
+    min-height:18px!important;
+    margin:0!important;
+    padding:0!important;
+    border:1px solid #c5a33a!important;
+    border-radius:50%!important;
+    background:#101824!important;
+    color:#ffd45f!important;
+    font-size:10px!important;
+    font-weight:950!important;
+    line-height:1!important;
+    box-shadow:0 1px 5px rgba(0,0,0,.55)!important;
+  }
+  .v96-app .hero-stage.legacy-stage>.mobile-hero-action-trigger{
+    left:auto!important;
+    right:3px!important;
+    top:2px!important;
+  }
+}
+@media(min-width:761px){
+  .v96-app .legacy-hero-info--desktop{display:inline-flex!important}
+  .v96-app .legacy-hero-info--mobile{display:none!important}
+}
