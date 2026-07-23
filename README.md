@@ -1,4 +1,4 @@
-# Grandis Legacy VS AI v5.45
+# Grandis Legacy VS AI v5.46
 
 Static browser build prepared for **GitHub Pages**. No Node.js server, database, or Northflank service is required to play VS AI.
 
@@ -50,3 +50,13 @@ All application paths are relative, `.nojekyll` is included, and the game runs e
 - Desktop unavailable Response reasons are hover/focus only and no second popup opens.
 - The legacy `gl-app::after` gold baseline is removed.
 - Mobile resources are 72 px high, Mana Regen is visible below Mana Pool, Racial Tokens remain separated, and Player Hand uses the full available width.
+
+
+## v5.46 response, mobile draw, and Double Casting parity
+
+- Desktop Response Window uses `Not Available` with one prioritized hover reason.
+- Mobile Hand hides the scrollbar and reserves space for up to two action buttons per card.
+- Mobile Start Game focuses the Player Hand after the coin flip.
+- Multi-draw animations reveal each card in Hand immediately before animating the next card.
+- Double Casting Rank II and Rank III both allow activation 2 to choose the same or a different legal Hero.
+- PvP remains unchanged; see `docs/TAKEOVER_NOTE_VS_AI_TO_PVP_v5.46.md`.

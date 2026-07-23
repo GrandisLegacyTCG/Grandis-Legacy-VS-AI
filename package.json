@@ -1,11 +1,11 @@
 {
   "name": "grandis-legacy-vs-ai",
-  "version": "5.45.0",
+  "version": "5.46.0",
   "private": true,
   "scripts": {
     "syntax": "node --check js/app.bundle.js && node --check js/static-data.js && node --check js/runtime-authority.js && find runtime-source/runtime -name '*.js' -o -name '*.mjs' | sort | xargs -r -n1 node --check",
     "check": "npm run syntax && node tests/run-release-audit.cjs && node tests/run-runtime-sync-lock.cjs && node tests/run-non-normal-effect-coverage.cjs",
-    "test": "npm run check && node tests/run-v536-fixes.cjs && node tests/run-v537-fixes.cjs && node tests/run-v538-ui.cjs && node tests/run-v539-response-ui.cjs && node tests/run-v540-mobile-ui.cjs && node tests/run-v542-mobile-ui.cjs && node tests/run-v543-resource-ui.cjs && node tests/run-v544-casting-ui.cjs && node tests/run-v545-final-fixes.cjs && node tests/run-arcane-duelist-legality.cjs && node tests/run-card-played-audit.cjs && node tests/run-runtime-executable-flows.cjs && node tests/run-local-ai-application-effects.cjs && node tests/run-opening-flow-test.cjs && node tests/run-tactical-ai-planner.cjs && node tests/run-minor-ui-ai-fixes.cjs && node tests/run-manifest-verification.cjs && node tests/run-attachment-slot-parity.cjs"
+    "test": "npm run check && node tests/run-v536-fixes.cjs && node tests/run-v537-fixes.cjs && node tests/run-v538-ui.cjs && node tests/run-v539-response-ui.cjs && node tests/run-v540-mobile-ui.cjs && node tests/run-v542-mobile-ui.cjs && node tests/run-v543-resource-ui.cjs && node tests/run-v544-casting-ui.cjs && node tests/run-v545-final-fixes.cjs && node tests/run-v546-fixes.cjs && node tests/run-arcane-duelist-legality.cjs && node tests/run-card-played-audit.cjs && node tests/run-runtime-executable-flows.cjs && node tests/run-local-ai-application-effects.cjs && node tests/run-opening-flow-test.cjs && node tests/run-tactical-ai-planner.cjs && node tests/run-minor-ui-ai-fixes.cjs && node tests/run-manifest-verification.cjs && node tests/run-attachment-slot-parity.cjs"
   },
-  "description": "Grandis Legacy VS AI v5.45 \u2014 Casting instance identity and final responsive UI corrections."
+  "description": "Grandis Legacy VS AI v5.46 \u2014 Response reason hierarchy, mobile Hand/draw sequencing, and FINAL Double Casting target parity."
 }

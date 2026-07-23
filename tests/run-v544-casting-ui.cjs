@@ -2,7 +2,7 @@
 const fs=require('fs'),path=require('path');
 const {loadLocalAI}=require('./vm-local-ai-harness.cjs');
 const root=path.resolve(__dirname,'..'),ctx=loadLocalAI(root),r=ctx.GL_V545_CASTING_UI_QA_SELF_TEST();
-if(!r||!r.ok)throw new Error('v5.45 Casting/UI QA failed '+JSON.stringify(r));
+if(!r||!r.ok)throw new Error('v5.46 Casting/UI QA failed '+JSON.stringify(r));
 const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8'),css=fs.readFileSync(path.join(root,'css/app.css'),'utf8');
 if(app.includes('Unavailable · Why?'))throw new Error('old unavailable label remains');
 if(!app.includes('data-response-reason')||!css.includes('.response-option-reason::after'))throw new Error('hover reason tooltip missing');
@@ -10,4 +10,4 @@ if(!app.includes('castingSourceMatchesHero')||!app.includes('source_instance_id:
 if(!app.includes('releaseSnapshot=castingSnapshotForAction'))throw new Error('release-time damage recalculation missing');
 if(!css.includes('grid-template-rows:72px 218px')||!css.includes('grid-template-rows:218px 72px'))throw new Error('mobile resource height lock missing');
 if(!css.includes('.v96-app .gl-app::after{display:none!important'))throw new Error('desktop bottom stroke removal missing');
-console.log('PASS Grandis Legacy VS AI v5.45 Casting and UI fixes');console.log(JSON.stringify(r));
+console.log('PASS Grandis Legacy VS AI v5.46 Casting and UI fixes');console.log(JSON.stringify(r));

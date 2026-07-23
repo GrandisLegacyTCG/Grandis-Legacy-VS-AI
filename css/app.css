@@ -5337,3 +5337,41 @@ body.deck-setup-active{
 @media(min-width:761px){
   .v96-app .gl-app::after{display:none!important;content:none!important}
 }
+
+
+/* ========================================================================== */
+/* Grandis Legacy VS AI v5.46 — Response hierarchy and mobile Hand/draw pass. */
+/* ========================================================================== */
+.response-option-reason::after{display:none!important;content:none!important}
+.response-panel{position:relative!important}
+.response-hover-tooltip{
+  position:absolute;z-index:5000;padding:8px 10px;border:1px solid #6d5a22;border-radius:8px;
+  background:#07111b;color:#eef5ff;font-size:10px;line-height:1.35;text-align:left;white-space:normal;
+  box-shadow:0 10px 30px rgba(0,0,0,.72);pointer-events:none
+}
+.response-hover-tooltip[hidden]{display:none!important}
+.response-option-reason{white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+@media(min-width:761px){
+  .response-option-grid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))!important}
+  .response-option-preview img{height:104px!important;object-fit:contain!important;background:#07111b!important}
+}
+@media(max-width:760px){
+  /* Give every Hand card a stable two-button action area while preserving swipe. */
+  .v96-app .main-stage{grid-template-rows:24px 48px auto 6px auto 134px!important}
+  .v96-app .hand-area--player .handPanel{
+    overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;-ms-overflow-style:none!important;
+    overscroll-behavior-x:contain!important;touch-action:pan-x!important
+  }
+  .v96-app .hand-area--player .handPanel::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+  .v96-app .hand-area--player .handCards{height:130px!important;padding:5px 5px 2px!important;align-items:flex-start!important}
+  .v96-app .hand-card{
+    width:64px!important;min-width:64px!important;max-width:64px!important;height:122px!important;flex-basis:64px!important;
+    grid-template-rows:84px 34px!important
+  }
+  .v96-app .hand-card .hand-art,.v96-app .hand-card .hand-art img{height:84px!important}
+  .v96-app .hand-card .hand-actions{
+    height:34px!important;min-height:34px!important;display:flex!important;flex-direction:column!important;
+    justify-content:flex-start!important;align-items:stretch!important;gap:2px!important;overflow:hidden!important
+  }
+  .v96-app .hand-card .mini-action{height:15px!important;min-height:15px!important;flex:0 0 15px!important;font-size:6.4px!important;padding:0 2px!important;margin:0!important}
+}

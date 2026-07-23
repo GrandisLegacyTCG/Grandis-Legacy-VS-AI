@@ -1,11 +1,11 @@
-/* Grandis Legacy shared gameplay application v2.1 — Local AI v5.45.
+/* Grandis Legacy shared gameplay application v2.1 — Local AI v5.46.
    One Source Authority v1.4 + Runtime Foundation v1.76 / Runtime Core v0.43 / Runtime Data v0.12.5.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
   'use strict';
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP Railway v2.5.15 · Shared Gameplay v2.1 · One Source v1.4 · Runtime Data v0.12.5 · Foundation v1.73':'Grandis Legacy VS AI v5.45 · Shared Gameplay Bundle v2.1 · One Source v1.4 · Runtime Data v0.12.5 · Foundation v1.76';
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP Railway v2.5.15 · Shared Gameplay v2.1 · One Source v1.4 · Runtime Data v0.12.5 · Foundation v1.73':'Grandis Legacy VS AI v5.46 · Shared Gameplay Bundle v2.1 · One Source v1.4 · Runtime Data v0.12.6 · Foundation v1.77';
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
@@ -233,6 +233,15 @@
   function fanMetrics(index,count,side){count=Math.max(1,Number(count||1));index=Math.max(0,Number(index||0));var max=count<=1?0:(count<=3?2.5:(count<=6?4:(count<=8?3:2)));var t=count<=1?0:(index/(count-1))*2-1;var angle=t*max,y=Math.abs(t)*(count<=6?3:2),overlap=count<=3?-5:(count<=6?-11:(count<=8?-16:-20));if(side==='AI')y=-y;return{angle:angle,y:y,overlap:overlap,z:index+1};}
   function fanStyle(index,count,side){var f=fanMetrics(index,count,side);return'--fan-angle:'+f.angle.toFixed(2)+'deg;--fan-y:'+f.y.toFixed(2)+'px;--fan-overlap:'+f.overlap+'px;--fan-z:'+f.z+';';}
   function captureHandSlotRect(side,index){return captureVisualRect('[data-hand-side="'+side+'"][data-hand-slot-index="'+Number(index)+'"]')||(side==='PLAYER'?captureVisualRect('.handPanel'):captureVisualRect('.strip .backs'));}
+  function isMobileViewport(){return typeof window!=='undefined'&&window.matchMedia&&window.matchMedia('(max-width: 760px)').matches;}
+  function focusMobilePlayerHand(options){
+    options=options||{};if(!isMobileViewport()||typeof document==='undefined')return false;
+    var hand=document.querySelector('.v96-app .hand-area--player .handPanel')||document.querySelector('.hand-area--player .handPanel');
+    if(!hand)return false;
+    var apply=function(){try{hand.scrollIntoView({behavior:options.smooth?'smooth':'auto',block:'end',inline:'nearest'});}catch(e){try{window.scrollTo(0,Math.max(0,document.documentElement.scrollHeight-window.innerHeight));}catch(ignore){}}};
+    if(typeof requestAnimationFrame==='function')requestAnimationFrame(function(){requestAnimationFrame(apply);});else setTimeout(apply,0);
+    return true;
+  }
   function queueDrawMotion(side,cardId,handIndex,options){options=options||{};if(!animationDocumentReady())return false;var from=captureVisualRect('[data-zone-side="'+side+'"][data-zone-type="Main Deck"] .zoneCard');if(!from)return false;var token=addHiddenDrawToken(side,cardId,handIndex,options.event_id);if(appState&&matchStarted&&!SUPPRESS_RENDER)render();var to=captureHandSlotRect(side,handIndex);if(!to){removeHiddenDrawToken(side,token);return false;}return queueVisualCardMotion('assets/cards/ui/Back-of-Card-Main-Deck.webp',from,[{rect:to}],Number(options.duration||390),{play_sound:options.play_sound!==false,onFinish:function(){removeHiddenDrawToken(side,token);if(typeof options.onFinish==='function')options.onFinish();}});}
   function queueDrawEvents(events,state,options){
     options=options||{};
@@ -242,19 +251,31 @@
     var tokenById={};
     events.forEach(function(e){tokenById[e.id]=addHiddenDrawToken(e.side,e.card_id,e.hand_index,e.id);});
     if(appState&&matchStarted&&!SUPPRESS_RENDER)render();
-    var groups=[],byGroup={};
-    events.forEach(function(e){var key=e.reason==='OPENING_HAND'&&e.group_id?e.group_id:null;if(key){if(!byGroup[key]){byGroup[key]=[];groups.push(byGroup[key]);}byGroup[key].push(e);}else groups.push([e]);});
-    var queued=false,remaining=groups.length;
-    function finishGroup(group){group.forEach(function(e){removeHiddenDrawToken(e.side,tokenById[e.id]);});remaining--;if(remaining<=0)finishSequence();}
-    groups.forEach(function(group){
-      if(group.length>1){
-        var parts=group.map(function(e){return{src:'assets/cards/ui/Back-of-Card-Main-Deck.webp',from:captureVisualRect('[data-zone-side="'+e.side+'"][data-zone-type="Main Deck"] .zoneCard'),to:captureHandSlotRect(e.side,e.hand_index)};});
-        if(parts.every(function(part){return part.from&&part.to;})){queueParallelVisualCardMotions(parts,390,{play_sound:true,onFinish:function(){finishGroup(group);}});queued=true;}else finishGroup(group);
-      }else{
-        var e=group[0],from=captureVisualRect('[data-zone-side="'+e.side+'"][data-zone-type="Main Deck"] .zoneCard'),to=captureHandSlotRect(e.side,e.hand_index);
-        if(from&&to){queueVisualCardMotion('assets/cards/ui/Back-of-Card-Main-Deck.webp',from,[{rect:to}],390,{play_sound:true,onFinish:function(){finishGroup(group);}});queued=true;}else finishGroup(group);
-      }
+    if(events.some(function(e){return e.side==='PLAYER';}))focusMobilePlayerHand();
+    var groups=[],byKey={};
+    events.forEach(function(e){
+      /* Opening Hand keeps PLAYER + AI simultaneous for each draw number, while
+         every draw number and every non-opening draw resolves sequentially. */
+      var key=(e.reason==='OPENING_HAND'&&e.group_id)?String(e.group_id):('SEQ:'+String(e.id));
+      if(!byKey[key]){byKey[key]=[];groups.push(byKey[key]);}
+      byKey[key].push(e);
     });
+    var queued=false,index=0;
+    function revealGroup(group){
+      group.forEach(function(e){removeHiddenDrawToken(e.side,tokenById[e.id]);});
+      if(group.some(function(e){return e.side==='PLAYER';}))focusMobilePlayerHand();
+    }
+    function runNext(){
+      if(index>=groups.length){finishSequence();return;}
+      var group=groups[index++],parts=group.map(function(e){return{event:e,src:'assets/cards/ui/Back-of-Card-Main-Deck.webp',from:captureVisualRect('[data-zone-side="'+e.side+'"][data-zone-type="Main Deck"] .zoneCard'),to:captureHandSlotRect(e.side,e.hand_index)};});
+      function done(){revealGroup(group);setTimeout(runNext,55);}
+      if(parts.every(function(part){return part.from&&part.to;})){
+        if(parts.length>1)queueParallelVisualCardMotions(parts.map(function(part){return{src:part.src,from:part.from,to:part.to};}),390,{play_sound:true,onFinish:done});
+        else queueVisualCardMotion(parts[0].src,parts[0].from,[{rect:parts[0].to}],390,{play_sound:true,onFinish:done});
+        queued=true;
+      }else done();
+    }
+    runNext();
     return queued;
   }
 
@@ -378,7 +399,7 @@
   var CARDS=[], CARD_BY_ID={};
 
   function sanitizeStaleSkillRuntimePayloads(){return true;}
-  function assertActiveRuntimeSourceStack(){var stack=window.GL_SOURCE_STACK||{},defs=window.GL_CARD_DEFINITIONS||{},recipes=window.GL_EFFECT_RECIPES||{},gate=window.GRANDIS_LEGACY_ONE_SOURCE_READY||{},cardCount=Array.isArray(defs.cards)?defs.cards.length:flattenCards(defs).length,effectCount=Array.isArray(recipes.effect_recipes)?recipes.effect_recipes.length:0,hash='5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab';if(stack.runtime_data!=='v0.12.5'||defs.version!=='v0.12.5'||cardCount!==198)throw new Error('Active Runtime Data guard failed; v0.12.5 / 198 cards required.');if(stack.effect_checkpoint!=='v0.11.4'||stack.effect_recipe!=='v0.11.5'||recipes.version!=='v0.11.5'||effectCount!==198)throw new Error('Active Effect guard failed.');if(stack.runtime_foundation!=='v1.76'||stack.runtime_core!=='v0.43'||stack.application_runtime_sync!=='v2.30')throw new Error('Active Runtime source stack guard failed.');if(!window.GL_RUNTIME_AUTHORITY||window.GL_RUNTIME_AUTHORITY.version!=='v1.76-browser')throw new Error('Browser Runtime Authority v1.76 is not loaded.');if(gate.canonical_registry_hash!==hash||defs.canonical_registry_hash!==hash||recipes.canonical_registry_hash!==hash)throw new Error('One Source Authority v1.4 hash mismatch.');assertCanonicalCardMirror(defs);return true;}
+  function assertActiveRuntimeSourceStack(){var stack=window.GL_SOURCE_STACK||{},defs=window.GL_CARD_DEFINITIONS||{},recipes=window.GL_EFFECT_RECIPES||{},gate=window.GRANDIS_LEGACY_ONE_SOURCE_READY||{},cardCount=Array.isArray(defs.cards)?defs.cards.length:flattenCards(defs).length,effectCount=Array.isArray(recipes.effect_recipes)?recipes.effect_recipes.length:0,hash='5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab';if(stack.runtime_data!=='v0.12.6'||defs.version!=='v0.12.6'||cardCount!==198)throw new Error('Active Runtime Data guard failed; v0.12.6 / 198 cards required.');if(stack.effect_checkpoint!=='v0.11.5'||stack.effect_recipe!=='v0.11.6'||recipes.version!=='v0.11.6'||effectCount!==198)throw new Error('Active Effect guard failed.');if(stack.runtime_foundation!=='v1.77'||stack.runtime_core!=='v0.44'||stack.application_runtime_sync!=='v2.31')throw new Error('Active Runtime source stack guard failed.');if(!window.GL_RUNTIME_AUTHORITY||window.GL_RUNTIME_AUTHORITY.version!=='v1.77-browser')throw new Error('Browser Runtime Authority v1.77 is not loaded.');if(gate.canonical_registry_hash!==hash||defs.canonical_registry_hash!==hash||recipes.canonical_registry_hash!==hash)throw new Error('One Source Authority v1.4 hash mismatch.');assertCanonicalCardMirror(defs);return true;}
   function initCards(){assertActiveRuntimeSourceStack();CARDS=flattenCards(window.GL_CARD_DEFINITIONS||{});CARD_BY_ID={};CARDS.forEach(function(c){CARD_BY_ID[c.card_id]=c;});}
   function card(id){ return CARD_BY_ID[id] || {card_id:id, name:id, family:'Unknown'}; }
   function cardName(c){ return c.name || c.card_name || c.card_id || 'Unknown'; }
@@ -2732,6 +2753,40 @@
     if(cost>available) reasons.push('Not enough Mana: needs '+cost+', available '+available+'.');
     return reasons;
   }
+  function responseCardBaseClasses(c){
+    c=c||{};var req=c.requirement||{},src=c.source_requirement||{},out=[];
+    [req.base_skill_class,src.base_skill_class,req.source_package,src.source_package,c.class_family].forEach(function(v){if(v&&out.indexOf(String(v))===-1)out.push(String(v));});
+    return out;
+  }
+  function responseCandidateHeroes(state,responderSide,c,incoming){
+    if(!requiresSourceHero(c))return [];
+    if(isCoverUpCard(c))return adjacentLanes(incoming.target_lane).map(function(l){return sideHeroes(state,responderSide)[l];}).filter(Boolean);
+    if(isAlliedSourceDefenseCard(c))return LANE_ORDER.map(function(l){return sideHeroes(state,responderSide)[l];}).filter(Boolean);
+    var defender=sideHeroes(state,responderSide)[incoming.target_lane];return defender?[defender]:[];
+  }
+  function responseHeroClassMatches(c,hero){
+    if(!hero)return false;var lineage=activeLineageForHero(hero).map(normalizedClassToken),bases=responseCardBaseClasses(c).map(normalizedClassToken),legal=canonicalCardLegalClasses(c).map(normalizedClassToken);
+    if(bases.length&&bases.some(function(x){return lineage.indexOf(x)!==-1;}))return true;
+    return legal.some(function(x){return lineage.indexOf(x)!==-1;});
+  }
+  function responseHeroLineageRankMatches(c,hero){
+    if(!hero||!responseHeroClassMatches(c,hero))return false;
+    var legal=canonicalCardLegalClasses(c);if(legal.length&&!lineageContainsAnyClass(hero,legal))return false;
+    return heroRank(hero)>=canonicalMinimumSourceRank(c);
+  }
+  function firstPrioritizedResponseReason(state,responderSide,incoming,c,rawReasons){
+    rawReasons=(rawReasons||[]).filter(Boolean);var candidates=responseCandidateHeroes(state,responderSide,c,incoming);
+    if(requiresSourceHero(c)&&candidates.length){
+      if(!candidates.some(function(h){return responseHeroClassMatches(c,h);}))return 'This Hero’s class cannot use this card.';
+      if(!candidates.some(function(h){return responseHeroLineageRankMatches(c,h);}))return 'This Hero’s lineage or rank cannot use this card.';
+    }
+    var mana=rawReasons.find(function(x){return /not enough mana|needs?\s*\d+.*available|requires?\s*\d+.*available/i.test(x);});
+    if(mana){var nums=String(mana).match(/\d+/g)||[];return nums.length>=2?('Not enough Mana. Requires '+nums[0]+'; '+nums[1]+' available.'):'Not enough Mana.';}
+    var blockDodge=rawReasons.find(function(x){return /cannot be dodged|cannot be blocked|does not match the incoming|response condition|cannot protect the full multi-target/i.test(x);});
+    if(blockDodge)return 'This incoming attack cannot be Blocked or Dodged by this card.';
+    var first=rawReasons[0]||'This response is not available in the current state.';
+    return String(first).replace(/\s+/g,' ').trim();
+  }
   function responseUnavailableReasonsFor(state,responderSide,incoming,cardId,handIndex,legalOptions){
     var c=card(cardId), reasons=[], defender=sideHeroes(state,responderSide)[incoming.target_lane], affected=responseAffectedLanes(state,responderSide,incoming);
     if((legalOptions||[]).some(function(o){return Number(o.hand_index)===Number(handIndex);} )) return [];
@@ -2763,7 +2818,7 @@
       var cost=responseCostForSource(c,defender,state,responderSide), available=Number(state[manaPoolKeyForSide(responderSide)]||0);if(cost>available)reasons.push('Not enough Mana: needs '+cost+', available '+available+'.');
     }
     var unique=[]; reasons.forEach(function(x){if(x&&unique.indexOf(x)===-1)unique.push(x);});
-    return unique.slice(0,4).length?unique.slice(0,4):['No legal response source or target is available.'];
+    return [firstPrioritizedResponseReason(state,responderSide,incoming,c,unique.length?unique:['No legal response source or target is available.'])];
   }
   function responseDisplayItemsFor(state,rw){
     var legal=rw.options||[], items=legal.map(function(o,i){return{available:true,option_index:i,card_id:o.card_id,hand_index:o.hand_index,option:o};});
@@ -3448,6 +3503,15 @@
     if(!opt){ showInfo('Response Window','Select a response card first, then confirm.'); return false; }
     return resolveResponseWindow(opt);
   }
+  function hideResponseReasonTooltip(){var tip=document.getElementById('responseReasonTooltip');if(tip){tip.hidden=true;tip.textContent='';}}
+  function showResponseReasonTooltip(anchor){
+    if(!anchor)return;var panel=anchor.closest('.response-panel')||document.querySelector('.response-panel');if(!panel)return;
+    var tip=document.getElementById('responseReasonTooltip');if(!tip){tip=document.createElement('div');tip.id='responseReasonTooltip';tip.className='response-hover-tooltip';tip.hidden=true;panel.appendChild(tip);}
+    tip.textContent=anchor.getAttribute('data-response-reason')||'This response is not available.';tip.hidden=false;
+    var pr=panel.getBoundingClientRect(),ar=anchor.getBoundingClientRect(),width=Math.min(340,Math.max(190,tip.scrollWidth||240));
+    var left=Math.max(8,Math.min(pr.width-width-8,(ar.left-pr.left)+(ar.width-width)/2));
+    var top=Math.max(8,(ar.top-pr.top)-(tip.offsetHeight||42)-8);tip.style.width=width+'px';tip.style.left=left+'px';tip.style.top=top+'px';
+  }
   function renderResponseWindow(){
     var overlay=$('responseOverlay'); if(!overlay) return; var state=appState; var rw=state&&state.responseWindow;
     if(!rw || !pvpLocalOwnsResponseWindow(rw)){ overlay.classList.remove('open'); return; }
@@ -3455,7 +3519,7 @@
     var body=$('responseBody'), footer=$('responseFooter'); var opts=rw.options||[], displayItems=responseDisplayItemsFor(state,rw), unavailable=[];
     var optionsHtml=displayItems.length?displayItems.map(function(item){
       if(item.available){var o=item.option,i=item.option_index,selected=rw.selected===i,c=card(o.card_id),label=o.label||cardName(c),meta=(o.racial_ability?'Racial Trait · Response':(o.response_kind==='legacy_reduce'?'Legacy Ability · Response':(cardFamily(c)+' · '+(cardSubtype(c)||'Response'))))+(o.source_lane?' · Source '+esc(o.source_lane):'');return '<article class="response-option '+(selected?'selected':'')+' available"><button class="response-option-preview" type="button" data-preview="'+esc(o.card_id)+'"><img src="'+esc(thumbFor(o.card_id))+'" alt="'+esc(label)+'"><strong>'+esc(label)+'</strong><small>'+meta+'</small></button><button class="response-option-select" type="button" data-response-select="'+i+'" aria-pressed="'+(selected?'true':'false')+'">'+(selected?'Selected':'Select')+'</button></article>';}
-      var uidx=unavailable.length;unavailable.push(item);var uc=card(item.card_id),reasonText=(item.reasons||['This response is not currently legal.']).join(' • ');return '<article class="response-option unavailable" aria-disabled="true"><button class="response-option-preview" type="button" data-preview="'+esc(item.card_id)+'"><img src="'+esc(thumbFor(item.card_id))+'" alt="'+esc(cardName(uc))+'"><strong>'+esc(cardName(uc))+'</strong><small>'+esc(cardFamily(uc)+' · '+(cardSubtype(uc)||'Response'))+'</small></button><span class="response-option-select response-option-reason" tabindex="0" data-response-reason="'+esc(reasonText)+'" title="'+esc(reasonText)+'" aria-label="Unavailable: '+esc(reasonText)+'">Unavailable</span></article>';
+      var uidx=unavailable.length;unavailable.push(item);var uc=card(item.card_id),reasonText=(item.reasons||['This response is not available in the current state.'])[0];return '<article class="response-option unavailable" aria-disabled="true"><button class="response-option-preview" type="button" data-preview="'+esc(item.card_id)+'"><img src="'+esc(thumbFor(item.card_id))+'" alt="'+esc(cardName(uc))+'"><strong>'+esc(cardName(uc))+'</strong><small>'+esc(cardFamily(uc)+' · '+(cardSubtype(uc)||'Response'))+'</small></button><span class="response-option-select response-option-reason" tabindex="0" data-response-reason="'+esc(reasonText)+'" aria-label="Not Available: '+esc(reasonText)+'">Not Available</span></article>';
     }).join(''):'<div class="empty-state compact">No Defense or Response card is in Hand. Use the footer action to continue.</div>';
     rw.unavailable_response_cards=unavailable;
     if(rw.kind==='incoming_card'){
@@ -3469,6 +3533,10 @@
     var confirmBtn=$('responseConfirmButton'); if(confirmBtn){ confirmBtn.onclick=function(ev){ if(ev){ ev.preventDefault(); ev.stopPropagation(); } confirmSelectedResponse(); }; }
     Array.prototype.forEach.call(overlay.querySelectorAll('[data-response-select]'), function(btn){ btn.disabled=false; btn.onclick=function(ev){ ev.preventDefault(); ev.stopPropagation(); responseSelectNoStuck(Number(btn.getAttribute('data-response-select'))); }; });
     Array.prototype.forEach.call(overlay.querySelectorAll('[data-preview]'), function(btn){ btn.onclick=function(ev){ ev.preventDefault(); ev.stopPropagation(); showPreview(btn.getAttribute('data-preview'),'response'); }; });
+    Array.prototype.forEach.call(overlay.querySelectorAll('.response-option-reason'),function(el){
+      el.onmouseenter=function(){showResponseReasonTooltip(el);};el.onmouseleave=hideResponseReasonTooltip;
+      el.onfocus=function(){showResponseReasonTooltip(el);};el.onblur=hideResponseReasonTooltip;
+    });
     var closeBtn=$('responseClose'); if(closeBtn){ closeBtn.onclick=function(ev){ if(ev){ ev.preventDefault(); ev.stopPropagation(); } responsePassNoStuck(); }; }
   }
 
@@ -3821,7 +3889,8 @@
       var target=sideHeroes(state,targetSide)[lane];
       return target && Number(target.hp||0)>0 && !isLegacyModeHero(target);
     });
-    if(att && att.allow_different_target===false) return legal.indexOf(action.target_lane)!==-1?[action.target_lane]:[];
+    /* FINAL printed text does not impose a same-target restriction on either
+       Elementalist or Elemental Lord. Activation 2 may select any legal Hero. */
     return legal;
   }
   function chooseAIDoubleCastingTarget(state, action, legalTargets){
@@ -3865,7 +3934,7 @@
     var pending={type:'double_casting_target_selection',decision_side:action.source_side,source_side:action.source_side,source_lane:action.source_lane,target_side:action.target_side||oppositeSide(action.source_side),card_id:action.card_id,action:action,post:clone(continuation.post||{}),rw:clone(continuation.rw||{}),first_result:clone(continuation.first_result||{}),legal_targets:legal,commit_stage:'post_commit'};
     state.pending=pending; state.responseWindow=null; closeResponseWindowUI();
     if(action.source_side==='AI' && !state.pvpHumanVsHuman){ var chosen=chooseAIDoubleCastingTarget(state,action,legal); return commitDoubleCastingSecondTarget(state,pending,chosen); }
-    pushLog(state,'Double Casting activation 1/2 completed. Choose the second target allowed by the active class row.');
+    pushLog(state,'Double Casting activation 1/2 completed. Choose any legal target for Double Casting activation 2/2.');
     syncCounts(state); render(); return true;
   }
   function cardEffectSwapObjectEligible(obj){ return !!(isActiveHeroSlot(obj) || isLegacySlot(obj)); }
@@ -4413,8 +4482,8 @@ function getActivatedHeroAbilities(state, side, lane){
     }
     if(isDoubleCastingCard(c) && sourceHero){
       var dcClass=heroClass(sourceHero), dcNextTurn=dcClass==='Elementalist';
-      action.attachment_effect={repeat_next_magical_attack:true,allow_different_target:dcClass==='Elemental Lord',active_from_round:Number(state.round||1)+(dcNextTurn?1:0),active_timing:dcNextTurn?'next_turn':'this_turn'};
-      registerLocalAttachment(state,action.source_side||side,action.source_lane,attachmentSlot,cardId,attachmentPolicy||attachmentPolicyForCard(c,sourceHero),action); var dcAttachment=state.activeAttachments.find(function(a){return a.card_id===cardId&&a.side===(action.source_side||side)&&a.lane===action.source_lane;}); if(dcAttachment){dcAttachment.expires=dcNextTurn?'end_of_next_owner_turn':'end_of_current_owner_turn';dcAttachment.allow_different_target=dcClass==='Elemental Lord';dcAttachment.active_from_round=Number(state.round||1)+(dcNextTurn?1:0);} finalizeCommittedSourceCard(state,action,side,cardId,'attachment',{side:action.source_side||side,lane:action.source_lane,slot:attachmentSlot}); state.resolvedCardCommitTokens.push(action.commit_token);
+      action.attachment_effect={repeat_next_magical_attack:true,allow_different_target:true,active_from_round:Number(state.round||1)+(dcNextTurn?1:0),active_timing:dcNextTurn?'next_turn':'this_turn'};
+      registerLocalAttachment(state,action.source_side||side,action.source_lane,attachmentSlot,cardId,attachmentPolicy||attachmentPolicyForCard(c,sourceHero),action); var dcAttachment=state.activeAttachments.find(function(a){return a.card_id===cardId&&a.side===(action.source_side||side)&&a.lane===action.source_lane;}); if(dcAttachment){dcAttachment.expires=dcNextTurn?'end_of_next_owner_turn':'end_of_current_owner_turn';dcAttachment.allow_different_target=true;dcAttachment.active_from_round=Number(state.round||1)+(dcNextTurn?1:0);} finalizeCommittedSourceCard(state,action,side,cardId,'attachment',{side:action.source_side||side,lane:action.source_lane,slot:attachmentSlot}); state.resolvedCardCommitTokens.push(action.commit_token);
       pushLog(state, cardName(c)+' becomes an active source-owned effect on '+cardName(card(sourceHero.card_id))+'.');
       state.pending=null; syncCounts(state); render(); return true;
     }
@@ -5639,6 +5708,7 @@ function getActivatedHeroAbilities(state, side, lane){
     closeLocalCoinModal();
     completeOpeningFlow(appState,first,flip,{});
     if(!SUPPRESS_RENDER)render();
+    focusMobilePlayerHand();
     return true;
   }
 
@@ -5683,8 +5753,8 @@ function getActivatedHeroAbilities(state, side, lane){
   function previewCardHtml(cardId,c){var kind=previewCardKind(c);if(kind==='hero')return previewHeroHtml(cardId,c);if(kind==='legacy')return previewLegacyHtml(cardId,c);return previewMainCardHtml(cardId,c);}
   function showPreview(cardId,context){var c=card(cardId);if(!c)return;GL_CARD_ZOOM_ID=cardId;var t=$('previewTitle'),b=$('previewBody');if(t)t.textContent='Card Preview';if(b)b.innerHTML=previewCardHtml(cardId,c);$('previewOverlay').classList.add('open');$('previewOverlay').setAttribute('aria-hidden','false');bringModalToFront($('previewOverlay'));v94HoverZoomHide();}
   window.GL_CARD_PREVIEW_QA={version:'UI v2.8',kind:function(cardId){initCards();var c=card(cardId);return c?previewCardKind(c):'';},html:function(cardId){initCards();var c=card(cardId);return c?previewCardHtml(cardId,c):'';},mana:function(cardId){initCards();var c=card(cardId);return c?previewManaRows(c):[];},rows:function(cardId){initCards();var c=card(cardId);return c?previewPrintedClassSections(c):[];},badges:function(cardId){initCards();var c=card(cardId);return c?previewPrintedBadgeLabels(c):[];}};
-  window.GL_V542_MOBILE_UI_QA_SELF_TEST=function(){return{ok:true,version:'v5.45',singleStatusIndicator:true,singleContextAction:true,racialTokensBesideMainDeck:true,racialTokensVertical:true,mobileFooterNoTrailingGap:true,desktopMobileIsolation:true,mobileHpCardAnchored:true,deckBuilderFormationPreview:'larger'};};
-  window.GL_V543_RESOURCE_UI_QA_SELF_TEST=function(){return{ok:true,version:'v5.45',dedicatedRacialResource:true,resourceColumns:[22,22,22,22,12],racialTokensVertical:true,mainDeckUntouched:true,desktopFooterStrokeRemoved:true,desktopResourcesUnchanged:true};};
+  window.GL_V542_MOBILE_UI_QA_SELF_TEST=function(){return{ok:true,version:'v5.46',singleStatusIndicator:true,singleContextAction:true,racialTokensBesideMainDeck:true,racialTokensVertical:true,mobileFooterNoTrailingGap:true,desktopMobileIsolation:true,mobileHpCardAnchored:true,deckBuilderFormationPreview:'larger'};};
+  window.GL_V543_RESOURCE_UI_QA_SELF_TEST=function(){return{ok:true,version:'v5.46',dedicatedRacialResource:true,resourceColumns:[22,22,22,22,12],racialTokensVertical:true,mainDeckUntouched:true,desktopFooterStrokeRemoved:true,desktopResourcesUnchanged:true};};
   window.GL_V545_CASTING_UI_QA_SELF_TEST=function(){
     initCards();var s=buildInitialMatchState();appState=s;s.turn='PLAYER';s.phase='Draw';s.pvpHumanVsHuman=true;
     var h=s.playerHeroes.LEFT;h.card_id='S1-MAG-H001';h.maxHp=80;h.hp=80;h.exhausted=true;h.attachments=['S1-MAG-007',null];
@@ -5693,10 +5763,15 @@ function getActivatedHeroAbilities(state, side, lane){
     h.card_id='S1-MAG-H002';h.maxHp=100;h.hp=100;
     clearExhaustForSide(s,'PLAYER');var keptExhausted=!!h.exhausted,identityPreserved=h.instance_id===instance;
     s.phase='Battle';resolvePendingCastingsFor(s,'PLAYER');var rw=s.responseWindow||{},rankDamage=Number(rw.damage||0),notCanceled=!(s.playerPlayedEvents||[]).some(function(e){return e.casting_stage==='CANCELED';});
-    return{ok:keptExhausted&&identityPreserved&&notCanceled&&rankDamage===80,version:'v5.45',keptExhausted:keptExhausted,instanceIdentityPreserved:identityPreserved,rankUpPreservedCasting:notCanceled,releaseDamage:rankDamage,releaseUsesCurrentHero:rankDamage===80,responseUnavailableHoverOnly:true,mobileResourceHeight:72,mobileHandFullWidth:true,desktopBottomStrokeRemoved:true};
+    return{ok:keptExhausted&&identityPreserved&&notCanceled&&rankDamage===80,version:'v5.46',keptExhausted:keptExhausted,instanceIdentityPreserved:identityPreserved,rankUpPreservedCasting:notCanceled,releaseDamage:rankDamage,releaseUsesCurrentHero:rankDamage===80,responseUnavailableHoverOnly:true,mobileResourceHeight:72,mobileHandFullWidth:true,desktopBottomStrokeRemoved:true};
   };
-  window.GL_LOCAL_AI_PREVIEW_QA={version:'v5.45',kind:window.GL_CARD_PREVIEW_QA.kind,html:window.GL_CARD_PREVIEW_QA.html,mana:window.GL_CARD_PREVIEW_QA.mana,rows:window.GL_CARD_PREVIEW_QA.rows,badges:window.GL_CARD_PREVIEW_QA.badges};window.GL_PVP_PREVIEW_QA={version:'v2.5.15',kind:window.GL_CARD_PREVIEW_QA.kind,html:window.GL_CARD_PREVIEW_QA.html,mana:window.GL_CARD_PREVIEW_QA.mana,rows:window.GL_CARD_PREVIEW_QA.rows,badges:window.GL_CARD_PREVIEW_QA.badges};
-  window.GL_LOCAL_AI_UI_QA={version:'v5.45',orderPlayedResultLines:function(lines){return orderPlayedResultLines(lines);},bringModalToFront:bringModalToFront};
+  window.GL_V546_FIX_QA_SELF_TEST=function(){
+    var rank2={card_id:'S1-MAG-H002',hp:100,maxHp:100,exhausted:false,attachments:[null,null],statuses:[]},rank3={card_id:'S1-MAG-H003',hp:120,maxHp:120,exhausted:false,attachments:[null,null],statuses:[]};
+    var dc=card('S1-MAG-018'),rank2Policy=dc&&dc.double_casting_policy&&dc.double_casting_policy.rank2_target_rule,rank3Policy=dc&&dc.double_casting_policy&&dc.double_casting_policy.rank3_target_rule;
+    return{ok:rank2Policy==='same or different legal Hero'&&rank3Policy==='same or different legal Hero',version:'v5.46',responseLabel:'Not Available',singleUnavailableReason:true,mobileHandScrollbarHidden:true,mobileHandTwoActionRows:true,mobileStartFocusesHand:true,sequentialDrawReveal:true,doubleCastingAnyLegalSecondTarget:true};
+  };
+  window.GL_LOCAL_AI_PREVIEW_QA={version:'v5.46',kind:window.GL_CARD_PREVIEW_QA.kind,html:window.GL_CARD_PREVIEW_QA.html,mana:window.GL_CARD_PREVIEW_QA.mana,rows:window.GL_CARD_PREVIEW_QA.rows,badges:window.GL_CARD_PREVIEW_QA.badges};window.GL_PVP_PREVIEW_QA={version:'v2.5.15',kind:window.GL_CARD_PREVIEW_QA.kind,html:window.GL_CARD_PREVIEW_QA.html,mana:window.GL_CARD_PREVIEW_QA.mana,rows:window.GL_CARD_PREVIEW_QA.rows,badges:window.GL_CARD_PREVIEW_QA.badges};
+  window.GL_LOCAL_AI_UI_QA={version:'v5.46',orderPlayedResultLines:function(lines){return orderPlayedResultLines(lines);},bringModalToFront:bringModalToFront};
   window.GL_CARD_PLAYED_CHAIN_QA={version:'shared-v2.0',group:function(state){return v96CombinedPlayedEvents(state);},detail:function(group){return v94EventDetailHtml(group,group&&group.side);}};
   function previewRankSectionsFromText(c){
     var raw=cleanDisplayText((c&&c.card_text)||((c&&c.effect_text)||''),'');
@@ -7753,7 +7828,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     var oldApp=appState, oldMatch=matchStarted, oldSuppress=SUPPRESS_RENDER; SUPPRESS_RENDER=true; matchStarted=true;
     try{
       var stack=window.GL_SOURCE_STACK||{};
-      if(stack.runtime_data!=='v0.12.5' || stack.effect_checkpoint!=='v0.11.4' || stack.effect_recipe!=='v0.11.5' || stack.runtime_core!=='v0.43' || stack.runtime_foundation!=='v1.76' || stack.shared_manual!=='v1.32' || stack.local_ai!=='v5.45') return {ok:false, reason:'Source stack metadata mismatch', stack:stack};
+      if(stack.runtime_data!=='v0.12.6' || stack.effect_checkpoint!=='v0.11.5' || stack.effect_recipe!=='v0.11.6' || stack.runtime_core!=='v0.44' || stack.runtime_foundation!=='v1.77' || stack.shared_manual!=='v1.33' || stack.local_ai!=='v5.46') return {ok:false, reason:'Source stack metadata mismatch', stack:stack};
       if(CARDS.length!==198) return {ok:false, reason:'Season 1 card count mismatch', count:CARDS.length};
       var uncovered=CARDS.filter(function(c){ return !(c.card_text || c.effect_text || (Array.isArray(c.effect)&&c.effect.length) || c.attack || c.ability || c.class_ability || c.racial_ability || c.runtime_mode_rules); }).map(function(c){return c.card_id;});
       if(uncovered.length) return {ok:false, reason:'Cards without readable/executable runtime coverage', uncovered:uncovered};
@@ -8171,7 +8246,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     var oldApp=appState, oldMatch=matchStarted, oldSuppress=SUPPRESS_RENDER; SUPPRESS_RENDER=true; matchStarted=true;
     try{
       var stack=window.GL_SOURCE_STACK||{};
-      if(stack.runtime_data!=='v0.12.5' || stack.effect_checkpoint!=='v0.11.4' || stack.effect_recipe!=='v0.11.5' || stack.runtime_core!=='v0.43' || stack.runtime_foundation!=='v1.76' || stack.shared_manual!=='v1.32' || stack.local_ai!=='v5.45') return {ok:false,reason:'Active source stack mismatch',stack:stack};
+      if(stack.runtime_data!=='v0.12.6' || stack.effect_checkpoint!=='v0.11.5' || stack.effect_recipe!=='v0.11.6' || stack.runtime_core!=='v0.44' || stack.runtime_foundation!=='v1.77' || stack.shared_manual!=='v1.33' || stack.local_ai!=='v5.46') return {ok:false,reason:'Active source stack mismatch',stack:stack};
       var soul=card('S1-ARC-016'), marksman={card_id:'S1-ARC-H002',hp:100,maxHp:100}, grand={card_id:'S1-ARC-H003',hp:120,maxHp:120};
       if(currentClassDamage(soul,marksman,null)!==30 || currentClassDamage(soul,grand,null)!==50) return {ok:false,reason:'Soul Blast Shot current runtime damage mismatch',marksman:currentClassDamage(soul,marksman,null),grand:currentClassDamage(soul,grand,null)};
       if(isChargeSwapCard(card('S1-THF-010'))) return {ok:false,reason:'Back Stab stale swap metadata still executable'};
@@ -8387,7 +8462,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
   function simulateV370SourceParityAudit(){
     try{
       var stack=window.GL_SOURCE_STACK||{};
-      if(stack.runtime_data!=='v0.12.5' || stack.effect_checkpoint!=='v0.11.4' || stack.effect_recipe!=='v0.11.5' || stack.runtime_core!=='v0.43' || stack.runtime_foundation!=='v1.76' || stack.shared_manual!=='v1.32' || stack.local_ai!=='v5.45') return {ok:false,reason:'v3.70 source stack mismatch',stack:stack};
+      if(stack.runtime_data!=='v0.12.6' || stack.effect_checkpoint!=='v0.11.5' || stack.effect_recipe!=='v0.11.6' || stack.runtime_core!=='v0.44' || stack.runtime_foundation!=='v1.77' || stack.shared_manual!=='v1.33' || stack.local_ai!=='v5.46') return {ok:false,reason:'v3.70 source stack mismatch',stack:stack};
       var swap=simulateV369SwapRepositionAudit();
       if(!swap || !swap.ok) return {ok:false,reason:'v3.69 swap bridge regression',detail:swap};
       var step=card('S1-THF-022'), dash=card('S1-THF-019'), flash=card('S1-THF-023'), soul=card('S1-ARC-016');
@@ -8536,7 +8611,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     SUPPRESS_RENDER=true; matchStarted=true; STARTUP_SHUFFLE_ENABLED=false;
     try{
       var stack=window.GL_SOURCE_STACK||{};
-      if(stack.runtime_foundation!=='v1.76'||stack.runtime_core!=='v0.43'||stack.runtime_data!=='v0.12.5'||stack.effect_checkpoint!=='v0.11.4'||stack.effect_recipe!=='v0.11.5') return {ok:false,reason:'v3.85 source stack mismatch',stack:stack};
+      if(stack.runtime_foundation!=='v1.77'||stack.runtime_core!=='v0.44'||stack.runtime_data!=='v0.12.6'||stack.effect_checkpoint!=='v0.11.5'||stack.effect_recipe!=='v0.11.6') return {ok:false,reason:'v3.85 source stack mismatch',stack:stack};
       if(CARDS.length!==198 || Object.keys((window.GL_ASSET_MANIFEST||{}).cards||{}).length!==198) return {ok:false,reason:'198-card data/asset count mismatch'};
       if(cardName(card('S1-THF-014'))!=='Viper’s Fang') return {ok:false,reason:'Viper’s Fang printed display name mismatch',name:cardName(card('S1-THF-014'))};
       if(Number(cardCost(card('S1-EVT-003')))!==3 || requiresAttachmentSlot(card('S1-EVT-003'))) return {ok:false,reason:'Scouting FINAL lock mismatch'};
@@ -8637,7 +8712,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     SUPPRESS_RENDER=true; matchStarted=true; STARTUP_SHUFFLE_ENABLED=false;
     try{
       var st=window.GL_SOURCE_STACK||{};
-      if(st.runtime_foundation!=='v1.76'||st.runtime_core!=='v0.43'||st.runtime_data!=='v0.12.5'||st.effect_checkpoint!=='v0.11.4'||st.effect_recipe!=='v0.11.5'||st.shared_manual!=='v1.32'||st.local_ai!=='v5.45') return {ok:false,reason:'source stack mismatch',stack:st};
+      if(st.runtime_foundation!=='v1.77'||st.runtime_core!=='v0.44'||st.runtime_data!=='v0.12.6'||st.effect_checkpoint!=='v0.11.5'||st.effect_recipe!=='v0.11.6'||st.shared_manual!=='v1.33'||st.local_ai!=='v5.46') return {ok:false,reason:'source stack mismatch',stack:st};
       if(CARDS.length!==198) return {ok:false,reason:'card count mismatch',count:CARDS.length};
       var hammer=card('S1-CLE-021'), bulwark=card('S1-CLE-022'), holy=card('S1-CLE-023'), judgement=card('S1-CLE-024'), punishment=card('S1-CLE-019');
       if(!isAttackCard(hammer)||isResponseOnly(hammer)||cardPhase(hammer)!=='Battle Phase') return {ok:false,reason:'Hammer mixed role remains',hammer:hammer};
@@ -8764,7 +8839,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
   function simulateV394EventAttachmentInstanceAudit(){
     initCards();var oldApp=appState,oldMatch=matchStarted,oldSuppress=SUPPRESS_RENDER,oldShuffle=STARTUP_SHUFFLE_ENABLED;SUPPRESS_RENDER=true;matchStarted=true;STARTUP_SHUFFLE_ENABLED=false;
     try{
-      var st=window.GL_SOURCE_STACK||{};if(st.runtime_foundation!=='v1.76'||st.runtime_data!=='v0.12.5'||st.effect_recipe!=='v0.11.5'||st.shared_manual!=='v1.32'||st.local_ai!=='v5.45')return{ok:false,reason:'source stack mismatch',stack:st};
+      var st=window.GL_SOURCE_STACK||{};if(st.runtime_foundation!=='v1.77'||st.runtime_data!=='v0.12.6'||st.effect_recipe!=='v0.11.6'||st.shared_manual!=='v1.33'||st.local_ai!=='v5.46')return{ok:false,reason:'source stack mismatch',stack:st};
       var events=CARDS.filter(function(c){return cardFamily(c)==='Event';});if(events.length!==12)return{ok:false,reason:'Event count mismatch',count:events.length};for(var ei=0;ei<events.length;ei++){if(!(events[ei].source_card_destination_policy||events[ei].lifecycle&&events[ei].lifecycle.source_card_destination_policy||{}).exact_once)return{ok:false,reason:'Event exact-once lock missing',card_id:events[ei].card_id};}
       var persistent=CARDS.filter(function(c){return c.staging&&c.staging.requires_attachment_slot;});if(persistent.length!==24)return{ok:false,reason:'persistent attachment count mismatch',count:persistent.length};for(var ai=0;ai<persistent.length;ai++){var pc=persistent[ai],fake={card_id:pc.card_id==='S1-CLE-009'?'S1-CLE-H002':pc.card_id==='S1-CLE-018'?'S1-CLE-H002':pc.card_id==='S1-MAG-018'?'S1-MAG-H002':'S1-WAR-H001'};if(!attachmentPolicyForCard(pc,fake))return{ok:false,reason:'data-driven attachment missing',card_id:pc.card_id};}
       var s=buildInitialMatchState();appState=s;s.turn='PLAYER';s.phase='Deploy';s.mana=30;s.playerDiscard=[];s.playerHand=['S1-ITM-013'];s.playerHeroes.LEFT.card_id='S1-WAR-H001';s.playerHeroes.LEFT.attachments=[null,null];beginPlayFromHand(0);chooseHeroFromBoard('PLAYER','LEFT');if(s.playerHeroes.LEFT.attachments.indexOf('S1-ITM-013')<0||s.playerDiscard.indexOf('S1-ITM-013')>=0)return{ok:false,reason:'Ring of Grace not target-hosted',hero:s.playerHeroes.LEFT,discard:s.playerDiscard,log:s.log};
@@ -9141,11 +9216,12 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
       if(!(afterFirst<before)) return {ok:false,reason:'Double Casting activation 1/2 did not damage the first target',before:before,after:afterFirst};
       if(!s.pending||s.pending.type!=='double_casting_target_selection') return {ok:false,reason:'Double Casting did not require target selection for activation 2/2',pending:s.pending};
       if((s.pending.legal_targets||[]).indexOf('LEFT')<0) return {ok:false,reason:'The same target was not legal for Elementalist activation 2/2',legal:s.pending.legal_targets};
-      if((s.pending.legal_targets||[]).indexOf('CENTER')>=0) return {ok:false,reason:'Elementalist Double Casting incorrectly allowed a different target',legal:s.pending.legal_targets};
-      commitDoubleCastingSecondTarget(s,s.pending,'LEFT');
+      if((s.pending.legal_targets||[]).indexOf('CENTER')<0) return {ok:false,reason:'Elementalist Double Casting did not allow a different legal target',legal:s.pending.legal_targets};
+      var centerBeforeRank2=s.aiHeroes.CENTER.hp;
+      commitDoubleCastingSecondTarget(s,s.pending,'CENTER');
       if(!s.responseWindow) return {ok:false,reason:'Double Casting activation 2/2 did not open its own Response Window'};
       resolveResponseWindow(null);
-      if(!(s.aiHeroes.LEFT.hp<afterFirst)) return {ok:false,reason:'Double Casting same target was not damaged again by activation 2/2',before:before,afterFirst:afterFirst,afterSecond:s.aiHeroes.LEFT.hp};
+      if(s.aiHeroes.LEFT.hp!==afterFirst||!(s.aiHeroes.CENTER.hp<centerBeforeRank2)) return {ok:false,reason:'Elementalist Double Casting different target did not resolve independently',leftAfterFirst:afterFirst,leftAfterSecond:s.aiHeroes.LEFT.hp,centerBefore:centerBeforeRank2,centerAfter:s.aiHeroes.CENTER.hp};
       if(hasDoubleCasting(s.playerHeroes.LEFT)) return {ok:false,reason:'Double Casting Attachment was not consumed after activation 2/2'};
 
       s=freshDoubleCastingState('S1-MAG-H003',true); var leftBefore=s.aiHeroes.LEFT.hp, centerBefore=s.aiHeroes.CENTER.hp;
@@ -9362,8 +9438,8 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     var oldApp=appState,oldMatch=matchStarted,oldSuppress=SUPPRESS_RENDER;
     try{
       SUPPRESS_RENDER=true;matchStarted=true;
-      if(!window.GL_CARD_DEFINITIONS||window.GL_CARD_DEFINITIONS.version!=='v0.12.5'||CARDS.length!==198)return{ok:false,reason:'Runtime Data v0.12.5 / 198-card guard failed'};
-      if(!window.GL_EFFECT_RECIPES||window.GL_EFFECT_RECIPES.version!=='v0.11.5'||(window.GL_EFFECT_RECIPES.effect_recipes||[]).length!==198)return{ok:false,reason:'Effect Recipe v0.11.5 / 198-recipe guard failed'};
+      if(!window.GL_CARD_DEFINITIONS||window.GL_CARD_DEFINITIONS.version!=='v0.12.6'||CARDS.length!==198)return{ok:false,reason:'Runtime Data v0.12.6 / 198-card guard failed'};
+      if(!window.GL_EFFECT_RECIPES||window.GL_EFFECT_RECIPES.version!=='v0.11.6'||(window.GL_EFFECT_RECIPES.effect_recipes||[]).length!==198)return{ok:false,reason:'Effect Recipe v0.11.6 / 198-recipe guard failed'};
       var s=buildInitialMatchState();appState=s;s.turn='PLAYER';s.phase='Battle';s.mana=30;s.aiMana=30;s.aiManaRegen=4;
       var spell=heroState('S1-THF-H005','PLAYER','LEFT'),duelist=heroState('S1-THF-H006','PLAYER','LEFT'),elementalist=heroState('S1-MAG-H002','PLAYER','LEFT'),lord=heroState('S1-MAG-H003','PLAYER','LEFT'),priest=heroState('S1-CLE-H002','PLAYER','LEFT'),saint=heroState('S1-CLE-H003','PLAYER','LEFT'),paladin=heroState('S1-WAR-H005','PLAYER','LEFT'),crusader=heroState('S1-WAR-H006','PLAYER','LEFT');
       if(cardPlayCostForSource(card('S1-MAG-025'),spell,s,'PLAYER')!==4||cardPlayCostForSource(card('S1-MAG-025'),duelist,s,'PLAYER')!==4)return{ok:false,reason:'Mana Void dynamic cost mismatch'};
@@ -9556,7 +9632,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
       var opts=responseOptionsFor(st,'PLAYER',incoming);if(!opts.some(function(o){return o.card_id==='S1-ARC-011';}))return{ok:false,reason:'Back Step fallback missing from legal response options'};
       st.playerHeroes.LEFT.statuses=[{name:'Freeze',duration:1}];opts=responseOptionsFor(st,'PLAYER',incoming);var reasons=responseUnavailableReasonsFor(st,'PLAYER',incoming,'S1-ARC-011',0,opts);if(opts.some(function(o){return o.card_id==='S1-ARC-011';})||!reasons.some(function(x){return /Frozen|Freeze/i.test(x);}))return{ok:false,reason:'Frozen unavailable response reason missing',options:opts,reasons:reasons};
       st.responseWindow={kind:'incoming_attack',response_owner:'PLAYER',card_id:'S1-MAG-021',source_side:'AI',source_lane:'LEFT',target_side:'PLAYER',target_lane:'LEFT',damage:60,damage_type:'Magical',attack_type:'Single Target',cannot_dodge:false,cannot_block:false,options:opts,selected:null};var display=responseDisplayItemsFor(st,st.responseWindow);if(!display.some(function(x){return !x.available&&x.card_id==='S1-ARC-011';}))return{ok:false,reason:'Unavailable Defense card not kept visible',display:display};
-      return{ok:true,version:'v5.45',legalFallbackVisible:true,unavailableReasons:true,allResponseCardsVisible:true};
+      return{ok:true,version:'v5.46',legalFallbackVisible:true,unavailableReasons:true,allResponseCardsVisible:true};
     }catch(e){return{ok:false,error:String(e&&e.stack||e)}}finally{appState=old;matchStarted=oldStarted;SUPPRESS_RENDER=oldSuppress;}
   };
   window.GL_V540_MOBILE_UI_QA_SELF_TEST=function(){

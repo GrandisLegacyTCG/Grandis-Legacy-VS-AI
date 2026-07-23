@@ -30,5 +30,5 @@ module.exports = {
   },
   effects: require('./effects/effect-registry'),
   oneSource: require('./data/one-source-loader'),
-  browserAuthority: { source: 'runtime/browser/runtime-authority.browser.js', version: 'v1.76-browser / one-source-v1.4' }
+  browserAuthority: { source: 'runtime/browser/runtime-authority.browser.js', version: 'v1.77-browser / one-source-v1.4' }
 };

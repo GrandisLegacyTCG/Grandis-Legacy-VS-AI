@@ -3,9 +3,9 @@ const fs=require('fs');
 const path=require('path');
 const assert=require('assert');
 const root=path.resolve(__dirname,'..');
-const data=require(path.join(root,'data/season1/cards.runtime.v0.12.5.json'));
-const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.11.5.json'));
-const legality=require(path.join(root,'data/season1/legality-map.runtime.v0.11.4.json'));
+const data=require(path.join(root,'data/season1/cards.runtime.v0.12.6.json'));
+const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.11.6.json'));
+const legality=require(path.join(root,'data/season1/legality-map.runtime.v0.11.5.json'));
 const preview=require(path.join(root,'data/season1/card-preview.generated.v1.4.0.json'));
 const H='5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab';
 for(const doc of [data,recipes,legality,preview]){
