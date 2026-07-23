@@ -1,9 +1,9 @@
-/* Grandis Legacy Browser Runtime Authority v1.75.
+/* Grandis Legacy Browser Runtime Authority v1.76.
    Owns exact-once transactions, mandatory-choice lifecycle, attachment identity, and invariant gates.
    UI and animation code may render the resulting state but must not finalize cards or choices independently. */
 (function(global){
   'use strict';
-  var VERSION='v1.75-browser';
+  var VERSION='v1.76-browser';
   function ensure(state){
     state.runtimeRevision=Number(state.runtimeRevision||0);
     state.runtimeCardDestinationLedger=state.runtimeCardDestinationLedger&&typeof state.runtimeCardDestinationLedger==='object'?state.runtimeCardDestinationLedger:{};
@@ -68,6 +68,8 @@
   function abortChoiceCommit(state,id){ ensure(state); id=String(id); if(state.runtimeChoiceLedger[id]==='COMMITTING')state.runtimeChoiceLedger[id]='OPEN'; if(state.pending&&state.pending.choice_id===id)state.pending.committing=false; }
   function castingSourceMatches(casting,currentSource){
     casting=casting||{};currentSource=currentSource||{};
+    var lockedInstance=String(casting.source_instance_id||''),currentInstance=String(currentSource.instance_id||'');
+    if(lockedInstance&&currentInstance)return lockedInstance===currentInstance;
     var locked=String(casting.source_progression_id||''),current=String(currentSource.progression_id||'');
     if(locked&&current)return locked===current;
     return String(casting.source_hero_card_id||'')===String(currentSource.card_id||'');

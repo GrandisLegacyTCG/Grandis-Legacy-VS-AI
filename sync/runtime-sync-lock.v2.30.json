@@ -1,0 +1,178 @@
+{
+  "schema_version": "2.30",
+  "canonical_registry_hash": "5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab",
+  "one_source_authority": "v1.4",
+  "one_source_patch": "v1.4.1",
+  "runtime_foundation": "v1.76",
+  "runtime_core": "v0.43",
+  "runtime_data": "v0.12.5",
+  "effect_recipe": "v0.11.5",
+  "effect_checkpoint": "v0.11.4",
+  "application_runtime_sync": "v2.30",
+  "shared_runtime_manual": "v1.32",
+  "ui_lock": "v2.33",
+  "local_ai": "v5.45",
+  "pvp_railway": "v2.5.15",
+  "deck_builder": "v2.1",
+  "shared_gameplay_sha256": "591ca2e53356ee4b2f730803119b164405dcc9f7a76ea17653c9db3d560f3f64",
+  "runtime_authority_sha256": "4ab02e709c09fef1292d1466216347184f283a8438aba8684f72d24b3d0ce284",
+  "runtime_source_browser_sha256": "4ab02e709c09fef1292d1466216347184f283a8438aba8684f72d24b3d0ce284",
+  "static_data_sha256": "9d08b533a249d4a0f74f6be7a6b211fbefe67e76a04e92891ded1f78bd0726e0",
+  "shared_ui_css_sha256": "a14ad4729b701b8ee8419e235a12ac15c7909686493c70e2985685c8bb0bca55",
+  "locks": {
+    "arcane_duelist_lineage_only": true,
+    "legality_before_effect_row_fallback": true,
+    "card_played_audit_sections": true,
+    "hp_offset_global": {
+      "x_px": -4,
+      "y_px_from_v5_29": 5
+    },
+    "pvp_playtest_badge": "lobby_only",
+    "visible_reset_match_controls": false,
+    "coin_animation_alternates_both_faces": true,
+    "coin_final_face_authoritative": true,
+    "deck_setup_full_width": true,
+    "local_turn_banner": "local_player_draw_phase_only",
+    "opponent_turn_banner": false,
+    "legacy_attachment_slot_parity": {
+      "desktop_attachment_height_px": 35,
+      "mobile_attachment_height_px": 34,
+      "legacy_follows_hero": true,
+      "class_specific_offsets": false
+    },
+    "local_ai_tactical_planner_v5_35": {
+      "ring_of_grace_targets_heal_recipient": true,
+      "same_turn_payoff_required_for_expiring_offensive_attachments": true,
+      "planned_follow_up_revalidated_by_runtime": true,
+      "pvp_unchanged": "v2.5.15"
+    },
+    "vs_ai_v5_36": {
+      "global_hero_printed_row_fallback_audit": true,
+      "live_response_option_refresh": true,
+      "card_played_target_snapshot": true,
+      "automatic_player_draw_phase_entry": true,
+      "draw_phase_requires_next_phase_to_deploy": true,
+      "deck_builder_route": "deck-builder/index.html",
+      "pvp_unchanged": "v2.5.15"
+    },
+    "vs_ai_v5_37": {
+      "holy_blast_area_legacy_regression_fixture_corrected": true,
+      "arrow_barrage_raw_and_dragon_scale_coverage": true,
+      "visible_deck_import_json_wording_removed": true,
+      "pvp_unchanged": "v2.5.15"
+    },
+    "vs_ai_v5_38": {
+      "desktop_deck_picker_import_ratio": "80/20",
+      "desktop_full_hero_preview": true,
+      "desktop_deck_builder_lower_left_highlighted": true,
+      "mobile_setup_compact_header": true,
+      "mobile_setup_scrollable": true,
+      "mobile_deck_builder_hidden": true,
+      "mobile_card_played_persistent_compact": true,
+      "mobile_phase_actions_sticky_compact": true,
+      "pvp_unchanged": "v2.5.15"
+    },
+    "vs_ai_v5_39": {
+      "all_hand_response_cards_visible": true,
+      "unavailable_response_cards_disabled": true,
+      "runtime_unavailable_reasons_visible": true,
+      "legal_response_options_sorted_first": true,
+      "deck_builder": "v2.0",
+      "mobile_hands": "straight_horizontal_scroll",
+      "pvp_unchanged": "v2.5.15"
+    },
+    "vs_ai_v5_40": {
+      "mobile_statuses_consolidated_under_warning_indicator": true,
+      "mobile_context_action_button": [
+        "racial_trait",
+        "hero_ability",
+        "legacy_ability"
+      ],
+      "desktop_hero_action_buttons_unchanged": true,
+      "mobile_player_footer_below_next_phase": true,
+      "mobile_player_footer_layout": "player_deck_70 / full_battle_log_30",
+      "opponent_played_persistent_compact": true,
+      "mobile_hands": "straight_horizontal_scroll",
+      "pvp_unchanged": "v2.5.15"
+    },
+    "vs_ai_v5_41": {
+      "mobile_hero_card_scale": "approximately_5_to_8_percent_smaller",
+      "mobile_hero_top_gutter_px": 29,
+      "single_top_left_info_indicator": true,
+      "top_left_info_includes": [
+        "negative_status",
+        "casting",
+        "exhaust",
+        "other_restrictions"
+      ],
+      "single_top_right_context_action": true,
+      "top_right_actions": [
+        "racial_trait",
+        "hero_ability",
+        "legacy_ability"
+      ],
+      "mobile_racial_tokens": "compact_inside_mana_resource",
+      "mobile_hp_overlay": "card_top_right_printed_hp_anchor",
+      "mobile_footer_full_scroll": true,
+      "deck_builder": "v2.1",
+      "deck_builder_formation_visual_width_px": 120,
+      "pvp_unchanged": "v2.5.15"
+    },
+    "vs_ai_v5_42": {
+      "mobile_footer_trailing_gap_removed": true,
+      "mobile_hero_top_gutter_px": 22,
+      "mobile_status_indicator_size_px": 18,
+      "mobile_context_action_size_px": 18,
+      "mobile_racial_tokens": "stacked_vertically_beside_main_deck",
+      "desktop_mobile_isolation": true,
+      "mobile_hp_overlay": "card_top_right_printed_hp_anchor",
+      "pvp_unchanged": "v2.5.15"
+    },
+    "vs_ai_v5_43": {
+      "mobile_resource_columns_percent": [
+        22,
+        22,
+        22,
+        22,
+        12
+      ],
+      "mobile_resource_order": [
+        "Mana Pool",
+        "Legacy Deck",
+        "Discard Pile",
+        "Main Deck",
+        "Racial Token"
+      ],
+      "racial_token_container": "dedicated_mobile_only",
+      "racial_token_orientation": "vertical",
+      "main_deck_internal_layout": "unchanged",
+      "desktop_resource_layout": "unchanged_four_zones_plus_existing_hand_tokens",
+      "desktop_lower_gold_stroke": "removed",
+      "pvp_unchanged": "v2.5.15"
+    },
+    "casting_rank_release_v5_44": {
+      "rank_up_preserves_casting": true,
+      "draw_phase_keeps_source_exhausted": true,
+      "cancel_reasons": [
+        "source_repositioned",
+        "source_stunned",
+        "source_defeated_or_replaced"
+      ],
+      "release_damage_uses_current_source_hero": true,
+      "target_position_remains_locked": true
+    },
+    "vs_ai_v5_45": {
+      "casting_source_instance_identity": true,
+      "rank_up_preserves_casting": true,
+      "release_uses_current_hero_effect_row": true,
+      "desktop_unavailable_reason_hover_only": true,
+      "desktop_legacy_gold_baseline_removed": true,
+      "mobile_resource_height_px": 72,
+      "mobile_mana_regen_visible": true,
+      "mobile_player_hand_full_width": true,
+      "pvp_unchanged": "v2.5.15"
+    }
+  },
+  "version": "v2.29",
+  "shared_manual": "v1.31"
+}

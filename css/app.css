@@ -5308,3 +5308,32 @@ body.deck-setup-active{
   .v96-app .desktop-player-footer,.v96-app .player-footer-bar{border-bottom:0!important;box-shadow:none!important}
   .v96-app .gl-app{border-bottom:0!important}
 }
+
+
+/* ========================================================================== */
+/* Grandis Legacy VS AI v5.45 — final desktop stroke and mobile sizing pass.  */
+/* ========================================================================== */
+.v96-app .gl-app::after{display:none!important;content:none!important;background:none!important;height:0!important}
+.response-option-reason{display:block!important;width:100%!important;margin-top:5px!important;border:1px solid #6e5b63!important;background:#2a1d24!important;color:#ffd2dc!important;border-radius:7px!important;padding:4px!important;font-size:10px!important;text-align:center!important;cursor:help!important;overflow:visible!important}
+@media(max-width:760px){
+  .v96-app .field--opponent{grid-template-rows:72px 218px!important}
+  .v96-app .field--player{grid-template-rows:218px 72px!important}
+  .v96-app .zone,.v96-app .mobile-racial-zone{height:72px!important;min-height:72px!important;max-height:72px!important}
+  .v96-app .zone{padding:3px 1px 2px!important}
+  .v96-app .zone>span{height:9px!important;flex:0 0 9px!important;font-size:6px!important;line-height:9px!important}
+  .v96-app .zone em{display:block!important;height:8px!important;flex:0 0 8px!important;font-size:5.5px!important;line-height:8px!important;color:#d8e4eb!important;white-space:nowrap!important;overflow:visible!important}
+  .v96-app .zoneCard{height:49px!important;min-height:49px!important;max-height:49px!important;overflow:visible!important}
+  .v96-app .zoneCard img{max-height:49px!important;max-width:46px!important;object-fit:contain!important;object-position:center!important}
+  .v96-app .mobile-racial-zone{padding:3px 0 2px!important;justify-content:flex-start!important;overflow:hidden!important}
+  .v96-app .mobile-racial-zone>span{height:9px!important;flex:0 0 9px!important;font-size:5.5px!important;line-height:9px!important}
+  .v96-app .mobile-racial-token-stack{height:58px!important;min-height:58px!important;flex:0 0 58px!important;display:grid!important;grid-template-rows:26px 26px!important;gap:2px!important;padding:1px 0!important;overflow:hidden!important}
+  .v96-app .mobile-racial-token-stack img{width:22px!important;height:22px!important;max-width:22px!important;max-height:22px!important}
+
+  .v96-app .hand-area--player{grid-template-columns:minmax(0,1fr)!important;padding-left:0!important;padding-right:0!important}
+  .v96-app .hand-area--player>.racial-coins--hand,.v96-app .hand-area--player>.hand-spacer{display:none!important}
+  .v96-app .hand-area--player>.handPanel{grid-column:1!important;width:100%!important;max-width:none!important;margin:0!important}
+  .v96-app .hand-area--player .handCards{width:max-content!important;min-width:100%!important;padding-left:4px!important;padding-right:4px!important}
+}
+@media(min-width:761px){
+  .v96-app .gl-app::after{display:none!important;content:none!important}
+}

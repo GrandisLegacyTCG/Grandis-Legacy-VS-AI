@@ -1,4 +1,4 @@
-# Grandis Legacy VS AI v5.41
+# Grandis Legacy VS AI v5.45
 
 Static browser build prepared for **GitHub Pages**. No Node.js server, database, or Northflank service is required to play VS AI.
 
@@ -42,3 +42,11 @@ All application paths are relative, `.nojekyll` is included, and the game runs e
 - Mobile resources use a dedicated fifth Racial Token cell: 22 / 22 / 22 / 22 / 12.
 - Racial Tokens are stacked vertically and never embedded in Main Deck.
 - Desktop resource geometry is unchanged and the lower decorative gold stroke is removed.
+
+
+## v5.45 final corrections
+- Casting source identity now uses a stable Hero instance ID, so Rank Up in the same lane cannot be misread as movement/replacement.
+- Casting still cancels on actual Reposition, Stun, defeat, or replacement, and release damage uses the current Hero effect row.
+- Desktop unavailable Response reasons are hover/focus only and no second popup opens.
+- The legacy `gl-app::after` gold baseline is removed.
+- Mobile resources are 72 px high, Mana Regen is visible below Mana Pool, Racial Tokens remain separated, and Player Hand uses the full available width.

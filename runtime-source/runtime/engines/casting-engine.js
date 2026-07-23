@@ -34,6 +34,7 @@ function progressionIdFromCardId(cardId) {
 
 function castingSourceMatches(casting,currentSource) {
   if(!casting||!currentSource) return false;
+  if(casting.source_instance_id&&currentSource.instance_id) return String(casting.source_instance_id)===String(currentSource.instance_id);
   const currentProgression=currentSource.progression_id || progressionIdFromCardId(currentSource.card_id,currentSource.rank);
   const lockedProgression=casting.source_progression_id || progressionIdFromCardId(casting.source_hero_card_id,casting.source_rank_at_cast);
   if(currentProgression&&lockedProgression) return currentProgression===lockedProgression;
@@ -49,6 +50,7 @@ function createCastingAttack(card, ownerId, sourceSlot, targetSlot, source) {
     source_slot: sourceSlot,
     target_slot: targetSlot,
     source_hero_card_id: source.card_id||null,
+    source_instance_id: source.instance_id||null,
     source_rank_at_cast:Number(source.rank||1),
     source_progression_id:source.progression_id||progressionIdFromCardId(source.card_id,source.rank),
     attachment_state: 'CASTING',
@@ -83,7 +85,7 @@ function releaseDamage(casting,currentSource,targetHero,context){
 function resolveCastingAttack(casting, opponentBoard, state, context) {
   context=context||{};
   const source=context.currentSource||null;
-  if(source&&!castingSourceMatches(casting,source)) throw new Error('Casting source moved, was replaced, or changed progression before release.');
+  if(source&&!castingSourceMatches(casting,source)) throw new Error('Casting source moved or was replaced before release.');
   if(source&&source.stunned) throw new Error('Casting source is Stunned.');
   const targetSlot = opponentBoard && opponentBoard[casting.target_slot];
   const targetIsHero = Boolean(targetSlot && targetSlot.slot_mode === 'HERO' && targetSlot.hero && !targetSlot.hero.defeated);

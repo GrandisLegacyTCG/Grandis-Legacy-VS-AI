@@ -1,0 +1,5 @@
+Summary:
+Update VS AI to v5.45
+
+Description:
+Fix Casting source identity so Rank Up preserves active Casting while real Reposition, Stun, defeat, and replacement still cancel it. Remove the remaining desktop gold baseline, keep unavailable Response reasons hover-only, show Mana Regen in the taller mobile resource row, prevent Racial Token overlap, and expand the mobile Player Hand to full width. PvP remains unchanged.
