@@ -5046,7 +5046,7 @@ body.deck-setup-active{
 
 
 /* ========================================================================== */
-/* Grandis Legacy VS AI v5.41 — mobile Hero overlay geometry and resources.   */
+/* Grandis Legacy VS AI v5.42 — mobile Hero overlay geometry and resources.   */
 /* One info trigger at upper-left, one contextual action at upper-right.      */
 /* ========================================================================== */
 .mobile-racial-resource{display:none!important}
@@ -5135,4 +5135,76 @@ body.deck-setup-active{
      scrolled fully above the Android/browser navigation area. */
   html,body{overflow-y:auto!important}
   .v96-app .gl-app{padding-bottom:calc(42px + env(safe-area-inset-bottom,0px))!important}
+}
+
+/* ========================================================================== */
+/* Grandis Legacy VS AI v5.42 — mobile battlefield isolation and compaction.  */
+/* Mobile changes never alter the approved desktop battlefield.                */
+/* ========================================================================== */
+
+/* Strong desktop guard: mobile-only footer/resources/controls must never leak. */
+@media(min-width:761px){
+  .v96-app .mobile-player-footer,
+  .v96-app .mobile-status-summary,
+  .v96-app .mobile-hero-action-trigger,
+  .v96-app .mobile-racial-resource{display:none!important}
+  .v96-app .desktop-player-footer{display:flex!important}
+  .v96-app .racial-coins--hand{display:flex!important}
+  .v96-app .gl-app{padding-bottom:3px!important}
+}
+
+@media(max-width:760px){
+  /* Remove the artificial trailing space below Player / Full Battle Log. */
+  .v96-app .gl-app{padding-bottom:0!important;margin-bottom:0!important}
+  .v96-app .mobile-player-footer{margin-bottom:0!important;padding-bottom:0!important}
+  .v96-app .mobile-player-footer+.card-played-panel{margin-top:0!important}
+
+  /* Keep a small top gutter, but do not let action icons float far above cards. */
+  .v96-app .field--opponent{grid-template-rows:54px 218px!important}
+  .v96-app .field--player{grid-template-rows:218px 54px!important}
+  .v96-app .field .hero-row{height:218px!important;min-height:218px!important}
+  .v96-app .hero-row--opponent .hero-lane:not(.legacy-slot){grid-template-rows:22px minmax(0,1fr)!important}
+  .v96-app .hero-row--player .hero-lane:not(.legacy-slot){grid-template-rows:minmax(0,1fr) 22px!important}
+  .v96-app .hero-stage{padding:22px 3px 2px!important}
+
+  .v96-app .hero-status-overlay{top:2px!important;left:3px!important}
+  .v96-app .hero-status-overlay>.mobile-status-summary{
+    width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;
+    font-size:10px!important;box-shadow:0 1px 5px rgba(0,0,0,.55)!important
+  }
+  .v96-app .mobile-hero-action-trigger{
+    right:3px!important;top:2px!important;
+    width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;
+    font-size:10px!important;box-shadow:0 1px 5px rgba(0,0,0,.55)!important
+  }
+  .v96-app .mobile-hero-action-trigger span{
+    right:-4px!important;top:-5px!important;width:11px!important;height:11px!important;font-size:6px!important
+  }
+
+  /* HP remains anchored to the artwork corner and covers the printed HP area. */
+  .v96-app .hero-card-anchor>.hero-health-row.hero-health-overlay{
+    left:auto!important;right:0!important;top:1px!important;
+    transform:scale(.82)!important;transform-origin:top right!important
+  }
+
+  /* Racial Tokens sit beside Main Deck, stacked top-to-bottom inside the same
+     resource cell. No extra resource column or oversized container is created. */
+  .v96-app .zone[data-zone-type="Main Deck"]{position:relative!important}
+  .v96-app .zone[data-zone-type="Main Deck"] .zoneCard>img{left:42%!important}
+  .v96-app .zone[data-zone-type="Main Deck"] .zoneCard>b{
+    left:0!important;right:auto!important;width:84%!important
+  }
+  .v96-app .mobile-racial-resource{
+    position:absolute!important;right:5px!important;top:15px!important;bottom:auto!important;z-index:12!important;
+    display:grid!important;grid-template-columns:18px!important;grid-template-rows:18px 18px!important;
+    align-items:center!important;justify-items:center!important;gap:1px!important;
+    width:20px!important;height:37px!important;min-width:20px!important;padding:0!important;
+    border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+    pointer-events:none!important
+  }
+  .v96-app .mobile-racial-resource img{
+    position:static!important;inset:auto!important;transform:none!important;
+    width:18px!important;height:18px!important;max-width:18px!important;max-height:18px!important;
+    object-fit:contain!important;opacity:1!important;filter:none!important;border-radius:50%!important
+  }
 }
