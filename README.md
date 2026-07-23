@@ -1,4 +1,4 @@
-# Grandis Legacy VS AI v5.46
+# Grandis Legacy VS AI v5.47
 
 Static browser build prepared for **GitHub Pages**. No Node.js server, database, or Northflank service is required to play VS AI.
 
@@ -59,4 +59,12 @@ All application paths are relative, `.nojekyll` is included, and the game runs e
 - Mobile Start Game focuses the Player Hand after the coin flip.
 - Multi-draw animations reveal each card in Hand immediately before animating the next card.
 - Double Casting Rank II and Rank III both allow activation 2 to choose the same or a different legal Hero.
-- PvP remains unchanged; see `docs/TAKEOVER_NOTE_VS_AI_TO_PVP_v5.46.md`.
+- PvP remains unchanged; see `docs/TAKEOVER_NOTE_VS_AI_TO_PVP_v5.47.md`.
+
+
+## v5.47 Android/mobile visual correction
+- Mobile opponent Hand is a compact fan; Player Hand remains straight and swipeable.
+- Mana Regen is pinned inside the Mana Pool resource cell.
+- Holding a Player Hand card on Android opens a custom enlarged preview instead of the native Save Picture menu.
+- New coin/card visuals keep fixed geometry and wait for image decode before display/animation.
+- Racial Token images are optimized 256 px WebP assets.

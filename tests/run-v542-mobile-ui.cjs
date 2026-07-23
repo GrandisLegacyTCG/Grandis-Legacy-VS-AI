@@ -17,7 +17,7 @@ for(const token of [
   'desktopMobileIsolation',
   'mobileHpCardAnchored'
 ]) if(!app.includes(token)) throw new Error('missing v5.42 QA token '+token);
-if(!app.includes('mobileRacialResourceZone')||!app.includes('Racial-Token-Head.png')||!app.includes('Racial-Token-Tail.png'))throw new Error('Racial Tokens are not rendered by the mobile resource flow');
+if(!app.includes('mobileRacialResourceZone')||!app.includes('Racial-Token-Head.webp')||!app.includes('Racial-Token-Tail.webp'))throw new Error('Racial Tokens are not rendered by the mobile resource flow');
 if(!css.includes('mobile-racial-token-stack')||!css.includes('grid-template-rows:repeat(2'))throw new Error('vertical Racial Token lock missing');
 if(!css.includes('@media(min-width:761px)')||!css.includes('.v96-app .mobile-player-footer')||!css.includes('.v96-app .desktop-player-footer{display:flex'))throw new Error('desktop/mobile isolation guard missing');
 if(!css.includes('.v96-app .gl-app{padding-bottom:0!important'))throw new Error('mobile footer trailing gap removal missing');

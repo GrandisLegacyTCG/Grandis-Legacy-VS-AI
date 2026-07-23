@@ -5375,3 +5375,125 @@ body.deck-setup-active{
   }
   .v96-app .hand-card .mini-action{height:15px!important;min-height:15px!important;flex:0 0 15px!important;font-size:6.4px!important;padding:0 2px!important;margin:0!important}
 }
+
+/* ========================================================================== */
+/* Grandis Legacy VS AI v5.47 — Android touch, mobile opponent fan, and       */
+/* decode-first visual geometry. Gameplay/runtime rules are unchanged.        */
+/* ========================================================================== */
+.gl-decode-pending{visibility:hidden!important}
+.gl-image-ready{visibility:visible!important}
+.gl-flying-card{
+  aspect-ratio:5/7!important;
+  object-fit:contain!important;
+  color:transparent!important;
+  font-size:0!important;
+  overflow:hidden!important;
+}
+.gl-opening-coin-actions button img,
+.gl-opening-coin-result img{
+  width:min(142px,100%)!important;
+  height:min(142px,36vw)!important;
+  min-width:96px!important;
+  min-height:96px!important;
+  aspect-ratio:1/1!important;
+  object-fit:contain!important;
+  color:transparent!important;
+  font-size:0!important;
+  overflow:hidden!important;
+}
+.gl-opening-coin-flip-stage img{
+  width:min(150px,42vw)!important;
+  height:min(150px,42vw)!important;
+  min-width:108px!important;
+  min-height:108px!important;
+  aspect-ratio:1/1!important;
+  object-fit:contain!important;
+  color:transparent!important;
+  font-size:0!important;
+  overflow:hidden!important;
+}
+
+@media(max-width:760px){
+  /* Android: use a wrapper-owned long press instead of the native image menu. */
+  .v96-app .hand-card,
+  .v96-app .hand-card .hand-art{
+    -webkit-touch-callout:none!important;
+    -webkit-user-select:none!important;
+    user-select:none!important;
+    touch-action:pan-x!important;
+  }
+  .v96-app .hand-card .hand-art img{
+    pointer-events:none!important;
+    -webkit-user-drag:none!important;
+    user-drag:none!important;
+  }
+
+  /* Opponent only: restore the compact fan. Player Hand stays straight/swipeable. */
+  .v96-app .hand-area--opponent .strip.v94-strip{
+    overflow:visible!important;
+    scrollbar-width:none!important;
+    touch-action:auto!important;
+  }
+  .v96-app .hand-area--opponent .strip.v94-strip::-webkit-scrollbar{display:none!important}
+  .v96-app .hand-area--opponent .strip.v94-strip .backs{
+    width:100%!important;
+    min-width:0!important;
+    justify-content:center!important;
+    align-items:center!important;
+    gap:0!important;
+    padding:0!important;
+    overflow:visible!important;
+    perspective:900px!important;
+  }
+  .v96-app .hand-area--opponent .opponent-hand-slot{
+    --fan-overlap:-12px!important;
+    margin-left:var(--fan-overlap)!important;
+    transform-origin:50% 8%!important;
+    transform:translateY(var(--fan-y,0px)) rotate(calc(var(--fan-angle,0deg) * -1))!important;
+    transition:transform .18s cubic-bezier(.2,.75,.2,1),margin .18s ease!important;
+  }
+  .v96-app .hand-area--opponent .opponent-hand-slot:first-child{margin-left:0!important}
+  .v96-app .hand-area--opponent .opponent-hand-slot .back{
+    width:31px!important;
+    height:45px!important;
+    max-height:45px!important;
+    flex-basis:31px!important;
+    object-fit:contain!important;
+  }
+
+  /* Keep Mana Regen inside the mobile resource cell and raise it above clipping. */
+  .v96-app .zone--mana{
+    position:relative!important;
+    padding:3px 1px 12px!important;
+    overflow:hidden!important;
+  }
+  .v96-app .zone--mana .zoneCard{
+    height:46px!important;
+    min-height:46px!important;
+    max-height:46px!important;
+    margin:0!important;
+  }
+  .v96-app .zone--mana .zoneCard img{
+    max-height:46px!important;
+    max-width:44px!important;
+    object-fit:contain!important;
+  }
+  .v96-app .zone--mana em{
+    position:absolute!important;
+    left:50%!important;
+    bottom:2px!important;
+    z-index:8!important;
+    transform:translateX(-50%)!important;
+    display:block!important;
+    width:max-content!important;
+    max-width:100%!important;
+    height:9px!important;
+    line-height:9px!important;
+    font-size:6px!important;
+    font-weight:900!important;
+    color:#f4f8ff!important;
+    text-shadow:0 1px 3px #000!important;
+    white-space:nowrap!important;
+    overflow:visible!important;
+  }
+}
