@@ -1,1 +1,1 @@
-Open index.html through GitHub Pages. In Deck Setup, select or import Player and AI decks. On desktop, Open Deck Builder launches the bundled Public Deck Builder v2.1; Deck Builder remains hidden on mobile.
+Open index.html through GitHub Pages. In AI Lobby, select or import Player and AI decks. On desktop, use GO TO DECK BUILDER in the top-right header; the navigation buttons are intentionally hidden on mobile. Start Match remains at the bottom-right.

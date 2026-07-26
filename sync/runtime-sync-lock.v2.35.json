@@ -2,8 +2,8 @@
   "version": "v2.35",
   "schema_version": "2.35",
   "policy": "RUNTIME_FIRST_FAIL_CLOSED_SYNC",
-  "application": "VS AI v5.49",
-  "local_ai": "v5.49",
+  "application": "VS AI v5.50",
+  "local_ai": "v5.50",
   "pvp_railway": "v2.6.9",
   "canonical_registry_hash": "5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab",
   "one_source_authority": "v1.4",
@@ -17,10 +17,10 @@
   "application_runtime_sync": "v2.35",
   "starter60": "v1.2",
   "rank_up": "v0.3",
-  "authorityStatement": "VS AI v5.49 uses Runtime Core v0.45 and Application Runtime Sync v2.35, the latest five Starter Decks, Unbroken Stand effect-row correction, approved mobile Hand/draw behavior, Noto Sans UI typography, and a VS AI-specific PvP-themed AI Lobby.",
-  "shared_gameplay_sha256": "9a3f39f51fa35ef81a6b427975f34ace38a77e0b8d291da0cea1fc7ef4c9f21a",
+  "authorityStatement": "VS AI v5.50 preserves the approved runtime/gameplay baseline while correcting the AI Lobby: redundant deck counts removed, Rank II Formation resolved deterministically, Hero Progression restored as a modal, and Start Match contrast fixed.",
+  "shared_gameplay_sha256": "ab62f23f2c4ec7e03484d8544442c783d6ee6e57bf55376aa4c069a4a9502807",
   "runtime_authority_sha256": "282fc61ba59aeaf5bc5f88dd6039e92f651c18af69504f18079a7965c5d5540b",
   "runtime_source_browser_sha256": "282fc61ba59aeaf5bc5f88dd6039e92f651c18af69504f18079a7965c5d5540b",
-  "static_data_sha256": "f3713355707c4c126113f4d375bdee099cea6d75d87e40b3e05f6194a52ba1f6",
-  "shared_ui_css_sha256": "852f9d5b04f036dcc6e526c4ccab87fdbee0833357962c5103d405f6c5d03f2e"
+  "static_data_sha256": "432f7b8aca6a08bc70bc0364b2c986f1c97549344705da896f634b2f7b0da738",
+  "shared_ui_css_sha256": "8177c50708e0e1e71b734f093e59b6696e121487ec8857cca36bce4c1f04aeb4"
 }

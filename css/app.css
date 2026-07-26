@@ -1,5 +1,5 @@
 
-/* Grandis Legacy VS AI v5.49 — embedded Noto Sans UI typography. */
+/* Grandis Legacy VS AI v5.50 — embedded Noto Sans UI typography. */
 @font-face{font-family:"Noto Sans";src:url("../assets/fonts/noto-sans/NotoSans-Variable.woff2") format("woff2");font-style:normal;font-weight:100 900;font-stretch:62.5% 100%;font-display:swap}
 @font-face{font-family:"Noto Sans";src:url("../assets/fonts/noto-sans/NotoSans-Italic-Variable.woff2") format("woff2");font-style:italic;font-weight:100 900;font-stretch:62.5% 100%;font-display:swap}
 html,body,body *{font-family:"Noto Sans",Arial,sans-serif!important}
@@ -5504,7 +5504,7 @@ body.deck-setup-active{
 }
 
 /* ========================================================================== */
-/* Grandis Legacy VS AI v5.49 — mobile Legacy control anchor consistency.     */
+/* Grandis Legacy VS AI v5.50 — mobile Legacy control anchor consistency.     */
 /* Desktop keeps the approved Legacy name-row info button. On mobile, the     */
 /* Legacy info control shares the Hero slot's fixed top-left anchor while the */
 /* contextual action remains fixed at top-right.                              */
@@ -5574,7 +5574,7 @@ body.deck-setup-active{
 /* ========================================================================== */
 @media (min-width:761px){
   /* Desktop card and battlefield geometry intentionally inherit the VS AI
-     v5.49 baseline. Only the Hero action badge gains vertical breathing room. */
+     v5.50 baseline. Only the Hero action badge gains vertical breathing room. */
   .v96-app .heroActions .actionBtn{
     min-height:21px!important;
     padding-top:4px!important;
@@ -5633,7 +5633,7 @@ body.deck-setup-active{
 
 
 /* ========================================================================== */
-/* Grandis Legacy VS AI v5.49 — AI Lobby aligned to the approved PvP theme. */
+/* Grandis Legacy VS AI v5.50 — AI Lobby aligned to the approved PvP theme. */
 /* ========================================================================== */
 body.deck-setup-active{background:#02060b!important}
 .deck-setup-screen.runtime-ui-v14-setup{
@@ -5672,4 +5672,243 @@ body.deck-setup-active{background:#02060b!important}
   .formation-card img{height:118px!important}
   .deck-setup-actions{justify-content:flex-end!important}
   .deck-setup-actions .start-match-primary{width:auto!important;min-width:150px!important}
+}
+
+/* ========================================================================== */
+/* Grandis Legacy VS AI v5.50 — AI Lobby correction lock.                    */
+/* Removes the redundant deck count pill, guarantees Rank II Formation art,  */
+/* restores Hero Progression as a real modal, and keeps Start Match readable. */
+/* ========================================================================== */
+.deck-setup-screen.runtime-ui-v14-setup .deck-counts{display:none!important}
+.deck-setup-screen.runtime-ui-v14-setup .deck-side{
+  overflow:visible!important;
+  gap:8px!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .formation-preview{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  margin-top:2px!important;
+  align-items:flex-start!important;
+  overflow:visible!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .formation-card{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:6px!important;
+  min-height:0!important;
+  overflow:visible!important;
+  padding:7px!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .formation-card>button{
+  order:1!important;
+  display:grid!important;
+  place-items:center!important;
+  min-height:0!important;
+  overflow:visible!important;
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+  -webkit-user-select:none!important;
+  user-select:none!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .formation-card>button:hover img,
+.deck-setup-screen.runtime-ui-v14-setup .formation-card>button:focus-visible img{
+  filter:brightness(1.07)!important;
+  box-shadow:0 0 0 2px rgba(244,216,126,.52),0 12px 28px rgba(0,0,0,.38)!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .formation-card img{
+  display:block!important;
+  width:auto!important;
+  max-width:100%!important;
+  height:min(30vh,260px)!important;
+  max-height:260px!important;
+  aspect-ratio:63/88!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  margin:0 auto!important;
+  border:0!important;
+  background:#05090e!important;
+  pointer-events:none!important;
+  -webkit-user-drag:none!important;
+  user-drag:none!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .formation-card .formation-position{
+  order:2!important;
+  position:static!important;
+  display:block!important;
+  flex:0 0 auto!important;
+  min-height:16px!important;
+  margin:0!important;
+  padding:0!important;
+  color:#f4d87e!important;
+  font-size:11px!important;
+  font-weight:950!important;
+  line-height:16px!important;
+  text-align:center!important;
+  text-transform:capitalize!important;
+  overflow:visible!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .deck-setup-actions .start-match-primary{
+  min-width:216px!important;
+  background:linear-gradient(180deg,#f5dc91 0%,#c49b43 100%)!important;
+  border:1px solid #f4d87e!important;
+  color:#11151c!important;
+  opacity:1!important;
+  font-size:13px!important;
+  font-weight:950!important;
+  text-shadow:none!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.42),0 8px 22px rgba(0,0,0,.28)!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .deck-setup-actions .start-match-primary:hover{
+  filter:brightness(1.07)!important;
+}
+.deck-setup-screen.runtime-ui-v14-setup .deck-setup-actions .start-match-primary:disabled{
+  background:linear-gradient(180deg,#d6c791 0%,#9a824e 100%)!important;
+  border-color:#bfa65d!important;
+  color:#151515!important;
+  opacity:.68!important;
+}
+
+/* Hero Progression copied from the approved PvP lobby behavior. */
+.pvp-progression-modal{
+  position:fixed!important;
+  inset:0!important;
+  z-index:10045!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:18px!important;
+  background:rgba(0,0,0,.72)!important;
+  font-family:"Noto Sans",Arial,sans-serif!important;
+}
+.pvp-progression-card{
+  width:min(940px,calc(100vw - 32px))!important;
+  max-height:92vh!important;
+  overflow:auto!important;
+  border:1px solid rgba(241,212,129,.72)!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,#08131f,#050b12)!important;
+  box-shadow:0 28px 90px rgba(0,0,0,.8)!important;
+  padding:18px!important;
+  overscroll-behavior:contain!important;
+}
+.pvp-progression-card header{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:14px!important;
+  margin-bottom:15px!important;
+}
+.pvp-progression-card header span{
+  display:block!important;
+  color:#f1d481!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  letter-spacing:.08em!important;
+}
+.pvp-progression-card header h2{
+  margin:3px 0 0!important;
+  color:#f5f7fb!important;
+  font-size:22px!important;
+}
+.pvp-progression-card header button{
+  min-width:72px!important;
+  height:36px!important;
+  padding:0 16px!important;
+  border:1px solid #4b6b82!important;
+  border-radius:9px!important;
+  background:#13283b!important;
+  color:#f5f7fb!important;
+  font-size:13px!important;
+  font-weight:800!important;
+  cursor:pointer!important;
+}
+.pvp-progression-card header button:hover{filter:brightness(1.08)!important}
+.pvp-progression-row{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr)!important;
+  gap:8px!important;
+  align-items:center!important;
+}
+.pvp-progression-hero{
+  min-width:0!important;
+  border:1px solid rgba(62,83,104,.72)!important;
+  border-radius:12px!important;
+  background:#07111b!important;
+  padding:8px!important;
+}
+.pvp-progression-hero.current{
+  box-shadow:0 0 0 2px rgba(241,212,129,.72),0 12px 28px rgba(0,0,0,.38)!important;
+}
+.pvp-progression-static-card{
+  display:block!important;
+  width:100%!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:9px!important;
+  background:transparent!important;
+  cursor:pointer!important;
+  overflow:hidden!important;
+}
+.pvp-progression-static-card img{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:63/88!important;
+  object-fit:contain!important;
+  pointer-events:none!important;
+  -webkit-user-drag:none!important;
+  user-drag:none!important;
+}
+.pvp-progression-static-card:hover img,
+.pvp-progression-static-card:focus-visible img{
+  filter:brightness(1.08)!important;
+}
+.pvp-progression-arrow{
+  display:grid!important;
+  place-items:center!important;
+  color:#f1d481!important;
+  font-size:28px!important;
+  font-weight:900!important;
+}
+.pvp-progression-card .pvp-v260-position{
+  margin-top:6px!important;
+  color:#f1d481!important;
+  font-size:11px!important;
+  font-weight:900!important;
+  text-align:center!important;
+}
+.pvp-progression-card>p{
+  margin:12px 0 0!important;
+  text-align:center!important;
+  color:#9ea8b5!important;
+  font-size:12px!important;
+}
+body.deck-setup-active #previewOverlay{z-index:10060!important}
+
+@media(max-width:760px){
+  .deck-setup-screen.runtime-ui-v14-setup .formation-preview{gap:6px!important}
+  .deck-setup-screen.runtime-ui-v14-setup .formation-card{padding:5px!important;gap:4px!important}
+  .deck-setup-screen.runtime-ui-v14-setup .formation-card img{
+    width:100%!important;
+    height:auto!important;
+    max-height:155px!important;
+  }
+  .deck-setup-screen.runtime-ui-v14-setup .formation-card .formation-position{
+    min-height:14px!important;
+    font-size:9px!important;
+    line-height:14px!important;
+  }
+  .deck-setup-screen.runtime-ui-v14-setup .deck-setup-actions .start-match-primary{
+    width:auto!important;
+    min-width:150px!important;
+    height:40px!important;
+  }
+  .pvp-progression-card{padding:13px!important}
+  .pvp-progression-row{
+    grid-template-columns:minmax(0,1fr) 16px minmax(0,1fr) 16px minmax(0,1fr)!important;
+    gap:3px!important;
+  }
+  .pvp-progression-arrow{font-size:17px!important}
+  .pvp-progression-card header h2{font-size:18px!important}
+  .pvp-progression-card .pvp-v260-position{font-size:9px!important}
 }

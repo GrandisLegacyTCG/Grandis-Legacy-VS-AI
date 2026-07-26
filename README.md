@@ -1,14 +1,13 @@
-# Grandis Legacy VS AI v5.49
+# Grandis Legacy VS AI v5.50
 
 GitHub Pages package for Grandis Legacy versus local AI.
 
-## v5.49 scope
-- New AI Lobby header/theme aligned with PvP while preserving a separate VS AI pre-game flow.
-- Noto Sans UI typography.
-- Latest five Starter Decks.
-- Formation displays Rank II Heroes; Left/Center/Right labels are below the cards.
-- Formation Hero click opens static Rank I → Rank II → Rank III Hero Progression.
-- Runtime Core v0.45, Application Runtime Sync v2.35, and UI Design Lock v2.40 shared catch-up.
-- Unbroken Stand effect-row correction.
-- Mobile Hand position preservation, newest-card draw follow, opening-only whole-page focus, 130% mobile preview, and 250 × 350 desktop hover lock.
-- Hero Card Preview adds Rank Up Bonus for Rank II and Rank III only.
+## v5.50 scope
+- Corrected the PvP-themed AI Lobby without changing the approved pre-game structure.
+- Removed the redundant `Main 60 · Legacy 12 · Packages 3` pill.
+- Formation now deterministically displays Rank II Hero artwork.
+- Left / Center / Right labels remain fully visible below the Formation cards.
+- Clicking a Formation Hero opens a real Rank I → Rank II → Rank III Hero Progression modal.
+- Clicking a Rank card opens Card Preview; Rank II and Rank III show their Rank Up Bonus, while Rank I is unchanged.
+- Restored a readable PvP-gold Start Match button at the bottom-right.
+- Preserves the v5.49 Noto Sans typography, current five Starter Decks, Runtime Core v0.45, mobile Hand/draw parity, and shared runtime corrections.
