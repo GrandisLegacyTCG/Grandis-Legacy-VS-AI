@@ -2493,6 +2493,33 @@ function cleanupDefeatedHeroRuntimeAttachments(player, slot) {
 
 
 
+function cleanupConfirmedDefeatRuntimeState(next, playerId, slotRaw, hero, events) {
+  const player = getPlayer(next, playerId);
+  const slot = normalizeSlotKey(slotRaw);
+  if (!player || !hero) return { attachments: [], statuses_cleared: 0, casting_canceled: 0 };
+  const removed = cleanupDefeatedHeroRuntimeAttachments(player, slot);
+  const removedCasting = removed.filter(att => att && String(att.attachment_state || '').toUpperCase() === 'CASTING');
+  const removedIds = new Set(removedCasting.map(att => att.attachment_id).filter(Boolean));
+  const beforeQueue = Array.isArray(next.continuation_queue) ? next.continuation_queue.length : 0;
+  if (Array.isArray(next.continuation_queue)) next.continuation_queue = next.continuation_queue.filter(item => {
+    if (!item || item.type !== 'casting_release') return true;
+    const ar = item.attack_resolution || {};
+    return !(item.player_id === playerId && normalizeSlotKey(ar.source_slot) === slot);
+  });
+  if (next.pending_attack_resolution && next.pending_attack_resolution.casting && next.pending_attack_resolution.attacking_player_id === playerId && normalizeSlotKey(next.pending_attack_resolution.source_slot) === slot) next.pending_attack_resolution = null;
+  const statusesCleared = Array.isArray(hero.statuses) ? hero.statuses.length : 0;
+  hero.statuses = [];
+  hero.casting = false;
+  hero.pending_casting = false;
+  if (Array.isArray(hero.attachments)) hero.attachments = hero.attachments.map(() => null);
+  for (const att of removedCasting) events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
+    player_id: playerId, card_id: att.card_id, source_slot: slot,
+    target_player_id: att.target_player_id || getOpponentId(next, playerId), target_slot: att.target_slot,
+    payload: { result: 'CASTING_CANCELED', reason: 'Source Hero was defeated before Casting release.', attachment_id: att.attachment_id, no_damage: true }
+  }));
+  return { attachments: removed, statuses_cleared: statusesCleared, casting_canceled: removedCasting.length + Math.max(0, beforeQueue - (next.continuation_queue || []).length), removed_casting_attachment_ids: Array.from(removedIds) };
+}
+
 function runtimeHeroRankNumber(state, hero) {
   if (!hero) return 1;
   const c = getCard(state, hero.card_id) || {};
@@ -2555,8 +2582,9 @@ function queueHeroDefeatLegacyChoice(next, playerId, slotRaw, slotState, events,
   hero.hp = Math.max(0, Number(hero.hp || 0));
   hero.defeated = true;
   hero.exhausted = true;
-  // Confirmed defeat owns EXP cleanup. This happens after Stoneblood/replacement checks
-  // and before Legacy choice or game-over processing, so every authoritative view retains only the Hero card inherent Rank EXP.
+  // Confirmed defeat owns complete Hero cleanup after replacement checks. Casting is
+  // an Attachment and must be canceled now; revive cannot restore any connected state.
+  const defeatedCleanup = cleanupConfirmedDefeatRuntimeState(next, playerId, slot, hero, events);
   const defeatedExpMoved = clearConfirmedDefeatExp(next, playerId, slot, hero, events, 'CONFIRMED_DEFEAT');
   const candidates = legacyCandidateIdsForDefeatedHero(next, playerId, slot, hero);
   events.push(createRuntimeEvent(EVENT_TYPES.HERO_DEFEATED, next, {
@@ -2564,7 +2592,7 @@ function queueHeroDefeatLegacyChoice(next, playerId, slotRaw, slotState, events,
     card_id: hero.card_id,
     target_player_id: playerId,
     target_slot: slot,
-    payload: { defeated_by_card_id: defeatedByCardId, slot_mode: slotState.slot_mode, legacy_choice_required: candidates.length > 0, legacy_candidates: candidates.slice(), exp_moved_to_discard: defeatedExpMoved.length }
+    payload: { defeated_by_card_id: defeatedByCardId, slot_mode: slotState.slot_mode, legacy_choice_required: candidates.length > 0, legacy_candidates: candidates.slice(), exp_moved_to_discard: defeatedExpMoved.length, attachments_discarded: defeatedCleanup.attachments.length, statuses_cleared: defeatedCleanup.statuses_cleared, casting_canceled: defeatedCleanup.casting_canceled }
   }));
   if (activeHeroSlotCount(player) <= 0) {
     applyLoseCheckAfterDamage(next, playerId, events);
@@ -2611,12 +2639,16 @@ function transitionPendingDefeatedHeroToLegacy(next, pending, legacyCardId, even
   const defeatedSnapshot = pending.defeated_snapshot || slotState.hero || { card_id: pending.defeated_card_id };
   const legacyIdx = (player.legacy_deck || []).indexOf(chosen);
   if (legacyIdx >= 0) player.legacy_deck.splice(legacyIdx, 1);
-  cleanupDefeatedHeroRuntimeAttachments(player, slot);
-  // Backward-compatible fallback for an older pending state created before the v1.60 lock.
-  // Move EXP once from the live defeated Hero when present, then force the stored snapshot to empty EXP cards while retaining inherent Rank EXP.
+  cleanupConfirmedDefeatRuntimeState(next, pending.player_id, slot, slotState.hero || defeatedSnapshot, events);
+  // Backward-compatible fallback for an older pending state. Sanitize the stored
+  // snapshot as well so revive cannot restore Casting, status, or Attachment state.
   clearConfirmedDefeatExp(next, pending.player_id, slot, slotState.hero || defeatedSnapshot, events, 'LEGACY_TRANSITION_FALLBACK');
   defeatedSnapshot.exp_cards = [];
   defeatedSnapshot.exp_total = inherentRankExpForHero(next, defeatedSnapshot);
+  defeatedSnapshot.statuses = [];
+  defeatedSnapshot.casting = false;
+  defeatedSnapshot.pending_casting = false;
+  if (Array.isArray(defeatedSnapshot.attachments)) defeatedSnapshot.attachments = defeatedSnapshot.attachments.map(() => null);
   slotState.slot_mode = 'LEGACY';
   slotState.hero = null;
   slotState.card_id = chosen;
@@ -3771,6 +3803,10 @@ function applyReviveEffect(next, pending, card, events) {
     max_hp: Number(defeatedSnapshot.max_hp || 100),
     defeated: false,
     exhausted: revivedExhausted,
+    casting: false,
+    pending_casting: false,
+    statuses: [],
+    attachments: Array.isArray(defeatedSnapshot.attachments) ? defeatedSnapshot.attachments.map(() => null) : [],
     exp_cards: [],
     exp_total: inherentRankExpForHero(next, defeatedSnapshot)
   });
@@ -6038,6 +6074,9 @@ module.exports = {
     getOrCreateAttackDamageComputation,
     buildCastingReleaseAttackResolution,
     queueOrOpenCastingRelease,
+    cleanupConfirmedDefeatRuntimeState,
+    clearConfirmedDefeatExp,
+    applyReviveEffect,
     remapHeroHostedAttachmentsForSlotSwap
   }
 };

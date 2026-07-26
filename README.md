@@ -1,13 +1,11 @@
-# Grandis Legacy VS AI v5.50
+# Grandis Legacy VS AI v5.51
 
-GitHub Pages package for Grandis Legacy versus local AI.
+## Scope
+- AI Lobby visual parity with the approved PvP Lobby theme.
+- Formation showcase resolves the actual Rank II Hero from each selected package.
+- Dropdown-to-Formation spacing is retained while excess empty space below the Hero row is removed.
+- Confirmed Hero defeat clears EXP cards, Attachments (including Casting), statuses, and external pending Casting state before Legacy choice.
+- Revive always returns a clean Hero and cannot resume a pre-defeat Casting effect.
 
-## v5.50 scope
-- Corrected the PvP-themed AI Lobby without changing the approved pre-game structure.
-- Removed the redundant `Main 60 · Legacy 12 · Packages 3` pill.
-- Formation now deterministically displays Rank II Hero artwork.
-- Left / Center / Right labels remain fully visible below the Formation cards.
-- Clicking a Formation Hero opens a real Rank I → Rank II → Rank III Hero Progression modal.
-- Clicking a Rank card opens Card Preview; Rank II and Rank III show their Rank Up Bonus, while Rank I is unchanged.
-- Restored a readable PvP-gold Start Match button at the bottom-right.
-- Preserves the v5.49 Noto Sans typography, current five Starter Decks, Runtime Core v0.45, mobile Hand/draw parity, and shared runtime corrections.
+## Active stack
+Runtime Foundation v1.78 · Runtime Core v0.46 · Application Runtime Sync v2.36 · UI Design Lock v2.41.

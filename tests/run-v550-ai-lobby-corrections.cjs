@@ -27,4 +27,4 @@ assert(css.includes('.deck-setup-screen.runtime-ui-v14-setup .deck-setup-actions
 assert(css.includes('background:linear-gradient(180deg,#f5dc91 0%,#c49b43 100%)!important'),'Start Match gold surface missing');
 assert(css.includes('.deck-setup-screen.runtime-ui-v14-setup .formation-card .formation-position{'),'Formation position label visibility lock missing');
 assert(css.includes('overflow:visible!important'),'Formation overflow correction missing');
-console.log('PASS VS AI v5.50 AI Lobby count removal, Rank II Formation, Progression modal, and Start Match corrections');
+console.log('PASS VS AI v5.51 AI Lobby count removal, Rank II Formation, Progression modal, and Start Match corrections');

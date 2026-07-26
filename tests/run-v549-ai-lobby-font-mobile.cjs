@@ -18,4 +18,4 @@ assert(css.includes('.ai-lobby-actions{display:none!important}'));
 assert(css.includes('justify-content:flex-end!important'));
 assert(fs.existsSync(path.join(root,'assets/fonts/noto-sans/NotoSans-Variable.woff2')));
 assert(fs.existsSync(path.join(root,'assets/lobby/grandis-legacy-logo.webp')));
-console.log('PASS VS AI v5.50 AI Lobby, Noto Sans, Rank II Formation, Hero Progression, and mobile Hand contracts');
+console.log('PASS VS AI v5.51 AI Lobby, Noto Sans, Rank II Formation, Hero Progression, and mobile Hand contracts');
