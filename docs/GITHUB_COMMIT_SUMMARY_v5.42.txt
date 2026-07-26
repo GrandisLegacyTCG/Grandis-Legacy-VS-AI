@@ -1,5 +1,0 @@
-Summary:
-Update VS AI to v5.42
-
-Description:
-Tighten the mobile battlefield without changing desktop: remove the trailing gap below Player / Full Battle Log, reduce and re-anchor the single status and contextual action controls, stack the two Racial Tokens vertically beside Main Deck, and add strict desktop guards so mobile footer/resource controls cannot leak into desktop. Keep the Deck Builder at v2.1. Application Runtime Sync advances to v2.27 and UI Design Lock to v2.30; Runtime Foundation remains v1.74. PvP is unchanged.

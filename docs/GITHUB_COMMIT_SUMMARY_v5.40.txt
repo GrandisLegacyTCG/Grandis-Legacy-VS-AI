@@ -1,5 +1,0 @@
-Summary:
-Update VS AI to v5.40
-
-Description:
-Consolidate mobile Hero statuses under one warning indicator, combine Racial Trait, Hero Ability, and Legacy Ability access into one contextual mobile action button, and move the Player/deck plus Full Battle Log row below Next Phase without increasing its height. Application Runtime Sync advances to v2.25 and UI Design Lock to v2.28; Runtime Foundation remains v1.74. PvP is unchanged.

@@ -20,7 +20,7 @@ let snap=b.startSharedMatch({});
 if(snap.appState.playerHand.length||snap.appState.aiHand.length)throw Error('opening hand prefilled');
 let r=b.completeOpeningFlow('PLAYER',{choice:'HEADS',outcome:'HEADS'}),s=r.snapshot.appState;
 if(s.playerHand.length!==7||s.aiHand.length!==6)throw Error('opening counts player first');
-if(r.events.length!==12||r.events.filter(e=>e.reason==='OPENING_HAND').length!==12)throw Error('opening event count');
+if(r.events.length!==13||r.events.filter(e=>e.reason==='OPENING_HAND').length!==12||r.events.filter(e=>e.reason==='MANDATORY_DRAW_PHASE').length!==1)throw Error('opening event count');
 if(s.presentationEvents.filter(e=>e.reason==='MANDATORY_DRAW_PHASE').length!==1)throw Error('player mandatory draw missing');
 if(s.cardsDrawnThisTurn.PLAYER!==1||s.cardsDrawnThisTurn.AI!==0)throw Error('player turn counter');
 if(s.phase!=='Draw'||s.drawPhaseResolvedFor!=='PLAYER')throw Error('player first draw-phase gate');

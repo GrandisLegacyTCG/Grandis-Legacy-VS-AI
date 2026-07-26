@@ -1,8 +1,8 @@
 {
   "schema_version": "GL-DECK-1.0",
-  "builder_version": "1.14-public-deck-builder",
+  "builder_version": "2.1-public-deck-builder",
   "deck_name": "Starter 2 — Saint / Crusader / Grand Ranger",
-  "format": "One Source Authority v1.4 + Starter60 v1.2",
+  "format": "One Source Authority v1.4 + Public Deck Builder v2.1",
   "main_deck_count": 60,
   "legacy_package_count": 3,
   "legacy_deck_count": 12,
@@ -27,84 +27,84 @@
       "card_name": "Thrain Sunborn",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-1",
-      "package_name": "Dwarf Cleric — Cleric;Priest;Saint + Wand of First Light"
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
     },
     {
       "card_id": "S1-CLE-H005",
       "card_name": "Thrain Sunborn",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-1",
-      "package_name": "Dwarf Cleric — Cleric;Priest;Saint + Wand of First Light"
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
     },
     {
       "card_id": "S1-CLE-H006",
       "card_name": "Thrain Sunborn",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-1",
-      "package_name": "Dwarf Cleric — Cleric;Priest;Saint + Wand of First Light"
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
     },
     {
       "card_id": "S1-CLE-L002",
       "card_name": "Wand of First Light",
       "card_type": "Legacy",
       "package_id": "CUSTOM-SLOT-1",
-      "package_name": "Dwarf Cleric — Cleric;Priest;Saint + Wand of First Light"
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
     },
     {
       "card_id": "S1-WAR-H004",
       "card_name": "Aurex Sunsworn",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-2",
-      "package_name": "Dragonborn Warrior — Warrior;Paladin;Crusader + Warrior’s Relic"
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
     },
     {
       "card_id": "S1-WAR-H005",
       "card_name": "Aurex Sunsworn",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-2",
-      "package_name": "Dragonborn Warrior — Warrior;Paladin;Crusader + Warrior’s Relic"
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
     },
     {
       "card_id": "S1-WAR-H006",
       "card_name": "Aurex Sunsworn",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-2",
-      "package_name": "Dragonborn Warrior — Warrior;Paladin;Crusader + Warrior’s Relic"
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
     },
     {
       "card_id": "S1-WAR-L001",
       "card_name": "Warrior’s Relic",
       "card_type": "Legacy",
       "package_id": "CUSTOM-SLOT-2",
-      "package_name": "Dragonborn Warrior — Warrior;Paladin;Crusader + Warrior’s Relic"
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
     },
     {
       "card_id": "S1-ARC-H001",
       "card_name": "Korvak Ironfang",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-3",
-      "package_name": "Beastman Archer — Archer;Marksman;Grand Ranger + Golden Arrows"
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
     },
     {
       "card_id": "S1-ARC-H002",
       "card_name": "Korvak Ironfang",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-3",
-      "package_name": "Beastman Archer — Archer;Marksman;Grand Ranger + Golden Arrows"
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
     },
     {
       "card_id": "S1-ARC-H003",
       "card_name": "Korvak Ironfang",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-3",
-      "package_name": "Beastman Archer — Archer;Marksman;Grand Ranger + Golden Arrows"
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
     },
     {
       "card_id": "S1-ARC-L001",
       "card_name": "Golden Arrows",
       "card_type": "Legacy",
       "package_id": "CUSTOM-SLOT-3",
-      "package_name": "Beastman Archer — Archer;Marksman;Grand Ranger + Golden Arrows"
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
     }
   ],
   "side_package_count": 3,
@@ -129,84 +129,84 @@
       "card_name": "Thrain Sunborn",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-1",
-      "package_name": "Dwarf Cleric — Cleric;Priest;Saint + Wand of First Light"
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
     },
     {
       "card_id": "S1-CLE-H005",
       "card_name": "Thrain Sunborn",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-1",
-      "package_name": "Dwarf Cleric — Cleric;Priest;Saint + Wand of First Light"
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
     },
     {
       "card_id": "S1-CLE-H006",
       "card_name": "Thrain Sunborn",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-1",
-      "package_name": "Dwarf Cleric — Cleric;Priest;Saint + Wand of First Light"
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
     },
     {
       "card_id": "S1-CLE-L002",
       "card_name": "Wand of First Light",
       "card_type": "Legacy",
       "package_id": "CUSTOM-SLOT-1",
-      "package_name": "Dwarf Cleric — Cleric;Priest;Saint + Wand of First Light"
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
     },
     {
       "card_id": "S1-WAR-H004",
       "card_name": "Aurex Sunsworn",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-2",
-      "package_name": "Dragonborn Warrior — Warrior;Paladin;Crusader + Warrior’s Relic"
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
     },
     {
       "card_id": "S1-WAR-H005",
       "card_name": "Aurex Sunsworn",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-2",
-      "package_name": "Dragonborn Warrior — Warrior;Paladin;Crusader + Warrior’s Relic"
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
     },
     {
       "card_id": "S1-WAR-H006",
       "card_name": "Aurex Sunsworn",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-2",
-      "package_name": "Dragonborn Warrior — Warrior;Paladin;Crusader + Warrior’s Relic"
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
     },
     {
       "card_id": "S1-WAR-L001",
       "card_name": "Warrior’s Relic",
       "card_type": "Legacy",
       "package_id": "CUSTOM-SLOT-2",
-      "package_name": "Dragonborn Warrior — Warrior;Paladin;Crusader + Warrior’s Relic"
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
     },
     {
       "card_id": "S1-ARC-H001",
       "card_name": "Korvak Ironfang",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-3",
-      "package_name": "Beastman Archer — Archer;Marksman;Grand Ranger + Golden Arrows"
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
     },
     {
       "card_id": "S1-ARC-H002",
       "card_name": "Korvak Ironfang",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-3",
-      "package_name": "Beastman Archer — Archer;Marksman;Grand Ranger + Golden Arrows"
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
     },
     {
       "card_id": "S1-ARC-H003",
       "card_name": "Korvak Ironfang",
       "card_type": "Hero",
       "package_id": "CUSTOM-SLOT-3",
-      "package_name": "Beastman Archer — Archer;Marksman;Grand Ranger + Golden Arrows"
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
     },
     {
       "card_id": "S1-ARC-L001",
       "card_name": "Golden Arrows",
       "card_type": "Legacy",
       "package_id": "CUSTOM-SLOT-3",
-      "package_name": "Beastman Archer — Archer;Marksman;Grand Ranger + Golden Arrows"
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
     }
   ],
   "is_valid": true,
@@ -439,8 +439,8 @@
     "CENTER": "S1-WAR-H004",
     "RIGHT": "S1-ARC-H001"
   },
-  "source_database_version": "One Source Authority v1.4 · registry 5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab · Starter60 v1.2",
-  "builder_version_note": "Deck Builder v1.14 preserves the approved Card Review structure while consuming canonical printed text, legality, runtime semantics, effects, hashes, and assets from One Source Authority v1.4.",
+  "source_database_version": "One Source Authority v1.4 · registry 5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab",
+  "builder_version_note": "Normalized for Grandis Legacy PvP v2.6.1 while preserving the approved deck contents, Legacy packages, and default Formation.",
   "display_name": "Starter 2 — Saint / Crusader / Grand Ranger",
   "preset_id": "starter_02_saint_crusader_grand_ranger",
   "main_deck_expanded": [

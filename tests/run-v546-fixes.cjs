@@ -8,7 +8,7 @@ if(!app.includes('>Not Available</span>'))fail('Not Available label missing');
 if(app.includes('title="'+"'+esc(reasonText)+'"))fail('native response title tooltip remains');
 if(!app.includes('firstPrioritizedResponseReason'))fail('response hierarchy helper missing');
 if(!app.includes('focusMobilePlayerHand'))fail('mobile hand focus missing');
-if(!app.includes('setTimeout(runNext,55)'))fail('draw sequence is not sequential');
+if(!app.includes('setTimeout(runNext,50)'))fail('draw sequence is not sequential');
 if(!css.includes('scrollbar-width:none!important'))fail('mobile Hand scrollbar not hidden');
 if(!css.includes('grid-template-rows:84px 34px'))fail('two-action Hand layout missing');
 const card=data.cards.find(c=>c.card_id==='S1-MAG-018');

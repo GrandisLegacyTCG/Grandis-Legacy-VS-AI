@@ -1581,6 +1581,17 @@ function applyStepInDodgeThenSwap(next, response, responseCard, events) {
   return true;
 }
 
+
+function unbrokenStandStatusImmunityEligibleForResponse(state, response) {
+  if (!response || response.card_id !== 'S1-WAR-022') return false;
+  const slot = inferResponseSourceSlot(state, response);
+  const player = getPlayer(state, response.player_id);
+  const slotState = player && player.board && player.board[slot];
+  const heroId = slotState && slotState.slot_mode === 'HERO' && slotState.hero && !slotState.hero.defeated ? slotState.hero.card_id : null;
+  const cls = String(heroClass(state, heroId) || '').toLowerCase();
+  return cls === 'paladin' || cls === 'crusader';
+}
+
 function applyResponseCardFollowUps(next, response, responseCard, events) {
   if (!responseCard || !response) return;
   applyStepInDodgeThenSwap(next, response, responseCard, events);
@@ -1612,7 +1623,7 @@ function applyResponseCardFollowUps(next, response, responseCard, events) {
       }));
     }
   }
-  if (response.card_id === 'S1-WAR-022') {
+  if (response.card_id === 'S1-WAR-022' && unbrokenStandStatusImmunityEligibleForResponse(next, response)) {
     const slot = inferResponseSourceSlot(next, response);
     if (slot) {
       addNegativeStatusImmunityAttachment(next, events, {
@@ -5117,7 +5128,7 @@ function responseCardLegal(state, playerId, cardId, options) {
       const redirectCheck = responseRedirectTargetForCard(state, playerId, card, options && options.intent || {});
       if (redirectCheck && !redirectCheck.ok) errors.push(...redirectCheck.errors);
     }
-    if (player && ['S1-MAG-011', 'S1-WAR-022', 'S1-CLE-025'].includes(cardId) && attachmentLifecycle.isPersistentAttachmentCard(cardId)) {
+    if (player && ['S1-MAG-011', 'S1-WAR-022', 'S1-CLE-025'].includes(cardId) && attachmentLifecycle.isPersistentAttachmentCard(cardId) && (cardId !== 'S1-WAR-022' || unbrokenStandStatusImmunityEligibleForResponse(state, Object.assign({ player_id: playerId, card_id: cardId }, options && options.intent || {})))) {
       const usedSlots = (player.attachments || []).filter(attachment => normalizeSlotKey(attachment.host_slot || attachment.source_slot || attachment.target_slot) === sourceSlot).length;
       if (usedSlots >= 2) errors.push(`Hero in ${sourceSlot} has no empty Attachment Slot for persistent response ${cardId}.`);
     }

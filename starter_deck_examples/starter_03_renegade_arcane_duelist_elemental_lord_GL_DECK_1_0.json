@@ -1,0 +1,723 @@
+{
+  "schema_version": "GL-DECK-1.0",
+  "builder_version": "2.1-public-deck-builder",
+  "deck_name": "Starter 3 — Renegade / Arcane Duelist / Elemental Lord",
+  "format": "One Source Authority v1.4 + Public Deck Builder v2.1",
+  "main_deck_count": 60,
+  "legacy_package_count": 3,
+  "legacy_deck_count": 12,
+  "legacy_deck_label": "Legacy Deck",
+  "legacy_deck_package_slots": [
+    {
+      "progression": "S1-MAG-H004",
+      "legacy": "S1-MAG-L002"
+    },
+    {
+      "progression": "S1-THF-H001",
+      "legacy": "S1-THF-L001"
+    },
+    {
+      "progression": "S1-THF-H004",
+      "legacy": "S1-THF-L002"
+    }
+  ],
+  "legacy_deck_expanded": [
+    {
+      "card_id": "S1-MAG-H004",
+      "card_name": "Aldric Ashford",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Mage — ALDRIC + Arcane Wand"
+    },
+    {
+      "card_id": "S1-MAG-H005",
+      "card_name": "Aldric Ashford",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Mage — ALDRIC + Arcane Wand"
+    },
+    {
+      "card_id": "S1-MAG-H006",
+      "card_name": "Aldric Ashford",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Mage — ALDRIC + Arcane Wand"
+    },
+    {
+      "card_id": "S1-MAG-L002",
+      "card_name": "Arcane Wand",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Mage — ALDRIC + Arcane Wand"
+    },
+    {
+      "card_id": "S1-THF-H001",
+      "card_name": "Finnian Copperpot",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-H002",
+      "card_name": "Finnian Copperpot",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-H003",
+      "card_name": "Finnian Copperpot",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-L001",
+      "card_name": "Hidden Stash",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-H004",
+      "card_name": "Lucien Voss",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-THF-H005",
+      "card_name": "Lucien Voss",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-THF-H006",
+      "card_name": "Lucien Voss",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-THF-L002",
+      "card_name": "Hidden Archives",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    }
+  ],
+  "side_package_count": 3,
+  "side_deck_count": 12,
+  "side_deck_package_slots": [
+    {
+      "progression": "S1-MAG-H004",
+      "legacy": "S1-MAG-L002"
+    },
+    {
+      "progression": "S1-THF-H001",
+      "legacy": "S1-THF-L001"
+    },
+    {
+      "progression": "S1-THF-H004",
+      "legacy": "S1-THF-L002"
+    }
+  ],
+  "side_deck_expanded": [
+    {
+      "card_id": "S1-MAG-H004",
+      "card_name": "Aldric Ashford",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Mage — ALDRIC + Arcane Wand"
+    },
+    {
+      "card_id": "S1-MAG-H005",
+      "card_name": "Aldric Ashford",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Mage — ALDRIC + Arcane Wand"
+    },
+    {
+      "card_id": "S1-MAG-H006",
+      "card_name": "Aldric Ashford",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Mage — ALDRIC + Arcane Wand"
+    },
+    {
+      "card_id": "S1-MAG-L002",
+      "card_name": "Arcane Wand",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Mage — ALDRIC + Arcane Wand"
+    },
+    {
+      "card_id": "S1-THF-H001",
+      "card_name": "Finnian Copperpot",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-H002",
+      "card_name": "Finnian Copperpot",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-H003",
+      "card_name": "Finnian Copperpot",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-L001",
+      "card_name": "Hidden Stash",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-H004",
+      "card_name": "Lucien Voss",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-THF-H005",
+      "card_name": "Lucien Voss",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-THF-H006",
+      "card_name": "Lucien Voss",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-THF-L002",
+      "card_name": "Hidden Archives",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    }
+  ],
+  "is_valid": true,
+  "validation_issues": [],
+  "validation_warnings": [],
+  "main_deck": [
+    {
+      "card_id": "S1-EVT-001",
+      "card_name": "Begin Anew",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-002",
+      "card_name": "Market Bargain",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-EVT-003",
+      "card_name": "Scouting",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-EVT-007",
+      "card_name": "Intercept",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-008",
+      "card_name": "Forged Alliance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-009",
+      "card_name": "Tactical Adaptation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-002",
+      "card_name": "Greater Health Potion",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ITM-008",
+      "card_name": "Phoenix Feather",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-012",
+      "card_name": "Spectral Grappling Hook",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ITM-017",
+      "card_name": "Flashpowder Bomb",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-018",
+      "card_name": "Magic Compass",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-003",
+      "card_name": "Fireball",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-005",
+      "card_name": "Mirror Image",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-006",
+      "card_name": "Meditation",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-007",
+      "card_name": "Tornado",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-009",
+      "card_name": "Fire Blast",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-014",
+      "card_name": "Lightning Strike",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-016",
+      "card_name": "Nova Strike",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-017",
+      "card_name": "Frostfire Nova",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-019",
+      "card_name": "Flame Dragon's Wrath",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-020",
+      "card_name": "Aether Ball",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-021",
+      "card_name": "Mana Absorption",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-022",
+      "card_name": "Aether Infusion",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-023",
+      "card_name": "Aether Slash",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-024",
+      "card_name": "Aether Sweep",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-025",
+      "card_name": "Mana Void",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-002",
+      "card_name": "Jump Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-003",
+      "card_name": "Evasion",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-004",
+      "card_name": "Smoke Screen",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-006",
+      "card_name": "Sixth Sense",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-010",
+      "card_name": "Back Stab",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-011",
+      "card_name": "Elusive Escape",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-016",
+      "card_name": "Finishing Strike",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-017",
+      "card_name": "Venom Binding",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-018",
+      "card_name": "Venom Detonation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-020",
+      "card_name": "Sword Slash",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-022",
+      "card_name": "Step In",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-023",
+      "card_name": "Flash Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-024",
+      "card_name": "Sword Combo",
+      "quantity": 1
+    }
+  ],
+  "default_formation": {
+    "LEFT": "S1-THF-H001",
+    "CENTER": "S1-THF-H004",
+    "RIGHT": "S1-MAG-H004"
+  },
+  "source_database_version": "One Source Authority v1.4 · registry 5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab",
+  "builder_version_note": "Normalized for Grandis Legacy PvP v2.6.1 while preserving the approved deck contents, Legacy packages, and default Formation.",
+  "display_name": "Starter 3 — Renegade / Arcane Duelist / Elemental Lord",
+  "preset_id": "starter_03_renegade_arcane_duelist_elemental_lord",
+  "main_deck_expanded": [
+    {
+      "card_id": "S1-EVT-001",
+      "card_name": "Begin Anew",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-002",
+      "card_name": "Market Bargain",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-002",
+      "card_name": "Market Bargain",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-003",
+      "card_name": "Scouting",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-003",
+      "card_name": "Scouting",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-007",
+      "card_name": "Intercept",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-008",
+      "card_name": "Forged Alliance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-009",
+      "card_name": "Tactical Adaptation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-002",
+      "card_name": "Greater Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-002",
+      "card_name": "Greater Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-008",
+      "card_name": "Phoenix Feather",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-012",
+      "card_name": "Spectral Grappling Hook",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-012",
+      "card_name": "Spectral Grappling Hook",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-017",
+      "card_name": "Flashpowder Bomb",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-018",
+      "card_name": "Magic Compass",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-018",
+      "card_name": "Magic Compass",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-003",
+      "card_name": "Fireball",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-005",
+      "card_name": "Mirror Image",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-005",
+      "card_name": "Mirror Image",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-006",
+      "card_name": "Meditation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-006",
+      "card_name": "Meditation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-007",
+      "card_name": "Tornado",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-007",
+      "card_name": "Tornado",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-009",
+      "card_name": "Fire Blast",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-009",
+      "card_name": "Fire Blast",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-014",
+      "card_name": "Lightning Strike",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-016",
+      "card_name": "Nova Strike",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-016",
+      "card_name": "Nova Strike",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-017",
+      "card_name": "Frostfire Nova",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-019",
+      "card_name": "Flame Dragon's Wrath",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-020",
+      "card_name": "Aether Ball",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-021",
+      "card_name": "Mana Absorption",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-021",
+      "card_name": "Mana Absorption",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-022",
+      "card_name": "Aether Infusion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-022",
+      "card_name": "Aether Infusion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-023",
+      "card_name": "Aether Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-023",
+      "card_name": "Aether Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-024",
+      "card_name": "Aether Sweep",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-025",
+      "card_name": "Mana Void",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-002",
+      "card_name": "Jump Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-003",
+      "card_name": "Evasion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-003",
+      "card_name": "Evasion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-004",
+      "card_name": "Smoke Screen",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-006",
+      "card_name": "Sixth Sense",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-006",
+      "card_name": "Sixth Sense",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-010",
+      "card_name": "Back Stab",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-010",
+      "card_name": "Back Stab",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-011",
+      "card_name": "Elusive Escape",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-011",
+      "card_name": "Elusive Escape",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-016",
+      "card_name": "Finishing Strike",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-016",
+      "card_name": "Finishing Strike",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-017",
+      "card_name": "Venom Binding",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-017",
+      "card_name": "Venom Binding",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-018",
+      "card_name": "Venom Detonation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-020",
+      "card_name": "Sword Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-020",
+      "card_name": "Sword Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-022",
+      "card_name": "Step In",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-022",
+      "card_name": "Step In",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-023",
+      "card_name": "Flash Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-024",
+      "card_name": "Sword Combo",
+      "quantity": 1
+    }
+  ]
+}

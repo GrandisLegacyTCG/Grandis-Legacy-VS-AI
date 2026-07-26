@@ -1,8 +1,8 @@
 {
   "schema_version": "GL-DECK-1.0",
-  "builder_version": "1.14-public-deck-builder",
+  "builder_version": "2.1-public-deck-builder",
   "deck_name": "Starter 1 — Elemental Lord / Conqueror / Renegade",
-  "format": "One Source Authority v1.4 + Starter60 v1.2",
+  "format": "One Source Authority v1.4 + Public Deck Builder v2.1",
   "main_deck_count": 60,
   "legacy_package_count": 3,
   "legacy_deck_count": 12,
@@ -455,7 +455,7 @@
     "RIGHT": "S1-THF-H001"
   },
   "source_database_version": "One Source Authority v1.4 · registry 5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab · Starter60 v1.2",
-  "builder_version_note": "Deck Builder v1.14 preserves the approved Card Review structure while consuming canonical printed text, legality, runtime semantics, effects, hashes, and assets from One Source Authority v1.4.",
+  "builder_version_note": "Normalized for Grandis Legacy PvP v2.6.1 while preserving the approved deck contents, Legacy packages, and default Formation.",
   "display_name": "Starter 1 — Elemental Lord / Conqueror / Renegade",
   "preset_id": "starter_01_elemental_lord_conqueror_renegade",
   "main_deck_expanded": [

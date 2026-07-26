@@ -1,5 +1,0 @@
-Summary:
-Update VS AI to v5.47
-
-Description:
-Restore the mobile opponent Hand fan, keep Mana Regen visible inside the Mana Pool cell, replace Android native image long-press behavior with a custom Hand-card hold preview, and add decode-first image presentation so coins and newly rendered cards use their correct geometry on first load. Racial Token assets are optimized to lightweight WebP. Gameplay runtime behavior is unchanged. PvP is unchanged.

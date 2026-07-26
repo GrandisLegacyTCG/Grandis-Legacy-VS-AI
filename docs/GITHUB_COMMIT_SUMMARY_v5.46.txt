@@ -1,5 +1,0 @@
-Summary:
-Update VS AI to v5.46
-
-Description:
-Prioritize one clear reason for unavailable Response cards, replace the native tooltip with a contained hover tooltip, improve the mobile Hand for two card actions without a visible scrollbar, focus the Hand after the coin flip, reveal multi-draw cards one by one, and align Double Casting with the FINAL printed text so both Rank II and Rank III may choose the same or a different legal second target. Runtime Foundation, Core, Data, Effect Recipe, Effect Checkpoint, Shared Runtime Manual, Application Runtime Sync, and UI Design Lock are synchronized. PvP is unchanged.

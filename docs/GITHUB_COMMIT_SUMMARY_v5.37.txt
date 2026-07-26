@@ -1,5 +1,0 @@
-Summary:
-Update VS AI to v5.37
-
-Description:
-Correct Holy Blast and Arrow Barrage regression coverage, simplify Deck Setup to “Import Deck,” remove JSON wording from the bundled Deck Builder UI, and keep all v5.36 fallback, target snapshot, Draw Phase, and GitHub Pages improvements. PvP is unchanged.

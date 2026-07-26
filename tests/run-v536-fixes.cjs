@@ -10,7 +10,7 @@ const result=fn();
 if(!result||result.ok!==true) throw new Error('v5.36 fix self-test failed: '+JSON.stringify(result));
 const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
 const css=fs.readFileSync(path.join(root,'css/app.css'),'utf8');
-for(const token of ['refreshResponseWindowOptions','canonicalCardLegalClasses','lockEventTargetSnapshot','beginPlayerTurnDrawPhase','openDeckBuilderButton','deck-builder/index.html']) if(!app.includes(token)) throw new Error('missing v5.36 application token '+token);
+for(const token of ['refreshResponseWindowOptions','canonicalCardLegalClasses','lockEventTargetSnapshot','beginPlayerTurnDrawPhase','aiLobbyDeckBuilderButton','deck-builder/index.html']) if(!app.includes(token)) throw new Error('missing v5.36 application token '+token);
 if(!css.includes('deck-builder-launch')) throw new Error('Deck Builder button CSS missing');
 for(const rel of ['deck-builder/index.html','deck-builder/css/app.css','deck-builder/js/app.js','deck-builder/js/data.js']) if(!fs.existsSync(path.join(root,rel))) throw new Error('missing bundled Deck Builder file '+rel);
 const builderData=fs.readFileSync(path.join(root,'deck-builder/js/data.js'),'utf8');
