@@ -1,0 +1,13 @@
+'use strict';
+const fs=require('fs');const path=require('path');const assert=require('assert');
+const root=path.resolve(__dirname,'..');
+const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
+const css=fs.readFileSync(path.join(root,'css/app.css'),'utf8');
+const reducer=fs.readFileSync(path.join(root,'runtime-source/runtime/core/reducer.js'),'utf8');
+assert(app.includes('Grandis Legacy VS AI v5.53'),'VS AI v5.53 marker missing');
+assert(app.includes('after_stoneblood_response'),'Stoneblood response continuation snapshot missing');
+assert(app.includes('resumeAfterStonebloodResponse'),'Stoneblood continuation resume helper missing');
+assert(reducer.includes('racialTokenSpendAvailable(next, playerId)'),'Runtime Stoneblood Racial Token spend gate missing');
+assert(reducer.includes('stoneblood_used_turn'),'Runtime Stoneblood per-Hero turn marker missing');
+assert(css.includes('.ai-lobby-heading h1{font-size:40px!important'),'AI Lobby title/logo scale lock missing');
+console.log('PASS VS AI v5.53 Stoneblood continuation and AI Lobby title scale');

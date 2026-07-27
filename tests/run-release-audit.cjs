@@ -17,7 +17,7 @@ const app=read('js/app.bundle.js'),css=read('css/app.css'),stat=read('js/static-
 assert.strictEqual(runtime,runtimeSource,'browser runtime must be generated from packaged editable runtime source');
 assert.ok(/One Source Authority v1\.4/.test(stat),'static source version');
 assert.ok(stat.includes(H),'static source hash');
-assert.ok(/runtime_data":"v0\.12\.6/.test(stat)&&/effect_recipe":"v0\.11\.6/.test(stat)&&/runtime_foundation":"v1\.80/.test(stat)&&/runtime_core":"v0\.48/.test(stat),'source stack versions');
+assert.ok(/runtime_data":"v0\.12\.6/.test(stat)&&/effect_recipe":"v0\.11\.6/.test(stat)&&/runtime_foundation":"v1\.81/.test(stat)&&/runtime_core":"v0\.49/.test(stat),'source stack versions');
 assert.ok(!/GL_PRINTED_PREVIEW_OVERRIDES/.test(app),'no preview wording override');
 const retired=/runtime_v\d+_lock|legacy_runtime_lock|attachment_runtime_lock|source_card_destination_lock|defense_response_exhaust_lock|runtime_hit_definition_lock|LEGACY_FULL_RUNTIME_LOCK|cards\.runtime\.v0\.11\.17|effect-recipes\.runtime\.v0\.10\.12|ffe0192ed4c4bdf56f31098dada2e25caccc2f387b57b8eae68c7051fce51141|One Source Authority v1\.2/i;
 for(const [name,text] of [['app',app],['runtime data',JSON.stringify(data)],['recipes',JSON.stringify(recipes)],['static data',stat]])assert.ok(!retired.test(text),'retired semantic/source reference in '+name);
@@ -30,7 +30,7 @@ assert.ok(/data-zone-type="Main Deck"/.test(css)&&/data-zone-type="Legacy Deck"/
 assert.ok(/Printed artwork is the only visible card frame[\s\S]*?hero-card\.hero-main[\s\S]*?border:0!important/.test(css),'card wrappers remain borderless');
 assert.ok(fs.existsSync(path.join(root,'assets/audio/freesound_community-coin-flip-37787.mp3')),'coin audio');
 assert.ok(fs.existsSync(path.join(root,'runtime-source/runtime/core/reducer.js')),'editable runtime source');
-const lock=json('sync/runtime-sync-lock.v2.39.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.application_runtime_sync,'v2.39');assert.strictEqual(lock.local_ai,'v5.52');
+const lock=json('sync/runtime-sync-lock.v2.40.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.application_runtime_sync,'v2.40');assert.strictEqual(lock.local_ai,'v5.53');
 for(const [rel,key] of [['js/app.bundle.js','shared_gameplay_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['runtime-source/runtime/browser/runtime-authority.browser.js','runtime_source_browser_sha256'],['js/static-data.js','static_data_sha256'],['css/app.css','shared_ui_css_sha256']])assert.strictEqual(sha(rel),lock[key],rel+' sync hash');
 for(const file of fs.readdirSync(path.join(root,'starter_deck_examples')).filter(x=>x.endsWith('.json'))){const text=read('starter_deck_examples/'+file);assert.ok(!/One Source Authority v1\.2|Runtime Data v0\.12\.2|ffe0192e/.test(text),'stale starter source metadata '+file)}
 assert.ok(/hero-card-anchor/.test(app)&&/hero-status-overlay/.test(app)&&/hero-health-overlay/.test(css)&&/game-result-summary/.test(css),'v5.35 inherited Hero/HP/status and result hierarchy');
@@ -45,4 +45,4 @@ assert.ok(/Mobile resource visual centering — Local AI v5\.30/.test(css)&&/lef
 assert.ok(/responseDisplayItemsFor/.test(app)&&/data-response-reason/.test(app)&&!/data-response-unavailable/.test(app)&&/straight mobile hands/.test(css),'v5.39 response diagnostics and mobile hand lock');
 assert.ok(fs.existsSync(path.join(root,'deck-builder/js/data.js'))&&/2.1-public-deck-builder/.test(read('deck-builder/js/data.js')),'bundled Deck Builder v2.1');
 
-console.log('PASS VS AI v5.52 release audit: Casting survives Draw/Rank Up, release uses current Hero, response hover diagnostics, mobile resources, and desktop cleanup.');
+console.log('PASS VS AI v5.53 release audit: Casting survives Draw/Rank Up, release uses current Hero, response hover diagnostics, mobile resources, and desktop cleanup.');

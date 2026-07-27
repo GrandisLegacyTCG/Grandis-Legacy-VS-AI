@@ -2185,10 +2185,13 @@ function canUseStonebloodPreventDefeat(next, playerId, slotState) {
   const isStoneblood = String(action.action_key || '').toLowerCase() === 'stoneblood'
     || action.trigger === 'would_be_defeated'
     || /Stoneblood/i.test(String(racial.name || '') + ' ' + text);
-  return tokens > 0 && isStoneblood;
+  return tokens > 0 && isStoneblood && racialTokenSpendAvailable(next, playerId) && !stonebloodAlreadyUsedThisTurn(slotState, next);
 }
 
-function stonebloodAlreadyUsedThisTurn(slotState, state) { return false; }
+function stonebloodAlreadyUsedThisTurn(slotState, state) {
+  const hero = slotState && slotState.hero;
+  return !!hero && hero.stoneblood_used_turn === racialTraitTurnKey(state);
+}
 
 function openStonebloodPreventDefeatChoice(next, playerId, slot, slotState, events, sourceCardId) {
   const player = next.players && next.players[playerId];
@@ -5845,6 +5848,7 @@ function confirmTriggeredRacial(state, intent) {
     const spend = spendRacialToken(next, pending.player_id, slotState.hero.card_id, events);
     if (!spend.ok) return { state, events: [], errors: spend.errors };
     slotState.hero.pending_defeat = false;
+    slotState.hero.stoneblood_used_turn = racialTraitTurnKey(next);
     slotState.hero.hp = 10;
     slotState.hero.defeated = false;
     slotState.slot_mode = 'HERO';

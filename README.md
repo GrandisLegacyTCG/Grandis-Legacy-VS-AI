@@ -1,11 +1,12 @@
-# Grandis Legacy VS AI v5.52
+# Grandis Legacy VS AI v5.53
 
-## Scope
-- AI Lobby visual parity with the approved PvP Lobby theme.
-- Formation showcase resolves the actual Rank II Hero from each selected package.
-- Dropdown-to-Formation spacing is retained while excess empty space below the Hero row is removed.
-- Confirmed Hero defeat clears EXP cards, Attachments (including Casting), statuses, and external pending Casting state before Legacy choice.
-- Revive always returns a clean Hero and cannot resume a pre-defeat Casting effect.
+## Changes
+- Fixes Stoneblood mandatory-choice continuation; spend or decline now resumes the interrupted gameplay flow.
+- Enforces the player-wide Racial Token spend gate for Stoneblood.
+- Scales the `AI LOBBY` title to the Grandis Legacy logo hierarchy.
+- Preserves the v5.52 lobby, Hero Progression, Ultimate Rules, confirmed-defeat cleanup, and shared runtime fixes.
 
 ## Active stack
-Runtime Foundation v1.80 · Runtime Core v0.48 · Application Runtime Sync v2.39 · UI Design Lock v2.43.
+Runtime Foundation v1.81 · Runtime Core v0.49 · Shared Runtime Manual v1.37 · Application Runtime Sync v2.40 · UI Design Lock v2.44.
+
+Open `index.html` through GitHub Pages.

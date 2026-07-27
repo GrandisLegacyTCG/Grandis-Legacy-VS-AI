@@ -3,7 +3,7 @@
    UI and animation code may render the resulting state but must not finalize cards or choices independently. */
 (function(global){
   'use strict';
-  var VERSION='v1.78-browser';
+  var VERSION='v1.81-browser';
   function ensure(state){
     state.runtimeRevision=Number(state.runtimeRevision||0);
     state.runtimeCardDestinationLedger=state.runtimeCardDestinationLedger&&typeof state.runtimeCardDestinationLedger==='object'?state.runtimeCardDestinationLedger:{};

@@ -1,1 +1,4 @@
-Open index.html through GitHub Pages. In AI Lobby, select or import Player and AI decks. On desktop, use GO TO DECK BUILDER in the top-right header; the navigation buttons are intentionally hidden on mobile. Start Match remains at the bottom-right.
+GRANDIS LEGACY VS AI v5.53
+
+GitHub Pages package.
+Commit summary: Update VS AI to v5.53
