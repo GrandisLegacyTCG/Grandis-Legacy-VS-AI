@@ -120,7 +120,7 @@ function createInitialRuntimeState(config) {
   players[opponentId] = buildPlayer(opponentId, safeConfig.opponent_deck || safeConfig.decks && safeConfig.decks[1]);
   return {
     game_id: safeConfig.game_id || `gl-${Date.now()}`,
-    version: 'runtime-reducer-v1.62',
+    version: 'runtime-reducer-v1.64',
     runtime_data: safeConfig.runtime_data || {},
     round: 1,
     active_player_id: playerId,
@@ -359,8 +359,16 @@ function cardTags(card) {
   return new Set(splitList(card && card.runtime_tags).map(tag => tag.toUpperCase()));
 }
 
+function selectedTargetIsItemUserAndHost(card) {
+  if (!card) return false;
+  const requirement = card.requirement || card.source_requirement || canonicalLegality(card).requirement || canonicalLegality(card).source_requirement || {};
+  return requirement.selected_target_is_item_user_and_host === true
+    || requirement.normal_item_does_not_require_source_hero === true;
+}
+
 function cardSourceRequired(card) {
   if (!card) return false;
+  if (selectedTargetIsItemUserAndHost(card)) return false;
   if (['S1-ITM-015','S1-EVT-005','S1-EVT-011'].includes(card.card_id)) return true;
   if (card.source_required !== undefined) return asBoolean(card.source_required);
   return String(card.card_family || card.card_type || '').toLowerCase() === 'skill';
@@ -372,6 +380,7 @@ const V119_TARGETLESS_EXECUTABLE_CARDS = new Set([
 
 function cardTargetRequired(card) {
   if (!card) return false;
+  if (selectedTargetIsItemUserAndHost(card)) return true;
   if (['S1-ITM-003','S1-ITM-010','S1-ITM-011','S1-ITM-013','S1-ITM-014'].includes(card.card_id)) return true;
   if (V119_TARGETLESS_EXECUTABLE_CARDS.has(card.card_id)) return false;
   if (card.card_id === 'S1-THF-027' || card.card_id === 'S1-THF-028') return false;
@@ -770,7 +779,7 @@ function targetMatchesCard(state, card, targetPlayerId, targetSlot, actingPlayer
   if (targetValidator.must_be_non_exhausted === true && slotState.hero.exhausted) {
     return { ok:false, errors:[`${card.name || card.card_id || 'This card'} requires a Ready (non-Exhausted) Hero target.`] };
   }
-  if (isHealingCard(card) && !isHealAllCard(card) && !isHostileAttackCard(card)) {
+  if (!selectedTargetIsItemUserAndHost(card) && isHealingCard(card) && !isHealAllCard(card) && !isHostileAttackCard(card)) {
     if (Number(slotState.hero.hp || 0) >= Number(slotState.hero.max_hp || 100)) return { ok:false, errors:['Single-target heal requires a damaged Hero.'] };
     if (heroHasStatus(slotState,'Bleed')) return { ok:false, errors:['A Hero with Bleed cannot be selected for a heal.'] };
   }
@@ -2399,10 +2408,10 @@ function applyDamageToTargets(next, attackResolution, amount, events, sourceLabe
         response_result: response || null,
         dodged_by_response: dodgedByResponse,
         final_hp_damage: Math.max(0, beforeHp - afterHp),
-        public_damage_breakdown: { attack_card_id: attackResolution.card_id, incoming_damage: incomingAmount, defense_card_id: response && response.card_id || null, defense_kind: response && response.type || null, team_block: teamBlockAmount, response_block: individualBlockAmount, passive_reduction: Number(physicalReduction.amount || 0), immunity_prevented: damagePreventedByImmunity ? amountAfterDodge : 0, final_hp_damage: Math.max(0, beforeHp - afterHp), before_hp: beforeHp, after_hp: afterHp }
+        public_damage_breakdown: { attack_card_id: attackResolution.card_id, incoming_damage: incomingAmount, conditional_bonus_before_defense: Boolean(attackResolution.damage_computation && attackResolution.damage_computation.conditional_bonus_before_defense), conditional_bonus_amount: Number(attackResolution.damage_computation && attackResolution.damage_computation.conditional_bonus && attackResolution.damage_computation.conditional_bonus.amount || 0), defense_card_id: response && response.response_card_id !== undefined ? response.response_card_id : response && response.card_id || null, defense_display_name: response && (response.response_display_name || response.racial_trait) || null, defense_source_type: response && response.response_source_type || (response && response.card_id ? 'CARD' : null), defense_kind: response && response.type || null, team_block: teamBlockAmount, response_block: individualBlockAmount, passive_reduction: Number(physicalReduction.amount || 0), immunity_prevented: damagePreventedByImmunity ? amountAfterDodge : 0, final_hp_damage: Math.max(0, beforeHp - afterHp), before_hp: beforeHp, after_hp: afterHp }
       }
     }));
-    events.push(createRuntimeEvent(EVENT_TYPES.OPPONENT_PLAYED_UPDATED, next, { player_id: attackResolution.attacking_player_id, card_id: attackResolution.card_id, source_slot: attackResolution.source_slot, target_player_id: target.target_player_id, target_slot: target.target_slot, payload: { public_record_type: 'ACTION_RESULT', status: attackResolution.attack_negated ? 'NEGATED' : 'RESOLVED', response_card_id: response && response.card_id || null, response_kind: response && response.type || null, incoming_damage: incomingAmount, total_block: teamBlockAmount + individualBlockAmount, passive_reduction: Number(physicalReduction.amount || 0), final_hp_damage: Math.max(0, beforeHp - afterHp), before_hp: beforeHp, after_hp: afterHp, keep_visible_when_canceled_or_negated: true } }));
+    events.push(createRuntimeEvent(EVENT_TYPES.OPPONENT_PLAYED_UPDATED, next, { player_id: attackResolution.attacking_player_id, card_id: attackResolution.card_id, source_slot: attackResolution.source_slot, target_player_id: target.target_player_id, target_slot: target.target_slot, payload: { public_record_type: 'ACTION_RESULT', status: attackResolution.attack_negated ? 'NEGATED' : 'RESOLVED', response_card_id: response && response.response_card_id !== undefined ? response.response_card_id : response && response.card_id || null, response_display_name: response && (response.response_display_name || response.racial_trait) || null, response_source_type: response && response.response_source_type || (response && response.card_id ? 'CARD' : null), response_kind: response && response.type || null, incoming_damage: incomingAmount, conditional_bonus_before_defense: Boolean(attackResolution.damage_computation && attackResolution.damage_computation.conditional_bonus_before_defense), conditional_bonus_amount: Number(attackResolution.damage_computation && attackResolution.damage_computation.conditional_bonus && attackResolution.damage_computation.conditional_bonus.amount || 0), total_block: teamBlockAmount + individualBlockAmount, passive_reduction: Number(physicalReduction.amount || 0), final_hp_damage: Math.max(0, beforeHp - afterHp), before_hp: beforeHp, after_hp: afterHp, keep_visible_when_canceled_or_negated: true } }));
     if (afterHp <= 0 && !slotState.hero.defeated) {
       if (!applyStonebloodPreventDefeat(next, target.target_player_id, target.target_slot, slotState, events, attackResolution.card_id)) {
         queueHeroDefeatLegacyChoice(next, target.target_player_id, target.target_slot, slotState, events, attackResolution.card_id);
@@ -3306,6 +3315,8 @@ function getOrCreateAttackDamageComputation(next, attackResolution, events) {
   amount *= Number(fullDamageMultiplier.multiplier || 1);
   attackResolution.damage_computation = {
     amount,
+    incoming_damage_before_defense: amount,
+    conditional_bonus_before_defense: true,
     ability_damage: abilityDamage,
     attachment_modifier_amount: attachmentModifierAmount,
     conditional_bonus: conditionalBonus,
@@ -4938,6 +4949,8 @@ function confirmAction(state, intent) {
       } else next.players[pending.player_id].discard_pile.push(pending.card_id);
     } else if (applyBlessingOfDivinityEffect(next,pending,card,events)) {
       movedTo='Attachment Slot';
+    } else if (applyAttachmentModifierItemEffect(next, pending, card, events)) {
+      movedTo = 'Attachment Slot';
     } else if (isHealAllCard(card)) {
       applyHealAllEffect(next, pending, card, events);
       next.players[pending.player_id].discard_pile.push(pending.card_id);
@@ -4955,8 +4968,6 @@ function confirmAction(state, intent) {
       else next.players[pending.player_id].discard_pile.push(pending.card_id);
     } else if (applyCrystalBallEffect(next, pending, card, events)) {
       next.players[pending.player_id].discard_pile.push(pending.card_id);
-    } else if (applyAttachmentModifierItemEffect(next, pending, card, events)) {
-      movedTo = 'Attachment Slot';
     } else if (applyCamouflageEffect(next, pending, card, events)) {
       movedTo = 'Attachment Slot';
     } else if (applyGenericResourceAndHandEffect(next, pending, card, events)) {
@@ -5612,6 +5623,18 @@ function incomingDamageIncludesHeroSlot(state, playerId, slot) {
   return targets.some(target => target && target.target_player_id === playerId && normalizeSlotKey(target.target_slot) === normalized);
 }
 
+function racialResponseIdentity(heroCard, profile) {
+  const displayName = String(profile && profile.name || 'Racial Trait');
+  return {
+    response_source_type: 'RACIAL_TRAIT',
+    response_display_name: displayName,
+    response_card_id: null,
+    display_card_id: null,
+    source_hero_card_id: heroCard && heroCard.card_id || null,
+    source_hero_name: heroCard && heroCard.name || null
+  };
+}
+
 function useDragonScaleResponse(state, intent, sourceSlot, slotState, heroCard, profile) {
   const playerId = intent.player_id;
   if (!state.response_window || !state.pending_attack_resolution) return { state, events: [], errors: ['Dragon Scale requires an incoming damage response window.'] };
@@ -5620,12 +5643,13 @@ function useDragonScaleResponse(state, intent, sourceSlot, slotState, heroCard, 
   if (!['physical', 'magical'].includes(damageType)) return { state, events: [], errors: ['Dragon Scale only blocks incoming Physical or Magical damage.'] };
   if (!incomingDamageIncludesHeroSlot(state, playerId, sourceSlot)) return { state, events: [], errors: ['Dragon Scale can only protect the Dragonborn Hero using it.'] };
   let next = deepClone(state);
-  const events = [createRuntimeEvent(EVENT_TYPES.RESPONSE_DECLARED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: { response_to_card_id: state.response_window.card_id, racial_trait: 'Dragon Scale' } })];
+  const identity = racialResponseIdentity(heroCard, profile);
+  const events = [createRuntimeEvent(EVENT_TYPES.RESPONSE_DECLARED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: Object.assign({ response_to_card_id: state.response_window.card_id, racial_trait: 'Dragon Scale', response_identity: identity }, identity) })];
   const spend = spendRacialToken(next, playerId, heroCard.card_id, events);
   if (!spend.ok) return { state, events: [], errors: spend.errors };
-  next.pending_attack_resolution.response_result = { type: 'BLOCK', card_id: heroCard.card_id, racial_trait: 'Dragon Scale', block_amount: 40, block_target_player_id: playerId, block_target_slot: sourceSlot };
-  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_CONFIRMED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: { racial_trait: 'Dragon Scale', block_amount: 40 } }));
-  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_RESOLVED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: { result: { type: 'BLOCK', block_amount: 40, racial_trait: 'Dragon Scale' } } }));
+  next.pending_attack_resolution.response_result = Object.assign({ type: 'BLOCK', card_id: heroCard.card_id, racial_trait: 'Dragon Scale', block_amount: 40, block_target_player_id: playerId, block_target_slot: sourceSlot, response_identity: identity }, identity);
+  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_CONFIRMED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: Object.assign({ racial_trait: 'Dragon Scale', block_amount: 40, response_identity: identity }, identity) }));
+  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_RESOLVED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: Object.assign({ result: Object.assign({ type: 'BLOCK', block_amount: 40, racial_trait: 'Dragon Scale', response_identity: identity }, identity), response_identity: identity }, identity) }));
   next.response_window = null;
   resolvePendingAttackDamage(next, events, playerId);
   return { state: appendEvents(next, events), events, errors: [] };
@@ -6053,6 +6077,8 @@ module.exports = {
   responseBlockAmount,
   __test: {
     cardActionProfile,
+    selectedTargetIsItemUserAndHost,
+    cardSourceRequired,
     cardTargetRequired,
     isReviveCard,
     reviveHpForCard,
@@ -6072,6 +6098,8 @@ module.exports = {
     activeAttackDamageMultiplier,
     buildPendingAttackResolution,
     getOrCreateAttackDamageComputation,
+    applyDamageToTargets,
+    racialResponseIdentity,
     buildCastingReleaseAttackResolution,
     queueOrOpenCastingRelease,
     cleanupConfirmedDefeatRuntimeState,

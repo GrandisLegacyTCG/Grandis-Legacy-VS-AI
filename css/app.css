@@ -1,5 +1,5 @@
 
-/* Grandis Legacy VS AI v5.51 — embedded Noto Sans UI typography. */
+/* Grandis Legacy VS AI v5.52 — embedded Noto Sans UI typography. */
 @font-face{font-family:"Noto Sans";src:url("../assets/fonts/noto-sans/NotoSans-Variable.woff2") format("woff2");font-style:normal;font-weight:100 900;font-stretch:62.5% 100%;font-display:swap}
 @font-face{font-family:"Noto Sans";src:url("../assets/fonts/noto-sans/NotoSans-Italic-Variable.woff2") format("woff2");font-style:italic;font-weight:100 900;font-stretch:62.5% 100%;font-display:swap}
 html,body,body *{font-family:"Noto Sans",Arial,sans-serif!important}
@@ -5504,7 +5504,7 @@ body.deck-setup-active{
 }
 
 /* ========================================================================== */
-/* Grandis Legacy VS AI v5.51 — mobile Legacy control anchor consistency.     */
+/* Grandis Legacy VS AI v5.52 — mobile Legacy control anchor consistency.     */
 /* Desktop keeps the approved Legacy name-row info button. On mobile, the     */
 /* Legacy info control shares the Hero slot's fixed top-left anchor while the */
 /* contextual action remains fixed at top-right.                              */
@@ -5547,7 +5547,7 @@ body.deck-setup-active{
 }
 
 
-/* PvP v2.6.10 final lock: battlefield card hover preview size without changing its card-relative anchor. */
+/* PvP v2.6.11 final lock: battlefield card hover preview size without changing its card-relative anchor. */
 @media (min-width:761px){
   .hover-card-zoom{width:250px!important;height:350px!important;max-width:250px!important;max-height:350px!important;aspect-ratio:5/7!important}
   .hover-card-zoom img{width:250px!important;height:350px!important;max-width:250px!important;max-height:350px!important;object-fit:contain!important}
@@ -5558,7 +5558,7 @@ body.deck-setup-active{
 }
 
 
-/* PvP v2.6.10: the Hand-specific selector previously overrode the generic 250x350 lock. */
+/* PvP v2.6.11: the Hand-specific selector previously overrode the generic 250x350 lock. */
 @media (min-width:761px){
   .hover-card-zoom.is-hand-hover{
     width:250px!important;height:350px!important;max-width:250px!important;max-height:350px!important;aspect-ratio:5/7!important;
@@ -5570,11 +5570,11 @@ body.deck-setup-active{
 
 
 /* ========================================================================== */
-/* Grandis Legacy PvP v2.6.10 — VS AI desktop scale restore + mobile Hand lock. */
+/* Grandis Legacy PvP v2.6.11 — VS AI desktop scale restore + mobile Hand lock. */
 /* ========================================================================== */
 @media (min-width:761px){
   /* Desktop card and battlefield geometry intentionally inherit the VS AI
-     v5.51 baseline. Only the Hero action badge gains vertical breathing room. */
+     v5.52 baseline. Only the Hero action badge gains vertical breathing room. */
   .v96-app .heroActions .actionBtn{
     min-height:21px!important;
     padding-top:4px!important;
@@ -5617,7 +5617,7 @@ body.deck-setup-active{
 }
 
 
-/* PvP v2.6.10 — mobile card preview is 130% of the previous 250px reference. */
+/* PvP v2.6.11 — mobile card preview is 130% of the previous 250px reference. */
 @media (max-width:760px){
   .hover-card-zoom:not(.is-click-zoom){
     width:min(325px,calc(100vw - 16px))!important;
@@ -5633,7 +5633,7 @@ body.deck-setup-active{
 
 
 /* ========================================================================== */
-/* Grandis Legacy VS AI v5.51 — AI Lobby aligned to the approved PvP theme. */
+/* Grandis Legacy VS AI v5.52 — AI Lobby aligned to the approved PvP theme. */
 /* ========================================================================== */
 body.deck-setup-active{background:#02060b!important}
 .deck-setup-screen.runtime-ui-v14-setup{
@@ -5675,7 +5675,7 @@ body.deck-setup-active{background:#02060b!important}
 }
 
 /* ========================================================================== */
-/* Grandis Legacy VS AI v5.51 — AI Lobby correction lock.                    */
+/* Grandis Legacy VS AI v5.52 — AI Lobby correction lock.                    */
 /* Removes the redundant deck count pill, guarantees Rank II Formation art,  */
 /* restores Hero Progression as a real modal, and keeps Start Match readable. */
 /* ========================================================================== */
@@ -5914,7 +5914,7 @@ body.deck-setup-active #previewOverlay{z-index:10060!important}
 }
 
 /* ========================================================================== */
-/* Grandis Legacy VS AI v5.51 — final AI Lobby PvP-theme parity and spacing. */
+/* Grandis Legacy VS AI v5.52 — final AI Lobby PvP-theme parity and spacing. */
 /* ========================================================================== */
 body.deck-setup-active{
   min-width:0!important;
@@ -6076,3 +6076,8 @@ body.deck-setup-active{
   .deck-setup-screen.runtime-ui-v14-setup .formation-card .formation-position{padding-top:6px!important;font-size:10px!important}
   .deck-setup-screen.runtime-ui-v14-setup .deck-setup-actions .start-match-primary{width:auto!important;min-width:150px!important;height:40px!important;min-height:40px!important}
 }
+
+/* v5.52 / v2.6.11 — Ultimate-only Card Review rules */
+.readable-card-ultimate-rules{margin-top:10px!important;border:1px solid rgba(240,206,103,.34)!important;background:rgba(240,206,103,.06)!important}
+.readable-card-ultimate-rules ul{margin:0!important;padding-left:19px!important;color:#e0e8ef!important;font-size:13px!important;line-height:1.5!important}
+.readable-card-ultimate-rules li+li{margin-top:4px!important}.readable-card-ultimate-rules strong{color:#f0ce67!important}

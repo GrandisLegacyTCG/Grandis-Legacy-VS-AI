@@ -17,4 +17,4 @@ assert(css.includes('overflow-y:auto!important'));
 assert(css.includes('aspect-ratio:63/88!important'));
 assert(css.includes('.v96-app .card-played-panel'));
 assert(css.includes('position:sticky!important'));
-console.log('PASS VS AI v5.51 responsive UI locks.');
+console.log('PASS VS AI v5.52 responsive UI locks.');

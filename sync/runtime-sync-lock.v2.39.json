@@ -1,0 +1,32 @@
+{
+  "version": "v2.39",
+  "schema_version": "2.39-consumer",
+  "policy": "RUNTIME_FIRST_FAIL_CLOSED_SYNC",
+  "application": "VS AI v5.52",
+  "local_ai": "v5.52",
+  "pvp_reference": "v2.6.11",
+  "canonical_registry_hash": "5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab",
+  "one_source_authority": "v1.4",
+  "application_runtime_sync": "v2.39",
+  "runtime_foundation": "v1.80",
+  "runtime_core": "v0.48",
+  "shared_runtime_manual": "v1.36",
+  "ui_design_lock": "v2.43",
+  "shared_gameplay_sha256": "8fa67643f0bcaf9a7fbab368db8aa2e5b21ea50955fe2b50582a7d6ff60397b6",
+  "runtime_authority_sha256": "348fdcc6abf97e963baaa7ff8bb85ad2df7628f76134706acfd130d14f22784c",
+  "runtime_source_browser_sha256": "348fdcc6abf97e963baaa7ff8bb85ad2df7628f76134706acfd130d14f22784c",
+  "static_data_sha256": "77ab96d9d63fc1a17669be387ea9b813b7cbec41d8b20f3250f6a487049e7359",
+  "shared_ui_css_sha256": "6d058395f30bbb5c35cff874c7c3fb04de9862e95a173d52de92cbc162722a73",
+  "consumerAdoptionStatus": {
+    "currentApplicationsRebuiltInThisDelivery": true,
+    "currentAI": "VS AI v5.52",
+    "currentPvP": "PvP v2.6.11",
+    "responseIdentity": "ADOPTED",
+    "conditionalDamageBeforeDefense": "ADOPTED",
+    "itemTargetHostSeparation": "ADOPTED",
+    "ultimateRules": "ADOPTED",
+    "heroProgressionInitialHighlight": "ADOPTED",
+    "confirmedDefeatCleanup": "PRESERVED"
+  },
+  "tutorial": "HOLD; next Tutorial build must branch from VS AI v5.52 or a newer approved package."
+}

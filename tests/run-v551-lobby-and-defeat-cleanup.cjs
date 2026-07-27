@@ -11,8 +11,8 @@ assert.deepStrictEqual(JSON.parse(JSON.stringify(aiIds)),{LEFT:'S1-CLE-H005',CEN
 const cleanup=bridge.testDefeatCastingCleanupRevive();
 assert(cleanup&&cleanup.ok,'Defeat/Casting/Revive cleanup failed: '+JSON.stringify(cleanup));
 const css=fs.readFileSync(path.join(root,'css/app.css'),'utf8');
-assert(css.includes('Grandis Legacy VS AI v5.51 — final AI Lobby PvP-theme parity and spacing'),'final v5.51 lobby CSS lock missing');
+assert(css.includes('Grandis Legacy VS AI v5.52 — final AI Lobby PvP-theme parity and spacing'),'final v5.52 lobby CSS lock missing');
 assert(css.includes('grid-template-columns:repeat(3,minmax(0,1fr))!important'),'three-card formation layout missing');
 assert(css.includes('margin:0 0 14px!important'),'dropdown-to-formation spacing missing');
 assert(css.includes('height:auto!important;\n  min-height:0!important;\n  align-self:start!important'),'deck panel empty-space removal missing');
-console.log('PASS VS AI v5.51 Rank II lobby, compact spacing, and confirmed-defeat full cleanup');
+console.log('PASS VS AI v5.52 Rank II lobby, compact spacing, and confirmed-defeat full cleanup');

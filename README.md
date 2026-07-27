@@ -1,4 +1,4 @@
-# Grandis Legacy VS AI v5.51
+# Grandis Legacy VS AI v5.52
 
 ## Scope
 - AI Lobby visual parity with the approved PvP Lobby theme.
@@ -8,4 +8,4 @@
 - Revive always returns a clean Hero and cannot resume a pre-defeat Casting effect.
 
 ## Active stack
-Runtime Foundation v1.78 · Runtime Core v0.46 · Application Runtime Sync v2.36 · UI Design Lock v2.41.
+Runtime Foundation v1.80 · Runtime Core v0.48 · Application Runtime Sync v2.39 · UI Design Lock v2.43.

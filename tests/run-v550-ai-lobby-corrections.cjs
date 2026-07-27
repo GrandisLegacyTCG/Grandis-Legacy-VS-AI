@@ -19,7 +19,7 @@ for(const file of deckFiles){
 assert(app.includes("rankHeroIdFromProgression(rankOneId,2)"),'Rank II deterministic resolver missing');
 assert(app.includes("if(candidate&&heroIds.indexOf(candidate)!==-1)return candidate"),'Rank II deck membership guard missing');
 assert(app.includes('class="pvp-v260-card pvp-progression-static-card" type="button" data-preview="'),'Progression Rank cards must open Card Preview');
-assert(app.includes('document.body.appendChild(modal);prepareRenderedImages(modal)'),'Hero Progression must render immediately before asset completion');
+assert(app.includes('document.body.appendChild(modal);bringModalToFront(modal);prepareRenderedImages(modal)'),'Hero Progression must render immediately before asset completion');
 assert(app.includes('btn.onclick=function(ev)'),'Formation Hero click binding must be direct and replacement-safe');
 assert(css.includes('.pvp-progression-modal{')&&css.includes('z-index:10045!important'),'Hero Progression modal presentation missing');
 assert(css.includes('body.deck-setup-active #previewOverlay{z-index:10060!important}'),'Card Preview must layer above Hero Progression');
@@ -27,4 +27,4 @@ assert(css.includes('.deck-setup-screen.runtime-ui-v14-setup .deck-setup-actions
 assert(css.includes('background:linear-gradient(180deg,#f5dc91 0%,#c49b43 100%)!important'),'Start Match gold surface missing');
 assert(css.includes('.deck-setup-screen.runtime-ui-v14-setup .formation-card .formation-position{'),'Formation position label visibility lock missing');
 assert(css.includes('overflow:visible!important'),'Formation overflow correction missing');
-console.log('PASS VS AI v5.51 AI Lobby count removal, Rank II Formation, Progression modal, and Start Match corrections');
+console.log('PASS VS AI v5.52 AI Lobby count removal, Rank II Formation, Progression modal, and Start Match corrections');
