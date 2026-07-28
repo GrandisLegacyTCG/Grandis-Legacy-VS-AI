@@ -5,6 +5,6 @@ const css=fs.readFileSync(path.join(root,'css/app.css'),'utf8');
 const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
 assert(css.includes('font-family:"Noto Sans"')||css.includes("font-family:'Noto Sans'"),'Noto Sans family missing');
 assert(css.includes('@font-face')&&css.includes('NotoSans-Variable.woff2'),'Noto Sans asset hooks missing');
-assert(!fs.existsSync(path.join(root,'assets/fonts')),'Font binaries must not be distributed');
+assert(fs.existsSync(path.join(root,'assets/fonts/noto-sans/NotoSans-Variable.woff2'))&&fs.existsSync(path.join(root,'assets/fonts/noto-sans/NotoSans-Italic-Variable.woff2')),'Noto Sans binaries must be bundled');
 assert(app.includes('aiHeroProgressionModal'),'Hero Progression missing');
-console.log('PASS VS AI v5.54 AI Lobby Noto Sans asset hooks, Rank II Formation, Hero Progression, and mobile Hand contracts');
+console.log('PASS VS AI v5.55 AI Lobby Noto Sans asset hooks, Rank II Formation, Hero Progression, and mobile Hand contracts');
