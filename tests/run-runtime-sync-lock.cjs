@@ -11,5 +11,5 @@ assert.strictEqual(lock.canonical_registry_hash,H);
 assert.strictEqual(lock.one_source_authority,'v1.4');
 assert.strictEqual(lock.application_runtime_sync,'v2.43');
 for(const [rel,key] of [['js/app.bundle.js','shared_gameplay_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['runtime-source/runtime/browser/runtime-authority.browser.js','runtime_source_browser_sha256'],['js/static-data.js','static_data_sha256'],['css/app.css','shared_ui_css_sha256']])assert.strictEqual(sha(rel),lock[key],rel);
-assert.strictEqual(lock.local_ai,'v5.55');
-console.log('PASS Application Runtime Sync v2.43 VS AI v5.55 source/deploy lock');
+assert.strictEqual(lock.local_ai,'v5.56');
+console.log('PASS Application Runtime Sync v2.43 VS AI v5.56 source/deploy lock');

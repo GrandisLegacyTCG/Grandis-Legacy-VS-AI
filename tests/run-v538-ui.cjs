@@ -2,7 +2,7 @@ const fs=require('fs');
 const assert=require('assert');
 const app=fs.readFileSync('js/app.bundle.js','utf8');
 const css=fs.readFileSync('css/app.css','utf8');
-assert(app.includes('<h1>AI LOBBY</h1>'));
+assert(app.includes('<h1>VS AI LOBBY</h1>'));
 assert(!app.includes('class="setup-status-pill">NOT STARTED'));
 assert(!app.includes('Select current Starter60 deck packages before creating a match.'));
 assert(!app.includes('deck-builder-setup-note">Build or edit a deck'));

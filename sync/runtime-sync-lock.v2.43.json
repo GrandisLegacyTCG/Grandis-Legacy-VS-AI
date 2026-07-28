@@ -2,8 +2,8 @@
   "version": "v2.43",
   "schema_version": "2.43-consumer",
   "policy": "RUNTIME_FIRST_FAIL_CLOSED_SYNC",
-  "application": "VS AI v5.55",
-  "local_ai": "v5.55",
+  "application": "VS AI v5.56",
+  "local_ai": "v5.56",
   "pvp_reference": "v2.6.14",
   "canonical_registry_hash": "5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab",
   "one_source_authority": "v1.4",
@@ -12,18 +12,18 @@
   "runtime_core": "v0.49",
   "shared_runtime_manual": "v1.38",
   "ui_design_lock": "v2.47",
-  "shared_gameplay_sha256": "1d38627f3bb94f8fd68869c04131d6b5d0cd77c1cf8f4140b7ccd06ada036f68",
+  "shared_gameplay_sha256": "0e05635a97460432970e79e9268cd64eb403a8bf9aaccea18021fff16ffc65a0",
   "runtime_authority_sha256": "292e17fba8a2961bd2a0f903fb8ec8a94aced1ef7fa5c7bbbb71e4cd0f81df1d",
   "runtime_source_browser_sha256": "292e17fba8a2961bd2a0f903fb8ec8a94aced1ef7fa5c7bbbb71e4cd0f81df1d",
-  "static_data_sha256": "442ec34c815366a8857b8e9dd9630adfb0e98220555ea8f3595c3a7f2fe4607e",
-  "shared_ui_css_sha256": "939464fc502446cab4e6667d9208055f381f53922b36033b197829938f1790e1",
+  "static_data_sha256": "539a777a74796d4e2b136827bad09753e65c53dc7477522e9c1dc57679e4ba56",
+  "shared_ui_css_sha256": "2939a3ee657f791b7ba3b531168ab31267153c99630bbe7ce07441af0368952c",
   "consumerAdoptionStatus": {
     "currentApplicationsRebuiltInThisDelivery": true,
-    "currentAI": "VS AI v5.55",
+    "currentAI": "VS AI v5.56",
     "currentPvP": "PvP v2.6.14",
-    "currentTutorial": "Tutorial Local v0.15 (local only)",
+    "currentTutorial": "Tutorial v0.31 GitHub Pages",
     "automaticEndTurn": "ADOPTED",
     "notoSansBinaries": "BUNDLED_AND_MANIFESTED"
   },
-  "tutorial": "Tutorial Local v0.15 branches from VS AI v5.55 and remains local-only."
+  "tutorial": "Tutorial v0.31 GitHub Pages branches from the shared VS AI v5.56 application base."
 }

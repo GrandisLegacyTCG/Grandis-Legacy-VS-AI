@@ -30,7 +30,7 @@ assert.ok(/data-zone-type="Main Deck"/.test(css)&&/data-zone-type="Legacy Deck"/
 assert.ok(/Printed artwork is the only visible card frame[\s\S]*?hero-card\.hero-main[\s\S]*?border:0!important/.test(css),'card wrappers remain borderless');
 assert.ok(fs.existsSync(path.join(root,'assets/audio/freesound_community-coin-flip-37787.mp3')),'coin audio');
 assert.ok(fs.existsSync(path.join(root,'runtime-source/runtime/core/reducer.js')),'editable runtime source');
-const lock=json('sync/runtime-sync-lock.v2.43.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.application_runtime_sync,'v2.43');assert.strictEqual(lock.local_ai,'v5.55');
+const lock=json('sync/runtime-sync-lock.v2.43.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.application_runtime_sync,'v2.43');assert.strictEqual(lock.local_ai,'v5.56');
 for(const [rel,key] of [['js/app.bundle.js','shared_gameplay_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['runtime-source/runtime/browser/runtime-authority.browser.js','runtime_source_browser_sha256'],['js/static-data.js','static_data_sha256'],['css/app.css','shared_ui_css_sha256']])assert.strictEqual(sha(rel),lock[key],rel+' sync hash');
 for(const file of fs.readdirSync(path.join(root,'starter_deck_examples')).filter(x=>x.endsWith('.json'))){const text=read('starter_deck_examples/'+file);assert.ok(!/One Source Authority v1\.2|Runtime Data v0\.12\.2|ffe0192e/.test(text),'stale starter source metadata '+file)}
 assert.ok(/hero-card-anchor/.test(app)&&/hero-status-overlay/.test(app)&&/hero-health-overlay/.test(css)&&/game-result-summary/.test(css),'v5.35 inherited Hero/HP/status and result hierarchy');
@@ -38,11 +38,11 @@ assert.ok(/GL_LOCAL_AI_V534_TACTICAL_AI_QA_SELF_TEST/.test(app)&&/aiBestHealAfte
 assert.ok(/width:46px!important/.test(css)&&/height:21px!important/.test(css)&&/width:34px!important/.test(css)&&/height:5px!important/.test(css)&&/font-size:10px!important/.test(css)&&/left:calc\(71\.6% - 4px\)!important/.test(css)&&/top:calc\(9\.8% \+ 7px\)!important/.test(css)&&/transform-origin:left bottom!important/.test(css)&&/scale\(\.94\)/.test(css),'v5.35 compact HP overlay geometry');
 assert.ok(/mobileMatchMenuOverlay/.test(app)&&/turn-ai:not\(.response-active\)/.test(css),'mobile Match Menu and AI-turn Hand stability');
 assert.ok(/Opponent\/AI turn locks the original Hand card position/.test(app),'AI-turn enlarged hover inspection enabled');
-assert.ok(/assets\/lobby\/background\.webp/.test(css)&&/AI LOBBY/.test(app)&&/ai-lobby-btn--blue/.test(css),'PvP-themed AI Lobby');
+assert.ok(/assets\/lobby\/background\.webp/.test(css)&&/VS AI LOBBY/.test(app)&&/ai-lobby-btn--blue/.test(css),'PvP-themed AI Lobby');
 assert.ok(/data-zone-type=\"Discard Pile\"/.test(css)&&/data-zone-type=\"Mana Pool\"/.test(css),'Discard lower count and centered Mana CSS');
 assert.ok(/setProperty\('z-index',String\(GL_MODAL_STACK_SEQUENCE\),'important'\)/.test(app),'important modal stack authority');
 assert.ok(/Mobile resource visual centering — Local AI v5\.30/.test(css)&&/left:50%!important/.test(css)&&/transform:translate\(-50%,-50%\)!important/.test(css),'mobile resource artwork centering lock');
 assert.ok(/responseDisplayItemsFor/.test(app)&&/data-response-reason/.test(app)&&!/data-response-unavailable/.test(app)&&/straight mobile hands/.test(css),'v5.39 response diagnostics and mobile hand lock');
 assert.ok(fs.existsSync(path.join(root,'deck-builder/js/data.js'))&&/2.1-public-deck-builder/.test(read('deck-builder/js/data.js')),'bundled Deck Builder v2.1');
 
-console.log('PASS VS AI v5.55 release audit: Casting survives Draw/Rank Up, release uses current Hero, response hover diagnostics, mobile resources, and desktop cleanup.');
+console.log('PASS VS AI v5.56 release audit: Casting survives Draw/Rank Up, release uses current Hero, response hover diagnostics, mobile resources, and desktop cleanup.');
