@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grandis-legacy.local/schema/deck.schema.json",
+  "title": "Grandis Legacy Deck Schema",
+  "type": "object",
+  "required": ["id", "name", "heroes", "main_deck", "legacy_deck"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "heroes": { "type": "array", "items": { "type": "string" } },
+    "main_deck": { "type": "array", "items": { "type": "string" } },
+    "legacy_deck": { "type": "array", "items": { "type": "string" } },
+    "format": { "type": "string" },
+    "notes": { "type": "string" }
+  }
+}

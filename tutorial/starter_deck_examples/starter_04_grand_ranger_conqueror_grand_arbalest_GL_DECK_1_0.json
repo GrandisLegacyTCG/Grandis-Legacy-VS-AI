@@ -1,0 +1,753 @@
+{
+  "schema_version": "GL-DECK-1.0",
+  "builder_version": "2.1-public-deck-builder",
+  "deck_name": "Starter 4 — Grand Ranger / Conqueror / Grand Arbalest",
+  "format": "One Source Authority v1.4 + Public Deck Builder v2.1",
+  "main_deck_count": 60,
+  "legacy_package_count": 3,
+  "legacy_deck_count": 12,
+  "legacy_deck_label": "Legacy Deck",
+  "legacy_deck_package_slots": [
+    {
+      "progression": "S1-ARC-H004",
+      "legacy": "S1-ARC-L001"
+    },
+    {
+      "progression": "S1-WAR-H001",
+      "legacy": "S1-WAR-L001"
+    },
+    {
+      "progression": "S1-ARC-H001",
+      "legacy": "S1-ARC-L002"
+    }
+  ],
+  "legacy_deck_expanded": [
+    {
+      "card_id": "S1-ARC-H004",
+      "card_name": "Alden Sterling",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Archer — ALDEN + Golden Arrows"
+    },
+    {
+      "card_id": "S1-ARC-H005",
+      "card_name": "Alden Sterling",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Archer — ALDEN + Golden Arrows"
+    },
+    {
+      "card_id": "S1-ARC-H006",
+      "card_name": "Alden Sterling",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Archer — ALDEN + Golden Arrows"
+    },
+    {
+      "card_id": "S1-ARC-L001",
+      "card_name": "Golden Arrows",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Archer — ALDEN + Golden Arrows"
+    },
+    {
+      "card_id": "S1-WAR-H001",
+      "card_name": "Draxen Blacksand",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Human Warrior — DRAXEN + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-WAR-H002",
+      "card_name": "Draxen Blacksand",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Human Warrior — DRAXEN + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-WAR-H003",
+      "card_name": "Draxen Blacksand",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Human Warrior — DRAXEN + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-WAR-L001",
+      "card_name": "Warrior’s Relic",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Human Warrior — DRAXEN + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-ARC-H001",
+      "card_name": "Korvak Ironfang",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Falconer’s Whistle"
+    },
+    {
+      "card_id": "S1-ARC-H002",
+      "card_name": "Korvak Ironfang",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Falconer’s Whistle"
+    },
+    {
+      "card_id": "S1-ARC-H003",
+      "card_name": "Korvak Ironfang",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Falconer’s Whistle"
+    },
+    {
+      "card_id": "S1-ARC-L002",
+      "card_name": "Falconer’s Whistle",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Falconer’s Whistle"
+    }
+  ],
+  "side_package_count": 3,
+  "side_deck_count": 12,
+  "side_deck_package_slots": [
+    {
+      "progression": "S1-ARC-H004",
+      "legacy": "S1-ARC-L001"
+    },
+    {
+      "progression": "S1-WAR-H001",
+      "legacy": "S1-WAR-L001"
+    },
+    {
+      "progression": "S1-ARC-H001",
+      "legacy": "S1-ARC-L002"
+    }
+  ],
+  "side_deck_expanded": [
+    {
+      "card_id": "S1-ARC-H004",
+      "card_name": "Alden Sterling",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Archer — ALDEN + Golden Arrows"
+    },
+    {
+      "card_id": "S1-ARC-H005",
+      "card_name": "Alden Sterling",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Archer — ALDEN + Golden Arrows"
+    },
+    {
+      "card_id": "S1-ARC-H006",
+      "card_name": "Alden Sterling",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Archer — ALDEN + Golden Arrows"
+    },
+    {
+      "card_id": "S1-ARC-L001",
+      "card_name": "Golden Arrows",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Human Archer — ALDEN + Golden Arrows"
+    },
+    {
+      "card_id": "S1-WAR-H001",
+      "card_name": "Draxen Blacksand",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Human Warrior — DRAXEN + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-WAR-H002",
+      "card_name": "Draxen Blacksand",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Human Warrior — DRAXEN + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-WAR-H003",
+      "card_name": "Draxen Blacksand",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Human Warrior — DRAXEN + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-WAR-L001",
+      "card_name": "Warrior’s Relic",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Human Warrior — DRAXEN + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-ARC-H001",
+      "card_name": "Korvak Ironfang",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Falconer’s Whistle"
+    },
+    {
+      "card_id": "S1-ARC-H002",
+      "card_name": "Korvak Ironfang",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Falconer’s Whistle"
+    },
+    {
+      "card_id": "S1-ARC-H003",
+      "card_name": "Korvak Ironfang",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Falconer’s Whistle"
+    },
+    {
+      "card_id": "S1-ARC-L002",
+      "card_name": "Falconer’s Whistle",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Falconer’s Whistle"
+    }
+  ],
+  "is_valid": true,
+  "validation_issues": [],
+  "validation_warnings": [],
+  "main_deck": [
+    {
+      "card_id": "S1-ARC-002",
+      "card_name": "Poison Arrow",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ARC-003",
+      "card_name": "Escape Arrow",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ARC-005",
+      "card_name": "Reload",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ARC-008",
+      "card_name": "Ambush Shot",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ARC-010",
+      "card_name": "Arrow Barrage",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ARC-011",
+      "card_name": "Back Step",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ARC-012",
+      "card_name": "Deflect Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-014",
+      "card_name": "Replenish",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-016",
+      "card_name": "Soul Blast Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-017",
+      "card_name": "Dual Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-018",
+      "card_name": "Charged Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-019",
+      "card_name": "Long Range Shot",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ARC-020",
+      "card_name": "Piercing Bolt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-021",
+      "card_name": "Aura Infusion Bolt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-022",
+      "card_name": "Singularity Reload",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-023",
+      "card_name": "Cross Bolt",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ARC-024",
+      "card_name": "Colossal Dreadbolt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-002",
+      "card_name": "Market Bargain",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-003",
+      "card_name": "Scouting",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-004",
+      "card_name": "Relentless Leveling",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-007",
+      "card_name": "Intercept",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-008",
+      "card_name": "Forged Alliance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-010",
+      "card_name": "Déjà vu",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-001",
+      "card_name": "Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-002",
+      "card_name": "Greater Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-008",
+      "card_name": "Phoenix Feather",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-012",
+      "card_name": "Spectral Grappling Hook",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-016",
+      "card_name": "Chain Mail",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-018",
+      "card_name": "Magic Compass",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-026",
+      "card_name": "Dodge Instinct",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-027",
+      "card_name": "Camouflage",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-029",
+      "card_name": "Flash Combo",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-030",
+      "card_name": "Crescent Moon Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-004",
+      "card_name": "Cover Up",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-005",
+      "card_name": "Taunt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-007",
+      "card_name": "Upward Thrust",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-009",
+      "card_name": "Rage Swing",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-010",
+      "card_name": "Rage Blast",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-011",
+      "card_name": "Side Step",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-012",
+      "card_name": "Deflect",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-014",
+      "card_name": "Final Grit",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-015",
+      "card_name": "Charge Attack",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-016",
+      "card_name": "Whirlwind",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-017",
+      "card_name": "Fiery Thrust",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-018",
+      "card_name": "Execute",
+      "quantity": 1
+    }
+  ],
+  "default_formation": {
+    "LEFT": "S1-ARC-H001",
+    "CENTER": "S1-WAR-H001",
+    "RIGHT": "S1-ARC-H004"
+  },
+  "source_database_version": "One Source Authority v1.4 · registry 5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab",
+  "builder_version_note": "Normalized for Grandis Legacy PvP v2.6.1 while preserving the approved deck contents, Legacy packages, and default Formation.",
+  "display_name": "Starter 4 — Grand Ranger / Conqueror / Grand Arbalest",
+  "preset_id": "starter_04_grand_ranger_conqueror_grand_arbalest",
+  "main_deck_expanded": [
+    {
+      "card_id": "S1-ARC-002",
+      "card_name": "Poison Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-002",
+      "card_name": "Poison Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-003",
+      "card_name": "Escape Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-003",
+      "card_name": "Escape Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-005",
+      "card_name": "Reload",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-005",
+      "card_name": "Reload",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-008",
+      "card_name": "Ambush Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-008",
+      "card_name": "Ambush Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-010",
+      "card_name": "Arrow Barrage",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-010",
+      "card_name": "Arrow Barrage",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-011",
+      "card_name": "Back Step",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-011",
+      "card_name": "Back Step",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-012",
+      "card_name": "Deflect Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-014",
+      "card_name": "Replenish",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-016",
+      "card_name": "Soul Blast Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-017",
+      "card_name": "Dual Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-018",
+      "card_name": "Charged Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-019",
+      "card_name": "Long Range Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-019",
+      "card_name": "Long Range Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-020",
+      "card_name": "Piercing Bolt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-021",
+      "card_name": "Aura Infusion Bolt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-022",
+      "card_name": "Singularity Reload",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-023",
+      "card_name": "Cross Bolt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-023",
+      "card_name": "Cross Bolt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-024",
+      "card_name": "Colossal Dreadbolt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-002",
+      "card_name": "Market Bargain",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-003",
+      "card_name": "Scouting",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-004",
+      "card_name": "Relentless Leveling",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-007",
+      "card_name": "Intercept",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-008",
+      "card_name": "Forged Alliance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-010",
+      "card_name": "Déjà vu",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-001",
+      "card_name": "Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-002",
+      "card_name": "Greater Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-008",
+      "card_name": "Phoenix Feather",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-012",
+      "card_name": "Spectral Grappling Hook",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-016",
+      "card_name": "Chain Mail",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-018",
+      "card_name": "Magic Compass",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-026",
+      "card_name": "Dodge Instinct",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-026",
+      "card_name": "Dodge Instinct",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-027",
+      "card_name": "Camouflage",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-027",
+      "card_name": "Camouflage",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-029",
+      "card_name": "Flash Combo",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-029",
+      "card_name": "Flash Combo",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-030",
+      "card_name": "Crescent Moon Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-004",
+      "card_name": "Cover Up",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-005",
+      "card_name": "Taunt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-007",
+      "card_name": "Upward Thrust",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-007",
+      "card_name": "Upward Thrust",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-009",
+      "card_name": "Rage Swing",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-009",
+      "card_name": "Rage Swing",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-010",
+      "card_name": "Rage Blast",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-011",
+      "card_name": "Side Step",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-012",
+      "card_name": "Deflect",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-012",
+      "card_name": "Deflect",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-014",
+      "card_name": "Final Grit",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-015",
+      "card_name": "Charge Attack",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-016",
+      "card_name": "Whirlwind",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-017",
+      "card_name": "Fiery Thrust",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-017",
+      "card_name": "Fiery Thrust",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-018",
+      "card_name": "Execute",
+      "quantity": 1
+    }
+  ]
+}

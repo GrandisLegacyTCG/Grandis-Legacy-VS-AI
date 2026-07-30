@@ -1,0 +1,17 @@
+'use strict';
+const fs=require('fs'),path=require('path');
+const {loadLocalAI}=require('./vm-local-ai-harness.cjs');
+const root=path.resolve(__dirname,'..');
+const ctx=loadLocalAI(root);
+const fn=ctx.GL_V543_RESOURCE_UI_QA_SELF_TEST;
+if(typeof fn!=='function')throw new Error('v5.43 resource UI QA self-test missing');
+const r=fn();if(!r||r.ok!==true)throw new Error('v5.43 resource UI QA failed: '+JSON.stringify(r));
+const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
+const css=fs.readFileSync(path.join(root,'css/app.css'),'utf8');
+if(!app.includes('function mobileRacialResourceZone')||!app.includes('mobile-racial-zone'))throw new Error('dedicated Racial resource renderer missing');
+if(app.includes("var racialHtml=isMain?"))throw new Error('Racial markup still embedded in Main Deck');
+if(!css.includes('minmax(0,22fr) minmax(0,22fr) minmax(0,22fr) minmax(0,22fr) minmax(0,12fr)'))throw new Error('22/22/22/22/12 resource split missing');
+if(!css.includes('mobile-racial-token-stack')||!css.includes('grid-template-rows:repeat(2'))throw new Error('vertical token stack missing');
+if(!css.includes('.v96-app .desktop-player-footer{')||!css.includes('border-bottom:0!important'))throw new Error('desktop footer stroke removal missing');
+console.log('PASS Grandis Legacy VS AI v5.43 dedicated 5-column mobile resources and desktop footer cleanup.');
+console.log(JSON.stringify(r));

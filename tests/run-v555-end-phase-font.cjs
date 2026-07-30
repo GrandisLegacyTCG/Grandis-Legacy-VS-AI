@@ -9,4 +9,4 @@ assert(app.includes('state.endPhaseCleanupProgress={key:cleanupKey,status_ticks_
 assert(app.includes('scheduleAutomaticPlayerEndResume(appState)'),'mandatory End choice resume missing');
 for(const name of ['NotoSans-Variable.woff2','NotoSans-Italic-Variable.woff2'])assert(fs.existsSync(path.join(root,'assets/fonts/noto-sans',name)),name+' missing');
 assert(css.includes('../assets/fonts/noto-sans/NotoSans-Variable.woff2')&&css.includes('../assets/fonts/noto-sans/NotoSans-Italic-Variable.woff2'),'font-face paths missing');
-console.log('PASS VS AI v5.56 automatic End handoff, resumable cleanup, and Noto Sans binaries');
+console.log('PASS VS AI v5.57 automatic End handoff, resumable cleanup, and Noto Sans binaries');

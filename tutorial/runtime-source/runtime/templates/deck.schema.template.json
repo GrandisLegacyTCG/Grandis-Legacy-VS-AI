@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Grandis Legacy Deck Schema Template",
+  "type": "object",
+  "required": ["deckId", "heroes", "mainDeck", "legacyDeck"],
+  "properties": {
+    "deckId": { "type": "string" },
+    "heroes": { "type": "array", "items": { "type": "string" }, "minItems": 3, "maxItems": 3 },
+    "mainDeck": { "type": "array", "items": { "type": "string" } },
+    "legacyDeck": { "type": "array", "items": { "type": "string" } }
+  }
+}

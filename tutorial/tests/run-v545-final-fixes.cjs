@@ -1,0 +1,16 @@
+'use strict';
+const fs=require('fs'),path=require('path');
+const {loadLocalAI}=require('./vm-local-ai-harness.cjs');
+const root=path.resolve(__dirname,'..'),ctx=loadLocalAI(root),r=ctx.GL_V545_CASTING_UI_QA_SELF_TEST();
+if(!r||!r.ok)throw new Error('v5.46 final fixes QA failed '+JSON.stringify(r));
+const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8'),css=fs.readFileSync(path.join(root,'css/app.css'),'utf8'),authority=fs.readFileSync(path.join(root,'js/runtime-authority.js'),'utf8');
+if(!app.includes('source_instance_id:sourceHero.instance_id'))throw new Error('Casting source instance commit missing');
+if(!app.includes("instance_id:'HERO:'"))throw new Error('Hero stable instance identity missing');
+if(!authority.includes('source_instance_id')||!authority.includes('currentSource.instance_id'))throw new Error('Runtime authority instance match missing');
+if(app.includes('data-response-unavailable='))throw new Error('Unavailable Response still has click-popup binding');
+if(!app.includes('<span class="response-option-select response-option-reason"'))throw new Error('Unavailable hover/focus surface missing');
+if(!css.includes('.v96-app .gl-app::after{display:none!important'))throw new Error('Legacy gold baseline override missing');
+if(!css.includes('grid-template-rows:72px 218px')||!css.includes('grid-template-rows:218px 72px'))throw new Error('72px mobile resource height missing');
+if(!css.includes('.v96-app .zone em{display:block!important'))throw new Error('Mobile Mana Regen visibility override missing');
+if(!css.includes('.v96-app .hand-area--player{grid-template-columns:minmax(0,1fr)!important'))throw new Error('Mobile full-width Hand override missing');
+console.log('PASS Grandis Legacy VS AI v5.46 final fixes');console.log(JSON.stringify(r));

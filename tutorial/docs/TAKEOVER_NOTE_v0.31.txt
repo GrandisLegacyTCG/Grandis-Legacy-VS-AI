@@ -1,0 +1,23 @@
+TAKEOVER NOTE — GRANDIS LEGACY TUTORIAL GAMEPLAY v0.31
+
+STATUS
+- GitHub Pages candidate built from VS AI v5.56.
+- Tutorial remains non-scripted: real runtime match, fixed decks, contextual first-time explanations.
+
+FINAL v0.31 FLOW LOCKS
+- Card practices are separate for Attack, Support, Tactical, Event, and Item.
+- Only the first legal card of each category is used.
+- The lesson advances to the last cancellable stage:
+  * direct commit: stop before Play;
+  * source-only: Play, show/block source, Cancel;
+  * target-only: Play, show/block target, Cancel;
+  * source then target: Play, choose source, show/block final target, Cancel.
+- Opponent Area Attack response education repeats for every affected Hero.
+- Lobby heading is NON-SCRIPTED — TUTORIAL GAMEPLAY.
+
+SHARED FOLLOW-UP NOTE
+- VS AI v5.56 includes Mage planning for Double Casting and Wildfire Attack follow-ups.
+- PvP is unchanged in this delivery.
+
+GITHUB DESKTOP SUMMARY
+Update Tutorial Gameplay to v0.31

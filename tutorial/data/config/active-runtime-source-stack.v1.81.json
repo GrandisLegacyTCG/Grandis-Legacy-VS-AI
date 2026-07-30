@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.4.1",
+  "generated_at": "2026-07-29",
+  "one_source_authority": "v1.4",
+  "runtime_foundation": "v1.81",
+  "runtime_core": "v0.49",
+  "runtime_data": "v0.12.6",
+  "effect_recipe": "v0.11.6",
+  "effect_checkpoint": "v0.11.5",
+  "application_runtime_sync": "v2.43",
+  "shared_runtime_manual": "v1.38",
+  "local_ai": "v5.56",
+  "public_deck_builder": "v2.1",
+  "pvp_railway": "v2.6.14",
+  "canonical_registry_hash": "5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab",
+  "ui_design_lock": "v2.47",
+  "one_source_patch": "v1.4.1",
+  "deck_builder": "v2.1",
+  "shared_manual": "v1.38"
+}

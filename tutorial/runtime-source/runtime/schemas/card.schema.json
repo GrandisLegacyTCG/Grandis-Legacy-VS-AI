@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grandis-legacy.local/schema/card.schema.json",
+  "title": "Grandis Legacy Card Schema",
+  "type": "object",
+  "required": ["id", "name", "card_type", "timing", "zone_after_resolve"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "card_type": { "enum": ["Hero", "Legacy", "Item", "Event", "Skill"] },
+    "class_access": { "type": "array", "items": { "type": "string" } },
+    "rank_access": { "type": "array", "items": { "type": "string" } },
+    "mana_cost": { "type": ["number", "null"] },
+    "timing": { "type": "array", "items": { "type": "string" } },
+    "source_rule": { "type": "object" },
+    "target_rule": { "type": "object" },
+    "attack_layer": { "enum": ["None", "Area Attack", "Range Attack"] },
+    "damage_profile": { "enum": ["None", "Physical", "Magical"] },
+    "normal_attack_badge": { "enum": ["None", "Physical Attack", "Magical Attack"] },
+    "def_mechanic": { "type": ["string", "null"] },
+    "attachment_rule": { "type": "object" },
+    "effect_recipe": { "type": "array", "items": { "type": "object" } },
+    "second_effect": { "type": ["object", "null"] },
+    "zone_after_resolve": { "type": "string" },
+    "asset_refs": { "type": "object" },
+    "notes": { "type": "string" }
+  }
+}

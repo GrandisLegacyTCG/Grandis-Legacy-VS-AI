@@ -1,0 +1,158 @@
+/* Grandis Legacy Tutorial Guide v0.31 */
+body.gl-tutorial-mode{
+  --gl-tutorial-silver-1:#f7f8fa;
+  --gl-tutorial-silver-2:#b7bec8;
+  --gl-tutorial-silver-3:#737d8a;
+  --gl-tutorial-deep:#071421;
+  --gl-tutorial-panel:#0d1c2c;
+  --gl-tutorial-line:#496581;
+}
+.gl-tutorial-scrim{position:fixed;inset:0;z-index:12950;pointer-events:auto;background:rgba(0,0,0,.10)}
+.gl-tutorial-scrim.is-pick-lock{pointer-events:none;background:rgba(0,0,0,.14)}
+.gl-tutorial-guide.is-bubble-dismissed{visibility:hidden!important;pointer-events:none!important}
+
+.gl-tutorial-highlight-layer{position:fixed;inset:0;z-index:12970;pointer-events:none;overflow:hidden}
+.gl-tutorial-highlight-box{position:fixed;box-sizing:border-box;border-radius:11px;pointer-events:none;box-shadow:0 0 0 2px rgba(3,10,18,.96),0 0 10px rgba(0,0,0,.48);filter:drop-shadow(0 0 5px rgba(224,229,235,.25));animation:glTutorialBorderBlink .86s ease-in-out infinite}
+.gl-tutorial-highlight-box::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:3px;background:linear-gradient(135deg,var(--gl-tutorial-silver-1) 0%,var(--gl-tutorial-silver-2) 34%,var(--gl-tutorial-silver-3) 66%,#e8ebef 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;box-shadow:inset 0 0 14px rgba(230,234,239,.26)}
+.gl-tutorial-highlight-box--formation{border-radius:15px}
+.gl-tutorial-highlight-box--card-pick{border-radius:8px}
+.gl-tutorial-highlight-box--persistent{border-radius:10px}
+.gl-tutorial-highlight-box--printed{border-radius:7px}
+.gl-tutorial-highlight-box--mana{border-radius:50%}
+.gl-tutorial-highlight-box--exp{border-radius:5px}
+
+.gl-tutorial-guide{position:fixed;right:8px;top:8px;z-index:13000;display:flex;flex-direction:row;align-items:flex-start;justify-content:flex-end;gap:0;pointer-events:none;font-family:inherit;color:#f4f7fb;max-width:calc(100vw - 16px)}
+.gl-tutorial-guide.dock-bottom-right{top:auto;bottom:8px;align-items:flex-end}
+.gl-tutorial-guide.dock-top-right{top:8px;bottom:auto}
+.gl-tutorial-arvon{width:146px;height:122px;flex:0 0 146px;display:flex;align-items:flex-start;justify-content:flex-end;overflow:hidden;pointer-events:none;filter:drop-shadow(0 12px 16px rgba(0,0,0,.58));transform:translateY(-1px)}
+.gl-tutorial-arvon img{display:block;width:158px;height:auto;max-width:none;object-fit:contain;object-position:top right;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.gl-tutorial-guide.is-speaking .gl-tutorial-arvon{width:146px;height:122px;flex-basis:146px}
+.gl-tutorial-guide.is-speaking .gl-tutorial-arvon img{width:158px}
+.gl-tutorial-guide.dock-bottom-right .gl-tutorial-arvon{align-self:flex-end}
+.gl-tutorial-bubble[hidden]{display:none!important}
+.gl-tutorial-guide.is-prepositioning .gl-tutorial-bubble{visibility:hidden!important;animation:none!important}
+.gl-tutorial-bubble{position:relative;pointer-events:auto;width:min(430px,calc(100vw - 186px));margin-top:10px;margin-right:-3px;border:1px solid rgba(119,142,164,.92);border-radius:14px;background:linear-gradient(180deg,rgba(15,31,47,.99),rgba(7,18,29,.995));box-shadow:0 20px 52px rgba(0,0,0,.58),inset 0 0 0 1px rgba(255,255,255,.035);overflow:visible;transform-origin:right top;animation:glTutorialIn .2s ease-out}
+.gl-tutorial-guide.is-compact .gl-tutorial-bubble{width:min(330px,calc(100vw - 182px));margin-top:4px}
+.gl-tutorial-guide.dock-bottom-right .gl-tutorial-bubble{margin-top:0;margin-bottom:5px;transform-origin:right bottom}
+.gl-tutorial-bubble::after{content:"";position:absolute;right:-11px;top:40px;width:20px;height:20px;background:#0d1c2c;border-top:1px solid rgba(119,142,164,.92);border-right:1px solid rgba(119,142,164,.92);transform:rotate(45deg);border-radius:0 4px 0 0;pointer-events:none}
+.gl-tutorial-guide.dock-bottom-right .gl-tutorial-bubble::after{top:auto;bottom:34px}
+.gl-tutorial-bubble header{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:12px 13px 9px;border-bottom:1px solid rgba(87,112,137,.45);border-radius:13px 13px 0 0;background:rgba(4,13,22,.35)}
+.gl-tutorial-guide.is-compact .gl-tutorial-bubble header{padding:9px 11px 7px}
+.gl-tutorial-bubble header small{display:block;color:#bdc9d4;font-size:9px;letter-spacing:.12em;margin-bottom:3px}
+.gl-tutorial-bubble h2{margin:0;color:#e6c75e;font-size:18px;line-height:1.18;font-weight:800}
+.gl-tutorial-guide.is-compact .gl-tutorial-bubble h2{font-size:16px}
+.gl-tutorial-bubble header button{border:1px solid #506c88;border-radius:9px;background:#172a3d;color:#eef4fa;padding:7px 10px;cursor:pointer;font:inherit;font-size:12px}
+.gl-tutorial-bubble header button:hover{background:#203a53}
+.gl-tutorial-body{position:relative;z-index:1;padding:11px 13px 3px;color:#e3ebf2;font-size:13px;line-height:1.46;max-height:40vh;overflow:auto;background:rgba(7,18,29,.2)}
+.gl-tutorial-guide.is-compact .gl-tutorial-body{padding:9px 11px 2px;font-size:12px;line-height:1.42;max-height:27vh}
+.gl-tutorial-body p{margin:0 0 8px}
+.gl-tutorial-body b{color:#f2d36a}
+.gl-tutorial-more{margin-top:8px;padding:9px;border:1px solid rgba(82,113,143,.45);border-radius:9px;background:rgba(13,28,43,.72)}
+.gl-tutorial-bubble footer{position:relative;z-index:1;display:flex;justify-content:flex-end;gap:8px;padding:6px 13px 11px;min-height:9px;border-radius:0 0 13px 13px;background:rgba(7,18,29,.35)}
+.gl-tutorial-guide.is-compact .gl-tutorial-bubble footer{padding:4px 11px 9px}
+.gl-tutorial-bubble footer button{border:1px solid #607d98;border-radius:9px;background:#15283b;color:#f5f7fa;padding:8px 13px;cursor:pointer;font:inherit;font-size:12px;font-weight:700}
+.gl-tutorial-bubble footer .gl-tutorial-next{border-color:#c3a248;background:linear-gradient(180deg,#d9b85d,#a9842d);color:#071421}
+
+body.gl-tutorial-card-pick-lock .gl-tutorial-target-card{pointer-events:auto!important;cursor:pointer!important}
+body.gl-tutorial-card-pick-lock .gl-tutorial-target-card .hand-art{pointer-events:auto!important;cursor:pointer!important;position:relative!important}
+body.gl-tutorial-card-pick-lock .gl-tutorial-target-card .hand-art img{pointer-events:none!important}
+body.gl-tutorial-card-pick-lock .gl-tutorial-target-card .hand-actions{pointer-events:none!important}
+body.gl-tutorial-initial-draw-lock .hand-area--player .hand-card{pointer-events:none!important;cursor:default!important}
+.gl-lineage-keys{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0 8px}
+.gl-lineage-key{display:inline-flex;align-items:center;min-height:22px;padding:3px 7px;border-radius:999px;font-size:9px;font-weight:900;border:1px solid rgba(255,255,255,.28)}
+.gl-lineage-key--white{background:#f0f0e8;color:#17202a}
+.gl-lineage-key--red{background:#8b2530;color:#fff}
+.gl-lineage-key--green{background:#216b3b;color:#fff}
+body.gl-tutorial-mode .ai-lobby-actions{display:none!important}
+body.gl-tutorial-mode .tutorial-formation-side header{min-height:32px!important;margin-bottom:8px!important;align-items:center!important}
+body.gl-tutorial-mode .tutorial-formation-side header h3{font-size:17px!important}
+body.gl-tutorial-mode .tutorial-formation-side .formation-preview{overflow:visible!important}
+.tutorial-formation-frame{position:relative;border-radius:15px;overflow:hidden;background:#07111b}
+
+@keyframes glTutorialIn{from{opacity:0;transform:translateY(-7px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes glTutorialBorderBlink{0%,100%{opacity:.34;filter:drop-shadow(0 0 2px rgba(224,229,235,.18))}50%{opacity:1;filter:drop-shadow(0 0 10px rgba(245,247,250,.72))}}
+
+.gl-tutorial-anatomy-arrow{position:fixed;height:3px;border-radius:999px;pointer-events:none;z-index:1;background:linear-gradient(90deg,#77818d 0%,#f4f6f8 48%,#aeb6c0 100%);box-shadow:0 0 0 2px rgba(3,10,18,.98),0 0 9px rgba(232,236,241,.42);animation:glTutorialArrowPulse .9s ease-in-out infinite}
+.gl-tutorial-anatomy-arrow::before,.gl-tutorial-anatomy-arrow::after{content:"";position:absolute;top:50%;transform:translateY(-50%);clip-path:polygon(0 0,100% 50%,0 100%,28% 50%)}
+.gl-tutorial-anatomy-arrow::before{width:19px;height:19px;background:#02070c;filter:drop-shadow(0 0 3px rgba(0,0,0,.78))}
+.gl-tutorial-anatomy-arrow::after{width:15px;height:15px;background:linear-gradient(135deg,#f7f8fa 0%,#cbd2da 42%,#8a949f 72%,#eef1f4 100%);filter:drop-shadow(0 0 5px rgba(230,235,240,.48))}
+.gl-tutorial-anatomy-arrow.from-left::before{right:-14px}
+.gl-tutorial-anatomy-arrow.from-left::after{right:-11px}
+.gl-tutorial-anatomy-arrow.from-right::before{left:-14px;transform:translateY(-50%) scaleX(-1)}
+.gl-tutorial-anatomy-arrow.from-right::after{left:-11px;transform:translateY(-50%) scaleX(-1)}
+.gl-tutorial-arrow-dot{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,#f8fafc,#b9c2cc 68%,#727d89);border:2px solid #07111b;transform:translateY(-50%);box-shadow:0 0 6px rgba(238,241,245,.58)}
+.gl-tutorial-anatomy-arrow.from-left .gl-tutorial-arrow-dot{right:-4px}
+.gl-tutorial-anatomy-arrow.from-right .gl-tutorial-arrow-dot{left:-4px}
+@keyframes glTutorialArrowPulse{0%,100%{opacity:.38;filter:drop-shadow(0 0 2px rgba(225,231,237,.16))}50%{opacity:1;filter:drop-shadow(0 0 8px rgba(239,243,247,.58))}}
+
+@media (max-width:760px){
+  .gl-tutorial-guide{right:4px;top:4px;max-width:calc(100vw - 8px)}
+  .gl-tutorial-guide.dock-bottom-right{top:auto;bottom:4px}
+  .gl-tutorial-arvon{width:78px;height:68px;flex-basis:78px}
+  .gl-tutorial-arvon img{width:84px}
+  .gl-tutorial-guide.is-speaking .gl-tutorial-arvon{width:78px;height:68px;flex-basis:78px}
+  .gl-tutorial-guide.is-speaking .gl-tutorial-arvon img{width:84px}
+  .gl-tutorial-bubble,.gl-tutorial-guide.is-compact .gl-tutorial-bubble{width:min(380px,calc(100vw - 91px));margin-top:3px;margin-right:-2px;border-radius:12px}
+  .gl-tutorial-bubble::after{right:-8px;top:26px;width:15px;height:15px}
+  .gl-tutorial-guide.dock-bottom-right .gl-tutorial-bubble::after{top:auto;bottom:25px}
+  .gl-tutorial-bubble header{padding:9px 9px 7px}
+  .gl-tutorial-bubble h2{font-size:14px}
+  .gl-tutorial-body,.gl-tutorial-guide.is-compact .gl-tutorial-body{font-size:11px;line-height:1.38;padding:8px 9px 2px;max-height:29vh}
+  .gl-tutorial-bubble footer{padding:4px 9px 8px}
+  .gl-tutorial-bubble header button,.gl-tutorial-bubble footer button{padding:6px 9px;font-size:10px}
+  .gl-tutorial-highlight-box::before{padding:2px}
+}
+@media (max-height:610px) and (orientation:landscape){
+  .gl-tutorial-guide{top:3px;right:3px}
+  .gl-tutorial-guide.dock-bottom-right{top:auto;bottom:3px}
+  .gl-tutorial-arvon{width:80px;height:66px;flex-basis:80px}
+  .gl-tutorial-arvon img{width:86px}
+  .gl-tutorial-guide.is-speaking .gl-tutorial-arvon{width:80px;height:66px;flex-basis:80px}
+  .gl-tutorial-guide.is-speaking .gl-tutorial-arvon img{width:86px}
+  .gl-tutorial-bubble,.gl-tutorial-guide.is-compact .gl-tutorial-bubble{width:min(340px,calc(100vw - 96px));margin-top:2px}
+  .gl-tutorial-body,.gl-tutorial-guide.is-compact .gl-tutorial-body{max-height:25vh}
+}
+
+/* v0.15 non-overlap, persistent docking, and anatomy-arrow refinements */
+.gl-tutorial-highlight-box--group{border-radius:12px}
+.gl-tutorial-guide.dock-top-left,.gl-tutorial-guide.dock-bottom-left{right:auto;left:8px;justify-content:flex-start}
+.gl-tutorial-guide.dock-bottom-left{top:auto;bottom:8px;align-items:flex-end}
+.gl-tutorial-guide.dock-top-left .gl-tutorial-bubble,.gl-tutorial-guide.dock-bottom-left .gl-tutorial-bubble{order:2;margin-right:0;margin-left:-3px}
+.gl-tutorial-guide.dock-top-left .gl-tutorial-arvon,.gl-tutorial-guide.dock-bottom-left .gl-tutorial-arvon{order:1;justify-content:flex-start}
+.gl-tutorial-guide.dock-top-left .gl-tutorial-arvon img,.gl-tutorial-guide.dock-bottom-left .gl-tutorial-arvon img{object-position:top left}
+.gl-tutorial-guide.dock-top-left .gl-tutorial-bubble::after,.gl-tutorial-guide.dock-bottom-left .gl-tutorial-bubble::after{right:auto;left:-11px;border-right:0;border-left:1px solid rgba(119,142,164,.92);transform:rotate(-45deg)}
+.gl-tutorial-guide.dock-bottom-left .gl-tutorial-bubble::after{top:auto;bottom:34px}
+.gl-tutorial-guide.is-micro .gl-tutorial-bubble{width:min(246px,calc(100vw - 176px));margin-top:2px}
+.gl-tutorial-guide.is-micro .gl-tutorial-arvon{width:146px;height:122px;flex-basis:146px}
+.gl-tutorial-guide.is-micro .gl-tutorial-arvon img{width:158px}
+.gl-tutorial-guide.is-micro .gl-tutorial-bubble header{padding:7px 9px 6px}
+.gl-tutorial-guide.is-micro .gl-tutorial-bubble h2{font-size:14px}
+.gl-tutorial-guide.is-micro .gl-tutorial-bubble header small{font-size:8px}
+.gl-tutorial-guide.is-micro .gl-tutorial-body{padding:7px 9px 1px;font-size:11px;line-height:1.34;max-height:21vh}
+.gl-tutorial-guide.is-micro .gl-tutorial-bubble footer{padding:3px 9px 7px}
+.gl-tutorial-guide.is-micro .gl-tutorial-bubble header button,.gl-tutorial-guide.is-micro .gl-tutorial-bubble footer button{padding:5px 8px;font-size:10px}
+@media (max-width:760px){
+  .gl-tutorial-guide.dock-top-left,.gl-tutorial-guide.dock-bottom-left{left:4px;right:auto}
+  .gl-tutorial-guide.is-micro .gl-tutorial-bubble{width:min(250px,calc(100vw - 78px))}
+  .gl-tutorial-guide.is-micro .gl-tutorial-arvon{width:78px;height:68px;flex-basis:78px}
+  .gl-tutorial-guide.is-micro .gl-tutorial-arvon img{width:84px}
+  .gl-tutorial-guide.dock-top-left .gl-tutorial-bubble::after,.gl-tutorial-guide.dock-bottom-left .gl-tutorial-bubble::after{left:-8px}
+}
+
+/* Grandis Legacy Tutorial v0.15 — queued mandatory choices and precise callouts. */
+body.gl-tutorial-hold-choice #choiceOverlay.open{visibility:hidden!important;pointer-events:none!important}
+.gl-tutorial-hover-target,.gl-tutorial-interaction-target{position:relative!important;z-index:12960!important;pointer-events:auto!important}
+.gl-tutorial-highlight-box--printed-text{border-radius:9px!important;box-shadow:0 0 0 3px rgba(2,7,12,1),0 0 0 5px rgba(0,0,0,.46),inset 0 0 0 3px rgba(238,241,245,.94),0 0 12px rgba(0,0,0,.68)!important;animation:glTutorialBorderBlink .86s ease-in-out infinite!important}
+.gl-tutorial-anatomy-arrow{z-index:2!important}
+
+/* Tutorial v0.15 — anatomy hierarchy, close-before-next, and revised callout geometry. */
+
+.gl-tutorial-interaction-target{cursor:pointer!important}
+
+/* Round 1 Tutorial gate: Tribute must be completed before leaving Reform. */
+body.gl-tutorial-round-one-tribute-lock #nextPhaseButton{pointer-events:none!important;opacity:.42!important;filter:saturate(.45)!important;cursor:not-allowed!important}
+
+/* Tutorial v0.15 — interaction-target gates are enforced by delegated capture guards in tutorial-guide.js. */
+
+/* Tutorial v0.15 — every guide-created border, including lobby callouts, blinks above its interaction target. */
+.gl-tutorial-highlight-box,.gl-tutorial-highlight-box--printed-text{animation:glTutorialBorderBlink .86s ease-in-out infinite!important}

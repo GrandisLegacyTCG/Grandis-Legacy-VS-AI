@@ -1,0 +1,18 @@
+'use strict';
+const path=require('path'),assert=require('assert'),fs=require('fs');
+const {loadLocalAI}=require('./vm-local-ai-harness.cjs');
+const root=path.resolve(__dirname,'..');
+const ctx=loadLocalAI(root),bridge=ctx.GL_LOCAL_AI_BRIDGE;
+assert(bridge,'Local AI bridge missing');
+const ids=bridge.getSetupFormationIds('PLAYER');
+assert.deepStrictEqual(JSON.parse(JSON.stringify(ids)),{LEFT:'S1-MAG-H002',CENTER:'S1-WAR-H002',RIGHT:'S1-THF-H002'},'Starter 1 showcase must use Rank II cards');
+const aiIds=bridge.getSetupFormationIds('AI');
+assert.deepStrictEqual(JSON.parse(JSON.stringify(aiIds)),{LEFT:'S1-CLE-H005',CENTER:'S1-WAR-H005',RIGHT:'S1-ARC-H002'},'Starter 2 AI showcase must use Rank II cards');
+const cleanup=bridge.testDefeatCastingCleanupRevive();
+assert(cleanup&&cleanup.ok,'Defeat/Casting/Revive cleanup failed: '+JSON.stringify(cleanup));
+const css=fs.readFileSync(path.join(root,'css/app.css'),'utf8');
+assert(css.includes('Grandis Legacy VS AI v5.52 — final AI Lobby PvP-theme parity and spacing'),'final v5.52 lobby CSS lock missing');
+assert(css.includes('grid-template-columns:repeat(3,minmax(0,1fr))!important'),'three-card formation layout missing');
+assert(css.includes('margin:0 0 14px!important'),'dropdown-to-formation spacing missing');
+assert(css.includes('height:auto!important;\n  min-height:0!important;\n  align-self:start!important'),'deck panel empty-space removal missing');
+console.log('PASS VS AI v5.52 Rank II lobby, compact spacing, and confirmed-defeat full cleanup');

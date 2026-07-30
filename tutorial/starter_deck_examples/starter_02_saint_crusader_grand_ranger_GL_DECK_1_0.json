@@ -1,0 +1,748 @@
+{
+  "schema_version": "GL-DECK-1.0",
+  "builder_version": "2.1-public-deck-builder",
+  "deck_name": "Starter 2 — Saint / Crusader / Grand Ranger",
+  "format": "One Source Authority v1.4 + Public Deck Builder v2.1",
+  "main_deck_count": 60,
+  "legacy_package_count": 3,
+  "legacy_deck_count": 12,
+  "legacy_deck_label": "Legacy Deck",
+  "legacy_deck_package_slots": [
+    {
+      "progression": "S1-CLE-H004",
+      "legacy": "S1-CLE-L002"
+    },
+    {
+      "progression": "S1-WAR-H004",
+      "legacy": "S1-WAR-L001"
+    },
+    {
+      "progression": "S1-ARC-H001",
+      "legacy": "S1-ARC-L001"
+    }
+  ],
+  "legacy_deck_expanded": [
+    {
+      "card_id": "S1-CLE-H004",
+      "card_name": "Thrain Sunborn",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
+    },
+    {
+      "card_id": "S1-CLE-H005",
+      "card_name": "Thrain Sunborn",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
+    },
+    {
+      "card_id": "S1-CLE-H006",
+      "card_name": "Thrain Sunborn",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
+    },
+    {
+      "card_id": "S1-CLE-L002",
+      "card_name": "Wand of First Light",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
+    },
+    {
+      "card_id": "S1-WAR-H004",
+      "card_name": "Aurex Sunsworn",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-WAR-H005",
+      "card_name": "Aurex Sunsworn",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-WAR-H006",
+      "card_name": "Aurex Sunsworn",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-WAR-L001",
+      "card_name": "Warrior’s Relic",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-ARC-H001",
+      "card_name": "Korvak Ironfang",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
+    },
+    {
+      "card_id": "S1-ARC-H002",
+      "card_name": "Korvak Ironfang",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
+    },
+    {
+      "card_id": "S1-ARC-H003",
+      "card_name": "Korvak Ironfang",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
+    },
+    {
+      "card_id": "S1-ARC-L001",
+      "card_name": "Golden Arrows",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
+    }
+  ],
+  "side_package_count": 3,
+  "side_deck_count": 12,
+  "side_deck_package_slots": [
+    {
+      "progression": "S1-CLE-H004",
+      "legacy": "S1-CLE-L002"
+    },
+    {
+      "progression": "S1-WAR-H004",
+      "legacy": "S1-WAR-L001"
+    },
+    {
+      "progression": "S1-ARC-H001",
+      "legacy": "S1-ARC-L001"
+    }
+  ],
+  "side_deck_expanded": [
+    {
+      "card_id": "S1-CLE-H004",
+      "card_name": "Thrain Sunborn",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
+    },
+    {
+      "card_id": "S1-CLE-H005",
+      "card_name": "Thrain Sunborn",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
+    },
+    {
+      "card_id": "S1-CLE-H006",
+      "card_name": "Thrain Sunborn",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
+    },
+    {
+      "card_id": "S1-CLE-L002",
+      "card_name": "Wand of First Light",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-1",
+      "package_name": "Dwarf Cleric — THRAIN + Wand of First Light"
+    },
+    {
+      "card_id": "S1-WAR-H004",
+      "card_name": "Aurex Sunsworn",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-WAR-H005",
+      "card_name": "Aurex Sunsworn",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-WAR-H006",
+      "card_name": "Aurex Sunsworn",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-WAR-L001",
+      "card_name": "Warrior’s Relic",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-2",
+      "package_name": "Dragonborn Warrior — AUREX + Warrior’s Relic"
+    },
+    {
+      "card_id": "S1-ARC-H001",
+      "card_name": "Korvak Ironfang",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
+    },
+    {
+      "card_id": "S1-ARC-H002",
+      "card_name": "Korvak Ironfang",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
+    },
+    {
+      "card_id": "S1-ARC-H003",
+      "card_name": "Korvak Ironfang",
+      "card_type": "Hero",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
+    },
+    {
+      "card_id": "S1-ARC-L001",
+      "card_name": "Golden Arrows",
+      "card_type": "Legacy",
+      "package_id": "CUSTOM-SLOT-3",
+      "package_name": "Beastman Archer — KORVAK + Golden Arrows"
+    }
+  ],
+  "is_valid": true,
+  "validation_issues": [],
+  "validation_warnings": [],
+  "main_deck": [
+    {
+      "card_id": "S1-ARC-002",
+      "card_name": "Poison Arrow",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ARC-003",
+      "card_name": "Escape Arrow",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ARC-005",
+      "card_name": "Reload",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-008",
+      "card_name": "Ambush Shot",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ARC-010",
+      "card_name": "Arrow Barrage",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-011",
+      "card_name": "Back Step",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ARC-012",
+      "card_name": "Deflect Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-015",
+      "card_name": "Power Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-016",
+      "card_name": "Soul Blast Shot",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ARC-017",
+      "card_name": "Dual Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-018",
+      "card_name": "Charged Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-003",
+      "card_name": "Brilliant Radiance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-006",
+      "card_name": "Blessing of Might",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-009",
+      "card_name": "Holy Ring",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-CLE-012",
+      "card_name": "Binding Light",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-015",
+      "card_name": "Resurrection",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-016",
+      "card_name": "Sanctuary",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-017",
+      "card_name": "Lay on Hands",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-CLE-019",
+      "card_name": "Divine Punishment",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-020",
+      "card_name": "Holy Slash",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-CLE-021",
+      "card_name": "Hammer of Justice",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-CLE-022",
+      "card_name": "Sacred Bulwark",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-023",
+      "card_name": "Holy Light",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-CLE-024",
+      "card_name": "Divine Judgement",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-025",
+      "card_name": "Blessing of Divinity",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-002",
+      "card_name": "Market Bargain",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-003",
+      "card_name": "Scouting",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-004",
+      "card_name": "Relentless Leveling",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-007",
+      "card_name": "Intercept",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-009",
+      "card_name": "Tactical Adaptation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-010",
+      "card_name": "Déjà vu",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-001",
+      "card_name": "Health Potion",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-ITM-002",
+      "card_name": "Greater Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-008",
+      "card_name": "Phoenix Feather",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-013",
+      "card_name": "Ring of Grace",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-016",
+      "card_name": "Chain Mail",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-018",
+      "card_name": "Magic Compass",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-005",
+      "card_name": "Taunt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-009",
+      "card_name": "Rage Swing",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-020",
+      "card_name": "Shield Bash",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-021",
+      "card_name": "Sacred Stormblade",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-022",
+      "card_name": "Unbroken Stand",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-023",
+      "card_name": "Divine Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-024",
+      "card_name": "Heroic Charge",
+      "quantity": 1
+    }
+  ],
+  "default_formation": {
+    "LEFT": "S1-CLE-H004",
+    "CENTER": "S1-WAR-H004",
+    "RIGHT": "S1-ARC-H001"
+  },
+  "source_database_version": "One Source Authority v1.4 · registry 5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab",
+  "builder_version_note": "Normalized for Grandis Legacy PvP v2.6.1 while preserving the approved deck contents, Legacy packages, and default Formation.",
+  "display_name": "Starter 2 — Saint / Crusader / Grand Ranger",
+  "preset_id": "starter_02_saint_crusader_grand_ranger",
+  "main_deck_expanded": [
+    {
+      "card_id": "S1-ARC-002",
+      "card_name": "Poison Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-002",
+      "card_name": "Poison Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-003",
+      "card_name": "Escape Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-003",
+      "card_name": "Escape Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-005",
+      "card_name": "Reload",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-008",
+      "card_name": "Ambush Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-008",
+      "card_name": "Ambush Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-010",
+      "card_name": "Arrow Barrage",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-011",
+      "card_name": "Back Step",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-011",
+      "card_name": "Back Step",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-012",
+      "card_name": "Deflect Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-015",
+      "card_name": "Power Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-016",
+      "card_name": "Soul Blast Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-016",
+      "card_name": "Soul Blast Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-017",
+      "card_name": "Dual Arrow",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ARC-018",
+      "card_name": "Charged Shot",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-003",
+      "card_name": "Brilliant Radiance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-006",
+      "card_name": "Blessing of Might",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-009",
+      "card_name": "Holy Ring",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-009",
+      "card_name": "Holy Ring",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-012",
+      "card_name": "Binding Light",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-015",
+      "card_name": "Resurrection",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-016",
+      "card_name": "Sanctuary",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-017",
+      "card_name": "Lay on Hands",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-017",
+      "card_name": "Lay on Hands",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-019",
+      "card_name": "Divine Punishment",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-020",
+      "card_name": "Holy Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-020",
+      "card_name": "Holy Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-021",
+      "card_name": "Hammer of Justice",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-021",
+      "card_name": "Hammer of Justice",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-022",
+      "card_name": "Sacred Bulwark",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-023",
+      "card_name": "Holy Light",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-023",
+      "card_name": "Holy Light",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-024",
+      "card_name": "Divine Judgement",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-025",
+      "card_name": "Blessing of Divinity",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-002",
+      "card_name": "Market Bargain",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-003",
+      "card_name": "Scouting",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-004",
+      "card_name": "Relentless Leveling",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-007",
+      "card_name": "Intercept",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-009",
+      "card_name": "Tactical Adaptation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-010",
+      "card_name": "Déjà vu",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-001",
+      "card_name": "Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-001",
+      "card_name": "Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-002",
+      "card_name": "Greater Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-008",
+      "card_name": "Phoenix Feather",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-013",
+      "card_name": "Ring of Grace",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-016",
+      "card_name": "Chain Mail",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-018",
+      "card_name": "Magic Compass",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-018",
+      "card_name": "Magic Compass",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-005",
+      "card_name": "Taunt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-009",
+      "card_name": "Rage Swing",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-009",
+      "card_name": "Rage Swing",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-020",
+      "card_name": "Shield Bash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-020",
+      "card_name": "Shield Bash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-021",
+      "card_name": "Sacred Stormblade",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-021",
+      "card_name": "Sacred Stormblade",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-022",
+      "card_name": "Unbroken Stand",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-022",
+      "card_name": "Unbroken Stand",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-023",
+      "card_name": "Divine Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-024",
+      "card_name": "Heroic Charge",
+      "quantity": 1
+    }
+  ]
+}

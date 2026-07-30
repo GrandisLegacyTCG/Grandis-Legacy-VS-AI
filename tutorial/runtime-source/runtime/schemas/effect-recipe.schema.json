@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grandis-legacy.local/schema/effect-recipe.schema.json",
+  "title": "Grandis Legacy Effect Recipe Schema",
+  "type": "object",
+  "required": ["effect"],
+  "additionalProperties": true,
+  "properties": {
+    "effect": { "type": "string" },
+    "amount": { "type": ["number", "object", "null"] },
+    "target": { "type": ["object", "string", "null"] },
+    "duration": { "type": ["object", "string", "null"] },
+    "condition": { "type": ["object", "string", "null"] },
+    "status": { "type": ["string", "null"] },
+    "zone_after": { "type": ["string", "null"] },
+    "notes": { "type": "string" }
+  }
+}

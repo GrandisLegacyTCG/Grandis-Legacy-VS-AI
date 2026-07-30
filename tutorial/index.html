@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Learn Grandis Legacy in a standalone non-scripted gameplay tutorial powered by the latest VS AI runtime.">
+  <meta name="theme-color" content="#16294C">
+  <title>Grandis Legacy — Non-Scripted Tutorial Gameplay</title>
+  <link rel="stylesheet" href="css/app.css?v=gl-tutorial-0.31">
+  <link rel="stylesheet" href="css/tutorial-guide.css?v=gl-tutorial-0.31">
+</head>
+<body class="gl-tutorial-mode">
+  <div id="app" aria-live="polite">
+    <noscript>Grandis Legacy Tutorial requires JavaScript enabled.</noscript>
+  </div>
+
+  <div id="choiceOverlay" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Card Choice">
+    <section class="choice-panel">
+      <header class="choice-head"><h2 id="choiceTitle">Choice</h2><button id="choiceClose" type="button">Close</button></header>
+      <div id="choiceBody" class="choice-body"></div>
+      <footer class="choice-foot"><button id="choiceConfirm" type="button">Confirm</button></footer>
+    </section>
+  </div>
+
+  <div id="infoOverlay" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Information">
+    <section class="info-panel">
+      <header class="info-head"><h2 id="infoTitle">Info</h2><button id="infoClose" type="button">Close</button></header>
+      <div id="infoBody" class="info-body"></div>
+    </section>
+  </div>
+
+  <div id="responseOverlay" class="modal-overlay response-overlay" role="dialog" aria-modal="true" aria-label="Response Window">
+    <section class="response-panel">
+      <header class="response-head"><h2>Response Window</h2><button id="responseClose" type="button">Close</button></header>
+      <div id="responseBody" class="response-body"></div>
+      <footer id="responseFooter" class="response-foot"></footer>
+    </section>
+  </div>
+
+  <div id="previewOverlay" class="overlay" role="dialog" aria-modal="true" aria-label="Card Preview">
+    <section class="preview-panel">
+      <header class="preview-head"><h2>Card Preview</h2><button id="previewClose" type="button">Close</button></header>
+      <div id="previewBody" class="preview-body"></div>
+    </section>
+  </div>
+
+  <div id="hoverCardZoom" class="hover-card-zoom" hidden aria-hidden="true"><img id="hoverCardZoomImage" src="" alt="Card zoom"></div>
+
+  <div id="glAnimationLayer" class="gl-animation-layer" aria-hidden="true"></div>
+
+  <script>window.GL_APP_MODE="TUTORIAL";</script>
+  <script src="js/static-data.js?v=gl-tutorial-0.31"></script>
+  <script src="js/runtime-authority.js?v=gl-tutorial-0.31"></script>
+  <script src="js/app.bundle.js?v=gl-tutorial-0.31"></script>
+  <script src="js/tutorial-guide.js?v=gl-tutorial-0.31"></script>
+</body>
+</html>
