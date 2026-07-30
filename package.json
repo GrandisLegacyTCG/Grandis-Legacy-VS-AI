@@ -1,6 +1,6 @@
 {
   "name": "grandis-legacy-vs-ai-tutorial",
-  "version": "5.57.0",
+  "version": "5.58.0",
   "private": true,
   "scripts": {
     "syntax": "node --check js/app.bundle.js && node --check js/static-data.js && node --check js/runtime-authority.js && node --check tutorial/js/app.bundle.js && node --check tutorial/js/tutorial-guide.js && node --check tutorial/js/static-data.js && node --check tutorial/js/runtime-authority.js && find runtime-source/runtime tutorial/runtime-source/runtime -type f \\( -name \"*.js\" -o -name \"*.mjs\" \\) -print0 | sort -z | xargs -0 -r -n1 node --check",
@@ -9,5 +9,5 @@
     "test:tutorial": "cd tutorial && npm test",
     "verify": "npm test && npm run test:tutorial"
   },
-  "description": "Grandis Legacy VS AI v5.57 and Tutorial v0.31 in one GitHub Pages repository, with navigation to Tutorial, Deck Builder, and PvP."
+  "description": "Grandis Legacy VS AI v5.58 and Tutorial v0.31 in one GitHub Pages repository, with equal-size Tutorial and Deck Builder navigation buttons."
 }
