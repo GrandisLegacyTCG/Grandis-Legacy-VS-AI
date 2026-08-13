@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.4.0",
-  "generated_at": "2026-07-19",
-  "generated_from": "src/data/season1/cards.canonical.v1.4.0.json",
-  "canonical_registry_hash": "5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab",
+  "schema_version": "1.4.1",
+  "generated_at": "2026-07-20",
+  "generated_from": "src/data/season1/cards.canonical.v1.4.1.json",
+  "canonical_registry_hash": "b455b1537434e454ab873372bb9da715b779e64525a01a8bc3995ed9267ecfa0",
   "generated_only": true,
   "count": 198,
   "data_type": "legality_map",
@@ -622,7 +622,7 @@
       "card_name": "Lucien Voss",
       "family": "Hero",
       "classification": "Hero",
-      "canonical_hash": "3193ec1c668c69197dce18930686276ca6e560ea595964694c90cb360e4daf26",
+      "canonical_hash": "df2a7211384c8e6c58866f4b9415011181a602ef6fcdff1e936692ad7d4fc309",
       "class_group": "THF",
       "display_class": "Arcane Duelist",
       "rank_numeric": 3,
@@ -3246,7 +3246,7 @@
       "card_name": "Eyes of the Hawk",
       "family": "Skill",
       "classification": "Tactical Skill",
-      "canonical_hash": "5ad5d6d725f2ae1a9a91ca2a5d3fcd47719017e4abc57d53c38b4645ed3bfc35",
+      "canonical_hash": "93fe23db948c6ed447c3e80d2295f91e005d011be777cd261933647a084a5e26",
       "class_group": "ARC",
       "display_class": "Archer",
       "rank_numeric": 1,
@@ -4622,7 +4622,7 @@
       "card_name": "Charged Shot",
       "family": "Skill",
       "classification": "Physical Attack",
-      "canonical_hash": "e1857f925f16454e01476dd91219e4e98c66b7476bfc6457d6aec1b8e3a5701d",
+      "canonical_hash": "fa3f0618d1f97c6572e9b6935ea28ad4d3b364b27e5964f849081183db1c0349",
       "class_group": "ARC",
       "display_class": "Archer",
       "rank_numeric": 2,
@@ -7777,7 +7777,7 @@
       "card_name": "Blessing of Divinity",
       "family": "Skill",
       "classification": "Defense Skill",
-      "canonical_hash": "aff1e5ad0b9fa5ea76d7eaaba4784d09eef1fcc707c1a0ff88bfc95d4dbd0a86",
+      "canonical_hash": "27fa3067893b24b91d7e88d5d770a7b133bd7089e4fa219d496c18620be66d8f",
       "class_group": "CLE",
       "display_class": "Cleric",
       "rank_numeric": 2,
@@ -8522,7 +8522,7 @@
       "card_name": "Tornado",
       "family": "Skill",
       "classification": "Casting Attack",
-      "canonical_hash": "30fc5733cd12450ed7efdc08330041242ad17030951ba04d421fe2c591152dd1",
+      "canonical_hash": "9379c0d320e758846908e71023e4d9c94dcc6107d03cda2228803cad4fbaed6e",
       "class_group": "MAG",
       "display_class": "Mage",
       "rank_numeric": 1,
@@ -8950,7 +8950,7 @@
       "card_name": "Ice Block",
       "family": "Skill",
       "classification": "Defense Skill",
-      "canonical_hash": "64acda17fc0849a00f1ceb82a0e24c3ccbffc023f44bec38935a155950074600",
+      "canonical_hash": "89100853ff09e7f2d326f10cb445859df928b0593223d8afd58862e67acc9c55",
       "class_group": "MAG",
       "display_class": "Mage",
       "rank_numeric": 2,
@@ -8992,7 +8992,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         },
         "source_validator_required": true,
         "usable_while_exhausted": true,
@@ -9036,7 +9036,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         },
         "source_validator_required": true,
         "usable_while_exhausted": true,
@@ -9052,7 +9052,7 @@
       "card_name": "Fire Wall",
       "family": "Skill",
       "classification": "Defense Skill",
-      "canonical_hash": "988ef5d67b140ebef56d3981cf962c517f4001864b5e5d557f6b3e215d76761e",
+      "canonical_hash": "da4776639b93785fa12953c3c40b322ead2386e30f9ad5abf9152bb572336034",
       "class_group": "MAG",
       "display_class": "Mage",
       "rank_numeric": 2,
@@ -9084,7 +9084,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         },
         "source_validator_required": true,
         "usable_while_exhausted": true,
@@ -9129,7 +9129,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         },
         "source_validator_required": true,
         "usable_while_exhausted": true,
@@ -9145,7 +9145,7 @@
       "card_name": "Wildfire",
       "family": "Skill",
       "classification": "Tactical Skill",
-      "canonical_hash": "7e4e0430c4f27f4cc7fccf63a29d938895f298812fd526b1ec8f51c6eac3e1e2",
+      "canonical_hash": "f814e6d7894b636cca097020a9fb912aa76b03ef0e198bc5199b956f65f06afc",
       "class_group": "MAG",
       "display_class": "Mage",
       "rank_numeric": 2,
@@ -9177,7 +9177,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "staging": {
@@ -9217,7 +9217,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "structured_legality": {
@@ -9235,7 +9235,7 @@
       "card_name": "Lightning Strike",
       "family": "Skill",
       "classification": "Range Attack",
-      "canonical_hash": "e75948b11692408b3c20454fc5cd3c87e72a31c8d9d5082b4c43470eb4e550bc",
+      "canonical_hash": "d0905b0fb548131ec6b44be0d88167acee051ddd8f709cf488c475e058415328",
       "class_group": "MAG",
       "display_class": "Mage",
       "rank_numeric": 2,
@@ -9273,7 +9273,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "staging": {
@@ -9315,7 +9315,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "structured_legality": {
@@ -9334,7 +9334,7 @@
       "card_name": "Permafrost",
       "family": "Skill",
       "classification": "Magical Attack",
-      "canonical_hash": "80537b1810e1f99d221b547fbf68915840d8594554fc2a1809f8075a15d1e31a",
+      "canonical_hash": "e0b5e3a756ddda01550a47408a1fda3a08740b81951b712f473408835e9e59d2",
       "class_group": "MAG",
       "display_class": "Mage",
       "rank_numeric": 2,
@@ -9366,7 +9366,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "staging": {
@@ -9408,7 +9408,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "structured_legality": {
@@ -9530,7 +9530,7 @@
       "card_name": "Frostfire Nova",
       "family": "Skill",
       "classification": "Magical Attack",
-      "canonical_hash": "f79b191610cf7743dd84d777a9001bfcc1b82d24dba035e266f5880deba92c01",
+      "canonical_hash": "667b3d3a30adbf4f98c70354555de15ade428a33283bc38224a4525029d28dbd",
       "class_group": "MAG",
       "display_class": "Mage",
       "rank_numeric": 2,
@@ -9562,7 +9562,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "staging": {
@@ -9604,7 +9604,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "structured_legality": {
@@ -9622,7 +9622,7 @@
       "card_name": "Double Casting",
       "family": "Skill",
       "classification": "Tactical Skill",
-      "canonical_hash": "bb75a9c297ac80b59ac2ee31ddcaf2f8789689f82d5d204adb0eed5be9b78e4b",
+      "canonical_hash": "119d65d8e9288607f11f1f121bdeb2092ff2a6d6dc3c05d3ab5d7d23debab6cf",
       "class_group": "MAG",
       "display_class": "Mage",
       "rank_numeric": 2,
@@ -11322,7 +11322,7 @@
       "card_name": "X Cross Slash",
       "family": "Skill",
       "classification": "Physical Attack",
-      "canonical_hash": "e84fd744d13e4343d648bab28e75d96ba7361c04669f11ee1866770f7085fdb0",
+      "canonical_hash": "eaf8e58e3ba9c17c554a96cf8a9982ba5f448dd937cc076e59c76d2c94f46520",
       "class_group": "THF",
       "display_class": "Thief",
       "rank_numeric": 2,
@@ -11354,7 +11354,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "staging": {
@@ -11415,7 +11415,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "structured_legality": {
@@ -11546,7 +11546,7 @@
       "card_name": "Elusive Escape",
       "family": "Skill",
       "classification": "Defense Skill",
-      "canonical_hash": "7c0bb8878ac363b3fef7795cf567c9b9d7c1328c194c173daa5028e777d896ca",
+      "canonical_hash": "8fa2aafef45cf0160ef0ce04d43e75915eb9e69b2823346b7c26be32fa375d22",
       "class_group": "THF",
       "display_class": "Thief",
       "rank_numeric": 2,
@@ -11578,7 +11578,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         },
         "source_validator_required": true,
         "usable_while_exhausted": true,
@@ -11623,7 +11623,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         },
         "source_validator_required": true,
         "usable_while_exhausted": true,
@@ -11639,7 +11639,7 @@
       "card_name": "Poison Mist",
       "family": "Skill",
       "classification": "Tactical Skill",
-      "canonical_hash": "b6515c3cb9954965a92bce64b3a5eb56ebb749661aac9723434aa4fc68a97a71",
+      "canonical_hash": "413aaa5a6c1c20ed0b9a3a712d2c312c9b787d2cdafef7ebfa1f83d3b37f52ab",
       "class_group": "THF",
       "display_class": "Thief",
       "rank_numeric": 2,
@@ -11671,7 +11671,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "staging": {
@@ -11711,7 +11711,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "structured_legality": {
@@ -11729,7 +11729,7 @@
       "card_name": "Venom Strike",
       "family": "Skill",
       "classification": "Physical Attack",
-      "canonical_hash": "13ee41a6329ebfc836f84525970b8016ef09de8a7b57d632c988d9cd6e6de928",
+      "canonical_hash": "8bf3197f8e1b925ed1737b65e25f5eeadcb4d8ea7972a8d6bdd0931fe589c789",
       "class_group": "THF",
       "display_class": "Thief",
       "rank_numeric": 2,
@@ -11761,7 +11761,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "staging": {
@@ -11803,7 +11803,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "structured_legality": {
@@ -11821,7 +11821,7 @@
       "card_name": "Viper’s Fang",
       "family": "Skill",
       "classification": "Physical Attack",
-      "canonical_hash": "8d57bbb6920d573d98696462a976bc740f08a00839b110e16415856ac3745071",
+      "canonical_hash": "7c72af17e3a130475481ce47c9901dc33a466b08b2fd342836070cd6c4fd5f40",
       "class_group": "THF",
       "display_class": "Thief",
       "rank_numeric": 2,
@@ -11853,7 +11853,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "staging": {
@@ -11895,7 +11895,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "structured_legality": {
@@ -11913,7 +11913,7 @@
       "card_name": "Venom Sovereign",
       "family": "Skill",
       "classification": "Magical Attack",
-      "canonical_hash": "3eb3799c86a281ebf071e2ee1f12f13840dd8099cebdf3bd9b8e6f15eb7615f8",
+      "canonical_hash": "046d4652588e23984bbb0d4ab8b53478ce55a4ca2c28e115c32fdbe29f77cd4c",
       "class_group": "THF",
       "display_class": "Thief",
       "rank_numeric": 2,
@@ -11945,7 +11945,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "staging": {
@@ -11987,7 +11987,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "structured_legality": {
@@ -12117,7 +12117,7 @@
       "card_name": "Venom Binding",
       "family": "Skill",
       "classification": "Magical Attack",
-      "canonical_hash": "83a71c30f286e62b1af332aa0b2057bc859bb4a9b270efebd72fdf4d81dac7ad",
+      "canonical_hash": "76adf8b53b36eee69206e8660423c6674b36de9f79f371ae6167bf1f72d14578",
       "class_group": "THF",
       "display_class": "Thief",
       "rank_numeric": 2,
@@ -12149,7 +12149,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "staging": {
@@ -12191,7 +12191,7 @@
           ],
           "block_if_no_matching_active_class": true,
           "do_not_fallback_to_base_family_for_rank_locked_cards": true,
-          "runtime_rule": "Active Hero is legal when one printed Skill row exists in its canonical lineage/dual-class access profile. Resolve the highest matching available row."
+          "runtime_rule": "Validate the active Hero against legal_active_classes before selecting any printed row. Effect-row fallback may use only a matching class in that Hero’s legal canonical lineage; reject when no legal row exists."
         }
       },
       "structured_legality": {
@@ -13201,7 +13201,7 @@
       "card_name": "Calculated Plan",
       "family": "Skill",
       "classification": "Tactical Skill",
-      "canonical_hash": "200824f277cf035034a58b90eecd38e4a0af4cc9393d333c9544604e57d79a72",
+      "canonical_hash": "71cabdd8232bae5ff2697d34e93e1585dec356c148d696aa2c23cd5ca8399e5a",
       "class_group": "THF",
       "rank_numeric": 2,
       "timing": {

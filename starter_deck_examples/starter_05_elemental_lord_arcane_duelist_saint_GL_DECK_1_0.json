@@ -399,7 +399,7 @@
     "CENTER": "S1-THF-H004",
     "RIGHT": "S1-CLE-H001"
   },
-  "source_database_version": "One Source Authority v1.4 · registry 5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab",
+  "source_database_version": "One Source Authority v1.4 · registry b455b1537434e454ab873372bb9da715b779e64525a01a8bc3995ed9267ecfa0",
   "builder_version_note": "Normalized for Grandis Legacy PvP v2.6.1 while preserving the approved deck contents, Legacy packages, and default Formation.",
   "display_name": "Starter 5 — Elemental Lord / Arcane Duelist / Saint",
   "preset_id": "starter_05_elemental_lord_arcane_duelist_saint",

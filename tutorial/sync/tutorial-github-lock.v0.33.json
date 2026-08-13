@@ -1,0 +1,16 @@
+{
+  "version": "v0.33",
+  "tutorial": "v0.33",
+  "delivery": "GitHub Pages",
+  "base_vs_ai": "v5.60",
+  "runtime_foundation": "v1.81",
+  "runtime_core": "v0.49",
+  "runtime_data": "v0.12.7",
+  "ui_design_lock": "v2.47",
+  "scope": "Existing non-scripted tutorial flow plus VS AI v5.60 gameplay/effect fixes, adaptive desktop scaling, mobile phase-button polish, and GA4.",
+  "app_bundle_sha256": "8ec5bd7fb608790b92603879665ca98a992fbf0ccdacf17c7b4bef8603ff5288",
+  "tutorial_guide_sha256": "86f77af455bb7e59e7eb4b9ab9e1705a5d35a54b152f53d0b4dbaf4a38d4a11e",
+  "tutorial_css_sha256": "204f93e8a06a35a2da2f88ad4c65e2014fdf1ad9121844a540ba8d303c904ed7",
+  "runtime_authority_sha256": "292e17fba8a2961bd2a0f903fb8ec8a94aced1ef7fa5c7bbbb71e4cd0f81df1d",
+  "static_data_sha256": "ba4ebbf83948812e220a169f8ec7cc3d1499d86433d6d65a69daebedcc94ea37"
+}

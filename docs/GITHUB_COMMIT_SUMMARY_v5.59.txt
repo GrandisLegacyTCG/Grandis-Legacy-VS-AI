@@ -1,0 +1,7 @@
+Grandis Legacy VS AI v5.59
+
+Gameplay foundation sync with OSA v1.4.2:
+- Enforce first-player first-turn Attack restriction.
+- Fix Tornado residual 40 after Spectral Grappling Hook Dodge.
+- Fix Double Casting so Brilliant Radiance on activation 1 does not skip activation 2.
+- Add tests/run-v559-gameplay-foundation.cjs regression test.

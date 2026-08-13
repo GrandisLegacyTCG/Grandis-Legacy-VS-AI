@@ -2,7 +2,7 @@
   "schema_version": "1.4.0",
   "generated_at": "2026-07-19",
   "generated_from": "src/data/season1/cards.canonical.v1.4.0.json",
-  "canonical_registry_hash": "5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab",
+  "canonical_registry_hash": "b455b1537434e454ab873372bb9da715b779e64525a01a8bc3995ed9267ecfa0",
   "generated_only": true,
   "count": 198,
   "data_type": "printed_preview",

@@ -1,0 +1,7 @@
+VS AI v5.60
+
+- Added adaptive desktop-fit behavior so common desktop resolutions stay stable without gameplay-page scrolling; 1440x900 no longer drops into the old 1450px compact breakpoint.
+- Kept mobile scrolling and increased the Next Phase touch target by 4px.
+- Added GA4 tag G-4C2Z5T0EWR to VS AI and Tutorial pages.
+- Finalized Blessing of Divinity as literal any-damage prevention across Attack residual, Burn/Poison, direct ability damage, and Primal Strike paths.
+- Preserved v5.59 gameplay fixes: first-player Attack lock, Tornado fixed-40 dodge residual, and Double Casting/Brilliant Radiance two-activation flow.

@@ -1,12 +1,28 @@
-# Grandis Legacy VS AI + Tutorial v5.58
+# Grandis Legacy VS AI + Tutorial v5.60
 
-GitHub Pages repository containing two separate applications:
+GitHub Pages repository for Grandis Legacy VS AI and Tutorial v0.33.
 
-- **VS AI** at the repository root: `https://grandislegacytcg.github.io/Grandis-Legacy-VS-AI/`
-- **Tutorial** at `/tutorial/`: `https://grandislegacytcg.github.io/Grandis-Legacy-VS-AI/tutorial/`
+## v5.60 update
 
-The VS AI header places **TUTORIAL** immediately before **GO TO DECK BUILDER**, using the same outline button size and style. **GO TO PVP** remains the blue primary navigation button. Tutorial v0.31 remains a separate application bundle inside the same repository. Gameplay runtime/card data are unchanged by this UI-only release.
+This release keeps the v5.59 gameplay foundation and adds the approved UI/UX and effect consistency fixes.
 
-## Deployment
+### Gameplay / effect fixes
 
-Copy this package directly into the `Grandis-Legacy-VS-AI` repository root, commit with `Update VS AI to v5.58`, push, and wait for GitHub Pages to refresh.
+- First player cannot play Attack Skill Cards on their first turn.
+- Tornado from Elementalist / Elemental Lord still deals exactly 40 damage after Spectral Grappling Hook Dodge.
+- Double Casting continues to activation 2 after Brilliant Radiance negates activation 1; the Attack Card returns to hand only after the duplicated attack fully resolves.
+- Blessing of Divinity prevents literal any damage while active, including Attack residual, Poison, Burn, and direct/non-standard damage paths.
+
+### UI / UX
+
+- Adaptive desktop fit keeps common desktop resolutions stable without gameplay-page scrolling; 1440x900 no longer drops into the old 1450px compact breakpoint.
+- Mobile remains scrollable and the active Next Phase control is 4px taller for touch comfort.
+- GA4 measurement `G-4C2Z5T0EWR` is installed on VS AI and Tutorial pages.
+
+No card ID or deck format changes are included.
+
+## Validation
+
+- `npm test`: PASS
+- Tutorial `npm test`: PASS
+- Manifest verification: PASS

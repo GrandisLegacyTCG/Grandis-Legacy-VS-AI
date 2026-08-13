@@ -454,7 +454,7 @@
     "CENTER": "S1-WAR-H001",
     "RIGHT": "S1-THF-H001"
   },
-  "source_database_version": "One Source Authority v1.4 · registry 5812e107dbe82cef660975e091388eae1ad5a852c7be066c7443a5a321188bab · Starter60 v1.2",
+  "source_database_version": "One Source Authority v1.4 · registry b455b1537434e454ab873372bb9da715b779e64525a01a8bc3995ed9267ecfa0 · Starter60 v1.2",
   "builder_version_note": "Normalized for Grandis Legacy PvP v2.6.1 while preserving the approved deck contents, Legacy packages, and default Formation.",
   "display_name": "Starter 1 — Elemental Lord / Conqueror / Renegade",
   "preset_id": "starter_01_elemental_lord_conqueror_renegade",
