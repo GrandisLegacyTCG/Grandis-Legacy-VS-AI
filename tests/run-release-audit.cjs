@@ -30,7 +30,7 @@ assert.ok(/data-zone-type="Main Deck"/.test(css)&&/data-zone-type="Legacy Deck"/
 assert.ok(/Printed artwork is the only visible card frame[\s\S]*?hero-card\.hero-main[\s\S]*?border:0!important/.test(css),'card wrappers remain borderless');
 assert.ok(fs.existsSync(path.join(root,'assets/audio/freesound_community-coin-flip-37787.mp3')),'coin audio');
 assert.ok(fs.existsSync(path.join(root,'runtime-source/runtime/core/reducer.js')),'editable runtime source');
-const lock=json('sync/runtime-sync-lock.v2.43.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.application_runtime_sync,'v2.43');assert.strictEqual(lock.local_ai,'v5.61');
+const lock=json('sync/runtime-sync-lock.v2.43.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.application_runtime_sync,'v2.43');assert.strictEqual(lock.local_ai,'v5.62');
 for(const [rel,key] of [['js/app.bundle.js','shared_gameplay_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['runtime-source/runtime/browser/runtime-authority.browser.js','runtime_source_browser_sha256'],['js/static-data.js','static_data_sha256'],['css/app.css','shared_ui_css_sha256']])assert.strictEqual(sha(rel),lock[key],rel+' sync hash');
 for(const file of fs.readdirSync(path.join(root,'starter_deck_examples')).filter(x=>x.endsWith('.json'))){const text=read('starter_deck_examples/'+file);assert.ok(!/One Source Authority v1\.2|Runtime Data v0\.12\.2|ffe0192e/.test(text),'stale starter source metadata '+file)}
 assert.ok(/hero-card-anchor/.test(app)&&/hero-status-overlay/.test(app)&&/hero-health-overlay/.test(css)&&/game-result-summary/.test(css),'v5.35 inherited Hero/HP/status and result hierarchy');
@@ -46,4 +46,4 @@ assert.ok(/responseDisplayItemsFor/.test(app)&&/data-response-reason/.test(app)&
 assert.ok(!fs.existsSync(path.join(root,'deck-builder'))&&app.includes('https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/'),'dedicated external Deck Builder navigation');
 assert.ok(fs.existsSync(path.join(root,'tutorial/index.html'))&&app.includes('<nav class="ai-lobby-actions"><a id="aiLobbyTutorialButton" class="ai-lobby-btn ai-lobby-btn--outline" href="tutorial/">TUTORIAL</a><a id="aiLobbyDeckBuilderButton" class="ai-lobby-btn ai-lobby-btn--outline"'),'Tutorial application and equal-size secondary navigation');
 
-console.log('PASS VS AI v5.61 release audit: Casting survives Draw/Rank Up, release uses current Hero, response hover diagnostics, mobile resources, and desktop cleanup.');
+console.log('PASS VS AI v5.62 release audit: Casting survives Draw/Rank Up, release uses current Hero, response hover diagnostics, mobile resources, and desktop cleanup.');

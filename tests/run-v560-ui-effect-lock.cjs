@@ -9,4 +9,4 @@ if(css.includes('@media(max-width:1450px)'))throw new Error('Legacy 1450px break
 if(!app.includes("var blessingImmune=!!activeAttachmentForSide(state,targetSide,'S1-CLE-025')"))throw new Error('Blessing Attack immunity guard missing');
 if(!app.includes('connectionPrevented?0:(dodged?dodgeResidualDamage'))throw new Error('Blessing must override dodge residual');
 if(!app.includes('Blessing of Divinity prevents Primal Strike damage'))throw new Error('Blessing Primal Strike guard missing');
-console.log('PASS v5.61 UI/effect locks');
+console.log('PASS v5.62 UI/effect locks');

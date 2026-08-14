@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.33 — separate first-use practices for Attack, Support, Tactical, Event, and Item cards; each stops at the final cancellable boundary. Area Attack responses teach every affected Hero. VS AI v5.60 base. */
+/* Grandis Legacy Tutorial Guide v0.34 — separate first-use practices for Attack, Support, Tactical, Event, and Item cards; each stops at the final cancellable boundary. Area Attack responses teach every affected Hero. VS AI v5.62 base. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;
@@ -41,6 +41,43 @@
     return !!(active||queue.length||packageLock||anatomy.initialSequence||anatomy.activeFamily||anatomy.waitingFamily||document.body.classList.contains('gl-tutorial-card-pick-lock'));
   }
   function syncGuideHold(){if(bridge&&typeof bridge.setGuideHold==='function')bridge.setGuideHold(guideHasBlockingWork());}
+  function isMobileTutorialViewport(){return window.innerWidth<=760||(window.innerHeight<=610&&window.innerWidth<=980);}
+  function firstHighlightElement(){
+    for(var i=0;i<highlightEntries.length;i++){
+      var entry=highlightEntries[i];
+      if(entry&&entry.elements&&entry.elements.length){
+        for(var j=0;j<entry.elements.length;j++)if(entry.elements[j]&&document.documentElement.contains(entry.elements[j]))return entry.elements[j];
+      }
+      if(entry&&entry.el&&document.documentElement.contains(entry.el))return entry.el;
+    }
+    return null;
+  }
+  function chooseMobileGuideDock(target){
+    if(!target)return 'mobile-bottom';
+    var vh=window.innerHeight||640;
+    var topSpace=Math.max(0,target.top),bottomSpace=Math.max(0,vh-target.bottom);
+    if(Math.max(topSpace,bottomSpace)>150)return topSpace>=bottomSpace?'mobile-top':'mobile-bottom';
+    return ((target.top+target.bottom)/2)>vh*.52?'mobile-top':'mobile-bottom';
+  }
+  function setMobileGuideDock(wrap,dock,remember){
+    if(!wrap)return;dock=dock||'mobile-bottom';
+    ['top-left','top-right','bottom-left','bottom-right','mobile-top','mobile-bottom'].forEach(function(pos){wrap.classList.remove('dock-'+pos);});
+    wrap.classList.add('is-mobile-safe','dock-'+dock);
+    if(remember!==false)lastGuideDock=dock==='mobile-top'?'top-right':'bottom-right';
+  }
+  function scrollMobileTargetIntoSafeView(){
+    if(!isMobileTutorialViewport())return;
+    var target=targetUnionRect();if(!target)return;
+    var el=firstHighlightElement();if(!el||!el.scrollIntoView)return;
+    var dock=chooseMobileGuideDock(target),vh=window.innerHeight||640;
+    var reserved=Math.min(230,Math.max(148,Math.round(vh*.32)));
+    var safeTop=dock==='mobile-top'?reserved+14:14;
+    var safeBottom=dock==='mobile-bottom'?vh-reserved-14:vh-14;
+    if(target.top<safeTop||target.bottom>safeBottom){
+      try{el.scrollIntoView({block:dock==='mobile-top'?'end':'start',inline:'nearest',behavior:'smooth'});}catch(e){try{el.scrollIntoView(dock==='mobile-top'?false:true);}catch(_){}}
+      setTimeout(function(){updateHighlightLayer();scheduleGuideDock();},240);
+    }
+  }
 
   function resetGuideSession(){
     if(activeAutoCloseTimer){clearTimeout(activeAutoCloseTimer);activeAutoCloseTimer=0;}
@@ -48,7 +85,7 @@
     anatomy={waitingFamily:null,waitingCardId:null,waitingHandIndex:null,waitingSelector:null,activeFamily:null,cardId:null,step:0,steps:[],pendingFamilies:[],previewWasOpen:false,initialSequence:false};
     lastOpponentEventSignature='';lastPlayerActionCount=0;promptedOpponentEvents=Object.create(null);lastAIGateSequence=0;lastAIActionGateSequence=0;lastReviveEventId='';lastGuideDock='top-right';reformGuide={stage:null,cardId:null,handIndex:null};playGuide={stage:null,cardId:null,handIndex:null,family:null,requiresSource:false,requiresTarget:false,directCommit:false};deployAdvancePending=false;deployNoPlayTicks=0;packageLock=null;
     var bubble=q('#glTutorialBubble');if(bubble){bubble.classList.remove('is-open');bubble.hidden=true;}
-    var wrap=q('#glTutorialGuide');if(wrap)wrap.className='gl-tutorial-guide dock-'+lastGuideDock;if(guideDockFrame){cancelAnimationFrame(guideDockFrame);guideDockFrame=0;}
+    var wrap=q('#glTutorialGuide');if(wrap)wrap.className='gl-tutorial-guide dock-'+(lastGuideDock==='mobile-top'||lastGuideDock==='mobile-bottom'?'top-right':lastGuideDock);if(guideDockFrame){cancelAnimationFrame(guideDockFrame);guideDockFrame=0;}
     var scrim=q('#glTutorialScrim');if(scrim){scrim.hidden=true;scrim.classList.remove('is-pick-lock');}
     qa('.gl-tutorial-hover-target,.gl-tutorial-interaction-target').forEach(function(el){el.classList.remove('gl-tutorial-hover-target','gl-tutorial-interaction-target');});
     document.body.classList.remove('gl-tutorial-modal-open');document.body.classList.remove('gl-tutorial-hold-choice');document.body.classList.remove('gl-tutorial-round-one-tribute-lock');
@@ -76,6 +113,7 @@
   }
 
   function resolveHighlightTargets(spec){
+    if(spec&&typeof spec==='object'&&!Array.isArray(spec)&&!spec.nodeType){spec=isMobileTutorialViewport()&&(spec.mobile||spec.mobileTarget)?(spec.mobile||spec.mobileTarget):(spec.desktop||spec.target||spec.selector||spec);}
     var selectors=Array.isArray(spec)?spec:[spec],found=[];
     selectors.forEach(function(sel){
       if(!sel)return;
@@ -122,8 +160,8 @@
     return{left:left,top:top,right:right,bottom:bottom,width:right-left,height:bottom-top};
   }
   function setGuideDock(wrap,dock,remember){
-    if(!wrap)return;dock=dock||lastGuideDock||'top-right';['top-left','top-right','bottom-left','bottom-right'].forEach(function(pos){wrap.classList.remove('dock-'+pos);});
-    wrap.classList.add('dock-'+dock);if(remember!==false)lastGuideDock=dock;
+    if(!wrap)return;dock=dock||lastGuideDock||'top-right';['top-left','top-right','bottom-left','bottom-right','mobile-top','mobile-bottom'].forEach(function(pos){wrap.classList.remove('dock-'+pos);});
+    wrap.classList.remove('is-mobile-safe');wrap.classList.add('dock-'+dock);if(remember!==false)lastGuideDock=dock;
   }
   function overlapArea(a,b,margin){
     margin=Number(margin||0);var left=Math.max(a.left-margin,b.left),top=Math.max(a.top-margin,b.top),right=Math.min(a.right+margin,b.right),bottom=Math.min(a.bottom+margin,b.bottom);
@@ -131,8 +169,13 @@
   }
   function positionGuideForActive(force){
     guideDockFrame=0;if(!active||(!force&&active._dockFrozen))return;var wrap=q('#glTutorialGuide');if(!wrap)return;
-    var preferred=active.dock||lastGuideDock||'top-right';if(active.lockDock){setGuideDock(wrap,preferred,true);return;}
-    var target=targetUnionRect();if(!target){setGuideDock(wrap,preferred,true);return;}
+    var preferred=active.dock||lastGuideDock||'top-right';var target=targetUnionRect();
+    if(isMobileTutorialViewport()){
+      if(!target){setMobileGuideDock(wrap,'mobile-bottom',true);return;}
+      setMobileGuideDock(wrap,chooseMobileGuideDock(target),true);return;
+    }
+    if(active.lockDock){setGuideDock(wrap,preferred,true);return;}
+    if(!target){setGuideDock(wrap,preferred,true);return;}
     var candidateSource=active.topOnly?[(/^top-/.test(preferred)?preferred:'top-right'),'top-right','top-left']:[preferred,'top-right','top-left','bottom-right','bottom-left'];
     var candidates=candidateSource.filter(function(v,i,a){return a.indexOf(v)===i;}),best=candidates[0]||preferred,bestScore=Infinity;
     candidates.forEach(function(dock,idx){
@@ -402,7 +445,7 @@
     if(activeAutoCloseTimer){clearTimeout(activeAutoCloseTimer);activeAutoCloseTimer=0;}
     document.body.classList.add('gl-tutorial-modal-open');
     bubble.hidden=false;bubble.classList.remove('is-open');
-    highlight(message.highlight,message.highlightClass,message.highlightPadding);applyPrintedRegion(message.printedRegion);
+    highlight(message.highlight,message.highlightClass,message.highlightPadding);applyPrintedRegion(message.printedRegion);scrollMobileTargetIntoSafeView();
     requestAnimationFrame(function(){requestAnimationFrame(function(){
       if(active!==message)return;
       positionGuideForActive(true);message._dockFrozen=true;
@@ -419,7 +462,7 @@
     var tutorialClose=q('#glTutorialClose');if(tutorialClose)tutorialClose.hidden=false;
     active=null;
     var bubble=q('#glTutorialBubble');if(bubble){bubble.classList.remove('is-open');bubble.hidden=true;}
-    var wrap=q('#glTutorialGuide');if(wrap)wrap.className='gl-tutorial-guide dock-'+lastGuideDock;if(guideDockFrame){cancelAnimationFrame(guideDockFrame);guideDockFrame=0;}
+    var wrap=q('#glTutorialGuide');if(wrap)wrap.className='gl-tutorial-guide dock-'+(lastGuideDock==='mobile-top'||lastGuideDock==='mobile-bottom'?'top-right':lastGuideDock);if(guideDockFrame){cancelAnimationFrame(guideDockFrame);guideDockFrame=0;}
     var scrim=q('#glTutorialScrim');if(scrim)scrim.hidden=true;
     document.body.classList.remove('gl-tutorial-modal-open');
     document.body.classList.remove('gl-tutorial-hold-choice');

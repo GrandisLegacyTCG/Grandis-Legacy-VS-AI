@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.33 */
+/* Grandis Legacy Tutorial Guide v0.34 */
 body.gl-tutorial-mode{
   --gl-tutorial-silver-1:#f7f8fa;
   --gl-tutorial-silver-2:#b7bec8;
@@ -156,3 +156,66 @@ body.gl-tutorial-round-one-tribute-lock #nextPhaseButton{pointer-events:none!imp
 
 /* Tutorial v0.15 — every guide-created border, including lobby callouts, blinks above its interaction target. */
 .gl-tutorial-highlight-box,.gl-tutorial-highlight-box--printed-text{animation:glTutorialBorderBlink .86s ease-in-out infinite!important}
+
+/* Grandis Legacy Tutorial v0.34 — mobile-safe Arvon docking and highlight separation. */
+@media (max-width:760px), (max-height:610px) and (max-width:980px){
+  .gl-tutorial-guide.is-mobile-safe{
+    position:fixed!important;
+    left:8px!important;
+    right:8px!important;
+    width:auto!important;
+    max-width:none!important;
+    display:flex!important;
+    align-items:flex-end!important;
+    justify-content:center!important;
+    gap:6px!important;
+    z-index:13020!important;
+  }
+  .gl-tutorial-guide.is-mobile-safe.dock-mobile-top{top:calc(env(safe-area-inset-top,0px) + 7px)!important;bottom:auto!important;}
+  .gl-tutorial-guide.is-mobile-safe.dock-mobile-bottom{top:auto!important;bottom:calc(env(safe-area-inset-bottom,0px) + 7px)!important;}
+  .gl-tutorial-guide.is-mobile-safe .gl-tutorial-arvon,
+  .gl-tutorial-guide.is-mobile-safe.is-speaking .gl-tutorial-arvon,
+  .gl-tutorial-guide.is-mobile-safe.is-micro .gl-tutorial-arvon{
+    flex:0 0 62px!important;
+    width:62px!important;
+    height:56px!important;
+    min-width:62px!important;
+    align-self:flex-end!important;
+  }
+  .gl-tutorial-guide.is-mobile-safe .gl-tutorial-arvon img,
+  .gl-tutorial-guide.is-mobile-safe.is-speaking .gl-tutorial-arvon img,
+  .gl-tutorial-guide.is-mobile-safe.is-micro .gl-tutorial-arvon img{
+    width:70px!important;
+    max-width:70px!important;
+    object-fit:contain!important;
+  }
+  .gl-tutorial-guide.is-mobile-safe .gl-tutorial-bubble,
+  .gl-tutorial-guide.is-mobile-safe.is-compact .gl-tutorial-bubble,
+  .gl-tutorial-guide.is-mobile-safe.is-micro .gl-tutorial-bubble{
+    order:2!important;
+    flex:1 1 auto!important;
+    width:auto!important;
+    max-width:calc(100vw - 88px)!important;
+    margin:0!important;
+    border-radius:12px!important;
+    box-shadow:0 6px 18px rgba(0,0,0,.62),0 0 0 1px rgba(119,142,164,.7)!important;
+  }
+  .gl-tutorial-guide.is-mobile-safe .gl-tutorial-bubble::after{display:none!important;}
+  .gl-tutorial-guide.is-mobile-safe .gl-tutorial-bubble header{padding:8px 9px 6px!important;gap:6px!important;}
+  .gl-tutorial-guide.is-mobile-safe .gl-tutorial-bubble h2{font-size:13px!important;line-height:1.15!important;}
+  .gl-tutorial-guide.is-mobile-safe .gl-tutorial-bubble header small{font-size:8px!important;letter-spacing:.06em!important;}
+  .gl-tutorial-guide.is-mobile-safe .gl-tutorial-body,
+  .gl-tutorial-guide.is-mobile-safe.is-compact .gl-tutorial-body,
+  .gl-tutorial-guide.is-mobile-safe.is-micro .gl-tutorial-body{
+    max-height:min(34vh,190px)!important;
+    overflow:auto!important;
+    padding:7px 9px 2px!important;
+    font-size:11px!important;
+    line-height:1.36!important;
+  }
+  .gl-tutorial-guide.is-mobile-safe .gl-tutorial-bubble footer{padding:4px 9px 8px!important;}
+  .gl-tutorial-guide.is-mobile-safe .gl-tutorial-bubble footer button,
+  .gl-tutorial-guide.is-mobile-safe .gl-tutorial-bubble header button{min-height:28px!important;padding:5px 9px!important;font-size:10px!important;}
+  .gl-tutorial-highlight-layer{z-index:12975!important;}
+  .gl-tutorial-highlight-box{scroll-margin-top:160px;scroll-margin-bottom:160px;}
+}

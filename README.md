@@ -1,8 +1,8 @@
-# Grandis Legacy VS AI + Tutorial v5.61
+# Grandis Legacy VS AI + Tutorial v5.62
 
-GitHub Pages repository for Grandis Legacy VS AI and Tutorial v0.33.
+GitHub Pages repository for Grandis Legacy VS AI and Tutorial v0.34.
 
-## v5.61 update
+## v5.62 update
 
 This release keeps the v5.60 gameplay/effect foundation and adds the approved UI/UX and effect consistency fixes.
 

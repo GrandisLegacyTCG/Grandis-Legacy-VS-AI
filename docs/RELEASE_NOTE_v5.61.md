@@ -1,4 +1,4 @@
-# Grandis Legacy VS AI v5.61
+# Grandis Legacy VS AI v5.62
 
 - Keeps the v5.60 gameplay/effect foundation unchanged.
 - Refines desktop scaling to prioritize Hero and Hand card readability when viewport size or browser zoom changes.

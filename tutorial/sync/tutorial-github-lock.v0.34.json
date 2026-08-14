@@ -1,0 +1,16 @@
+{
+  "version": "v0.34",
+  "tutorial": "v0.34",
+  "delivery": "GitHub Pages",
+  "base_vs_ai": "v5.62",
+  "runtime_foundation": "v1.81",
+  "runtime_core": "v0.49",
+  "runtime_data": "v0.12.7",
+  "ui_design_lock": "v2.47",
+  "scope": "Existing non-scripted tutorial flow plus mobile-safe Arvon docking, target-safe scrolling, and mobile guide/highlight separation.",
+  "app_bundle_sha256": "882bae342ac45caff92ccc08aeca39ae5e9896f763a3f2b5657f1e0334bbff18",
+  "tutorial_guide_sha256": "8fa450f125864cc2f2ab31d72b0941fdf35b94f7ffc4e5ba5e049965234918c1",
+  "tutorial_css_sha256": "573a2df61c8b7058585054e9d8cedc9b9598480f1e53d00f1eadf9333337d4da",
+  "runtime_authority_sha256": "292e17fba8a2961bd2a0f903fb8ec8a94aced1ef7fa5c7bbbb71e4cd0f81df1d",
+  "static_data_sha256": "9108774eb9371900d9fc5460434f436a279da588ff9a023a9f8b8d65af6b5ec7"
+}

@@ -2,8 +2,8 @@
   "version": "v2.43",
   "schema_version": "2.43-consumer",
   "policy": "RUNTIME_FIRST_FAIL_CLOSED_SYNC",
-  "application": "VS AI v5.61",
-  "local_ai": "v5.61",
+  "application": "VS AI v5.62",
+  "local_ai": "v5.62",
   "pvp_reference": "v2.6.18",
   "canonical_registry_hash": "b455b1537434e454ab873372bb9da715b779e64525a01a8bc3995ed9267ecfa0",
   "one_source_authority": "v1.4.2",
@@ -12,18 +12,18 @@
   "runtime_core": "v0.49",
   "shared_runtime_manual": "v1.38",
   "ui_design_lock": "v2.47",
-  "shared_gameplay_sha256": "d3fe0e298632d62e46c265031b2b72e91c0e0ef7319eb33a874a486634131fc3",
+  "shared_gameplay_sha256": "92825abaef25786f2a773151cf991c4efbc8a2d2b94ae6b5a26e0f0956ad1d96",
   "runtime_authority_sha256": "292e17fba8a2961bd2a0f903fb8ec8a94aced1ef7fa5c7bbbb71e4cd0f81df1d",
   "runtime_source_browser_sha256": "292e17fba8a2961bd2a0f903fb8ec8a94aced1ef7fa5c7bbbb71e4cd0f81df1d",
-  "static_data_sha256": "cb10aabbebed1d4ca91637a864e0268c1d1fdedb799e3cafe1b638141f5ee5be",
+  "static_data_sha256": "9108774eb9371900d9fc5460434f436a279da588ff9a023a9f8b8d65af6b5ec7",
   "shared_ui_css_sha256": "6d743b58ab1933417aaef34cf62c0bee279a484c5f441c63f2c83ea0214b2485",
   "consumerAdoptionStatus": {
     "currentApplicationsRebuiltInThisDelivery": true,
-    "currentAI": "VS AI v5.61",
+    "currentAI": "VS AI v5.62",
     "currentPvP": "PvP v2.6.18",
-    "currentTutorial": "Tutorial v0.33 GitHub Pages",
+    "currentTutorial": "Tutorial v0.34 GitHub Pages",
     "automaticEndTurn": "ADOPTED",
     "notoSansBinaries": "BUNDLED_AND_MANIFESTED"
   },
-  "tutorial": "Tutorial v0.33 GitHub Pages remains packaged with VS AI v5.61; Tutorial gameplay/UI stays on its approved v0.33 flow."
+  "tutorial": "Tutorial v0.34 GitHub Pages remains packaged with VS AI v5.62; Tutorial mobile guide uses safe docking and mobile target scrolling."
 }
