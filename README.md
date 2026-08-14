@@ -1,10 +1,10 @@
-# Grandis Legacy VS AI + Tutorial v5.60
+# Grandis Legacy VS AI + Tutorial v5.61
 
 GitHub Pages repository for Grandis Legacy VS AI and Tutorial v0.33.
 
-## v5.60 update
+## v5.61 update
 
-This release keeps the v5.59 gameplay foundation and adds the approved UI/UX and effect consistency fixes.
+This release keeps the v5.60 gameplay/effect foundation and adds the approved UI/UX and effect consistency fixes.
 
 ### Gameplay / effect fixes
 
@@ -16,6 +16,7 @@ This release keeps the v5.59 gameplay foundation and adds the approved UI/UX and
 ### UI / UX
 
 - Adaptive desktop fit keeps common desktop resolutions stable without gameplay-page scrolling; 1440x900 no longer drops into the old 1450px compact breakpoint.
+- Desktop card-priority scaling keeps Hero and Hand cards readable when the viewport or browser zoom changes instead of letting battlefield whitespace dominate.
 - Mobile remains scrollable and the active Next Phase control is 4px taller for touch comfort.
 - GA4 measurement `G-4C2Z5T0EWR` is installed on VS AI and Tutorial pages.
 
