@@ -7,4 +7,4 @@ const bridge=ctx.GL_LOCAL_AI_BRIDGE;
 if(!bridge || typeof bridge.testGameplayFoundationFixes!=='function') throw new Error('Gameplay foundation fix bridge test missing');
 const result=bridge.testGameplayFoundationFixes();
 if(!result.ok) throw new Error(JSON.stringify(result,null,2));
-console.log(JSON.stringify({ok:true,source:'VS AI v5.62',...result},null,2));
+console.log(JSON.stringify({ok:true,source:'VS AI v5.63',...result},null,2));

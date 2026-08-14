@@ -1,0 +1,16 @@
+{
+  "version": "v0.35",
+  "tutorial": "v0.35",
+  "delivery": "GitHub Pages",
+  "base_vs_ai": "v5.63",
+  "runtime_foundation": "v1.81",
+  "runtime_core": "v0.49",
+  "runtime_data": "v0.12.7",
+  "ui_design_lock": "v2.47",
+  "scope": "Existing non-scripted tutorial flow plus deterministic mobile vertical/horizontal target force-scroll, post-scroll highlight recalculation, and Arvon safe-side placement.",
+  "app_bundle_sha256": "78283b96fbd4b08e408b59cf640d24d4ad3eefc9eb225964a0f79e74f651c6c5",
+  "tutorial_guide_sha256": "2339d845eaccb30ef6be565c67a0f9032764cdb6b54ed75e39aae934c220fc68",
+  "tutorial_css_sha256": "b999cada5d376ed05268f28c681bf88e1136340b8a96a5b7a9d113b3cab1d6ae",
+  "runtime_authority_sha256": "292e17fba8a2961bd2a0f903fb8ec8a94aced1ef7fa5c7bbbb71e4cd0f81df1d",
+  "static_data_sha256": "23989b289f0a262f1507cf053d0098b3ec1abf99980cd92e30ea2a6b5659f1d2"
+}

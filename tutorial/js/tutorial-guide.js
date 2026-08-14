@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.34 — separate first-use practices for Attack, Support, Tactical, Event, and Item cards; each stops at the final cancellable boundary. Area Attack responses teach every affected Hero. VS AI v5.62 base. */
+/* Grandis Legacy Tutorial Guide v0.35 — separate first-use practices for Attack, Support, Tactical, Event, and Item cards; each stops at the final cancellable boundary. Area Attack responses teach every affected Hero. VS AI v5.63 base. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;
@@ -65,18 +65,30 @@
     wrap.classList.add('is-mobile-safe','dock-'+dock);
     if(remember!==false)lastGuideDock=dock==='mobile-top'?'top-right':'bottom-right';
   }
-  function scrollMobileTargetIntoSafeView(){
-    if(!isMobileTutorialViewport())return;
-    var target=targetUnionRect();if(!target)return;
-    var el=firstHighlightElement();if(!el||!el.scrollIntoView)return;
-    var dock=chooseMobileGuideDock(target),vh=window.innerHeight||640;
-    var reserved=Math.min(230,Math.max(148,Math.round(vh*.32)));
-    var safeTop=dock==='mobile-top'?reserved+14:14;
-    var safeBottom=dock==='mobile-bottom'?vh-reserved-14:vh-14;
-    if(target.top<safeTop||target.bottom>safeBottom){
-      try{el.scrollIntoView({block:dock==='mobile-top'?'end':'start',inline:'nearest',behavior:'smooth'});}catch(e){try{el.scrollIntoView(dock==='mobile-top'?false:true);}catch(_){}}
-      setTimeout(function(){updateHighlightLayer();scheduleGuideDock();},240);
+  function mobileHorizontalScrollerForTarget(el){
+    if(!el||!el.closest)return null;
+    var hand=el.closest('.hand-area--player');
+    if(!hand)return null;
+    return hand.querySelector('.handPanel')||hand.querySelector('.hand-row')||null;
+  }
+  function forceMobileTargetIntoView(message,done){
+    done=typeof done==='function'?done:function(){};
+    if(!isMobileTutorialViewport()){done();return;}
+    var el=firstHighlightElement();if(!el){done();return;}
+    var card=el.closest&&el.closest('.hand-card'),scroller=mobileHorizontalScrollerForTarget(el);
+    if(scroller&&card){
+      var left=Math.max(0,Number(card.offsetLeft||0)-8);
+      try{if(scroller.scrollTo)scroller.scrollTo({left:left,behavior:'auto'});else scroller.scrollLeft=left;}catch(e){scroller.scrollLeft=left;}
     }
+    var isNextPhase=!!(message&&(message.highlight==='#nextPhaseButton'||/^next_phase_/.test(text(message.id))));
+    try{el.scrollIntoView({behavior:'auto',block:isNextPhase?'end':'center',inline:'nearest'});}catch(e){try{el.scrollIntoView(isNextPhase?false:true);}catch(_){}}
+    var settle=function(){
+      // Recompute after both page and Hand-strip scrolling. Highlight geometry must never be based
+      // on the pre-scroll desktop/mobile position.
+      updateHighlightLayer();
+      if(typeof requestAnimationFrame==='function')requestAnimationFrame(function(){requestAnimationFrame(done);});else setTimeout(done,40);
+    };
+    setTimeout(settle,60);
   }
 
   function resetGuideSession(){
@@ -445,14 +457,15 @@
     if(activeAutoCloseTimer){clearTimeout(activeAutoCloseTimer);activeAutoCloseTimer=0;}
     document.body.classList.add('gl-tutorial-modal-open');
     bubble.hidden=false;bubble.classList.remove('is-open');
-    highlight(message.highlight,message.highlightClass,message.highlightPadding);applyPrintedRegion(message.printedRegion);scrollMobileTargetIntoSafeView();
-    requestAnimationFrame(function(){requestAnimationFrame(function(){
+    highlight(message.highlight,message.highlightClass,message.highlightPadding);applyPrintedRegion(message.printedRegion);
+    forceMobileTargetIntoView(message,function(){
       if(active!==message)return;
+      updateHighlightLayer();
       positionGuideForActive(true);message._dockFrozen=true;
       if(wrap)wrap.classList.remove('is-prepositioning');
       bubble.classList.add('is-open');
       if(Number(message.autoCloseAfter)>0){activeAutoCloseTimer=setTimeout(function(){activeAutoCloseTimer=0;if(active===message)closeActive();},Number(message.autoCloseAfter));}
-    });});
+    });
   }
   function closeActive(){
     if(!active)return;

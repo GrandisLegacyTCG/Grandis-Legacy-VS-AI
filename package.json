@@ -1,6 +1,6 @@
 {
   "name": "grandis-legacy-vs-ai-tutorial",
-  "version": "5.62.0",
+  "version": "5.63.0",
   "private": true,
   "scripts": {
     "syntax": "node --check js/app.bundle.js && node --check js/static-data.js && node --check js/runtime-authority.js && node --check tutorial/js/app.bundle.js && node --check tutorial/js/tutorial-guide.js && node --check tutorial/js/static-data.js && node --check tutorial/js/runtime-authority.js && find runtime-source/runtime tutorial/runtime-source/runtime -type f \\( -name \"*.js\" -o -name \"*.mjs\" \\) -print0 | sort -z | xargs -0 -r -n1 node --check",
@@ -10,5 +10,5 @@
     "verify": "npm test && npm run test:tutorial",
     "test:gameplay-foundation": "node tests/run-v559-gameplay-foundation.cjs"
   },
-  "description": "Grandis Legacy VS AI v5.62 and Tutorial v0.34: card-priority desktop scaling plus the v5.60 gameplay/effect/UI foundation."
+  "description": "Grandis Legacy VS AI v5.63 and Tutorial v0.35: v5.62 gameplay/UI foundation plus deterministic mobile tutorial target scrolling."
 }
