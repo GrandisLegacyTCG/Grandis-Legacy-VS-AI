@@ -1,14 +1,14 @@
 {
   "name": "grandis-legacy-vs-ai-tutorial",
-  "version": "5.63.0",
+  "version": "6.0.0",
   "private": true,
   "scripts": {
     "syntax": "node --check js/app.bundle.js && node --check js/static-data.js && node --check js/runtime-authority.js && node --check tutorial/js/app.bundle.js && node --check tutorial/js/tutorial-guide.js && node --check tutorial/js/static-data.js && node --check tutorial/js/runtime-authority.js && find runtime-source/runtime tutorial/runtime-source/runtime -type f \\( -name \"*.js\" -o -name \"*.mjs\" \\) -print0 | sort -z | xargs -0 -r -n1 node --check",
-    "check": "npm run syntax && node tests/run-release-audit.cjs && node tests/run-runtime-sync-lock.cjs && node tests/run-non-normal-effect-coverage.cjs && node tests/run-v559-gameplay-foundation.cjs && node tests/run-v560-ui-effect-lock.cjs && node tests/run-v561-card-priority-ui.cjs",
+    "check": "npm run syntax && node tests/run-release-audit.cjs && node tests/run-runtime-sync-lock.cjs && node tests/run-non-normal-effect-coverage.cjs && node tests/run-v559-gameplay-foundation.cjs && node tests/run-local-v5-standard-ui-draw-vfx.cjs",
     "test": "npm run check && node tests/run-v536-fixes.cjs && node tests/run-v537-fixes.cjs && node tests/run-v538-ui.cjs && node tests/run-v539-response-ui.cjs && node tests/run-v540-mobile-ui.cjs && node tests/run-v542-mobile-ui.cjs && node tests/run-v543-resource-ui.cjs && node tests/run-v544-casting-ui.cjs && node tests/run-v545-final-fixes.cjs && node tests/run-v546-fixes.cjs && node tests/run-v547-mobile-visual-regression.cjs && node tests/run-v548-mobile-legacy-controls.cjs && node tests/run-v549-ai-lobby-font-mobile.cjs && node tests/run-v550-ai-lobby-corrections.cjs && node tests/run-v551-lobby-and-defeat-cleanup.cjs && node tests/run-v552-source-adoption.cjs && node tests/run-v553-stoneblood-lobby.cjs && node tests/run-v554-card-review-lobby-font.cjs && node tests/run-arcane-duelist-legality.cjs && node tests/run-card-played-audit.cjs && node tests/run-runtime-executable-flows.cjs && node tests/run-local-ai-application-effects.cjs && node tests/run-opening-flow-test.cjs && node tests/run-tactical-ai-planner.cjs && node tests/run-minor-ui-ai-fixes.cjs && node tests/run-v556-ai-followup-title.cjs && node tests/run-manifest-verification.cjs && node tests/run-attachment-slot-parity.cjs && node tests/run-v555-end-phase-font.cjs",
     "test:tutorial": "cd tutorial && npm test",
     "verify": "npm test && npm run test:tutorial",
     "test:gameplay-foundation": "node tests/run-v559-gameplay-foundation.cjs"
   },
-  "description": "Grandis Legacy VS AI v5.63 and Tutorial v0.35: v5.62 gameplay/UI foundation plus deterministic mobile tutorial target scrolling."
+  "description": "Grandis Legacy VS AI v6.0 + Tutorial v0.36 — standard desktop battlefield, Mana 0/Regen 2, automatic Draw-to-Deploy, battle resolution VFX/audio, Casting target pairing, and mobile tutorial corrections."
 }

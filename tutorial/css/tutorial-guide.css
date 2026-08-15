@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.35 */
+/* Grandis Legacy Tutorial Guide v0.36 */
 body.gl-tutorial-mode{
   --gl-tutorial-silver-1:#f7f8fa;
   --gl-tutorial-silver-2:#b7bec8;
@@ -220,5 +220,5 @@ body.gl-tutorial-round-one-tribute-lock #nextPhaseButton{pointer-events:none!imp
   .gl-tutorial-highlight-box{scroll-margin-top:160px;scroll-margin-bottom:160px;}
 }
 
-/* v0.35 mobile force-scroll: Arvon stays hidden until the target is in its final viewport position. */
+/* v0.36 mobile force-scroll: Arvon stays hidden until the target is in its final viewport position. */
 @media(max-width:760px),(max-height:610px) and (max-width:980px){.gl-tutorial-guide.is-prepositioning{visibility:hidden!important}}

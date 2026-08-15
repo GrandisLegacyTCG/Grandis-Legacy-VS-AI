@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.35 — separate first-use practices for Attack, Support, Tactical, Event, and Item cards; each stops at the final cancellable boundary. Area Attack responses teach every affected Hero. VS AI v5.63 base. */
+/* Grandis Legacy Tutorial Guide v0.36 — separate first-use practices for Attack, Support, Tactical, Event, and Item cards; each stops at the final cancellable boundary. Area Attack responses teach every affected Hero. VS AI v6.0 base. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;
@@ -105,7 +105,8 @@
   }
 
   function buildShell(){
-    if(q('#glTutorialGuide'))return;
+    var existing=qa('#glTutorialGuide,.gl-tutorial-guide');
+    if(existing.length){existing.slice(1).forEach(function(el){try{el.remove();}catch(e){if(el.parentNode)el.parentNode.removeChild(el);}});return;}
     var scrim=document.createElement('div');scrim.id='glTutorialScrim';scrim.className='gl-tutorial-scrim';scrim.hidden=true;scrim.setAttribute('aria-hidden','true');document.body.appendChild(scrim);
     var layer=document.createElement('div');layer.id='glTutorialHighlightLayer';layer.className='gl-tutorial-highlight-layer';layer.setAttribute('aria-hidden','true');document.body.appendChild(layer);
     var wrap=document.createElement('aside');wrap.id='glTutorialGuide';wrap.className='gl-tutorial-guide';wrap.setAttribute('aria-live','polite');
@@ -212,12 +213,13 @@
         var r=highlightRect(entry);if(!r)return;
         if(entry.kind==='arrow'){
           var artRect=entry.el&&entry.el.getBoundingClientRect?entry.el.getBoundingClientRect():r;
-          var targetInset=(entry.region==='badge'||entry.region==='lineage')?2:((entry.region==='name')?5:4),targetX=r.left+targetInset,targetY=r.top+r.height/2;
-          var fromRight=false;
+          var targetInset=(entry.region==='badge'||entry.region==='lineage')?2:((entry.region==='name')?5:4),targetY=r.top+r.height/2;
+          var fromRight=isMobileTutorialViewport()&&entry.region==='exp';
+          var targetX=fromRight?(r.right-targetInset):(r.left+targetInset);
           var length=Math.max(28,Math.min(46,artRect.width*.12));
-          var arrow=document.createElement('div');arrow.className='gl-tutorial-anatomy-arrow from-left gl-tutorial-anatomy-arrow--'+(entry.region||'point');
+          var arrow=document.createElement('div');arrow.className='gl-tutorial-anatomy-arrow '+(fromRight?'from-right':'from-left')+' gl-tutorial-anatomy-arrow--'+(entry.region||'point');
           arrow.style.top=Math.round(targetY-2)+'px';arrow.style.width=Math.round(length)+'px';
-          arrow.style.left=Math.round(targetX-length-7)+'px';
+          arrow.style.left=Math.round(fromRight?(targetX+7):(targetX-length-7))+'px';
           arrow.innerHTML='<span class="gl-tutorial-arrow-dot" aria-hidden="true"></span>';
           layer.appendChild(arrow);return;
         }
@@ -534,7 +536,7 @@
   function phaseMessage(state){
     if(!state||state.turn!=='PLAYER'||state.preGame)return;
     if(state.phase==='Draw'&&!seen.phase_draw){
-      enqueue({id:'phase_draw',title:'Draw Phase',expression:'calm',compact:true,highlight:'.zone[data-zone-side="PLAYER"][data-zone-type="Mana Pool"]',html:'<p>You begin with <b>2 Mana</b> and <b>1 Mana Regen</b>. During Draw Phase, draw 1 card, gain Mana equal to Mana Regen, and normally Ready your Exhausted Heroes.</p><p>A Hero that is still Casting remains Exhausted.</p>',onClose:function(){queuePhaseAdvance('Draw');}});
+      enqueue({id:'phase_draw',title:'Draw Phase',expression:'calm',compact:true,highlight:'.zone[data-zone-side="PLAYER"][data-zone-type="Mana Pool"]',html:'<p>You begin with <b>0 Mana</b> and <b>2 Mana Regen</b>. During your first Draw Phase, draw 1 card and gain 2 Mana. Later Draw Phases gain Mana equal to your current Mana Regen, and normally Ready your Exhausted Heroes.</p><p>A Hero that is still Casting remains Exhausted.</p>',onClose:function(){queuePhaseAdvance('Draw');}});
     }
     if(state.phase==='Deploy'&&!seen.phase_deploy){
       enqueue({id:'phase_deploy',title:'Deploy Phase',expression:'advise',compact:true,html:'<p>Deploy Phase is used for preparation. <b>Tactical</b> Skills, <b>Events</b>, <b>Items</b>, available Racial Traits, and Class Abilities may be used when their rules allow it.</p><p>We will review the cards in your Hand before continuing.</p>',onClose:function(){startInitialAnatomy();}});

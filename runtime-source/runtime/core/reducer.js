@@ -101,10 +101,10 @@ function buildPlayer(playerId, deck) {
     discard_pile: [],
     legacy_deck: Array.isArray(safeDeck.legacy_deck_card_ids) ? safeDeck.legacy_deck_card_ids.slice() : [],
     mana_pool: 0,
-    mana_regen: 1,
+    mana_regen: 2,
     attachments: [],
     active_modifiers: [],
-    racial_token_pool: 0,
+    racial_token_pool: 2,
     racial_token_max: 2,
     racial_token_spent_turn: null,
     turn_stats: { cards_drawn_this_turn: 0 }
@@ -1006,6 +1006,22 @@ function drawOneCardForPlayer(state, playerId, options) {
   }
   return { state: appendEvents(next, events), events, errors: [] };
 }
+function drawPhaseAutoAdvanceBlocked(state) {
+  if (!state || state.game_over || state.phase !== PHASES.DRAW) return true;
+  if (state.pending || state.pending_attack_resolution || state.response_window || state.pending_response) return true;
+  if (Array.isArray(state.response_window_queue) && state.response_window_queue.length) return true;
+  if (Array.isArray(state.pending_legacy_defeat_queue) && state.pending_legacy_defeat_queue.length) return true;
+  return (state.continuation_queue || []).some(item => item && (item.type === 'casting_release' || item.type === 'draw_replacement_choice'));
+}
+function autoAdvanceCompletedDrawPhase(state, events) {
+  if (drawPhaseAutoAdvanceBlocked(state)) return state;
+  state.phase = PHASES.DEPLOY;
+  const event = createRuntimeEvent(EVENT_TYPES.PHASE_CHANGED, state, { player_id: state.active_player_id, payload: { phase: PHASES.DEPLOY, round: state.round, automatic: true, source: 'DRAW_PHASE_COMPLETE' } });
+  state.event_log = (state.event_log || []).concat(event);
+  if (events) events.push(event);
+  return state;
+}
+
 function enterPhase(state, nextPhase, nextActivePlayerId) {
   let next = Object.assign({}, state, { phase: nextPhase, active_player_id: nextActivePlayerId || state.active_player_id });
   if (nextPhase === PHASES.DRAW) resetTurnStatsForPlayer(next, next.active_player_id);
@@ -1027,6 +1043,7 @@ function enterPhase(state, nextPhase, nextActivePlayerId) {
     const draw = drawOneCardForPlayer(next, next.active_player_id);
     next = draw.state;
     events.push(...draw.events);
+    autoAdvanceCompletedDrawPhase(next, events);
   }
   return { state: next, events, errors: [] };
 }
@@ -3478,6 +3495,7 @@ function resolvePendingAttackDamage(next, events, resolverPlayerId, options) {
   next.response_priority_player_id = null;
   const activatedContinuation = activateNextContinuationIfPossible(next, events);
   if (!activatedContinuation && !(next.continuation_queue || []).length && !next.pending) runDeferredLoseChecks(next, events);
+  autoAdvanceCompletedDrawPhase(next, events);
   return { applied: amount > 0 || hasPerTargetDamage, final_damage: amount, per_target_damage: attackResolution.per_target_base_damage || null };
 }
 
@@ -5803,7 +5821,9 @@ function confirmDrawReplacement(state, intent) {
       source_slot: pending.source_slot,
       payload: { result: 'DRAW_REPLACEMENT_KEEP', ability_id: pending.ability_id, ability_name: pending.ability_name, kept_card_id: drawnCardId }
     }));
-    return { state: appendEvents(next, events), events, errors: [] };
+    next = appendEvents(next, events);
+    autoAdvanceCompletedDrawPhase(next, events);
+    return { state: next, events, errors: [] };
   }
   if (idx < 0) return { state, events: [], errors: ['The just-drawn card is no longer in hand.'] };
   player.hand.splice(idx, 1);
@@ -5822,7 +5842,10 @@ function confirmDrawReplacement(state, intent) {
     source_slot: pending.source_slot,
     payload: { result: 'DRAW_REPLACEMENT_REDRAW', ability_id: pending.ability_id, ability_name: pending.ability_name, returned_card_id: drawnCardId }
   });
-  return { state: appendEvents(next, actionEvent), events: events.concat(drawn.events || [], [actionEvent]), errors: drawn.errors || [] };
+  const allEvents = events.concat(drawn.events || [], [actionEvent]);
+  next = appendEvents(next, actionEvent);
+  autoAdvanceCompletedDrawPhase(next, allEvents);
+  return { state: next, events: allEvents, errors: drawn.errors || [] };
 }
 
 function confirmTriggeredRacial(state, intent) {
@@ -5889,7 +5912,9 @@ function submitIntent(state, intent) {
       const startEvent = createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, initialState, { player_id: intent.player_id, payload: { action: 'START_GAME' } });
       const withStartEvent = appendEvents(initialState, startEvent);
       const draw = drawOneCardForPlayer(withStartEvent, withStartEvent.active_player_id, { suppress_draw_replacement: true, source: 'start_game' });
-      result = { state: draw.state, events: [startEvent].concat(draw.events), errors: draw.errors || [] };
+      const startEvents = [startEvent].concat(draw.events || []);
+      autoAdvanceCompletedDrawPhase(draw.state, startEvents);
+      result = { state: draw.state, events: startEvents, errors: draw.errors || [] };
       break;
     }
     case 'PLAY_CARD': result = startPendingAction(state, intent); break;

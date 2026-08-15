@@ -6109,3 +6109,6 @@ body.deck-setup-active{
   .v96-app .phase-actions{grid-template-rows:38px 52px!important}
   .v96-app .phase-actions .next-phase{height:52px!important;min-height:52px!important}
 }
+
+/* LOCAL UI POLISH v4 — Play / Tribute touch target +2px total height. */
+.v96-app .play-card-action,.v96-app .tribute-card-action{padding:4px 3px!important}

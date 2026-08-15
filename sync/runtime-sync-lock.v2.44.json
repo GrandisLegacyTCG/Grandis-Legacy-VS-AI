@@ -1,0 +1,30 @@
+{
+  "version": "v2.44",
+  "schema_version": "2.44-consumer",
+  "policy": "RUNTIME_FIRST_FAIL_CLOSED_SYNC",
+  "application": "VS AI v6.0",
+  "local_ai": "v6.0",
+  "pvp_reference": "v3.00",
+  "canonical_registry_hash": "b455b1537434e454ab873372bb9da715b779e64525a01a8bc3995ed9267ecfa0",
+  "one_source_authority": "v1.5.0",
+  "application_runtime_sync": "v2.44",
+  "runtime_foundation": "v1.82",
+  "runtime_core": "v0.50",
+  "shared_runtime_manual": "v1.39",
+  "ui_design_lock": "v2.48",
+  "shared_gameplay_sha256": "26c8bc65d6295ce523eb85c11019446cdf326ab513872f3c5185d40cac271b20",
+  "runtime_authority_sha256": "292e17fba8a2961bd2a0f903fb8ec8a94aced1ef7fa5c7bbbb71e4cd0f81df1d",
+  "runtime_source_browser_sha256": "292e17fba8a2961bd2a0f903fb8ec8a94aced1ef7fa5c7bbbb71e4cd0f81df1d",
+  "static_data_sha256": "d68ae913743fd43c73aad5efe9daacb45b5dd3ce6c16d1dbca09cee9c69e7e85",
+  "shared_ui_css_sha256": "2cbd0f6b04a7d8b6e5a1282ca865b4617d5fcf4c1edcac701fa4bd0ebce1c89e",
+  "consumerAdoptionStatus": {
+    "currentApplicationsRebuiltInThisDelivery": true,
+    "currentAI": "VS AI v6.0",
+    "currentPvP": "PvP v3.00",
+    "currentTutorial": "Tutorial v0.36 GitHub Pages",
+    "automaticDrawToDeploy": "ADOPTED",
+    "battleFeedback": "ADOPTED",
+    "castingPairHighlight": "ADOPTED"
+  },
+  "tutorial": "Tutorial v0.36; mobile target force-scroll retained, EXP arrow uses mobile-specific direction/position, and Arvon is singleton."
+}

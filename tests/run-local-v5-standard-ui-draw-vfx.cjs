@@ -1,0 +1,30 @@
+'use strict';
+const fs=require('fs');
+const path=require('path');
+const {loadLocalAI}=require('./vm-local-ai-harness.cjs');
+function read(p){return fs.readFileSync(p,'utf8')}
+function need(ok,msg){if(!ok)throw new Error(msg)}
+const html=read('index.html'),css=read('css/app.css'),app=read('js/app.bundle.js');
+need(!html.includes('desktop-scale.js'),'desktop-scale.js must not be loaded in standard desktop UI');
+need(!css.includes('Desktop adaptive-fit policy'),'adaptive-fit CSS block still present');
+need(!css.includes('Desktop card-priority scaling'),'card-priority scaling CSS block still present');
+need(css.includes('@media(max-width:1450px)'),'approved 1450px standard breakpoint was not restored');
+need(css.includes('grid-template-rows:24px 48px minmax(0,1fr) 16px minmax(0,1fr) 92px 24px 54px!important'),'standard desktop main-stage geometry missing');
+need(css.includes('.v96-app .player-name--self{align-self:end!important'),'desktop player footer baseline missing');
+need(app.includes('function autoAdvancePlayerDrawWhenReady'),'automatic Draw→Deploy helper missing');
+need(app.includes("PLAYER completes Draw Phase and enters Deploy Phase automatically."),'automatic Draw→Deploy transition log missing');
+need(app.includes("rect,.72,true")&&app.includes("fresh,1.08,isMagicDefense?false:true"),'Defense VFX scale must be 1.5x Attack VFX scale');
+const png=fs.readFileSync('assets/battle/M.Defense.png');
+need(png.slice(1,4).toString()==='PNG','M.Defense asset is not PNG');
+need(png[25]===6,'M.Defense must be RGBA/transparent PNG (PNG color type 6)');
+const ctx=loadLocalAI(process.cwd());
+const bridge=ctx.GL_LOCAL_AI_BRIDGE;
+bridge.setRenderSuppressed(true);
+bridge.startSharedMatch({});
+bridge.setSharedBoardMode(false);
+const opening=bridge.completeOpeningFlow('PLAYER',{firstPlayer:'PLAYER',completed:true});
+const state=opening.snapshot.appState;
+need(state.phase==='Deploy','Player first Draw Phase did not auto-advance to Deploy');
+need(state.mana===2&&state.manaRegen===2,'Mana startup rule must be 0 start / Regen 2 / first Draw gives 2 Mana');
+need(state.playerHand.length===7,'Opening 6 + mandatory Draw must produce 7-card hand');
+console.log('PASS local v5 standard desktop + transparent M.Def + 1.5x DEF + automatic Draw→Deploy');

@@ -4,7 +4,7 @@ const root=path.resolve(__dirname,'..');
 const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
 const css=fs.readFileSync(path.join(root,'css/app.css'),'utf8');
 function need(ok,msg){if(!ok)throw new Error(msg)}
-need(app.includes('Grandis Legacy VS AI v5.63'),'current application label missing');
+need(app.includes('Grandis Legacy VS AI v6.0'),'current application label missing');
 need(app.includes('legacy-hero-info--desktop'),'Desktop Legacy info control missing');
 need(app.includes('legacy-hero-info--mobile'),'Mobile Legacy info control missing');
 need(app.includes('hero-stage legacy-stage'),'Legacy stage anchor class missing');
@@ -15,5 +15,5 @@ need(css.includes('.hero-stage.legacy-stage>.mobile-hero-action-trigger'),'Mobil
 need(css.includes('right:3px!important'),'Mobile Legacy action is not anchored top-right');
 need(css.includes('.legacy-name-bar .legacy-hero-info--desktop{display:none!important}'),'Desktop Legacy info is not hidden on mobile');
 const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
-assert.strictEqual(pkg.version,'5.63.0');
-console.log('PASS v5.63 mobile Legacy control anchor consistency');
+assert.strictEqual(pkg.version,'6.0.0');
+console.log('PASS v6.0 mobile Legacy control anchor consistency');
