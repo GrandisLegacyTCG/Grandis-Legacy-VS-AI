@@ -43,7 +43,7 @@ assert.ok(/data-zone-type=\"Discard Pile\"/.test(css)&&/data-zone-type=\"Mana Po
 assert.ok(/setProperty\('z-index',String\(GL_MODAL_STACK_SEQUENCE\),'important'\)/.test(app),'important modal stack authority');
 assert.ok(/Mobile resource visual centering — Local AI v5\.30/.test(css)&&/left:50%!important/.test(css)&&/transform:translate\(-50%,-50%\)!important/.test(css),'mobile resource artwork centering lock');
 assert.ok(/responseDisplayItemsFor/.test(app)&&/data-response-reason/.test(app)&&!/data-response-unavailable/.test(app)&&/straight mobile hands/.test(css),'v5.39 response diagnostics and mobile hand lock');
-assert.ok(!fs.existsSync(path.join(root,'deck-builder'))&&app.includes('https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/'),'dedicated external Deck Builder navigation');
+assert.ok(!fs.existsSync(path.join(root,'deck-builder'))&&app.includes('https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/'),'dedicated external Deck Builder navigation');
 assert.ok(fs.existsSync(path.join(root,'tutorial/index.html'))&&app.includes('<nav class="ai-lobby-actions"><a id="aiLobbyTutorialButton" class="ai-lobby-btn ai-lobby-btn--outline" href="tutorial/">TUTORIAL</a><a id="aiLobbyDeckBuilderButton" class="ai-lobby-btn ai-lobby-btn--outline"'),'Tutorial application and equal-size secondary navigation');
 
 console.log('PASS VS AI v6.1 release audit: Casting survives Draw/Rank Up, release uses current Hero, response hover diagnostics, mobile resources, and desktop cleanup.');

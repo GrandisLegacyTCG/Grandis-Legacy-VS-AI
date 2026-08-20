@@ -22,6 +22,6 @@ if(!css.includes('@media(min-width:761px)')||!css.includes('.v96-app .mobile-pla
 if(!css.includes('.v96-app .gl-app{padding-bottom:0!important'))throw new Error('mobile footer trailing gap removal missing');
 if(!css.includes('padding:22px 3px 2px')||!css.includes('width:18px!important;height:18px'))throw new Error('compact mobile Hero controls missing');
 if(fs.existsSync(path.join(root,'deck-builder')))throw new Error('obsolete bundled Deck Builder should not remain');
-if(!app.includes('https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/'))throw new Error('external Deck Builder navigation missing');
+if(!app.includes('https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/'))throw new Error('external Deck Builder navigation missing');
 console.log('PASS Grandis Legacy VS AI v5.42 mobile compaction, Main Deck Racial Tokens, footer flow, and desktop isolation.');
 console.log(JSON.stringify(r));

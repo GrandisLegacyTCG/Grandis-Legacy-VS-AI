@@ -13,4 +13,4 @@ assert.ok(!vs.includes('Desktop adaptive-fit policy'),'VS AI must keep v6 standa
 assert.ok(!tut.includes('Desktop adaptive-fit policy'),'Tutorial legacy adaptive-fit drift remains');
 assert.ok(tapp.includes('var GL_BATTLE_FEEDBACK_QUEUE=')&&tapp.includes('var GL_CASTING_PAIR_COLORS='),'Tutorial missing VS AI presentation parity engines');
 assert.ok(app.includes('https://grandislegacytcg.github.io/pvp/'),'VS AI PvP navigation does not use public frontend');
-console.log('PASS VS AI v6.2 / Tutorial v0.38 desktop standards, Hand actions, and presentation parity');
+console.log('PASS VS AI v6.3 / Tutorial v0.38 desktop standards, Hand actions, and presentation parity');

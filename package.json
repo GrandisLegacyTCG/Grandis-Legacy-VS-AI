@@ -1,6 +1,6 @@
 {
   "name": "grandis-legacy-vs-ai-tutorial",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "private": true,
   "scripts": {
     "syntax": "node --check js/app.bundle.js && node --check js/static-data.js && node --check js/runtime-authority.js && node --check tutorial/js/app.bundle.js && node --check tutorial/js/tutorial-guide.js && node --check tutorial/js/static-data.js && node --check tutorial/js/runtime-authority.js && find runtime-source/runtime tutorial/runtime-source/runtime -type f \\( -name \"*.js\" -o -name \"*.mjs\" \\) -print0 | sort -z | xargs -0 -r -n1 node --check",
@@ -10,5 +10,5 @@
     "verify": "npm test && npm run test:tutorial",
     "test:gameplay-foundation": "node tests/run-v559-gameplay-foundation.cjs"
   },
-  "description": "Grandis Legacy VS AI v6.2 + Tutorial v0.38 \u2014 v6.1 gameplay/UI baseline with centralized Season 1 shared card assets, 1440x900 / 1920x1080 desktop anchors, and 18px desktop / 16px mobile PLAY & TRIBUTE."
+  "description": "Grandis Legacy VS AI v6.3 + Tutorial v0.38 — v6.2 gameplay/UI baseline with Deck Builder Style 1 navigation; centralized Season 1 shared card assets and approved desktop/mobile presentation remain unchanged."
 }

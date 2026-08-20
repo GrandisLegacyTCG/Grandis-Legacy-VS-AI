@@ -9,7 +9,7 @@ if(typeof fn!=='function') throw new Error('v5.36 fix self-test missing');
 const result=fn();
 if(!result||result.ok!==true) throw new Error('v5.36 fix self-test failed: '+JSON.stringify(result));
 const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
-for(const token of ['refreshResponseWindowOptions','canonicalCardLegalClasses','lockEventTargetSnapshot','beginPlayerTurnDrawPhase','aiLobbyDeckBuilderButton','https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/']) if(!app.includes(token)) throw new Error('missing application token '+token);
+for(const token of ['refreshResponseWindowOptions','canonicalCardLegalClasses','lockEventTargetSnapshot','beginPlayerTurnDrawPhase','aiLobbyDeckBuilderButton','https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/']) if(!app.includes(token)) throw new Error('missing application token '+token);
 if(fs.existsSync(path.join(root,'deck-builder'))) throw new Error('obsolete bundled Deck Builder should not remain');
 console.log('PASS inherited Grandis Legacy VS AI v5.36 fixes with external Deck Builder navigation.');
 console.log(JSON.stringify(result));

@@ -1,4 +1,9 @@
-# Grandis Legacy VS AI v6.2 + Tutorial v0.38
+# Grandis Legacy VS AI v6.3 + Tutorial v0.38
+
+## v6.3 update
+- VS AI lobby Deck Builder navigation now opens `/Grandis-Legacy-Deck-Builder/style-1/`.
+- Gameplay/runtime behavior is unchanged from v6.2.
+- Tutorial remains v0.38 and is otherwise unchanged.
 
 ## v6.2 / v0.38 update
 - Keeps the VS AI v6.1 / Tutorial v0.37 gameplay and presentation baseline.
