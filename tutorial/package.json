@@ -1,12 +1,12 @@
 {
   "name": "grandis-legacy-tutorial",
-  "version": "0.36.0",
+  "version": "0.38.0",
   "private": true,
-  "description": "Grandis Legacy non-scripted gameplay tutorial v0.36 for GitHub Pages, synced with VS AI v6.0; mobile steps force-scroll to target and use corrected mobile EXP arrow geometry with singleton Arvon.",
+  "description": "Grandis Legacy non-scripted Tutorial v0.38, synced with VS AI v6.2 presentation and centralized Season 1 shared card assets while preserving tutorial-only guidance and mobile behavior.",
   "scripts": {
     "syntax": "node --check js/app.bundle.js && node --check js/tutorial-guide.js && node --check js/static-data.js && node --check js/runtime-authority.js && find runtime-source/runtime -type f \\( -name '*.js' -o -name '*.mjs' \\) -print0 | sort -z | xargs -0 -r -n1 node --check",
     "test:base": "node tests/run-non-normal-effect-coverage.cjs && node tests/run-v551-lobby-and-defeat-cleanup.cjs && node tests/run-v552-source-adoption.cjs && node tests/run-runtime-executable-flows.cjs && node tests/run-local-ai-application-effects.cjs && node tests/run-opening-flow-test.cjs && node tests/run-tactical-ai-planner.cjs && node tests/run-card-played-audit.cjs && node tests/run-attachment-slot-parity.cjs",
-    "test:tutorial": "node tests/run-tutorial-github-v036.cjs",
+    "test:tutorial": "node tests/run-tutorial-github-v038.cjs",
     "test": "npm run syntax && npm run test:base && npm run test:tutorial",
     "verify": "npm test && node tests/run-manifest-verification.cjs"
   }

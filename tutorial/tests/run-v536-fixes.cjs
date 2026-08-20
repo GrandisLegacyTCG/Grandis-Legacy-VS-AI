@@ -14,7 +14,7 @@ for(const token of ['refreshResponseWindowOptions','canonicalCardLegalClasses','
 if(!css.includes('deck-builder-launch')) throw new Error('Deck Builder button CSS missing');
 for(const rel of ['deck-builder/index.html','deck-builder/css/app.css','deck-builder/js/app.js','deck-builder/js/data.js']) if(!fs.existsSync(path.join(root,rel))) throw new Error('missing bundled Deck Builder file '+rel);
 const builderData=fs.readFileSync(path.join(root,'deck-builder/js/data.js'),'utf8');
-if(!builderData.includes('../assets/cards/thumbs/')) throw new Error('Deck Builder does not reuse VS AI thumbnails');
+if(!builderData.includes('../https://grandislegacytcg.github.io/shared/season1/v1/cards/thumbs/')) throw new Error('Deck Builder does not reuse VS AI thumbnails');
 if(fs.existsSync(path.join(root,'deck-builder/assets/cards'))) throw new Error('duplicate Deck Builder card thumbnails were included');
 console.log('PASS inherited Grandis Legacy VS AI v5.36 fixes on v5.37.');
 console.log(JSON.stringify(result));

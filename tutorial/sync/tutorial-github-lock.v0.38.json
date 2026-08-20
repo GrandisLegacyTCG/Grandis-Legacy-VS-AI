@@ -1,0 +1,16 @@
+{
+  "version": "v0.38",
+  "tutorial": "v0.38",
+  "delivery": "GitHub Pages",
+  "base_vs_ai": "v6.2",
+  "runtime_foundation": "v1.82",
+  "runtime_core": "v0.50",
+  "runtime_data": "v0.12.7",
+  "ui_design_lock": "v2.48",
+  "scope": "Tutorial v0.38 on VS AI v6.2 presentation baseline with centralized Season 1 shared card assets; tutorial-only guidance/mobile behavior retained.",
+  "app_bundle_sha256": "b97e8737d10540887f3faa430804aa897d574ec6042136534118b9230624c54b",
+  "tutorial_guide_sha256": "468757b0f84b2fdabedf6c916094853570702e9869038042cf57278c94b84e6d",
+  "tutorial_css_sha256": "3f3cbd9d2f4850e45c2296f4cdbffb64ce6bd37fcf3ccb9c2571c6a08f11fcde",
+  "runtime_authority_sha256": "292e17fba8a2961bd2a0f903fb8ec8a94aced1ef7fa5c7bbbb71e4cd0f81df1d",
+  "static_data_sha256": "9e74773f3615c6b2672f70c5e9d818dbe23d3267cb00e914280183af7914e307"
+}

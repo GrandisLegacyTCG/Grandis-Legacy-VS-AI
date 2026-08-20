@@ -1,7 +1,7 @@
 @font-face{font-family:"Noto Sans";src:url("../assets/fonts/noto-sans/NotoSans-Variable.woff2") format("woff2");font-style:normal;font-weight:100 900;font-stretch:62.5% 100%;font-display:swap}
 @font-face{font-family:"Noto Sans";src:url("../assets/fonts/noto-sans/NotoSans-Italic-Variable.woff2") format("woff2");font-style:italic;font-weight:100 900;font-stretch:62.5% 100%;font-display:swap}
 
-/* Grandis Legacy — embedded Noto Sans typography lock. */
+/* Grandis Legacy v5.58 / PvP v2.6.15 — Noto Sans asset-hook typography. */
 html,body,body *{font-family:"Noto Sans"!important}
 :root{--bg:#05080d;--panel:#0b121b;--panel2:#101a26;--panel3:#142133;--line:#2d4055;--line2:#3d5872;--gold:#f4d35e;--gold2:#9d7924;--text:#f4f8fd;--muted:#9badc0;--green:#39d486;--red:#d95a5a;--yellow:#f4d35e;--blue:#71b7ff;}
 *{box-sizing:border-box}body{margin:0;min-width:1120px;background:radial-gradient(circle at top,#152036 0%,#080b10 60%,#030508 100%);color:var(--text);font-family:"Noto Sans"}button{font:inherit;color:inherit}button:disabled{opacity:.78;cursor:not-allowed}.top-header{height:62px;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0c1724,#071019)}.top-header h1{margin:0;color:var(--gold);font-size:20px}.top-header p{margin:2px 0 0;color:var(--muted);font-size:12px}.header-actions{display:flex;gap:8px}.header-actions button,.control-row button,.choice-foot button{background:#132234;border:1px solid var(--line2);border-radius:10px;padding:7px 12px;cursor:pointer}.ai-hand-panel{display:flex;align-items:center;gap:16px;padding:8px 18px;border-bottom:1px solid #18293a;background:#07111a}.ai-hand-panel h2,.player-hand-panel h2,.opponent-played-panel h2{font-size:14px;margin:0;color:var(--gold)}.ai-hand-panel small,.player-hand-panel small{display:block;color:var(--muted);font-size:11px}.hidden-hand{display:flex;gap:6px;min-width:0}.hidden-hand img{width:42px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #334b63;background:#111}.game-shell{display:grid;grid-template-columns:132px minmax(0,1fr) 132px;gap:10px;padding:10px 14px;border-bottom:1px solid #18293a}.side-panel{display:flex;flex-direction:column;gap:8px;min-width:0}.side-panel h3{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#d9e9f9;margin:0 0 2px;text-align:center}.zone-card{min-height:66px;width:100%;border:1px solid var(--line);background:linear-gradient(180deg,#101a26,#0b121b);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:7px;color:#eaf2ff}.zone-card span{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#cddbeb}.zone-card b{font-size:22px;color:var(--gold);line-height:1.1}.zone-card.clickable{cursor:pointer;box-shadow:inset 0 0 0 1px rgba(244,211,94,.14)}.zone-card.locked{cursor:default}.racial-token{min-height:54px}.center-board{min-width:0;display:flex;flex-direction:column;gap:8px}.field{border:1px solid #243a50;background:rgba(8,15,23,.68);border-radius:16px;padding:8px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}.field-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;color:var(--gold);font-size:12px;text-transform:uppercase;letter-spacing:.08em}.field-header small{color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400}.hero-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.hero-panel{min-width:0;border:1px solid #31506a;background:linear-gradient(180deg,#122033,#0a121c);border-radius:14px;padding:7px;position:relative}.lane-label{position:absolute;top:6px;right:8px;font-size:10px;letter-spacing:.08em;color:var(--gold);border:1px solid rgba(244,211,94,.35);border-radius:999px;padding:2px 6px;background:#0c151f}.hero-main{width:100%;display:flex;gap:7px;align-items:center;text-align:left;padding:0;background:transparent;border:0;cursor:pointer;min-width:0}.hero-main img{width:50px;height:66px;object-fit:cover;border-radius:7px;border:1px solid #4a647d;flex:0 0 auto}.hero-text{min-width:0;padding-right:38px}.hero-text strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;color:#fff}.hero-text small{display:block;color:#bdd0e3;font-size:11px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.badge-row{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0 6px}.state-badge{font-size:10px;color:#e4f0fd;border:1px solid #39546f;border-radius:999px;padding:3px 6px;background:#0d1722;cursor:pointer}.attachment-row{display:grid;grid-template-columns:1fr 1fr;gap:5px}.attachment-slot{height:34px;border:1px dashed #74611f;border-radius:8px;color:#d8c57a;font-size:10px;display:flex;align-items:center;justify-content:center;text-align:center;background:rgba(41,35,9,.28)}.exp-stack{margin-top:5px;height:24px;border:1px solid #264761;border-radius:8px;background:#0b1520;display:flex;justify-content:space-between;align-items:center;padding:0 8px;font-size:10px;color:#cddbeb}.exp-stack b{color:var(--gold)}.phase-tracker{align-self:center;display:flex;gap:5px;justify-content:center;align-items:center;padding:5px;border:1px solid #6f5a19;border-radius:999px;background:linear-gradient(180deg,#1b1605,#0e0b03);box-shadow:0 0 14px rgba(244,211,94,.08)}.phase-tracker span{font-size:12px;border-radius:999px;padding:5px 11px;color:#ad9958}.phase-tracker .current{background:var(--gold);color:#171000;font-weight:800}.control-row{display:flex;align-items:center;justify-content:center;gap:10px;padding:8px 14px;border-bottom:1px solid #18293a;background:#071018}.control-row span{font-size:12px;color:var(--muted)}.bottom-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,28%);gap:10px;padding:10px 14px}.player-hand-panel,.opponent-played-panel{min-width:0;border:1px solid var(--line);background:rgba(9,17,26,.94);border-radius:16px;padding:9px}.player-hand-panel header,.opponent-played-panel header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.hand-scroll{width:100%;min-width:0;display:flex;gap:7px;overflow-x:auto;padding-bottom:4px}.hand-card{width:84px;flex:0 0 84px;border:1px solid #36536e;background:#0d1722;border-radius:10px;padding:5px;min-width:0}.hand-art{display:block;width:100%;padding:0;background:transparent;border:0;cursor:pointer}.hand-art img{width:100%;height:106px;object-fit:cover;border-radius:6px;border:1px solid #30485f;display:block}.hand-name{font-size:11px;font-weight:800;color:#fff;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hand-meta{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hand-actions{min-height:24px;margin-top:5px}.mini-action{width:100%;border:1px solid #426b4e;background:#11341f;color:#bdf7ce;border-radius:7px;padding:3px;font-size:10px}.opponent-played-panel{overflow:hidden}.opponent-played-panel header button{border:1px solid #39546f;background:#101d2b;border-radius:8px;padding:5px 7px;font-size:11px}.played-tile{width:100%;display:grid;grid-template-columns:38px 46px minmax(0,1fr);gap:7px;align-items:center;border:1px solid #39546f;background:#0d1722;border-radius:12px;padding:7px;text-align:left;cursor:pointer;min-width:0}.played-tile img{width:46px;height:62px;object-fit:cover;border-radius:6px;border:1px solid #324b63}.played-label{font-size:11px;font-weight:900;color:#111;background:var(--gold);border-radius:999px;text-align:center;padding:4px}.played-tile strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.played-tile small{display:block;color:var(--muted);font-size:10px;line-height:1.25}.build-foot{display:flex;gap:8px;flex-wrap:wrap;padding:8px 14px;color:#b7c9dc;font-size:11px}.build-foot span{border:1px solid #253a50;border-radius:999px;background:#08111a;padding:4px 8px}.card-tile{width:82px;flex:0 0 82px;border:1px solid #36536e;background:#0d1722;border-radius:10px;padding:5px;text-align:left;cursor:pointer}.card-tile img{width:100%;height:102px;object-fit:cover;border-radius:6px;display:block}.card-tile-name{display:block;color:#fff;font-weight:800;font-size:11px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-tile-meta{display:block;color:var(--muted);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.modal-overlay,.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:900;display:none;align-items:center;justify-content:center;padding:18px}.modal-overlay.open,.overlay.open{display:flex}.overlay{z-index:1100}.choice-panel,.info-panel,.preview-panel{border:1px solid #6a5a19;border-radius:16px;background:#101923;box-shadow:0 18px 70px rgba(0,0,0,.62);overflow:hidden}.choice-panel{width:min(760px,92vw);max-height:84vh;display:flex;flex-direction:column}.choice-head,.choice-foot,.info-head,.preview-head{background:#0b131c;border-bottom:1px solid #263d55;display:flex;justify-content:space-between;align-items:center;padding:10px 14px}.choice-head h2,.info-head h2,.preview-head h2{margin:0;color:var(--gold);font-size:16px}.choice-head button,.info-head button,.preview-head button{background:#1c2a3a;border:1px solid #45627e;border-radius:8px;padding:6px 10px;cursor:pointer}.choice-body{overflow:auto;padding:12px}.choice-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}.choice-foot{border-top:1px solid #263d55;border-bottom:0;justify-content:flex-end}.empty-state{border:1px dashed #48617a;border-radius:12px;padding:18px;text-align:center;color:var(--muted)}.info-panel{width:min(520px,90vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden}.info-head{flex:0 0 auto}.info-body{padding:16px;color:#d9e6f5;overflow:auto;min-height:0;overscroll-behavior:contain}.preview-panel{width:min(860px,92vw);max-height:90vh;overflow:auto}.preview-head{position:sticky;top:0;z-index:2}.preview-body{display:grid;grid-template-columns:280px minmax(0,1fr);gap:16px;padding:16px}.preview-card-art img{width:100%;border-radius:12px;border:1px solid #334d66}.preview-text h2{color:var(--gold);margin:0 0 5px}.preview-meta{color:var(--muted)}.preview-text section{border:1px solid #243a50;border-radius:12px;padding:10px;margin:0 0 10px;background:#0b1420}.preview-text h3{margin:0 0 6px;color:#cfe3f7;font-size:14px}.preview-text p{margin:0;color:#d8e5f2;line-height:1.42;white-space:pre-wrap}@media(max-width:980px){body{min-width:0}.game-shell{grid-template-columns:1fr}.side-panel{display:grid;grid-template-columns:repeat(4,1fr)}.bottom-row{grid-template-columns:1fr}.hero-grid{grid-template-columns:1fr}.preview-body{grid-template-columns:1fr}.ai-hand-panel{align-items:flex-start;flex-direction:column}.hidden-hand{overflow-x:auto;max-width:100%}}
@@ -716,7 +716,7 @@ body::before{
 .full-log p{margin:0;padding:9px 11px;border:1px solid rgba(255,255,255,.06);border-radius:8px;background:rgba(255,255,255,.025)}
 .full-log b{color:var(--gold-bright)}
 .compact-log-lines[data-open-log]{cursor:pointer}
-@media(max-width:1365px){
+@media(max-width:1450px){
   :root{--gap:9px}
   .gl-app{grid-template-columns:minmax(0,1fr) 292px;padding:9px}
   .field--opponent,.field--player{grid-template-columns:108px minmax(0,1fr) 108px}
@@ -827,7 +827,7 @@ body::before{
   box-shadow:0 18px 38px rgba(0,0,0,.52);
 }
 
-@media(max-width:1365px){
+@media(max-width:1450px){
   .gl-board{grid-template-rows:32px 82px 365px 56px 365px 122px 32px}
   .field--opponent,.field--player{min-height:365px}
   .hero-card{height:238px}
@@ -911,7 +911,7 @@ body::before{
   grid-template-rows:150px minmax(0,1fr) 150px 160px;
 }
 
-@media(max-width:1365px){
+@media(max-width:1450px){
   .zone--legacy{height:126px;flex-basis:126px}
   .zone--mana{width:92px;max-width:92px}
   .racial-coins.racial-coins--horizontal{width:92px;max-width:92px;height:40px;flex-basis:40px}
@@ -1041,7 +1041,7 @@ body::before{
   .modal-played-preview__card img{max-height:46vh}
 }
 
-@media(max-width:1365px){
+@media(max-width:1450px){
   .field--opponent > .resource-rail--compact{grid-template-rows:40px 126px 141px}
   .field--player > .resource-rail--compact{grid-template-rows:141px 126px 40px}
   .right-sidebar{grid-template-rows:145px minmax(0,1fr) 145px 186px}
@@ -1264,7 +1264,7 @@ body::before{
   flex:0 0 26px;
 }
 
-@media(max-width:1365px){
+@media(max-width:1450px){
   .gl-board{grid-template-rows:32px 82px 322px 56px 322px 122px 32px}
   .field--opponent,.field--player{min-height:322px}
   .field--opponent{grid-template-columns:92px minmax(0,1fr) 136px}
@@ -1464,7 +1464,7 @@ body::before{
 }
 .recent-card-strip img{max-height:66px}
 
-@media(max-width:1365px){
+@media(max-width:1450px){
   .gl-board{grid-template-rows:26px 56px 278px 48px 278px 94px 26px}
   .field--opponent,.field--player{min-height:278px;grid-template-columns:92px minmax(0,1fr) 92px}
   .hero-card{height:178px}
@@ -1499,12 +1499,12 @@ body::before{
 .hand-area--player .hand-card{flex-basis:60px;height:88px}
 .hand-area--player .player-hand{min-height:0;overflow:hidden}
 .gl-board,.right-sidebar{height:880px;min-height:0;align-self:start}
-@media(max-width:1365px){.gl-board,.right-sidebar{height:860px}}
+@media(max-width:1450px){.gl-board,.right-sidebar{height:860px}}
 @media(max-width:1280px){.gl-board,.right-sidebar{height:836px}}
 :root{--gap:8px}
 .gl-board{grid-template-rows:26px 58px 285px 47px 285px 98px 26px}
 .gl-board,.right-sidebar{height:873px}
-@media(max-width:1365px){.gl-board,.right-sidebar{height:853px}}
+@media(max-width:1450px){.gl-board,.right-sidebar{height:853px}}
 @media(max-width:1280px){.gl-board,.right-sidebar{height:829px}}
 
 /* v9.3 hover-preview lock; v9.4 Mana-number sizing and no-wrap lock. */
@@ -1635,7 +1635,7 @@ body::before{
 .v94-app .hero-stage{grid-template-rows:minmax(0,1fr)!important}
 .v94-app .hero-card.hero-main{width:auto!important;height:184px!important;max-height:184px!important;aspect-ratio:.68!important;justify-self:center!important;align-self:center!important}
 .v94-app .hero-card.hero-main .heroImg{width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important}
-@media(max-width:1365px){.v94-app .hero-card.hero-main{height:178px!important;max-height:178px!important}}
+@media(max-width:1450px){.v94-app .hero-card.hero-main{height:178px!important;max-height:178px!important}}
 @media(max-width:1280px){.v94-app .hero-card.hero-main{height:170px!important;max-height:170px!important}}
 .v94-app .hand-area .v94-strip{grid-column:2!important;grid-row:1!important;width:100%!important;min-width:0!important}
 
@@ -1691,7 +1691,7 @@ body::before{
 
 /* Locked request: Hero cards at 90% of the v9.4 integration size. */
 .v94-app .hero-card.hero-main{height:166px!important;max-height:166px!important}
-@media(max-width:1365px){.v94-app .hero-card.hero-main{height:160px!important;max-height:160px!important}}
+@media(max-width:1450px){.v94-app .hero-card.hero-main{height:160px!important;max-height:160px!important}}
 @media(max-width:1280px){.v94-app .hero-card.hero-main{height:153px!important;max-height:153px!important}}
 
 /* Locked request: Racial Tokens at 120% of the v9.4 size. */
@@ -1847,7 +1847,7 @@ body::before{
 .hover-card-zoom{width:min(280px,23vw)!important;max-height:78vh!important}
 .hover-card-zoom img{max-height:78vh!important}
 
-@media(max-width:1365px){
+@media(max-width:1450px){
   .v94-app .gl-board{grid-template-rows:26px 54px 248px 47px 248px 100px 26px 44px!important}
   .v94-app .field--opponent,.v94-app .field--player{min-height:248px!important}
   .hand-stage-v52{grid-template-columns:minmax(170px,216px) minmax(0,1fr) minmax(170px,216px)}
@@ -2142,7 +2142,7 @@ body::before{
   .v96-app .phase-list button{font-size:9px!important}.v96-app .phase-actions button{height:29px!important}
   .v96-app .battle-log-strip{padding-block:4px!important}
 }
-@media(max-width:1365px){
+@media(max-width:1450px){
   .v96-app .gl-app{grid-template-columns:minmax(0,85fr) minmax(185px,15fr)!important;gap:6px!important;padding:4px!important}
   .v96-app .field{grid-template-columns:82px minmax(0,1fr) 82px!important;gap:6px!important}
   .v96-app .zone>span{font-size:8px!important}.v96-app .zoneCard b{font-size:19px!important}.v96-app .zone--mana .zoneCard b{font-size:17px!important}
@@ -2520,7 +2520,7 @@ body:has(.overlay.open) .hover-card-zoom:not(.is-modal-zoom){display:none!import
   .v96-app .status-trigger{font-size:9px!important;line-height:17px!important}
   .v96-app .hero-health-row{grid-template-columns:18px minmax(0,1fr)!important}
 }
-@media(max-width:1365px){
+@media(max-width:1450px){
   .v96-app .zoneCard b{font-size:16px!important}
   .v96-app .zone--mana .zoneCard b{font-size:14px!important}
 }
@@ -5504,7 +5504,7 @@ body.deck-setup-active{
 }
 
 /* ========================================================================== */
-/* Grandis Legacy VS AI v5.52 — mobile Legacy control anchor consistency.     */
+/* Grandis Legacy VS AI v5.58 — mobile Legacy control anchor consistency.     */
 /* Desktop keeps the approved Legacy name-row info button. On mobile, the     */
 /* Legacy info control shares the Hero slot's fixed top-left anchor while the */
 /* contextual action remains fixed at top-right.                              */
@@ -6083,24 +6083,17 @@ body.deck-setup-active{
 .readable-card-ultimate-rules li+li{margin-top:4px!important}.readable-card-ultimate-rules strong{color:#f0ce67!important}
 
 
-/* v5.55 — AI Lobby title returns to the approved compact scale, vertically centered with the logo. */
+/* v5.58 — AI Lobby title returns to the approved compact scale, vertically centered with the logo. */
 .ai-lobby-topbar{align-items:center!important}
 .ai-lobby-heading{display:flex!important;align-items:center!important;align-self:stretch!important;padding-top:0!important}
 .ai-lobby-heading h1{font-size:17px!important;line-height:1!important;font-weight:900!important;letter-spacing:.02em!important}
 @media(max-width:700px){.ai-lobby-heading h1{font-size:16px!important}}
 
-/* NON-SCRIPTED tutorial heading lock v0.31 */
-.gl-tutorial-mode .ai-lobby-heading h1{white-space:nowrap!important;font-size:17px!important}
-@media(max-width:820px){.gl-tutorial-mode .ai-lobby-heading h1{white-space:normal!important;font-size:14px!important;line-height:1.15!important}}
 
+/* v5.58 — Tutorial joins the right-side navigation group. */
+.ai-lobby-actions .ai-lobby-btn--outline{min-width:218px!important}
 
-/* v5.60 — Desktop adaptive-fit policy. 1600x900 is the review comfort target;
-   1440x900 stays on the full desktop composition; 1366x768 and 1280x720 must remain usable without page scroll. */
-@media (min-width:761px){
-  html,body{width:100%;height:100%;overflow:hidden!important}
-  body.gl-desktop-adaptive-fit #app{transform-origin:top center!important;margin-left:auto!important;margin-right:auto!important}
-}
-/* Mobile may scroll. Only increase the active/Next Phase touch target slightly. */
+/* LOCAL MOBILE UI — mobile may scroll; retain the approved slightly taller Next Phase control. */
 @media (max-width:760px){
   html,body{height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
   .v96-app .phase-actions .next-phase{height:34px!important;min-height:34px!important}
@@ -6110,5 +6103,99 @@ body.deck-setup-active{
   .v96-app .phase-actions .next-phase{height:52px!important;min-height:52px!important}
 }
 
+/* LOCAL BATTLE VFX TEST v2 — resolution feedback anchored to Hero cards. */
+.gl-battle-feedback-layer{position:fixed;inset:0;z-index:11850;pointer-events:none;overflow:hidden}
+.gl-battle-vfx-clip{position:fixed;overflow:hidden;pointer-events:none;user-select:none;z-index:11851}
+.gl-battle-vfx{position:absolute;display:block;object-fit:contain;pointer-events:none;user-select:none;transform-origin:center center;filter:drop-shadow(0 0 10px rgba(0,0,0,.28));will-change:transform,opacity,filter}
+.gl-battle-feedback-layer>.gl-battle-vfx{position:fixed}
+.gl-battle-pattack{animation:glBattlePAttack .64s cubic-bezier(.2,.78,.24,1) both}
+.gl-battle-mattack{animation:glBattleMAttack .66s cubic-bezier(.16,.76,.24,1) both}
+.gl-battle-pdef{animation:glBattlePDefense .64s cubic-bezier(.16,.78,.22,1) both}
+.gl-battle-mdef{animation:glBattleMDefense .68s cubic-bezier(.16,.78,.22,1) both}
+.gl-battle-heal{opacity:0;animation:glBattleHeal .82s ease-out both}
+.gl-battle-heal--left{animation-delay:0s}
+.gl-battle-heal--right{animation-delay:.15s}
+.gl-battle-dodge-card>.hero-card.hero-main{animation:glBattleDodgeCard .7s cubic-bezier(.19,.72,.22,1) both}
+.gl-battle-damage-card>.hero-card.hero-main{animation:glBattleDamageShake .44s ease-out both}
+@keyframes glBattlePAttack{
+  0%{opacity:0;transform:translate3d(0,-46%,0) scale(.84)}
+  16%{opacity:.96}
+  62%{opacity:1;transform:translate3d(0,8%,0) scale(1.02)}
+  100%{opacity:0;transform:translate3d(0,32%,0) scale(1.06)}
+}
+@keyframes glBattleMAttack{
+  0%{opacity:0;transform:scale(.18) rotate(-120deg)}
+  22%{opacity:.95}
+  68%{opacity:1;transform:scale(.96) rotate(115deg)}
+  100%{opacity:0;transform:scale(1.12) rotate(210deg)}
+}
+@keyframes glBattlePDefense{
+  0%{opacity:0;transform:scale(.7)}
+  24%{opacity:1;transform:scale(1.02)}
+  72%{opacity:.96;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.03)}
+}
+@keyframes glBattleMDefense{
+  0%{opacity:0;transform:scale(.48) rotate(-12deg)}
+  26%{opacity:1;transform:scale(1.04) rotate(3deg)}
+  72%{opacity:.95;transform:scale(.98) rotate(0)}
+  100%{opacity:0;transform:scale(1.1) rotate(6deg)}
+}
+@keyframes glBattleDodgeCard{
+  0%{opacity:1;transform:translate3d(0,0,0) scale(1);filter:blur(0) brightness(1)}
+  14%{opacity:.22;transform:translate3d(46%,0,0) scale(.98);filter:blur(2px) brightness(1.2)}
+  30%{opacity:.04;transform:translate3d(-34%,0,0) scale(.97);filter:blur(3px) brightness(1.28)}
+  46%{opacity:.28;transform:translate3d(38%,0,0) scale(.98);filter:blur(2px) brightness(1.16)}
+  64%{opacity:.06;transform:translate3d(-20%,0,0) scale(.99);filter:blur(2px) brightness(1.12)}
+  82%{opacity:.78;transform:translate3d(6%,0,0) scale(1);filter:blur(.5px) brightness(1.05)}
+  100%{opacity:1;transform:translate3d(0,0,0) scale(1);filter:blur(0) brightness(1)}
+}
+@keyframes glBattleDamageShake{
+  0%,100%{transform:translate3d(0,0,0) rotate(0)}
+  20%{transform:translate3d(-3px,1px,0) rotate(-.6deg)}
+  40%{transform:translate3d(3px,-1px,0) rotate(.6deg)}
+  60%{transform:translate3d(-2px,0,0) rotate(-.4deg)}
+  80%{transform:translate3d(1px,0,0) rotate(.25deg)}
+}
+@keyframes glBattleHeal{
+  0%{opacity:0;transform:translate3d(0,28%,0) scale(.72)}
+  22%{opacity:.94}
+  72%{opacity:.96;transform:translate3d(0,-12%,0) scale(.94)}
+  100%{opacity:0;transform:translate3d(0,-28%,0) scale(1)}
+}
+@media(max-width:980px){
+  .gl-battle-vfx{filter:drop-shadow(0 0 7px rgba(0,0,0,.24))}
+}
+@media(prefers-reduced-motion:reduce){
+  .gl-battle-pattack,.gl-battle-mattack,.gl-battle-pdef,.gl-battle-mdef,.gl-battle-heal,.gl-battle-dodge-card>.hero-card.hero-main,.gl-battle-damage-card>.hero-card.hero-main{animation-duration:.18s!important;animation-delay:0s!important}
+}
+
 /* LOCAL UI POLISH v4 — Play / Tribute touch target +2px total height. */
 .v96-app .play-card-action,.v96-app .tribute-card-action{padding:4px 3px!important}
+
+/* v6.0 Casting pair visibility — inward-only slot pairing. */
+.gl-casting-pair-highlight{position:relative!important;box-shadow:inset 0 0 0 3px var(--gl-casting-pair-color,#35d8ff),inset 0 0 14px color-mix(in srgb,var(--gl-casting-pair-color,#35d8ff) 58%,transparent)!important;animation:glCastingPairPulse 1.25s ease-in-out infinite}
+@keyframes glCastingPairPulse{0%,100%{filter:none}50%{box-shadow:inset 0 0 0 3px var(--gl-casting-pair-color,#35d8ff),inset 0 0 22px color-mix(in srgb,var(--gl-casting-pair-color,#35d8ff) 78%,transparent)}}
+@media(prefers-reduced-motion:reduce){.gl-casting-pair-highlight{animation:none!important}}
+
+/* v6.1 desktop resolution + Hand action lock.
+   Desktop review anchors: 1440x900 and 1920x1080.
+   The approved <=1450px composition is the 1440 desktop anchor; larger desktop widths remain fluid up to a centered 1920px canvas.
+   PLAY / TRIBUTE: 18px desktop, 16px mobile. */
+@media (min-width:761px){
+  .v96-app .gl-app{width:min(100vw,1920px)!important;max-width:1920px!important;margin-left:auto!important;margin-right:auto!important}
+  .v96-app .hand-card .hand-actions{height:18px!important;min-height:18px!important}
+  .v96-app .hand-card .mini-action{height:18px!important;min-height:18px!important;flex-basis:18px!important}
+}
+@media (min-width:901px) and (max-height:820px){
+  .v96-app .main-stage{grid-template-rows:22px 54px minmax(0,1fr) 8px minmax(0,1fr) 114px 22px!important}
+  .v96-app .hand-card{height:110px!important;grid-template-rows:minmax(0,89px) 18px!important}
+}
+@media (max-width:760px){
+  .v96-app .hand-card .hand-actions{height:34px!important;min-height:34px!important;gap:2px!important}
+  .v96-app .hand-card .mini-action{height:16px!important;min-height:16px!important;flex:0 0 16px!important}
+}
+
+/* Tutorial v0.37 — tutorial-only heading wrap. Battlefield presentation remains VS AI v6.1-parity. */
+.gl-tutorial-mode .ai-lobby-heading h1{white-space:nowrap!important;font-size:17px!important}
+@media(max-width:820px){.gl-tutorial-mode .ai-lobby-heading h1{white-space:normal!important;font-size:14px!important;line-height:1.15!important}}

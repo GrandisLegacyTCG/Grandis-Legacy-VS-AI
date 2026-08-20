@@ -15,10 +15,7 @@ need(css.includes('margin-left:var(--fan-overlap)!important'),'Opponent fan over
 need(css.includes('.v96-app .zone--mana em{')&&css.includes('bottom:2px!important'),'Mobile Mana Regen raised/pinned rule missing');
 need(css.includes('.v96-app .hand-card .hand-art img{')&&css.includes('pointer-events:none!important'),'Android image callout prevention missing');
 need(css.includes('.gl-decode-pending{visibility:hidden!important}'),'Decode-before-display visibility lock missing');
-for(const file of ['assets/cards/ui/Racial-Token-Head.webp','assets/cards/ui/Racial-Token-Tail.webp']){
-  const stat=fs.statSync(path.join(root,file));
-  need(stat.size<100000,`${file} is not optimized (${stat.size} bytes)`);
-}
-need(!fs.existsSync(path.join(root,'assets/cards/ui/Racial-Token-Head.png')),'Old Head PNG still packaged');
-need(!fs.existsSync(path.join(root,'assets/cards/ui/Racial-Token-Tail.png')),'Old Tail PNG still packaged');
+need(app.includes('https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Racial-Token-Head.webp')&&app.includes('https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Racial-Token-Tail.webp'),'Shared Racial Token assets not referenced');
+need(!fs.existsSync(path.join(root,'https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Racial-Token-Head.png')),'Old Head PNG still packaged');
+need(!fs.existsSync(path.join(root,'https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Racial-Token-Tail.png')),'Old Tail PNG still packaged');
 console.log('PASS v5.47 Android/mobile visual regression');
