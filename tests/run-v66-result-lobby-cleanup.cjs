@@ -1,0 +1,11 @@
+const fs=require('fs');const assert=require('assert');
+const app=fs.readFileSync('js/app.bundle.js','utf8');const css=fs.readFileSync('css/app.css','utf8');const pkg=require('../package.json');
+assert(app.includes('Grandis Legacy VS AI v6.6'));
+assert(app.includes('GL_RESULT_CLEANUP_MS=60*1000'));
+assert(app.includes('id=\"gameResultBackLobby\"'));
+assert(app.includes('function returnToLobbyAfterGameResult()'));
+assert(app.includes('matchStarted=false;\n    render();'));
+assert(app.includes('scheduleGameResultCleanup();'));
+assert(css.includes('.game-result-actions'));
+assert.strictEqual(pkg.version,'6.6.0');
+console.log('PASS VS AI v6.6 Back to Lobby + 1-minute result cleanup');

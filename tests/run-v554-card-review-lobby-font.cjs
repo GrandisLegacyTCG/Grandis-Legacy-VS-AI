@@ -3,7 +3,7 @@ const fs=require('fs');const path=require('path');const assert=require('assert')
 const root=path.resolve(__dirname,'..');
 const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
 const css=fs.readFileSync(path.join(root,'css/app.css'),'utf8');
-assert(app.includes('Grandis Legacy VS AI v6.5'),'current VS AI v6.2 marker missing');
+assert(app.includes('Grandis Legacy VS AI v6.6'),'current VS AI v6.2 marker missing');
 assert(app.includes("<strong>Bound Hero:</strong> Only '+esc(owner)+' may play this Ultimate or use it as Tribute."),'new Ultimate Bound Hero wording missing');
 assert(!app.includes('Only that Hero lineage may play this Ultimate'),'old Ultimate lineage sentence remains');
 assert(!app.includes('<strong>Deck limit:</strong> 1 copy.'),'Deck limit still shown in Ultimate review');
