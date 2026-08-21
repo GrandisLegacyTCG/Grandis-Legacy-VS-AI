@@ -1,4 +1,9 @@
-# Grandis Legacy VS AI v6.3 + Tutorial v0.38
+# Grandis Legacy VS AI v6.4 + Tutorial v0.38
+
+## v6.4 update
+- VS AI lobby Grandis Legacy logo now returns to `https://grandislegacytcg.github.io/` in the same tab.
+- No gameplay/runtime/UI geometry changes.
+- Tutorial remains v0.38 and is unchanged.
 
 ## v6.3 update
 - VS AI lobby Deck Builder navigation now opens `/Grandis-Legacy-Deck-Builder/style-1/`.
