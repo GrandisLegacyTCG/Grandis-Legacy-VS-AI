@@ -1,18 +1,10 @@
-# Grandis Legacy VS AI v6.4 + Tutorial v0.38
+# Grandis Legacy VS AI v6.5 + Tutorial v0.38
 
-## v6.4 update
-- VS AI lobby Grandis Legacy logo now returns to `https://grandislegacytcg.github.io/` in the same tab.
-- No gameplay/runtime/UI geometry changes.
-- Tutorial remains v0.38 and is unchanged.
+## v6.5 update
 
-## v6.3 update
-- VS AI lobby Deck Builder navigation now opens `/Grandis-Legacy-Deck-Builder/style-1/`.
-- Gameplay/runtime behavior is unchanged from v6.2.
-- Tutorial remains v0.38 and is otherwise unchanged.
-
-## v6.2 / v0.38 update
-- Keeps the VS AI v6.1 / Tutorial v0.37 gameplay and presentation baseline.
-- Centralizes the 198 Season 1 card WebP thumbnails plus 5 card/UI WebP assets at `https://grandislegacytcg.github.io/shared/season1/v1/`.
-- Removes duplicate card WebP copies from VS AI and Tutorial packages.
-- Retains 1440x900 / 1920x1080 desktop standards and PLAY/TRIBUTE sizing (18px desktop, 16px mobile).
-- Tutorial-only guidance, Arvon, mobile force-scroll, and deterministic teaching flow are unchanged.
+- VS AI Lobby navigation to Deck Builder and PvP now stays in the same browser tab.
+- Deck Builder continues to route to Style 1.
+- PvP continues to use the public GitHub Pages route.
+- Grandis Legacy logo continues to return to the homepage in the same tab.
+- Tutorial v0.38 is unchanged.
+- No gameplay, AI, runtime, card-data, or presentation changes.

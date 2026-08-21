@@ -1,9 +1,7 @@
-GRANDIS LEGACY VS AI + TUTORIAL v6.4
+GRANDIS LEGACY VS AI + TUTORIAL v6.5
 
-1. Extract this ZIP.
-2. Copy all contents directly into the Grandis-Legacy-VS-AI repository root.
-3. Commit with: Update VS AI to v6.4 - Homepage logo link
-4. Push origin/main and wait for GitHub Pages.
-5. Hard refresh the VS AI root page.
-6. Confirm the Grandis Legacy logo returns to https://grandislegacytcg.github.io/.
-7. Tutorial remains v0.38 and is unchanged.
+1. Replace the repository contents with this package (keep .git).
+2. Commit and push.
+3. Suggested commit: Update VS AI to v6.5 - Same-tab navigation
+
+Tutorial remains v0.38.
