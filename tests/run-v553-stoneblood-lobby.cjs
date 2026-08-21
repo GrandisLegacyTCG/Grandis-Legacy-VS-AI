@@ -4,7 +4,7 @@ const root=path.resolve(__dirname,'..');
 const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
 const css=fs.readFileSync(path.join(root,'css/app.css'),'utf8');
 const reducer=fs.readFileSync(path.join(root,'runtime-source/runtime/core/reducer.js'),'utf8');
-assert(app.includes('Grandis Legacy VS AI v6.6'),'current VS AI v6.2 marker missing');
+assert(app.includes('Grandis Legacy VS AI v6.7'),'current VS AI v6.2 marker missing');
 assert(app.includes('after_stoneblood_response'),'Stoneblood response continuation snapshot missing');
 assert(app.includes('resumeAfterStonebloodResponse'),'Stoneblood continuation resume helper missing');
 assert(reducer.includes('racialTokenSpendAvailable(next, playerId)'),'Runtime Stoneblood Racial Token spend gate missing');

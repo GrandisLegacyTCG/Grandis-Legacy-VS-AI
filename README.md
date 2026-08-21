@@ -1,4 +1,12 @@
-# Grandis Legacy VS AI v6.6 + Tutorial v0.38
+# Grandis Legacy VS AI v6.7 + Tutorial v0.38
+
+
+## v6.7 update
+- Fixes a PLAYER attack path where an AI-owned Defense Response Window could be shown to the PLAYER, most visibly with **Execute**.
+- AI-owned incoming-attack Response Windows now stay AI-owned in local VS AI and resolve automatically.
+- Second Chance replay uses the same response-owner gating as normal attacks.
+- Makes **Back to Lobby** bind directly on the Game Result modal and render the VS AI Lobby explicitly after cleanup.
+- Tutorial remains v0.38. No card data, damage formula, or Rule Authority changes.
 
 ## v6.6 update
 - Adds a **Back to Lobby** button to the VS AI end-of-match result modal.

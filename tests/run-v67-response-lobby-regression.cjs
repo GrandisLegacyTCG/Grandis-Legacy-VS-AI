@@ -1,0 +1,13 @@
+const fs=require('fs');
+const assert=require('assert');
+const app=fs.readFileSync('js/app.bundle.js','utf8');
+const pkg=require('../package.json');
+assert.strictEqual(pkg.version,'6.7.0');
+assert(app.includes('Grandis Legacy VS AI v6.7'));
+assert(app.includes("if(!(window.GL_PVP_SHARED_BOARD_ACTIVE && appState && appState.pvpHumanVsHuman)) return !!rw && rw.response_owner==='PLAYER';"));
+assert(/isExecuteEffect\(c\)[\s\S]{0,1800}action\.target_side==='AI'[\s\S]{0,300}autoResolveCurrentAIResponseWindow\(state\)/.test(app),'Execute must auto-resolve AI-owned defense window');
+assert(app.includes('resolveAttackWithOwnerGating(appState,action,replayPost);'),'Second Chance replay must use response-owner gating');
+assert(app.includes('function bindLocalGameResultActions()'));
+assert(app.includes('renderStartupDeckSetup();'));
+assert(app.includes("showInfoHtml('Game Result', localGameResultHtml(appState));\n    bindLocalGameResultActions();"));
+console.log('PASS VS AI v6.7 AI response ownership + reliable Back to Lobby');

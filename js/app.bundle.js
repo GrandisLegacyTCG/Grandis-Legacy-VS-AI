@@ -5,7 +5,7 @@
   'use strict';
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.02 · VS AI v6.2 Battlefield · One Source v1.5.0 · Runtime Data v0.12.7 · Foundation v1.82 · Core v0.50':'Grandis Legacy VS AI v6.6 · Shared Gameplay Bundle v3.0 · One Source v1.5.0 · Runtime Data v0.12.7 · Foundation v1.82 · Core v0.50';
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.02 · VS AI v6.2 Battlefield · One Source v1.5.0 · Runtime Data v0.12.7 · Foundation v1.82 · Core v0.50':'Grandis Legacy VS AI v6.7 · Shared Gameplay Bundle v3.0 · One Source v1.5.0 · Runtime Data v0.12.7 · Foundation v1.82 · Core v0.50';
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
@@ -4921,7 +4921,7 @@ function getActivatedHeroAbilities(state, side, lane){
       }
       else if(isExecuteEffect(c)){
         if(!executeTargetValid(target)){ showInfo('Cannot Play','Execute target must be at half HP or lower.'); state.pending=null; render(); return false; }
-        var executeNoDodge=heroClass(sourceHero)==='Conqueror'; openAttackResponseWindow(state,action,{damage:0,persistent:false,attachmentSlot:-1,execute_defeat:true,execute_non_damage:true}); if(state.responseWindow){state.responseWindow.cannot_block=true;state.responseWindow.cannot_dodge=executeNoDodge;state.responseWindow.options=responseOptionsFor(state,action.target_side,{damage:0,damage_type:'Physical',attack_type:'Single Target',cannot_dodge:executeNoDodge,cannot_block:true,card_id:action.card_id,source_side:action.source_side,source_lane:action.source_lane,target_side:action.target_side,target_lane:action.target_lane});} syncCounts(state);render();return true;
+        var executeNoDodge=heroClass(sourceHero)==='Conqueror'; openAttackResponseWindow(state,action,{damage:0,persistent:false,attachmentSlot:-1,execute_defeat:true,execute_non_damage:true}); if(state.responseWindow){state.responseWindow.cannot_block=true;state.responseWindow.cannot_dodge=executeNoDodge;state.responseWindow.options=responseOptionsFor(state,action.target_side,{damage:0,damage_type:'Physical',attack_type:'Single Target',cannot_dodge:executeNoDodge,cannot_block:true,card_id:action.card_id,source_side:action.source_side,source_lane:action.source_lane,target_side:action.target_side,target_lane:action.target_lane});} if(state.responseWindow&&action.target_side==='AI'&&!state.pvpHumanVsHuman)autoResolveCurrentAIResponseWindow(state); syncCounts(state);render();return true;
       }
       else if(isAttackCard(c)){
         maybeApplyMagicalSurge(state,action,sourceHero,c);
@@ -5411,8 +5411,12 @@ function getActivatedHeroAbilities(state, side, lane){
     clearTransientUiState();
     appState=null;
     matchStarted=false;
-    render();
+    renderStartupDeckSetup();
     return true;
+  }
+  function bindLocalGameResultActions(){
+    var back=$('gameResultBackLobby');
+    if(back) back.onclick=function(ev){ if(ev){ev.preventDefault();ev.stopPropagation();} returnToLobbyAfterGameResult(); };
   }
   function scheduleGameResultCleanup(){
     if(GL_RESULT_CLEANUP_TIMER)return;
@@ -5440,6 +5444,7 @@ function getActivatedHeroAbilities(state, side, lane){
     if(window.GL_PVP_SHARED_BOARD_ACTIVE){ showInfoHtml('PvP Game Result', pvpGameResultHtml(appState)); return; }
     scheduleGameResultCleanup();
     showInfoHtml('Game Result', localGameResultHtml(appState));
+    bindLocalGameResultActions();
   }
   function cardTile(id, options){ options=options||{}; var c=card(id); var cost=cardCost(c); var subtitle=options.subtitle || cardSubtype(c) || cardFamily(c); return '<button class="card-tile '+esc(options.cls||'')+'" type="button" data-preview="'+esc(id)+'"><img src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(c))+' thumbnail"><span class="card-tile-name">'+esc(cardName(c))+'</span><span class="card-tile-meta">'+esc(subtitle)+(cost!==''?' · Mana '+esc(cost):'')+'</span></button>'; }
   function hiddenCardBack(entry,fanIndex,fanCount){entry=entry||{index:fanIndex,hidden:false};var style=fanStyle(fanIndex,fanCount,'AI');return'<span class="opponent-hand-slot '+(entry.hidden?'hand-slot-placeholder':'')+'" data-hand-side="AI" data-hand-slot-index="'+Number(entry.index)+'" style="'+style+'">'+(entry.hidden?'':'<img class="back" src="https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Back-of-Card-Main-Deck.webp" alt="Hidden opponent Main Deck card '+(Number(entry.index)+1)+'">')+'</span>'; }
@@ -5467,7 +5472,7 @@ function getActivatedHeroAbilities(state, side, lane){
     return owner==='PLAYER';
   }
   function pvpLocalOwnsResponseWindow(rw){
-    if(!(window.GL_PVP_SHARED_BOARD_ACTIVE && appState && appState.pvpHumanVsHuman)) return true;
+    if(!(window.GL_PVP_SHARED_BOARD_ACTIVE && appState && appState.pvpHumanVsHuman)) return !!rw && rw.response_owner==='PLAYER';
     if(!pvpIsLocalPlayerSeat()) return false;
     return !!rw && rw.response_owner==='PLAYER';
   }
@@ -8609,7 +8614,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     var action=clone(p.original_action||{});action.card_id=p.card_id;action.source_side=p.source_side;action.source_lane=sourceLane;action.source_hero_card_id=heroIdFrom(sourceHero);action.target_side=p.target_side;action.target_lane=p.target_lane;action.second_chance_replay=true;
     pushLog(appState,cardName(card(heroIdFrom(sourceHero)))+' uses Second Chance and replays '+cardName(c)+' immediately for 0 Mana against the same target.');
     var originalPost=clone(p.original_post||{}),replayPost={damage:computedAttackDamageForAction(appState,action,sourceHero,isSingleTargetAttack(c)?target:null),persistent:false,attachmentSlot:-1,optional_swap_after:!!originalPost.optional_swap_after,defer_reposition_discard:!!originalPost.defer_reposition_discard,second_chance_replay:true};
-    if(!isSingleTargetAttack(c)){resolveMultiTargetAttack(appState,action,replayPost);syncCounts(appState);render();return true;}openAttackResponseWindow(appState,action,replayPost);syncCounts(appState);render();return true;
+    if(!isSingleTargetAttack(c)){resolveMultiTargetAttack(appState,action,replayPost);syncCounts(appState);render();return true;}resolveAttackWithOwnerGating(appState,action,replayPost);syncCounts(appState);render();return true;
   }
   function renderSecondChanceChoice(){
     if(!appState||!appState.pending||appState.pending.type!=='racial_second_chance'||SUPPRESS_RENDER||!$('choiceOverlay'))return;var p=appState.pending,hero=sideHeroes(appState,p.source_side)[p.source_lane],c=card(p.card_id);
@@ -10131,10 +10136,10 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
       applySourcePostAttackEffects(s,'S1-CLE-010',s.playerHeroes.RIGHT,'PLAYER','RIGHT','AI',null,{damage:0,prevented:true});
       if(LANE_ORDER.some(function(l){return s.playerHeroes[l].hp<=40;}))return{ok:false,reason:'Holy Blast heal still depends on damage'};
 
-      s=buildInitialMatchState();appState=s;s.turn='PLAYER';s.phase='Battle';s.round=2;s.mana=30;s.aiMana=30;s.playerHeroes.LEFT.card_id='S1-WAR-H002';s.playerHeroes.LEFT.exhausted=false;s.playerHand=['S1-WAR-018'];s.aiHeroes.LEFT.hp=30;s.aiHeroes.LEFT.maxHp=80;
+      s=buildInitialMatchState();appState=s;s.pvpHumanVsHuman=true;s.turn='PLAYER';s.phase='Battle';s.round=2;s.mana=30;s.aiMana=30;s.playerHeroes.LEFT.card_id='S1-WAR-H002';s.playerHeroes.LEFT.exhausted=false;s.playerHand=['S1-WAR-018'];s.aiHeroes.LEFT.hp=30;s.aiHeroes.LEFT.maxHp=80;
       commitPlayedCard(s,{card_id:'S1-WAR-018',hand_index:0,source_side:'PLAYER',source_lane:'LEFT',target_side:'AI',target_lane:'LEFT'});
       if(!s.responseWindow||s.responseWindow.cannot_dodge)return{ok:false,reason:'Gladiator Execute did not open dodge-capable response'};
-      s=buildInitialMatchState();appState=s;s.turn='PLAYER';s.phase='Battle';s.round=2;s.mana=30;s.playerHeroes.LEFT.card_id='S1-WAR-H003';s.playerHeroes.LEFT.exhausted=false;s.playerHand=['S1-WAR-018'];s.aiHeroes.LEFT.hp=30;s.aiHeroes.LEFT.maxHp=80;
+      s=buildInitialMatchState();appState=s;s.pvpHumanVsHuman=true;s.turn='PLAYER';s.phase='Battle';s.round=2;s.mana=30;s.playerHeroes.LEFT.card_id='S1-WAR-H003';s.playerHeroes.LEFT.exhausted=false;s.playerHand=['S1-WAR-018'];s.aiHeroes.LEFT.hp=30;s.aiHeroes.LEFT.maxHp=80;
       commitPlayedCard(s,{card_id:'S1-WAR-018',hand_index:0,source_side:'PLAYER',source_lane:'LEFT',target_side:'AI',target_lane:'LEFT'});
       if(!s.responseWindow||!s.responseWindow.cannot_dodge||!s.responseWindow.cannot_block)return{ok:false,reason:'Conqueror Execute response restrictions mismatch'};
 
