@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.38 — separate first-use practices for Attack, Support, Tactical, Event, and Item cards; each stops at the final cancellable boundary. Area Attack responses teach every affected Hero. VS AI v6.1 base. */
+/* Grandis Legacy Tutorial Guide v0.40 — separate first-use practices for Attack, Support, Tactical, Event, and Item cards; each stops at the final cancellable boundary. Area Attack responses teach every affected Hero. VS AI v6.9 base. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;
@@ -688,7 +688,7 @@
       var dragon=(rw.options||[]).find(function(o){return o&&o.racial_ability==='dragon_scale';});
       if(dragon&&!seen.dragon_scale_response&&!queued.dragon_scale_response){
         var dragonSelector='#responseOverlay .response-option.available .response-option-preview[data-preview="'+dragon.card_id+'"]';
-        enqueue({id:'dragon_scale_response',title:'Racial Trait — Dragon Scale',expression:'advise',compact:true,allowDuringRuntimeModal:true,priority:true,highlight:dragonSelector,html:'<p><b>Dragon Scale</b> is a Dragonborn Response. Spend 1 Racial Token to Block 40 incoming Physical or Magical damage to that same Dragonborn Hero.</p><p>Racial Traits do not Exhaust the Hero and may remain legal even while that Hero is Exhausted.</p>',onClose:continueOptions});
+        enqueue({id:'dragon_scale_response',title:'Racial Trait — Dragon Scale',expression:'advise',compact:true,allowDuringRuntimeModal:true,priority:true,highlight:dragonSelector,html:'<p><b>Dragon Scale</b> is a Dragonborn Response. Spend 1 Racial Token to Block 50 incoming Physical or Magical damage to that same Dragonborn Hero.</p><p>Racial Traits do not Exhaust the Hero and may remain legal even while that Hero is Exhausted.</p>',onClose:continueOptions});
       }else continueOptions();
     }});
   }
@@ -721,7 +721,7 @@
     if(!rw||active||queue.length||seen.dragon_scale_response||queued.dragon_scale_response)return false;
     var dragon=(rw.options||[]).find(function(o){return o&&o.racial_ability==='dragon_scale';});if(!dragon)return false;
     var selector='#responseOverlay .response-option.available .response-option-preview[data-preview="'+dragon.card_id+'"]';if(!q(selector))return false;
-    return enqueue({id:'dragon_scale_response',title:'Racial Trait — Dragon Scale',expression:'advise',compact:true,allowDuringRuntimeModal:true,priority:true,highlight:selector,html:'<p><b>Dragon Scale</b> is a Dragonborn Response. Spend 1 Racial Token to Block 40 incoming Physical or Magical damage to that same Dragonborn Hero.</p><p>It is checked independently in every Response Window, so this explanation cannot be skipped merely because Dragon Scale was unavailable earlier.</p><p>Racial Traits do not Exhaust the Hero.</p>'},true);
+    return enqueue({id:'dragon_scale_response',title:'Racial Trait — Dragon Scale',expression:'advise',compact:true,allowDuringRuntimeModal:true,priority:true,highlight:selector,html:'<p><b>Dragon Scale</b> is a Dragonborn Response. Spend 1 Racial Token to Block 50 incoming Physical or Magical damage to that same Dragonborn Hero.</p><p>It is checked independently in every Response Window, so this explanation cannot be skipped merely because Dragon Scale was unavailable earlier.</p><p>Racial Traits do not Exhaust the Hero.</p>'},true);
   }
   function explainOpponentAreaResponseSequence(rw){
     if(!rw||rw.kind!=='incoming_attack'||!rw.multi_sequence||active||queue.length)return false;
@@ -1032,7 +1032,7 @@
     if(p.type==='racial_stoneblood'&&!seen.stoneblood_survival&&!queued.stoneblood_survival){
       var stoneChoices='#choiceOverlay.open [data-stoneblood-choice]';
       if(!q(stoneChoices))return;
-      enqueue({id:'stoneblood_survival',title:'Racial Trait — Stoneblood',expression:'serious',compact:true,priority:true,allowDuringRuntimeModal:true,highlight:stoneChoices,interactionTarget:stoneChoices,requireInteraction:true,html:'<p>This Dwarf Hero would be defeated. <b>Stoneblood</b> may spend 1 Racial Token to prevent defeat and remain at 10 HP while preserving EXP, statuses, Attachments, and Exhaust.</p><p>Choose whether to spend the token or continue the defeat. Closing this Arvon message only hides the explanation; the Stoneblood choice remains open.</p>'},true);return;
+      enqueue({id:'stoneblood_survival',title:'Racial Trait — Stoneblood',expression:'serious',compact:true,priority:true,allowDuringRuntimeModal:true,highlight:stoneChoices,interactionTarget:stoneChoices,requireInteraction:true,html:'<p>This Dwarf Hero would be defeated. <b>Stoneblood</b> may spend 1 Racial Token to prevent defeat and remain at 30 HP while preserving EXP, statuses, Attachments, and Exhaust.</p><p>Choose whether to spend the token or continue the defeat. Closing this Arvon message only hides the explanation; the Stoneblood choice remains open.</p>'},true);return;
     }
     if(p.type==='legacy_defeat_choice'&&!seen.hero_defeated){enqueue({id:'hero_defeated',title:'Hero Defeated',expression:'serious',priority:true,allowDuringRuntimeModal:true,highlight:'#choiceOverlay [data-legacy-defeat-choice]',interactionTarget:'#choiceOverlay [data-legacy-defeat-choice]',requireInteraction:true,html:'<p>Your Hero has been defeated. Its EXP Cards, Attachments, statuses, and active Casting are cleared.</p><p>Select one matching Legacy Card to replace the defeated Hero’s position.</p>',onClose:function(){enqueue({id:'hero_defeated_confirm',title:'Confirm the Legacy',expression:'serious',compact:true,priority:true,allowDuringRuntimeModal:true,highlight:'#choiceConfirm:not([disabled])',interactionTarget:'#choiceConfirm:not([disabled])',requireInteraction:true,interactionWaitFor:'#choiceOverlay.open',interactionWaitMode:'absent',html:'<p>Select <b>Enter Legacy Mode</b> to complete the mandatory replacement.</p>'},true);}},true);}
   }

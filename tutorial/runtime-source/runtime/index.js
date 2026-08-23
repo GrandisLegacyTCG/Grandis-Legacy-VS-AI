@@ -30,5 +30,6 @@ module.exports = {
   },
   effects: require('./effects/effect-registry'),
   oneSource: require('./data/one-source-loader'),
-  browserAuthority: { source: 'runtime/browser/runtime-authority.browser.js', version: 'v1.81-browser / one-source-v1.4' }
+  heroComponents: require('./data/hero-component-resolver'),
+  browserAuthority: { source: 'runtime/browser/runtime-authority.browser.js', version: 'v1.85-browser / one-source-v1.6' }
 };

@@ -1,0 +1,1464 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-08-24",
+  "data_type": "hero_component_authority",
+  "authority_policy": {
+    "racial_trait_authority": "Racial Trait is defined once per Race and referenced by Hero compositions.",
+    "class_ability_authority": "Class Ability is defined once per Class and referenced by Hero compositions.",
+    "hero_resolution": "Resolved Hero = Hero identity/stats + referenced Racial Trait + referenced Class Ability (if any).",
+    "compatibility_cache": "Inline racial_ability/class_ability fields in generated runtime cards are compatibility caches generated from these registries; they are not independent authority."
+  },
+  "racial_traits": [
+    {
+      "racial_trait_id": "RACIAL-BEASTMAN-PRIMAL-STRIKE",
+      "race": "Beastman",
+      "name": "Primal Strike",
+      "definition": {
+        "name": "Primal Strike",
+        "text": "During your Battle Phase, you may spend 1 Racial Token to deal 20 Physical damage to an injured opponent’s Hero.",
+        "action": {
+          "action_key": "primal_strike",
+          "phase": "Battle Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "target": {
+            "type": "injured_opponent_hero",
+            "current_hp_lt_max_hp": true
+          },
+          "effect": {
+            "direct_damage": 20,
+            "damage_source": "racial ability direct damage",
+            "not_attack_damage": true,
+            "coverage_used": false,
+            "damage_type": "Physical",
+            "not_attack_card_damage": true
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          },
+          "optional_choice": true
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Battle Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "used_by_hero_names": [
+        "Korvak Ironfang"
+      ],
+      "used_by_card_ids": [
+        "S1-ARC-H001",
+        "S1-ARC-H002",
+        "S1-ARC-H003"
+      ]
+    },
+    {
+      "racial_trait_id": "RACIAL-DRAGONBORN-DRAGON-SCALE",
+      "race": "Dragonborn",
+      "name": "Dragon Scale",
+      "definition": {
+        "name": "Dragon Scale",
+        "text": "You may spend 1 Racial Token to Block 50 incoming Physical or Magical damage.",
+        "action": {
+          "action_key": "dragon_scale",
+          "type": "response_damage_block",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "block_damage": 50,
+            "damage_types": [
+              "Physical",
+              "Magical"
+            ]
+          },
+          "response_window": "incoming Physical/Magical damage to this Dragonborn Hero",
+          "effect_type": "block/prevent damage like normal block",
+          "status_policy": "Damage block only. Explicit inflict status still applies if attack/effect resolves; damage-conditioned effects require final HP damage > 0.",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Response racial trait only. It must not appear as a free Deploy/Battle action button. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "used_by_hero_names": [
+        "Aurex Sunsworn"
+      ],
+      "used_by_card_ids": [
+        "S1-WAR-H004",
+        "S1-WAR-H005",
+        "S1-WAR-H006"
+      ]
+    },
+    {
+      "racial_trait_id": "RACIAL-DWARF-STONEBLOOD",
+      "race": "Dwarf",
+      "name": "Stoneblood",
+      "definition": {
+        "name": "Stoneblood",
+        "text": "When this Hero would be defeated, you may spend 1 Racial Token. If you do, this Hero remains on the field with 30 HP.",
+        "action": {
+          "action_key": "stoneblood",
+          "trigger": "would_be_defeated",
+          "cost": {
+            "racial_token": 1
+          },
+          "target": "self",
+          "effect": {
+            "prevent_defeat": true,
+            "set_hp": 30,
+            "preserve_zone": true,
+            "preserve_exp": true,
+            "preserve_attachments": true,
+            "preserve_buffs": true,
+            "preserve_debuffs": true,
+            "preserve_exhaust_state": true,
+            "no_legacy_flow_if_prevented": true,
+            "preserve_current_state": true
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          },
+          "optional_choice": true
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Trigger racial trait only. It must not appear as a free Deploy/Battle action button. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "used_by_hero_names": [
+        "Thrain Sunborn"
+      ],
+      "used_by_card_ids": [
+        "S1-CLE-H004",
+        "S1-CLE-H005",
+        "S1-CLE-H006"
+      ]
+    },
+    {
+      "racial_trait_id": "RACIAL-ELF-ANCESTRAL-FOCUS",
+      "race": "Elf",
+      "name": "Ancestral Focus",
+      "definition": {
+        "name": "Ancestral Focus",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to gain 2 Mana Shards to your Mana Pool.",
+        "action": {
+          "action_key": "ancestral_focus",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "gain_mana": 2
+          },
+          "normalization_note": "Backend resource is Mana; source wording may say Mana Shard.",
+          "backend_resource": "Mana",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "used_by_hero_names": [
+        "Elara Heavens",
+        "Lucien Voss",
+        "Vaelis Stormweave"
+      ],
+      "used_by_card_ids": [
+        "S1-CLE-H001",
+        "S1-CLE-H002",
+        "S1-CLE-H003",
+        "S1-MAG-H001",
+        "S1-MAG-H002",
+        "S1-MAG-H003",
+        "S1-THF-H004",
+        "S1-THF-H005",
+        "S1-THF-H006"
+      ]
+    },
+    {
+      "racial_trait_id": "RACIAL-HALFLING-SECOND-CHANCE",
+      "race": "Halfling",
+      "name": "Second Chance",
+      "definition": {
+        "name": "Second Chance",
+        "text": "Spend 1 Racial Token to dodge incoming Physical or Magical damage.",
+        "action": {
+          "action_key": "second_chance",
+          "type": "response_damage_dodge",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "dodge_incoming_damage": true,
+            "damage_types": [
+              "Physical",
+              "Magical"
+            ]
+          },
+          "response_window": "incoming Physical/Magical damage to this Halfling Hero",
+          "effect_type": "dodge incoming attack damage like normal Dodge",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Response racial trait only. It must not appear as a free Deploy/Battle action button. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "review_policy": "APPROVED: Second Chance is a defensive Dodge response racial trait.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "used_by_hero_names": [
+        "Finnian Copperpot"
+      ],
+      "used_by_card_ids": [
+        "S1-THF-H001",
+        "S1-THF-H002",
+        "S1-THF-H003"
+      ]
+    },
+    {
+      "racial_trait_id": "RACIAL-HUMAN-HUMAN-AMBITION",
+      "race": "Human",
+      "name": "Human Ambition",
+      "definition": {
+        "name": "Human Ambition",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to draw 2 cards.",
+        "action": {
+          "action_key": "human_ambition",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "draw_cards": 2
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "used_by_hero_names": [
+        "Alden Sterling",
+        "Aldric Ashford",
+        "Draxen Blacksand"
+      ],
+      "used_by_card_ids": [
+        "S1-ARC-H004",
+        "S1-ARC-H005",
+        "S1-ARC-H006",
+        "S1-MAG-H004",
+        "S1-MAG-H005",
+        "S1-MAG-H006",
+        "S1-WAR-H001",
+        "S1-WAR-H002",
+        "S1-WAR-H003"
+      ]
+    }
+  ],
+  "class_abilities": [
+    {
+      "class_ability_id": "CLASS-ARBALEST-QUICK-RELOAD",
+      "class": "Arbalest",
+      "name": "Quick Reload",
+      "definition": {
+        "name": "Quick Reload",
+        "text": "During your Draw Phase, you may shuffle the card you just drew into your deck and draw a new card.",
+        "action": {
+          "action_key": "quick_reload",
+          "type": "draw_replacement",
+          "trigger": "draw_phase_choice",
+          "effect": {
+            "draw_replacement_shuffle_redraw": true
+          }
+        }
+      },
+      "used_by_hero_names": [
+        "Alden Sterling"
+      ],
+      "used_by_card_ids": [
+        "S1-ARC-H005"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-ARCANE-DUELIST-ARCANE-SURGE",
+      "class": "Arcane Duelist",
+      "name": "Arcane Surge",
+      "definition": {
+        "name": "Arcane Surge",
+        "text": "When this Hero uses a Magical Attack, you may spend 1 additional Mana Shard to increase the Magical damage by 20.",
+        "action": {
+          "type": "optional_attack_additional_cost",
+          "trigger": "this_hero_uses_Magical_Attack",
+          "additional_cost": {
+            "mana_shard": 1
+          },
+          "damage_modifier": {
+            "amount": 20,
+            "damage_type": "Magical",
+            "scope": "selected attack"
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "uses_actual_damage_type": true,
+            "damage_type": "Magical",
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ]
+          }
+        }
+      },
+      "used_by_hero_names": [
+        "Lucien Voss"
+      ],
+      "used_by_card_ids": [
+        "S1-THF-H006"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-CONQUEROR-ARENA-DOMINATOR",
+      "class": "Conqueror",
+      "name": "Arena Dominator",
+      "definition": {
+        "name": "Arena Dominator",
+        "text": "Reduce incoming Physical damage by -10 and increase this Hero’s Physical Attack damage by 10.",
+        "action": {
+          "action_key": "arena_dominator",
+          "type": "passive_damage_reduction_and_attack_modifier",
+          "trigger": "always_active",
+          "effect": {
+            "incoming_physical_damage_reduction_to_self": 10,
+            "attack_damage_by_this_hero": 10
+          },
+          "effect_scope_note": "Attack Card damage modifier using actual Physical damage type; not a printed profile-name gate.",
+          "incoming_damage_reduction": {
+            "amount": 10,
+            "damage_type": "Physical"
+          },
+          "damage_modifier": {
+            "amount": 10,
+            "damage_type": "Physical",
+            "scope": "Attack Card damage"
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "uses_actual_damage_type": true,
+            "damage_type": "Physical",
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ]
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
+      },
+      "used_by_hero_names": [
+        "Draxen Blacksand"
+      ],
+      "used_by_card_ids": [
+        "S1-WAR-H003"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-CRUSADER-RADIANT-OBLIVION",
+      "class": "Crusader",
+      "name": "Radiant Oblivion",
+      "definition": {
+        "name": "Radiant Oblivion",
+        "text": "Once per turn during your Deploy Phase, you may spend 1 Mana Shard to heal one of your Heroes for +20 HP. Exhaust this Hero afterward.",
+        "action": {
+          "action_key": "radiant_oblivion",
+          "type": "activated_heal",
+          "phase": "Deploy Phase",
+          "once_per_turn": true,
+          "cost": {
+            "mana": 1
+          },
+          "effect": {
+            "heal": 20
+          },
+          "exhaust_after_successful_resolve": true,
+          "source_requirements": [
+            "Hero Mode",
+            "active",
+            "non-Exhausted",
+            "not Stunned",
+            "ability unused this turn"
+          ],
+          "resolver": {
+            "target_is_resolver_owned": true,
+            "target_validator": "1 own active damaged Hero, including self only if damaged; target must not have Bleed",
+            "coverage_used": false,
+            "heal_target_damaged_required": true,
+            "bleed_invalid": true,
+            "full_hp_invalid": true,
+            "heal_validator_policy": "Uses standard heal validator: target must be damaged and must not have Bleed."
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves.",
+        "review_policy": "APPROVED: Paladin/Crusader class heal follows heal rule; full HP and Bleed are invalid targets."
+      },
+      "used_by_hero_names": [
+        "Aurex Sunsworn"
+      ],
+      "used_by_card_ids": [
+        "S1-WAR-H006"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-ELEMENTAL-LORD-ELEMENTAL-SOVEREIGNTY",
+      "class": "Elemental Lord",
+      "name": "Elemental Sovereignty",
+      "definition": {
+        "name": "Elemental Sovereignty",
+        "text": "Increase the duration of Burn and Freeze you inflict on opponent’s Heroes by 1 turn. Increase this Hero’s Magical Attack damage by 10.",
+        "action": {
+          "action_key": "elemental_sovereignty",
+          "type": "passive_status_duration_and_attack_modifier",
+          "trigger": "always_active",
+          "effect": {
+            "status_duration_delta": {
+              "source": "this_hero_attack_skill",
+              "delta": 1
+            },
+            "attack_damage_by_this_hero": 10
+          },
+          "effect_scope_note": "Attack Card damage modifier using actual Magical damage type; not a printed profile-name gate.",
+          "status_duration_modifier": {
+            "statuses": [
+              "Burn",
+              "Freeze"
+            ],
+            "amount": 1,
+            "targets": "opponent Heroes",
+            "all_infliction_sources_by_this_hero": true
+          },
+          "damage_modifier": {
+            "amount": 10,
+            "damage_type": "Magical",
+            "scope": "Attack Card damage"
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "uses_actual_damage_type": true,
+            "damage_type": "Magical",
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ]
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
+      },
+      "used_by_hero_names": [
+        "Aldric Ashford",
+        "Vaelis Stormweave"
+      ],
+      "used_by_card_ids": [
+        "S1-MAG-H003",
+        "S1-MAG-H006"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-ELEMENTALIST-ELEMENTAL-MASTERY",
+      "class": "Elementalist",
+      "name": "Elemental Mastery",
+      "definition": {
+        "name": "Elemental Mastery",
+        "text": "Increase the duration of Burn and Freeze you inflict on opponent’s Heroes by 1 turn.",
+        "action": {
+          "action_key": "magic_mastery",
+          "type": "passive_status_duration_modifier",
+          "trigger": "status_inflicted_by_this_hero_attack_skill",
+          "effect": {
+            "duration_delta": 1
+          },
+          "status_duration_modifier": {
+            "statuses": [
+              "Burn",
+              "Freeze"
+            ],
+            "amount": 1,
+            "targets": "opponent Heroes",
+            "all_infliction_sources_by_this_hero": true
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
+      },
+      "used_by_hero_names": [
+        "Aldric Ashford",
+        "Vaelis Stormweave"
+      ],
+      "used_by_card_ids": [
+        "S1-MAG-H002",
+        "S1-MAG-H005"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-GLADIATOR-VANQUISHER-S-RESOLVE",
+      "class": "Gladiator",
+      "name": "Vanquisher’s Resolve",
+      "definition": {
+        "name": "Vanquisher’s Resolve",
+        "text": "Reduce incoming Physical damage by -10.",
+        "action": {
+          "action_key": "vanquishers_resolve",
+          "type": "passive_damage_reduction",
+          "trigger": "incoming_damage_to_self",
+          "filter": {
+            "damage_type": "Physical"
+          },
+          "effect": {
+            "damage_reduction": 10
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
+      },
+      "used_by_hero_names": [
+        "Draxen Blacksand"
+      ],
+      "used_by_card_ids": [
+        "S1-WAR-H002"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-GRAND-ARBALEST-RAPID-CHAMBER",
+      "class": "Grand Arbalest",
+      "name": "Rapid Chamber",
+      "definition": {
+        "name": "Rapid Chamber",
+        "text": "During your Draw Phase, you may shuffle the card you just drew into your deck and draw a new card. Increase this Hero’s Physical Attack damage by 10.",
+        "action": {
+          "action_key": "rapid_chamber",
+          "type": "draw_replacement_and_passive_attack_modifier",
+          "trigger": "draw_phase_choice_and_physical_attack_damage",
+          "effect": {
+            "draw_replacement_shuffle_redraw": true,
+            "attack_damage_by_this_hero": 10
+          },
+          "damage_modifier": {
+            "amount": 10,
+            "damage_type": "Physical",
+            "scope": "Attack Card damage"
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "uses_actual_damage_type": true,
+            "damage_type": "Physical",
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ]
+          }
+        }
+      },
+      "used_by_hero_names": [
+        "Alden Sterling"
+      ],
+      "used_by_card_ids": [
+        "S1-ARC-H006"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-GRAND-RANGER-DEAD-EYE",
+      "class": "Grand Ranger",
+      "name": "Dead Eye",
+      "definition": {
+        "name": "Dead Eye",
+        "text": "Your Physical Attack card gains Range Attack. Increase this Hero’s Physical Attack damage by 10.",
+        "action": {
+          "type": "passive_attack_profile_modifier",
+          "trigger": "physical_attack_card_used_by_this_hero",
+          "gain_attack_profile": "Range Attack",
+          "range_exclusions": [
+            "S1-ARC-001"
+          ],
+          "damage_modifier": {
+            "amount": 10,
+            "damage_type": "Physical",
+            "scope": "all Attack Card profiles using actual damage type",
+            "excluded_card_ids": []
+          },
+          "range_conversion": {
+            "eligible_damage_type": "Physical",
+            "resulting_attack_profile": "Range Attack",
+            "excluded_card_ids": [
+              "S1-ARC-001"
+            ]
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "uses_actual_damage_type": true,
+            "damage_type": "Physical",
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ]
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
+      },
+      "used_by_hero_names": [
+        "Korvak Ironfang"
+      ],
+      "used_by_card_ids": [
+        "S1-ARC-H003"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-MARKSMAN-SHARPSHOOTER",
+      "class": "Marksman",
+      "name": "Sharpshooter",
+      "definition": {
+        "name": "Sharpshooter",
+        "text": "Your Physical Attack card gains Range Attack.",
+        "action": {
+          "type": "passive_attack_profile_modifier",
+          "trigger": "physical_attack_card_used_by_this_hero",
+          "gain_attack_profile": "Range Attack",
+          "range_exclusions": [
+            "S1-ARC-001"
+          ],
+          "range_conversion": {
+            "eligible_damage_type": "Physical",
+            "resulting_attack_profile": "Range Attack",
+            "excluded_card_ids": [
+              "S1-ARC-001"
+            ]
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
+      },
+      "used_by_hero_names": [
+        "Korvak Ironfang"
+      ],
+      "used_by_card_ids": [
+        "S1-ARC-H002"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-PALADIN-HOLY-RESURGENCE",
+      "class": "Paladin",
+      "name": "Holy Resurgence",
+      "definition": {
+        "name": "Holy Resurgence",
+        "text": "Once per turn during your Deploy Phase, you may spend 1 Mana Shard to heal one of your Heroes for +10 HP. Exhaust this Hero afterward.",
+        "action": {
+          "action_key": "holy_resurgence",
+          "type": "activated_heal",
+          "phase": "Deploy Phase",
+          "once_per_turn": true,
+          "cost": {
+            "mana": 1
+          },
+          "effect": {
+            "heal": 10
+          },
+          "exhaust_after_successful_resolve": true,
+          "source_requirements": [
+            "Hero Mode",
+            "active",
+            "non-Exhausted",
+            "not Stunned",
+            "ability unused this turn"
+          ],
+          "resolver": {
+            "target_is_resolver_owned": true,
+            "target_validator": "1 own active damaged Hero, including self only if damaged; target must not have Bleed",
+            "coverage_used": false,
+            "heal_target_damaged_required": true,
+            "bleed_invalid": true,
+            "full_hp_invalid": true,
+            "heal_validator_policy": "Uses standard heal validator: target must be damaged and must not have Bleed."
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves.",
+        "review_policy": "APPROVED: Paladin/Crusader class heal follows heal rule; full HP and Bleed are invalid targets."
+      },
+      "used_by_hero_names": [
+        "Aurex Sunsworn"
+      ],
+      "used_by_card_ids": [
+        "S1-WAR-H005"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-PRIEST-HOLY-GRACE",
+      "class": "Priest",
+      "name": "Holy Grace",
+      "definition": {
+        "name": "Holy Grace",
+        "text": "Increase this Hero’s Healing done by +20.",
+        "action": {
+          "action_key": "holy_grace",
+          "type": "passive_healing_modifier",
+          "trigger": "healing_done_by_this_hero",
+          "effect": {
+            "healing_done": 20
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
+      },
+      "used_by_hero_names": [
+        "Elara Heavens",
+        "Thrain Sunborn"
+      ],
+      "used_by_card_ids": [
+        "S1-CLE-H002",
+        "S1-CLE-H005"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-RENEGADE-NIGHTSHADE-VENOM",
+      "class": "Renegade",
+      "name": "Nightshade Venom",
+      "definition": {
+        "name": "Nightshade Venom",
+        "text": "Increase the duration of Poison you inflict on opponent’s Heroes by 1 turn. Increase this Hero’s Physical Attack damage by 10.",
+        "action": {
+          "action_key": "nightshade_venom",
+          "type": "passive_poison_duration_and_attack_modifier",
+          "trigger": "always_active",
+          "effect": {
+            "poison_duration_delta_by_this_hero": 1,
+            "attack_damage_by_this_hero": 10
+          },
+          "effect_scope_note": "Attack Card damage modifier using actual Physical damage type; not a printed profile-name gate.",
+          "status_duration_modifier": {
+            "statuses": [
+              "Poison"
+            ],
+            "amount": 1,
+            "targets": "opponent Heroes",
+            "all_infliction_sources_by_this_hero": true
+          },
+          "damage_modifier": {
+            "amount": 10,
+            "damage_type": "Physical",
+            "scope": "Attack Card damage"
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "uses_actual_damage_type": true,
+            "damage_type": "Physical",
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ]
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
+      },
+      "used_by_hero_names": [
+        "Finnian Copperpot"
+      ],
+      "used_by_card_ids": [
+        "S1-THF-H003"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-ROGUE-VENOM-MASTERY",
+      "class": "Rogue",
+      "name": "Venom Mastery",
+      "definition": {
+        "name": "Venom Mastery",
+        "text": "Increase the duration of Poison you inflict on opponent’s Heroes by 1 turn.",
+        "action": {
+          "action_key": "venom_mastery",
+          "type": "passive_status_duration_modifier",
+          "trigger": "poison_inflicted_by_this_hero",
+          "effect": {
+            "duration_delta": 1
+          },
+          "status_duration_modifier": {
+            "statuses": [
+              "Poison"
+            ],
+            "amount": 1,
+            "targets": "opponent Heroes",
+            "all_infliction_sources_by_this_hero": true
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
+      },
+      "used_by_hero_names": [
+        "Finnian Copperpot"
+      ],
+      "used_by_card_ids": [
+        "S1-THF-H002"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-SAINT-HOLY-REJUVENATION",
+      "class": "Saint",
+      "name": "Holy Rejuvenation",
+      "definition": {
+        "name": "Holy Rejuvenation",
+        "text": "Increase this Hero’s Healing done by +20 and remove 1 negative status from the healed ally.",
+        "action": {
+          "action_key": "holy_rejuvenation",
+          "type": "passive_healing_and_cleanse_modifier",
+          "trigger": "healing_done_by_this_hero",
+          "effect": {
+            "healing_done": 20,
+            "remove_negative_status_from_healed_ally": 1
+          },
+          "healing_done_modifier": 20,
+          "after_successful_heal": {
+            "choose_and_remove_negative_status": 1,
+            "per_healed_ally": true
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
+      },
+      "used_by_hero_names": [
+        "Elara Heavens",
+        "Thrain Sunborn"
+      ],
+      "used_by_card_ids": [
+        "S1-CLE-H003",
+        "S1-CLE-H006"
+      ]
+    },
+    {
+      "class_ability_id": "CLASS-SPELL-BLADE-MANA-SURGE",
+      "class": "Spell Blade",
+      "name": "Mana Surge",
+      "definition": {
+        "name": "Mana Surge",
+        "text": "When this Hero uses a Magical Attack, you may spend 1 additional Mana Shard to increase the Magical damage by 10.",
+        "action": {
+          "type": "optional_attack_additional_cost",
+          "trigger": "this_hero_uses_Magical_Attack",
+          "additional_cost": {
+            "mana_shard": 1
+          },
+          "damage_modifier": {
+            "amount": 10,
+            "damage_type": "Magical",
+            "scope": "selected attack"
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "uses_actual_damage_type": true,
+            "damage_type": "Magical",
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ]
+          }
+        }
+      },
+      "used_by_hero_names": [
+        "Lucien Voss"
+      ],
+      "used_by_card_ids": [
+        "S1-THF-H005"
+      ]
+    }
+  ],
+  "hero_profiles": [
+    {
+      "hero_id": "HERO-ALDEN-STERLING",
+      "name": "Alden Sterling",
+      "race": "Human",
+      "racial_trait_ref": "RACIAL-HUMAN-HUMAN-AMBITION",
+      "rank_cards": [
+        {
+          "card_id": "S1-ARC-H004",
+          "rank": "Rank 1",
+          "class": "Archer",
+          "class_ability_ref": null
+        },
+        {
+          "card_id": "S1-ARC-H005",
+          "rank": "Rank 2",
+          "class": "Arbalest",
+          "class_ability_ref": "CLASS-ARBALEST-QUICK-RELOAD"
+        },
+        {
+          "card_id": "S1-ARC-H006",
+          "rank": "Rank 3",
+          "class": "Grand Arbalest",
+          "class_ability_ref": "CLASS-GRAND-ARBALEST-RAPID-CHAMBER"
+        }
+      ]
+    },
+    {
+      "hero_id": "HERO-ALDRIC-ASHFORD",
+      "name": "Aldric Ashford",
+      "race": "Human",
+      "racial_trait_ref": "RACIAL-HUMAN-HUMAN-AMBITION",
+      "rank_cards": [
+        {
+          "card_id": "S1-MAG-H004",
+          "rank": "Rank I",
+          "class": "Mage",
+          "class_ability_ref": null
+        },
+        {
+          "card_id": "S1-MAG-H005",
+          "rank": "Rank II",
+          "class": "Elementalist",
+          "class_ability_ref": "CLASS-ELEMENTALIST-ELEMENTAL-MASTERY"
+        },
+        {
+          "card_id": "S1-MAG-H006",
+          "rank": "Rank III",
+          "class": "Elemental Lord",
+          "class_ability_ref": "CLASS-ELEMENTAL-LORD-ELEMENTAL-SOVEREIGNTY"
+        }
+      ]
+    },
+    {
+      "hero_id": "HERO-AUREX-SUNSWORN",
+      "name": "Aurex Sunsworn",
+      "race": "Dragonborn",
+      "racial_trait_ref": "RACIAL-DRAGONBORN-DRAGON-SCALE",
+      "rank_cards": [
+        {
+          "card_id": "S1-WAR-H004",
+          "rank": "Rank I",
+          "class": "Warrior",
+          "class_ability_ref": null
+        },
+        {
+          "card_id": "S1-WAR-H005",
+          "rank": "Rank II",
+          "class": "Paladin",
+          "class_ability_ref": "CLASS-PALADIN-HOLY-RESURGENCE"
+        },
+        {
+          "card_id": "S1-WAR-H006",
+          "rank": "Rank III",
+          "class": "Crusader",
+          "class_ability_ref": "CLASS-CRUSADER-RADIANT-OBLIVION"
+        }
+      ]
+    },
+    {
+      "hero_id": "HERO-DRAXEN-BLACKSAND",
+      "name": "Draxen Blacksand",
+      "race": "Human",
+      "racial_trait_ref": "RACIAL-HUMAN-HUMAN-AMBITION",
+      "rank_cards": [
+        {
+          "card_id": "S1-WAR-H001",
+          "rank": "Rank I",
+          "class": "Warrior",
+          "class_ability_ref": null
+        },
+        {
+          "card_id": "S1-WAR-H002",
+          "rank": "Rank II",
+          "class": "Gladiator",
+          "class_ability_ref": "CLASS-GLADIATOR-VANQUISHER-S-RESOLVE"
+        },
+        {
+          "card_id": "S1-WAR-H003",
+          "rank": "Rank III",
+          "class": "Conqueror",
+          "class_ability_ref": "CLASS-CONQUEROR-ARENA-DOMINATOR"
+        }
+      ]
+    },
+    {
+      "hero_id": "HERO-ELARA-HEAVENS",
+      "name": "Elara Heavens",
+      "race": "Elf",
+      "racial_trait_ref": "RACIAL-ELF-ANCESTRAL-FOCUS",
+      "rank_cards": [
+        {
+          "card_id": "S1-CLE-H001",
+          "rank": "Rank I",
+          "class": "Cleric",
+          "class_ability_ref": null
+        },
+        {
+          "card_id": "S1-CLE-H002",
+          "rank": "Rank II",
+          "class": "Priest",
+          "class_ability_ref": "CLASS-PRIEST-HOLY-GRACE"
+        },
+        {
+          "card_id": "S1-CLE-H003",
+          "rank": "Rank III",
+          "class": "Saint",
+          "class_ability_ref": "CLASS-SAINT-HOLY-REJUVENATION"
+        }
+      ]
+    },
+    {
+      "hero_id": "HERO-FINNIAN-COPPERPOT",
+      "name": "Finnian Copperpot",
+      "race": "Halfling",
+      "racial_trait_ref": "RACIAL-HALFLING-SECOND-CHANCE",
+      "rank_cards": [
+        {
+          "card_id": "S1-THF-H001",
+          "rank": "Rank I",
+          "class": "Thief",
+          "class_ability_ref": null
+        },
+        {
+          "card_id": "S1-THF-H002",
+          "rank": "Rank II",
+          "class": "Rogue",
+          "class_ability_ref": "CLASS-ROGUE-VENOM-MASTERY"
+        },
+        {
+          "card_id": "S1-THF-H003",
+          "rank": "Rank III",
+          "class": "Renegade",
+          "class_ability_ref": "CLASS-RENEGADE-NIGHTSHADE-VENOM"
+        }
+      ]
+    },
+    {
+      "hero_id": "HERO-KORVAK-IRONFANG",
+      "name": "Korvak Ironfang",
+      "race": "Beastman",
+      "racial_trait_ref": "RACIAL-BEASTMAN-PRIMAL-STRIKE",
+      "rank_cards": [
+        {
+          "card_id": "S1-ARC-H001",
+          "rank": "Rank I",
+          "class": "Archer",
+          "class_ability_ref": null
+        },
+        {
+          "card_id": "S1-ARC-H002",
+          "rank": "Rank II",
+          "class": "Marksman",
+          "class_ability_ref": "CLASS-MARKSMAN-SHARPSHOOTER"
+        },
+        {
+          "card_id": "S1-ARC-H003",
+          "rank": "Rank III",
+          "class": "Grand Ranger",
+          "class_ability_ref": "CLASS-GRAND-RANGER-DEAD-EYE"
+        }
+      ]
+    },
+    {
+      "hero_id": "HERO-LUCIEN-VOSS",
+      "name": "Lucien Voss",
+      "race": "Elf",
+      "racial_trait_ref": "RACIAL-ELF-ANCESTRAL-FOCUS",
+      "rank_cards": [
+        {
+          "card_id": "S1-THF-H004",
+          "rank": "Rank 1",
+          "class": "Thief",
+          "class_ability_ref": null
+        },
+        {
+          "card_id": "S1-THF-H005",
+          "rank": "Rank 2",
+          "class": "Spell Blade",
+          "class_ability_ref": "CLASS-SPELL-BLADE-MANA-SURGE"
+        },
+        {
+          "card_id": "S1-THF-H006",
+          "rank": "Rank 3",
+          "class": "Arcane Duelist",
+          "class_ability_ref": "CLASS-ARCANE-DUELIST-ARCANE-SURGE"
+        }
+      ]
+    },
+    {
+      "hero_id": "HERO-THRAIN-SUNBORN",
+      "name": "Thrain Sunborn",
+      "race": "Dwarf",
+      "racial_trait_ref": "RACIAL-DWARF-STONEBLOOD",
+      "rank_cards": [
+        {
+          "card_id": "S1-CLE-H004",
+          "rank": "Rank I",
+          "class": "Cleric",
+          "class_ability_ref": null
+        },
+        {
+          "card_id": "S1-CLE-H005",
+          "rank": "Rank II",
+          "class": "Priest",
+          "class_ability_ref": "CLASS-PRIEST-HOLY-GRACE"
+        },
+        {
+          "card_id": "S1-CLE-H006",
+          "rank": "Rank III",
+          "class": "Saint",
+          "class_ability_ref": "CLASS-SAINT-HOLY-REJUVENATION"
+        }
+      ]
+    },
+    {
+      "hero_id": "HERO-VAELIS-STORMWEAVE",
+      "name": "Vaelis Stormweave",
+      "race": "Elf",
+      "racial_trait_ref": "RACIAL-ELF-ANCESTRAL-FOCUS",
+      "rank_cards": [
+        {
+          "card_id": "S1-MAG-H001",
+          "rank": "Rank I",
+          "class": "Mage",
+          "class_ability_ref": null
+        },
+        {
+          "card_id": "S1-MAG-H002",
+          "rank": "Rank II",
+          "class": "Elementalist",
+          "class_ability_ref": "CLASS-ELEMENTALIST-ELEMENTAL-MASTERY"
+        },
+        {
+          "card_id": "S1-MAG-H003",
+          "rank": "Rank III",
+          "class": "Elemental Lord",
+          "class_ability_ref": "CLASS-ELEMENTAL-LORD-ELEMENTAL-SOVEREIGNTY"
+        }
+      ]
+    }
+  ],
+  "hero_compositions": [
+    {
+      "card_id": "S1-ARC-H001",
+      "hero_name": "Korvak Ironfang",
+      "race": "Beastman",
+      "class": "Archer",
+      "rank": "Rank I",
+      "racial_trait_ref": "RACIAL-BEASTMAN-PRIMAL-STRIKE",
+      "class_ability_ref": null
+    },
+    {
+      "card_id": "S1-ARC-H002",
+      "hero_name": "Korvak Ironfang",
+      "race": "Beastman",
+      "class": "Marksman",
+      "rank": "Rank II",
+      "racial_trait_ref": "RACIAL-BEASTMAN-PRIMAL-STRIKE",
+      "class_ability_ref": "CLASS-MARKSMAN-SHARPSHOOTER"
+    },
+    {
+      "card_id": "S1-ARC-H003",
+      "hero_name": "Korvak Ironfang",
+      "race": "Beastman",
+      "class": "Grand Ranger",
+      "rank": "Rank III",
+      "racial_trait_ref": "RACIAL-BEASTMAN-PRIMAL-STRIKE",
+      "class_ability_ref": "CLASS-GRAND-RANGER-DEAD-EYE"
+    },
+    {
+      "card_id": "S1-ARC-H004",
+      "hero_name": "Alden Sterling",
+      "race": "Human",
+      "class": "Archer",
+      "rank": "Rank 1",
+      "racial_trait_ref": "RACIAL-HUMAN-HUMAN-AMBITION",
+      "class_ability_ref": null
+    },
+    {
+      "card_id": "S1-ARC-H005",
+      "hero_name": "Alden Sterling",
+      "race": "Human",
+      "class": "Arbalest",
+      "rank": "Rank 2",
+      "racial_trait_ref": "RACIAL-HUMAN-HUMAN-AMBITION",
+      "class_ability_ref": "CLASS-ARBALEST-QUICK-RELOAD"
+    },
+    {
+      "card_id": "S1-ARC-H006",
+      "hero_name": "Alden Sterling",
+      "race": "Human",
+      "class": "Grand Arbalest",
+      "rank": "Rank 3",
+      "racial_trait_ref": "RACIAL-HUMAN-HUMAN-AMBITION",
+      "class_ability_ref": "CLASS-GRAND-ARBALEST-RAPID-CHAMBER"
+    },
+    {
+      "card_id": "S1-CLE-H001",
+      "hero_name": "Elara Heavens",
+      "race": "Elf",
+      "class": "Cleric",
+      "rank": "Rank I",
+      "racial_trait_ref": "RACIAL-ELF-ANCESTRAL-FOCUS",
+      "class_ability_ref": null
+    },
+    {
+      "card_id": "S1-CLE-H002",
+      "hero_name": "Elara Heavens",
+      "race": "Elf",
+      "class": "Priest",
+      "rank": "Rank II",
+      "racial_trait_ref": "RACIAL-ELF-ANCESTRAL-FOCUS",
+      "class_ability_ref": "CLASS-PRIEST-HOLY-GRACE"
+    },
+    {
+      "card_id": "S1-CLE-H003",
+      "hero_name": "Elara Heavens",
+      "race": "Elf",
+      "class": "Saint",
+      "rank": "Rank III",
+      "racial_trait_ref": "RACIAL-ELF-ANCESTRAL-FOCUS",
+      "class_ability_ref": "CLASS-SAINT-HOLY-REJUVENATION"
+    },
+    {
+      "card_id": "S1-CLE-H004",
+      "hero_name": "Thrain Sunborn",
+      "race": "Dwarf",
+      "class": "Cleric",
+      "rank": "Rank I",
+      "racial_trait_ref": "RACIAL-DWARF-STONEBLOOD",
+      "class_ability_ref": null
+    },
+    {
+      "card_id": "S1-CLE-H005",
+      "hero_name": "Thrain Sunborn",
+      "race": "Dwarf",
+      "class": "Priest",
+      "rank": "Rank II",
+      "racial_trait_ref": "RACIAL-DWARF-STONEBLOOD",
+      "class_ability_ref": "CLASS-PRIEST-HOLY-GRACE"
+    },
+    {
+      "card_id": "S1-CLE-H006",
+      "hero_name": "Thrain Sunborn",
+      "race": "Dwarf",
+      "class": "Saint",
+      "rank": "Rank III",
+      "racial_trait_ref": "RACIAL-DWARF-STONEBLOOD",
+      "class_ability_ref": "CLASS-SAINT-HOLY-REJUVENATION"
+    },
+    {
+      "card_id": "S1-MAG-H001",
+      "hero_name": "Vaelis Stormweave",
+      "race": "Elf",
+      "class": "Mage",
+      "rank": "Rank I",
+      "racial_trait_ref": "RACIAL-ELF-ANCESTRAL-FOCUS",
+      "class_ability_ref": null
+    },
+    {
+      "card_id": "S1-MAG-H002",
+      "hero_name": "Vaelis Stormweave",
+      "race": "Elf",
+      "class": "Elementalist",
+      "rank": "Rank II",
+      "racial_trait_ref": "RACIAL-ELF-ANCESTRAL-FOCUS",
+      "class_ability_ref": "CLASS-ELEMENTALIST-ELEMENTAL-MASTERY"
+    },
+    {
+      "card_id": "S1-MAG-H003",
+      "hero_name": "Vaelis Stormweave",
+      "race": "Elf",
+      "class": "Elemental Lord",
+      "rank": "Rank III",
+      "racial_trait_ref": "RACIAL-ELF-ANCESTRAL-FOCUS",
+      "class_ability_ref": "CLASS-ELEMENTAL-LORD-ELEMENTAL-SOVEREIGNTY"
+    },
+    {
+      "card_id": "S1-MAG-H004",
+      "hero_name": "Aldric Ashford",
+      "race": "Human",
+      "class": "Mage",
+      "rank": "Rank I",
+      "racial_trait_ref": "RACIAL-HUMAN-HUMAN-AMBITION",
+      "class_ability_ref": null
+    },
+    {
+      "card_id": "S1-MAG-H005",
+      "hero_name": "Aldric Ashford",
+      "race": "Human",
+      "class": "Elementalist",
+      "rank": "Rank II",
+      "racial_trait_ref": "RACIAL-HUMAN-HUMAN-AMBITION",
+      "class_ability_ref": "CLASS-ELEMENTALIST-ELEMENTAL-MASTERY"
+    },
+    {
+      "card_id": "S1-MAG-H006",
+      "hero_name": "Aldric Ashford",
+      "race": "Human",
+      "class": "Elemental Lord",
+      "rank": "Rank III",
+      "racial_trait_ref": "RACIAL-HUMAN-HUMAN-AMBITION",
+      "class_ability_ref": "CLASS-ELEMENTAL-LORD-ELEMENTAL-SOVEREIGNTY"
+    },
+    {
+      "card_id": "S1-THF-H001",
+      "hero_name": "Finnian Copperpot",
+      "race": "Halfling",
+      "class": "Thief",
+      "rank": "Rank I",
+      "racial_trait_ref": "RACIAL-HALFLING-SECOND-CHANCE",
+      "class_ability_ref": null
+    },
+    {
+      "card_id": "S1-THF-H002",
+      "hero_name": "Finnian Copperpot",
+      "race": "Halfling",
+      "class": "Rogue",
+      "rank": "Rank II",
+      "racial_trait_ref": "RACIAL-HALFLING-SECOND-CHANCE",
+      "class_ability_ref": "CLASS-ROGUE-VENOM-MASTERY"
+    },
+    {
+      "card_id": "S1-THF-H003",
+      "hero_name": "Finnian Copperpot",
+      "race": "Halfling",
+      "class": "Renegade",
+      "rank": "Rank III",
+      "racial_trait_ref": "RACIAL-HALFLING-SECOND-CHANCE",
+      "class_ability_ref": "CLASS-RENEGADE-NIGHTSHADE-VENOM"
+    },
+    {
+      "card_id": "S1-THF-H004",
+      "hero_name": "Lucien Voss",
+      "race": "Elf",
+      "class": "Thief",
+      "rank": "Rank 1",
+      "racial_trait_ref": "RACIAL-ELF-ANCESTRAL-FOCUS",
+      "class_ability_ref": null
+    },
+    {
+      "card_id": "S1-THF-H005",
+      "hero_name": "Lucien Voss",
+      "race": "Elf",
+      "class": "Spell Blade",
+      "rank": "Rank 2",
+      "racial_trait_ref": "RACIAL-ELF-ANCESTRAL-FOCUS",
+      "class_ability_ref": "CLASS-SPELL-BLADE-MANA-SURGE"
+    },
+    {
+      "card_id": "S1-THF-H006",
+      "hero_name": "Lucien Voss",
+      "race": "Elf",
+      "class": "Arcane Duelist",
+      "rank": "Rank 3",
+      "racial_trait_ref": "RACIAL-ELF-ANCESTRAL-FOCUS",
+      "class_ability_ref": "CLASS-ARCANE-DUELIST-ARCANE-SURGE"
+    },
+    {
+      "card_id": "S1-WAR-H001",
+      "hero_name": "Draxen Blacksand",
+      "race": "Human",
+      "class": "Warrior",
+      "rank": "Rank I",
+      "racial_trait_ref": "RACIAL-HUMAN-HUMAN-AMBITION",
+      "class_ability_ref": null
+    },
+    {
+      "card_id": "S1-WAR-H002",
+      "hero_name": "Draxen Blacksand",
+      "race": "Human",
+      "class": "Gladiator",
+      "rank": "Rank II",
+      "racial_trait_ref": "RACIAL-HUMAN-HUMAN-AMBITION",
+      "class_ability_ref": "CLASS-GLADIATOR-VANQUISHER-S-RESOLVE"
+    },
+    {
+      "card_id": "S1-WAR-H003",
+      "hero_name": "Draxen Blacksand",
+      "race": "Human",
+      "class": "Conqueror",
+      "rank": "Rank III",
+      "racial_trait_ref": "RACIAL-HUMAN-HUMAN-AMBITION",
+      "class_ability_ref": "CLASS-CONQUEROR-ARENA-DOMINATOR"
+    },
+    {
+      "card_id": "S1-WAR-H004",
+      "hero_name": "Aurex Sunsworn",
+      "race": "Dragonborn",
+      "class": "Warrior",
+      "rank": "Rank I",
+      "racial_trait_ref": "RACIAL-DRAGONBORN-DRAGON-SCALE",
+      "class_ability_ref": null
+    },
+    {
+      "card_id": "S1-WAR-H005",
+      "hero_name": "Aurex Sunsworn",
+      "race": "Dragonborn",
+      "class": "Paladin",
+      "rank": "Rank II",
+      "racial_trait_ref": "RACIAL-DRAGONBORN-DRAGON-SCALE",
+      "class_ability_ref": "CLASS-PALADIN-HOLY-RESURGENCE"
+    },
+    {
+      "card_id": "S1-WAR-H006",
+      "hero_name": "Aurex Sunsworn",
+      "race": "Dragonborn",
+      "class": "Crusader",
+      "rank": "Rank III",
+      "racial_trait_ref": "RACIAL-DRAGONBORN-DRAGON-SCALE",
+      "class_ability_ref": "CLASS-CRUSADER-RADIANT-OBLIVION"
+    }
+  ],
+  "registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9"
+}

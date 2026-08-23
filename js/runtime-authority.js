@@ -1,9 +1,9 @@
-/* Grandis Legacy Browser Runtime Authority v1.78.
+/* Grandis Legacy Browser Runtime Authority v1.85.
    Owns exact-once transactions, mandatory-choice lifecycle, attachment identity, and invariant gates.
    UI and animation code may render the resulting state but must not finalize cards or choices independently. */
 (function(global){
   'use strict';
-  var VERSION='v1.81-browser';
+  var VERSION='v1.85-browser';
   function ensure(state){
     state.runtimeRevision=Number(state.runtimeRevision||0);
     state.runtimeCardDestinationLedger=state.runtimeCardDestinationLedger&&typeof state.runtimeCardDestinationLedger==='object'?state.runtimeCardDestinationLedger:{};

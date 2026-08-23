@@ -2,7 +2,7 @@ const fs=require('fs'),vm=require('vm'),path=require('path'),assert=require('ass
 const root=path.resolve(__dirname,'..');
 const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
 const css=fs.readFileSync(path.join(root,'css/app.css'),'utf8');
-const data=JSON.parse(fs.readFileSync(path.join(root,'data/season1/cards.runtime.v0.12.7.json'),'utf8'));
+const data=JSON.parse(fs.readFileSync(path.join(root,'data/season1/cards.runtime.v0.13.1.json'),'utf8'));
 function fail(msg){console.error('FAIL',msg);process.exit(1)}
 if(!app.includes('>Not Available</span>'))fail('Not Available label missing');
 if(app.includes('title="'+"'+esc(reasonText)+'"))fail('native response title tooltip remains');

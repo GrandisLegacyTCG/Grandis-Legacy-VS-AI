@@ -2,8 +2,8 @@
 const assert=require('assert');
 const path=require('path');
 const root=path.resolve(__dirname,'..');
-const runtimeData=require(path.join(root,'data/season1/cards.runtime.v0.12.7.json'));
-const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.11.7.json'));
+const runtimeData=require(path.join(root,'data/season1/cards.runtime.v0.13.1.json'));
+const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.12.1.json'));
 const {createInitialRuntimeState,submitIntent,getLegalActions}=require(path.join(root,'runtime-source/runtime/core/reducer.js'));
 const cardsById=Object.fromEntries(runtimeData.cards.map(c=>[c.card_id,c]));
 function deck(ids=['S1-WAR-H001'],legacy=[]){return{starting_hero_ids:['Left','Center','Right'].map((slot,i)=>({slot,card_id:ids[i]||ids[0]})),main_deck_card_counts:{'S1-EVT-001':12,'S1-THF-003':1,'S1-WAR-001':2},legacy_deck_card_ids:legacy}}
@@ -51,7 +51,7 @@ function passAll(box){let guard=0;while(box.s.response_window&&guard++<20)ok(box
 }
 // Resurrection policy is Class-row specific.
 for(const [sourceId,expectedExhausted] of [['S1-CLE-H002',true],['S1-CLE-H003',false]]){
-  const b=fresh([sourceId],['S1-WAR-H001'],['S1-WAR-L001']);b.s.phase='Deploy';const slot=b.s.players.PLAYER.board.Left;slot.defeated_hero_snapshot={...slot.hero,hp:0,defeated:true,exp_cards:[]};slot.slot_mode='LEGACY';slot.active_legacy_card_id='S1-CLE-L001';slot.hero={...slot.hero,hp:0,defeated:true};b.s.players.PLAYER.hand=['S1-CLE-015'];attack(b,'S1-CLE-015','Center','Left','PLAYER');assert.strictEqual(b.s.players.PLAYER.board.Left.hero.hp,40);assert.strictEqual(b.s.players.PLAYER.board.Left.hero.exhausted,expectedExhausted);
+  const b=fresh([sourceId],['S1-WAR-H001'],['S1-WAR-L001']);b.s.phase='Deploy';const slot=b.s.players.PLAYER.board.Left;slot.defeated_hero_snapshot={...slot.hero,hp:0,defeated:true,exp_cards:[]};slot.slot_mode='LEGACY';slot.active_legacy_card_id='S1-CLE-L001';slot.hero={...slot.hero,hp:0,defeated:true};b.s.players.PLAYER.hand=['S1-CLE-015'];attack(b,'S1-CLE-015','Center','Left','PLAYER');assert.strictEqual(b.s.players.PLAYER.board.Left.hero.hp,50);assert.strictEqual(b.s.players.PLAYER.board.Left.hero.exhausted,expectedExhausted);
 }
 // Binding Light counters committed Defend Skills, including Smoke Screen.
 {

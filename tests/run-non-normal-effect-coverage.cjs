@@ -3,11 +3,11 @@ const fs=require('fs');
 const path=require('path');
 const assert=require('assert');
 const root=path.resolve(__dirname,'..');
-const data=require(path.join(root,'data/season1/cards.runtime.v0.12.7.json'));
-const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.11.7.json'));
-const legality=require(path.join(root,'data/season1/legality-map.runtime.v0.11.6.json'));
-const preview=require(path.join(root,'data/season1/card-preview.generated.v1.4.0.json'));
-const H='b455b1537434e454ab873372bb9da715b779e64525a01a8bc3995ed9267ecfa0';
+const data=require(path.join(root,'data/season1/cards.runtime.v0.13.1.json'));
+const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.12.1.json'));
+const legality=require(path.join(root,'data/season1/legality-map.runtime.v0.11.9.json'));
+const preview=require(path.join(root,'data/season1/card-preview.generated.v1.4.1.json'));
+const H='b185307752fd523d6c1e4a450f8bdd82b96b4d4cbfbb884fca8a619e8c5c8057';
 for(const doc of [data,recipes,legality,preview]){
   assert.strictEqual(doc.canonical_registry_hash,H,'canonical registry hash');
   assert.strictEqual(doc.count,198,'198 record parity');
@@ -16,8 +16,8 @@ const expectedKinds=new Set([
   'add_to_hand','apply_exhaust','area_defense_exception_damage_reduction','attach_attack_damage_modifier',
   'attach_healing_received_modifier','attach_next_attack_status_buff','attach_targeting_filter','attach_untargetable_and_draw',
   'attack_connected_conditional_damage','attack_restriction','block_damage','buff','buff_duration','buff_value','cancel_card',
-  'cancel_response_skill','conditional_attack_modifier','create_active_effect','create_active_effect_or_event_attachment','damage_immunity',
-  'deal_attack_damage','defeat_target_if_hp_threshold','discard_exp_from_opponent_hero','discard_then_draw','dodge_incoming_attack_damage',
+  'cancel_response_skill','conditional_attack_modifier','conditional_retaliation_damage','create_active_effect','create_active_effect_or_event_attachment','damage_immunity',
+  'deal_attack_damage','defeat_target_if_hp_threshold','discard_attack_card','discard_exp_from_opponent_hero','discard_then_draw','dodge_incoming_attack_damage',
   'dodge_incoming_damage','dodge_then_reposition','draw_cards','gain_mana','gain_racial_token','heal','heal_allied_heroes',
   'heal_target_hero','inflict_status','look_and_reorder_top_deck','move_cards','move_this_card_to_discard','negate',
   'negate_incoming_attack','no_source_exhaust','on_hit_draw','on_hit_mana_remove','on_hit_mana_remove_per_hit','on_hit_mana_steal',
@@ -25,7 +25,7 @@ const expectedKinds=new Set([
   'pending_casting_draw_counter','remove_exhaust','remove_negative_status','remove_selected_negative_status','remove_status',
   'remove_status_before_damage','response_redirect_reposition','return_attack_card_to_owner_hand','return_card_from_discard_to_hand',
   'return_to_hand','reveal_opponent_hand','revive','revive_defeated_hero','revive_hero','search_deck_add_to_hand',
-  'search_top_deck','self_status','shuffle_remaining_hand_into_deck','source_structured_effect_json','team_damage_immunity',
+  'search_top_deck','self_status','shuffle_deck','shuffle_remaining_hand_into_deck','source_structured_effect_json','team_damage_immunity',
   'tribute_skill_from_hand_to_hero_exp','untargetable'
 ]);
 const statusNames=new Set(['Poison','Burn','Bleed','Freeze','Stun']);

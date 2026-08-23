@@ -1,8 +1,10 @@
-# Grandis Legacy Tutorial v0.37
+# Grandis Legacy Tutorial v0.40
 
-Non-scripted Tutorial under `/tutorial/`, based on VS AI v6.1.
+Non-scripted Tutorial under `/tutorial/`, synchronized with the VS AI v6.9 gameplay runtime.
 
-- 1440x900 / 1920x1080 desktop visual standards.
-- VS AI battlefield presentation parity, including battle VFX/audio and Casting pairing.
-- PLAY / TRIBUTE 18px desktop / 16px mobile.
-- Tutorial-only phase guidance, Arvon, deterministic teaching flow, mobile force-scroll, and EXP arrow correction remain intact.
+- Uses the canonical 198-card registry and Hero Component Authority snapshot.
+- Includes all 30 revised card records and the current Back Slash title.
+- Shares the corrected Resurrection metadata, first-player Turn 1 Attack guard, defensive Second Chance response, and pending-state lifecycle protections with VS AI.
+- Preserves Tutorial-only phase guidance, Arvon, deterministic teaching flow, mobile force-scroll, desktop battlefield standards, VFX/audio, and EXP guidance.
+
+Run `npm test` from this directory for the Tutorial authority, gameplay, cache, manifest, and parity checks.

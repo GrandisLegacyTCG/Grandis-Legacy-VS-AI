@@ -3,7 +3,7 @@
 /**
  * Grandis Legacy source-sync gameplay locks for Local AI and PvP Railway.
  * These helpers encode shared cross-build policy only; card values come from
- * Season1 Runtime Data v0.11.1 / Effect Recipe v0.9.8.
+ * Season1 Runtime Data v0.13.1 / Effect Recipe v0.12.1.
  */
 
 const BASE_CLASSES = Object.freeze(['Warrior', 'Mage', 'Cleric', 'Thief', 'Archer']);
@@ -283,9 +283,9 @@ function racialTraitPolicy(raceOrTrait) {
   if (text.includes('human') || text.includes('ambition')) return { intent: 'USE_RACIAL_TRAIT', phase: 'Deploy Phase', cost: { racial_token: 1 }, effect: 'draw_2', doesExhaust: false };
   if (text.includes('elf') || text.includes('ancestral')) return { intent: 'USE_RACIAL_TRAIT', phase: 'Deploy Phase', cost: { racial_token: 1 }, effect: 'gain_2_mana', doesExhaust: false };
   if (text.includes('beastman') || text.includes('primal')) return { intent: 'USE_RACIAL_TRAIT', phase: 'Battle Phase', cost: { racial_token: 1 }, target: 'injured_opponent_hero', effect: 'direct_damage_20', doesExhaust: false };
-  if (text.includes('dragon') || text.includes('scale')) return { intent: 'USE_RACIAL_TRAIT', window: 'response', cost: { racial_token: 1 }, effect: 'block_40_physical_or_magical', doesExhaust: false };
-  if (text.includes('dwarf') || text.includes('stoneblood')) return { intent: 'CONFIRM_TRIGGERED_RACIAL', window: 'would_be_defeated', optional: true, cost: { racial_token: 1 }, effect: 'prevent_defeat_keep_10_hp' };
-  if (text.includes('halfling') || text.includes('second chance')) return { intent: 'CONFIRM_TRIGGERED_RACIAL', window: 'after_own_skill_card_dodged', optional: true, cost: { racial_token: 1 }, effect: 'replay_same_skill_for_0_mana' };
+  if (text.includes('dragon') || text.includes('scale')) return { intent: 'USE_RACIAL_TRAIT', window: 'response', cost: { racial_token: 1 }, effect: 'block_50_physical_or_magical', doesExhaust: false };
+  if (text.includes('dwarf') || text.includes('stoneblood')) return { intent: 'CONFIRM_TRIGGERED_RACIAL', window: 'would_be_defeated', optional: true, cost: { racial_token: 1 }, effect: 'prevent_defeat_keep_30_hp' };
+  if (text.includes('halfling') || text.includes('second chance')) return { intent: 'USE_RACIAL_TRAIT', window: 'response', cost: { racial_token: 1 }, effect: 'dodge_physical_or_magical', doesExhaust: false };
   return null;
 }
 
@@ -343,6 +343,7 @@ function reactionPolicyForCard(card) {
   if (/cannot\s+dodge\s+area\s+attacks|cannot\s+.*area\s+attacks/i.test(text)) policy.illegalWhen.push('incoming_attack_is_area');
   if ((kind === 'NEGATE' || kind === 'NEGATE_RETURN_TO_HAND') && /targeted\s+by\s+an\s+attack/i.test(text)) policy.illegalWhen.push('incoming_attack_is_area');
   if (/cannot\s+negate\s+(?:a\s+)?casting\s+attacks?/i.test(text)) policy.illegalWhen.push('incoming_attack_is_casting');
+  if (/cannot\s+negate[^.]*ultimate\s+attacks?/i.test(text)) policy.illegalWhen.push('incoming_attack_is_ultimate');
   if (id === 'S1-ITM-016') policy.hostLineageGate = CHAIN_MAIL_ALLOWED_BASE_CLASSES.slice();
   if (id === 'S1-ITM-017') policy.allowedPendingCardFamily = 'Item';
   if (id === 'S1-EVT-007') policy.allowedPendingCardFamily = 'Event';
@@ -404,6 +405,7 @@ function validateReactionAgainstIncoming(card, incoming, hostHeroOrLineages, pen
   if (kind === 'BLOCK' && inc.cannot_be_blocked) errors.push('Incoming attack cannot be blocked.');
   if (policy.illegalWhen.includes('incoming_attack_is_area') && inc.area) errors.push(`${idOrName(card)} is not legal against Area Attacks.`);
   if (policy.illegalWhen.includes('incoming_attack_is_casting') && inc.casting) errors.push(`${idOrName(card)} is not legal against Casting Attacks.`);
+  if (policy.illegalWhen.includes('incoming_attack_is_ultimate') && inc.is_ultimate) errors.push(`${idOrName(card)} is not legal against Ultimate Attacks.`);
   if (policy.hostLineageGate) {
     const lineages = Array.isArray(hostHeroOrLineages) ? hostHeroOrLineages.map(normalizeBaseLineage) : heroBaseLineages(hostHeroOrLineages);
     if (!lineages.some(lineage => policy.hostLineageGate.includes(lineage))) errors.push(`${idOrName(card)} can be used only by/for Warrior, Archer, or Thief lineage Heroes.`);

@@ -2,7 +2,7 @@
   "schema_version": "GL-DECK-1.0",
   "builder_version": "2.1-public-deck-builder",
   "deck_name": "Starter 4 — Grand Ranger / Conqueror / Grand Arbalest",
-  "format": "One Source Authority v1.4 + Public Deck Builder v2.1",
+  "format": "One Source Authority v1.6.1 + Public Deck Builder v1.16",
   "main_deck_count": 60,
   "legacy_package_count": 3,
   "legacy_deck_count": 12,
@@ -444,8 +444,8 @@
     "CENTER": "S1-WAR-H001",
     "RIGHT": "S1-ARC-H004"
   },
-  "source_database_version": "One Source Authority v1.4 · registry b455b1537434e454ab873372bb9da715b779e64525a01a8bc3995ed9267ecfa0",
-  "builder_version_note": "Normalized for Grandis Legacy PvP v2.6.1 while preserving the approved deck contents, Legacy packages, and default Formation.",
+  "source_database_version": "One Source Authority v1.6.1 · registry b185307752fd523d6c1e4a450f8bdd82b96b4d4cbfbb884fca8a619e8c5c8057",
+  "builder_version_note": "Normalized for Grandis Legacy VS AI v6.9 / PvP v3.07 while preserving the approved deck contents, Legacy packages, and default Formation.",
   "display_name": "Starter 4 — Grand Ranger / Conqueror / Grand Arbalest",
   "preset_id": "starter_04_grand_ranger_conqueror_grand_arbalest",
   "main_deck_expanded": [

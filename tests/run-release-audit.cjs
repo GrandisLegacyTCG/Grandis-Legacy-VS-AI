@@ -4,20 +4,30 @@ const path=require('path');
 const assert=require('assert');
 const crypto=require('crypto');
 const root=path.resolve(__dirname,'..');
-const H='b455b1537434e454ab873372bb9da715b779e64525a01a8bc3995ed9267ecfa0';
+const H='b185307752fd523d6c1e4a450f8bdd82b96b4d4cbfbb884fca8a619e8c5c8057';
+const HH='487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9';
 const read=rel=>fs.readFileSync(path.join(root,rel),'utf8');
 const json=rel=>JSON.parse(read(rel));
 const sha=rel=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,rel))).digest('hex');
-const data=json('data/season1/cards.runtime.v0.12.7.json');
-const recipes=json('data/season1/effect-recipes.runtime.v0.11.7.json');
-const legality=json('data/season1/legality-map.runtime.v0.11.6.json');
-const preview=json('data/season1/card-preview.generated.v1.4.0.json');
+const data=json('data/season1/cards.runtime.v0.13.1.json');
+const recipes=json('data/season1/effect-recipes.runtime.v0.12.1.json');
+const legality=json('data/season1/legality-map.runtime.v0.11.9.json');
+const preview=json('data/season1/card-preview.generated.v1.4.1.json');
+const heroComponents=json('data/season1/hero-components.runtime.v1.0.0.json');
 for(const doc of [data,recipes,legality,preview]){assert.strictEqual(doc.canonical_registry_hash,H);assert.strictEqual(doc.count,198)}
+assert.strictEqual(data.hero_component_registry_hash,HH);
+assert.strictEqual(heroComponents.registry_hash,HH);
+assert.deepStrictEqual([heroComponents.racial_traits.length,heroComponents.class_abilities.length,heroComponents.hero_profiles.length,heroComponents.hero_compositions.length],[6,16,10,30]);
 const app=read('js/app.bundle.js'),css=read('css/app.css'),stat=read('js/static-data.js'),runtime=read('js/runtime-authority.js'),runtimeSource=read('runtime-source/runtime/browser/runtime-authority.browser.js'),runtimeReducer=read('runtime-source/runtime/core/reducer.js');
 assert.strictEqual(runtime,runtimeSource,'browser runtime must be generated from packaged editable runtime source');
-assert.ok(/one_source_authority":"v1\.5\.0/.test(stat),'static source version');
+assert.ok(/one_source_authority":"v1\.6\.1/.test(stat),'static source version');
 assert.ok(stat.includes(H),'static source hash');
-assert.ok(/runtime_data":"v0\.12\.7/.test(stat)&&/effect_recipe":"v0\.11\.7/.test(stat)&&/runtime_foundation":"v1\.82/.test(stat)&&/runtime_core":"v0\.50/.test(stat),'source stack versions');
+assert.ok(stat.includes(HH),'static Hero Component hash');
+assert.ok(/runtime_data":"v0\.13\.1/.test(stat)&&/effect_recipe":"v0\.12\.1/.test(stat)&&/runtime_foundation":"v1\.85/.test(stat)&&/runtime_core":"v0\.53/.test(stat)&&/hero_component_authority":"v1\.0\.0/.test(stat),'source stack versions');
+const resurrection=data.cards.find(card=>card.card_id==='S1-CLE-015');
+assert.strictEqual(resurrection.canonical_cost.mana,3,'Resurrection Mana');
+assert.strictEqual(resurrection.effect.find(effect=>effect.kind==='revive').set_hp,50,'Resurrection HP');
+assert.ok(!/40 HP|Set HP to 40/.test(JSON.stringify(resurrection)),'stale Resurrection metadata');
 assert.ok(!/GL_PRINTED_PREVIEW_OVERRIDES/.test(app),'no preview wording override');
 const retired=/runtime_v\d+_lock|legacy_runtime_lock|attachment_runtime_lock|source_card_destination_lock|defense_response_exhaust_lock|runtime_hit_definition_lock|LEGACY_FULL_RUNTIME_LOCK|cards\.runtime\.v0\.11\.17|effect-recipes\.runtime\.v0\.10\.12|ffe0192ed4c4bdf56f31098dada2e25caccc2f387b57b8eae68c7051fce51141|One Source Authority v1\.2/i;
 for(const [name,text] of [['app',app],['runtime data',JSON.stringify(data)],['recipes',JSON.stringify(recipes)],['static data',stat]])assert.ok(!retired.test(text),'retired semantic/source reference in '+name);
@@ -30,7 +40,7 @@ assert.ok(/data-zone-type="Main Deck"/.test(css)&&/data-zone-type="Legacy Deck"/
 assert.ok(/Printed artwork is the only visible card frame[\s\S]*?hero-card\.hero-main[\s\S]*?border:0!important/.test(css),'card wrappers remain borderless');
 assert.ok(fs.existsSync(path.join(root,'assets/audio/freesound_community-coin-flip-37787.mp3')),'coin audio');
 assert.ok(fs.existsSync(path.join(root,'runtime-source/runtime/core/reducer.js')),'editable runtime source');
-const lock=json('sync/runtime-sync-lock.v2.44.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.application_runtime_sync,'v2.44');assert.strictEqual(lock.local_ai,'v6.1');
+const lock=json('sync/runtime-sync-lock.v2.47.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.hero_component_registry_hash,HH);assert.strictEqual(lock.application_runtime_sync,'v2.47');assert.strictEqual(lock.local_ai,'v6.9');
 for(const [rel,key] of [['js/app.bundle.js','shared_gameplay_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['runtime-source/runtime/browser/runtime-authority.browser.js','runtime_source_browser_sha256'],['js/static-data.js','static_data_sha256'],['css/app.css','shared_ui_css_sha256']])assert.strictEqual(sha(rel),lock[key],rel+' sync hash');
 for(const file of fs.readdirSync(path.join(root,'starter_deck_examples')).filter(x=>x.endsWith('.json'))){const text=read('starter_deck_examples/'+file);assert.ok(!/One Source Authority v1\.2|Runtime Data v0\.12\.2|ffe0192e/.test(text),'stale starter source metadata '+file)}
 assert.ok(/hero-card-anchor/.test(app)&&/hero-status-overlay/.test(app)&&/hero-health-overlay/.test(css)&&/game-result-summary/.test(css),'v5.35 inherited Hero/HP/status and result hierarchy');
@@ -46,4 +56,4 @@ assert.ok(/responseDisplayItemsFor/.test(app)&&/data-response-reason/.test(app)&
 assert.ok(!fs.existsSync(path.join(root,'deck-builder'))&&app.includes('https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/'),'dedicated external Deck Builder navigation');
 assert.ok(fs.existsSync(path.join(root,'tutorial/index.html'))&&app.includes('<nav class="ai-lobby-actions"><a id="aiLobbyTutorialButton" class="ai-lobby-btn ai-lobby-btn--outline" href="tutorial/">TUTORIAL</a><a id="aiLobbyDeckBuilderButton" class="ai-lobby-btn ai-lobby-btn--outline"'),'Tutorial application and equal-size secondary navigation');
 
-console.log('PASS VS AI v6.1 release audit: Casting survives Draw/Rank Up, release uses current Hero, response hover diagnostics, mobile resources, and desktop cleanup.');
+console.log('PASS VS AI v6.9 release audit: Source Stack 2026-08-24, Hero Components, runtime locks, and preserved UI contracts.');

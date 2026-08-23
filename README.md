@@ -1,24 +1,20 @@
-# Grandis Legacy VS AI v6.7 + Tutorial v0.38
+# Grandis Legacy VS AI v6.9 + Tutorial v0.40
 
+Production-ready GitHub Pages package for local VS AI and the non-scripted tutorial.
 
-## v6.7 update
-- Fixes a PLAYER attack path where an AI-owned Defense Response Window could be shown to the PLAYER, most visibly with **Execute**.
-- AI-owned incoming-attack Response Windows now stay AI-owned in local VS AI and resolve automatically.
-- Second Chance replay uses the same response-owner gating as normal attacks.
-- Makes **Back to Lobby** bind directly on the Game Result modal and render the VS AI Lobby explicitly after cleanup.
-- Tutorial remains v0.38. No card data, damage formula, or Rule Authority changes.
+## v6.9 / v0.40 Source Stack hotfix adoption
 
-## v6.6 update
-- Adds a **Back to Lobby** button to the VS AI end-of-match result modal.
-- VS AI automatically clears the finished local battle and returns to the lobby after **1 minute** if the button is not used.
-- The button performs a clean local-state reset in the same tab; deck selections are preserved.
-- Tutorial remains v0.38 and gameplay/rules are unchanged.
+- Adopts One Source Authority v1.6.1 and the corrected 198-card Season 1 registry.
+- Pins the canonical card hash to `b185307752fd523d6c1e4a450f8bdd82b96b4d4cbfbb884fca8a619e8c5c8057`.
+- Pins Hero Component Authority to `487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9` with 6 racial components, 16 class components, 10 profiles, and 30 legal compositions.
+- Carries all 30 revised card records, including **Back Slash**, and corrects every Resurrection metadata field to **3 Mana / 50 HP**.
+- Retains the already-correct defensive Dodge implementation for Halfling Second Chance and the authoritative first-player Turn 1 Attack rejection.
+- Retains the AI Magic Scope fix, AI End Phase watchdog, and every valid player- and AI-owned pending route.
+- Keeps VS AI and Tutorial on the same card, component, legality, effect-recipe, resolver, and battlefield runtime snapshots.
+- No unrelated UI or gameplay refactor is included.
 
-## v6.5 update
+## Verify
 
-- VS AI Lobby navigation to Deck Builder and PvP now stays in the same browser tab.
-- Deck Builder continues to route to Style 1.
-- PvP continues to use the public GitHub Pages route.
-- Grandis Legacy logo continues to return to the homepage in the same tab.
-- Tutorial v0.38 is unchanged.
-- No gameplay, AI, runtime, card-data, or presentation changes.
+Run `npm run verify` from this directory. It checks syntax, authority hashes/counts, revised card IDs, Hero Components, pending-state lifecycles, gameplay regressions, Tutorial parity, cache revisions, and file manifests.
+
+Historical release notes remain under `docs/`; Tutorial notes remain under `tutorial/docs/`.

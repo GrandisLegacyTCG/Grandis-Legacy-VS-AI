@@ -817,6 +817,9 @@ function canStartPlayCard(state, playerId, cardId) {
   if (card) {
     const timing = cardPhaseLegal(state, card, playerId);
     if (!timing.ok) errors.push(...timing.errors);
+    if (Number(state.round || 1) === 1 && state.first_player_id === playerId && isAttackSkillCard(card)) {
+      errors.push('First player cannot play Attack Skill Cards during the first turn.');
+    }
     if (player && Number(player.mana_pool || 0) < cardCost(card, state, playerId, null)) errors.push(`Not enough Mana Shards to play ${cardId}.`);
     if (card.card_id === 'S1-THF-018') {
       const opponent = getPlayer(state, getOpponentId(state, playerId));
@@ -1621,6 +1624,19 @@ function unbrokenStandStatusImmunityEligibleForResponse(state, response) {
 function applyResponseCardFollowUps(next, response, responseCard, events) {
   if (!responseCard || !response) return;
   applyStepInDodgeThenSwap(next, response, responseCard, events);
+  if (response.card_id === 'S1-WAR-012' && next.pending_attack_resolution && String(next.pending_attack_resolution.damage_type || '').toLowerCase() === 'physical') {
+    const sourceSlot = inferResponseSourceSlot(next, response);
+    const heroCard = responseHostHeroCardForValidation(next, response.player_id, sourceSlot);
+    const cls = String(heroClass(next, heroCard && heroCard.card_id) || '').toLowerCase();
+    if (cls === 'gladiator' || cls === 'conqueror') {
+      const attack = next.pending_attack_resolution;
+      const retaliationTarget = { target_player_id: attack.attacking_player_id, target_slot: normalizeSlotKey(attack.source_slot) };
+      if (retaliationTarget.target_player_id && SLOT_ORDER.includes(retaliationTarget.target_slot)) {
+        applyDamageToTargets(next, { attacking_player_id: response.player_id, card_id: response.card_id, source_slot: sourceSlot, damage_type: 'Direct', targets: [retaliationTarget], area: false, status_effects: [], response_result: null, response_results_by_target: {} }, 10, events, 'deflect_physical_block_retaliation');
+        events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, { player_id: response.player_id, card_id: response.card_id, source_slot: sourceSlot, target_player_id: retaliationTarget.target_player_id, target_slot: retaliationTarget.target_slot, payload: { result: 'DEFLECT_RETALIATION_DAMAGE', amount: 10, trigger: 'blocked_physical_damage' } }));
+      }
+    }
+  }
   const tags = cardTags(responseCard);
   const text = legacyRuleText(responseCard);
   if (response.card_id === 'S1-MAG-011' || tags.has('SELF_FREEZE_2_TURNS') || /Inflict\s+Freeze\s+on\s+this\s+Hero\s+for\s+2\s+turns/i.test(text)) {
@@ -3299,7 +3315,7 @@ function buildPendingAttackResolution(state, pending, card) {
     selected_target_slots: normalizeMultiTargetSlots(pending.target_slots || []),
     post_hit_reposition: null,
     casting: isCastingAttackResolution(card),
-    second_chance_replay: Boolean(pending.second_chance_replay)
+    is_ultimate: isUltimateSkillCard(card)
   };
 }
 function getOrCreateAttackDamageComputation(next, attackResolution, events) {
@@ -3418,7 +3434,6 @@ function resolvePendingAttackDamage(next, events, resolverPlayerId, options) {
     if (attackResolution.sequential_resolution_started) consumePoisonVialModifierIfNeeded(next, attackResolution, damagedTargets, events);
     if (amount > 0 || hasPerTargetDamage || attackUsesConnectedHitManaDrain(attackResolution)) applyOnHitAfterDamageTriggers(next, attackResolution, damagedTargets, events);
     queuePostAttackRepositionContinuation(next, attackResolution, damagedTargets, events);
-    if (response && response.type === 'DODGE') openSecondChanceChoiceAfterDodge(next, attackResolution, events);
     addHolyRingRestrictionAfterAttack(next, attackResolution, events);
     addShieldBashReductionAfterAttack(next, attackResolution, events);
   }
@@ -4705,31 +4720,6 @@ function buildRestrictionAttachmentFromDispatch(next, pending, dispatch, card) {
   return Object.assign(base, { duration: result.expires || result.duration || null });
 }
 
-function sourceHeroHasSecondChance(next, attackResolution) {
-  const player = next.players && next.players[attackResolution && attackResolution.attacking_player_id];
-  const slotState = player && player.board && player.board[attackResolution && attackResolution.source_slot];
-  const hero = slotState && slotState.hero;
-  const heroCard = hero && getCard(next, hero.card_id);
-  const racial = heroCard && heroCard.racial_ability || {};
-  const action = racial.action || {};
-  const tokens = Number(player && (player.racial_token_pool !== undefined ? player.racial_token_pool : player.racial_tokens) || 0);
-  const isSecondChance = String(action.action_key || '').toLowerCase() === 'second_chance'
-    || action.trigger === 'this_hero_skill_card_dodged'
-    || /Second Chance/i.test(String(racial.name || '') + ' ' + String(racial.text || legacyRuleText(heroCard) || ''));
-  return tokens > 0 && isSecondChance && isAttackSkillCard(getCard(next, attackResolution.card_id));
-}
-
-function openSecondChanceChoiceAfterDodge(next, attackResolution, events) {
-  if (!sourceHeroHasSecondChance(next, attackResolution)) return false;
-  const player = next.players && next.players[attackResolution.attacking_player_id];
-  const slotState = player && player.board && player.board[attackResolution.source_slot];
-  const hero = slotState && slotState.hero;
-  if (!hero) return false;
-  next.pending = { type: 'racial_trigger_choice', trigger: 'second_chance', player_id: attackResolution.attacking_player_id, source_slot: attackResolution.source_slot, source_hero_card_id: hero.card_id, card_id: attackResolution.card_id, target_player_id: attackResolution.target_player_id, target_slot: attackResolution.target_slot, choices: ['use', 'decline'] };
-  events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, { player_id: attackResolution.attacking_player_id, card_id: hero.card_id, source_slot: attackResolution.source_slot, target_player_id: attackResolution.target_player_id, target_slot: attackResolution.target_slot, payload: { result: 'SECOND_CHANCE_CHOICE_OPENED', dodged_card_id: attackResolution.card_id, optional: true, mana_cost_if_used: 0 } }));
-  return true;
-}
-
 function addHolyRingRestrictionAfterAttack(next, attackResolution, events) {
   if (!attackResolution || attackResolution.card_id !== 'S1-CLE-009') return;
   if (!/\b(?:priest|saint)\b/i.test(String(attackResolution.source_hero_class || ''))) return;
@@ -5227,6 +5217,15 @@ function responseCardLegal(state, playerId, cardId, options) {
   return { ok: errors.length === 0, errors, card };
 }
 
+function responseAdditionalHandDiscardSpec(card) {
+  const cost = card && (card.canonical_cost || card.canonical_legality && card.canonical_legality.cost || card.cost) || {};
+  const specs = [];
+  if (cost.kind === 'discard_from_hand') specs.push(Object.assign({ kind: 'discard_from_hand' }, cost.discard_from_hand || {}));
+  for (const extra of cost.additional_costs || []) if (extra && extra.kind === 'discard_from_hand') specs.push(extra);
+  const spec = specs.find(x => Number(x.count || 1) === 1);
+  return spec || null;
+}
+
 function declareResponse(state, intent) {
   const cardId = intent.card_id || intent.payload && intent.payload.card_id;
   if (!cardId) return { state, events: [], errors: ['DECLARE_RESPONSE requires card_id.'] };
@@ -5239,22 +5238,24 @@ function declareResponse(state, intent) {
   const responsePlayer=getPlayer(state,intent.player_id);
   const requestedHandIndex=Number(intent.hand_index ?? (intent.payload && intent.payload.hand_index));
   const responseHandIndex=Number.isInteger(requestedHandIndex)&&responsePlayer&&responsePlayer.hand[requestedHandIndex]===cardId?requestedHandIndex:(responsePlayer?responsePlayer.hand.indexOf(cardId):-1);
-  if(cardId==='S1-ARC-003' && (!responsePlayer || responsePlayer.hand.length<2)) return {state,events:[],errors:['Escape Arrow requires another card in hand to discard.']};
+  const handDiscardSpec=responseAdditionalHandDiscardSpec(legal.card);
+  if(handDiscardSpec && handDiscardSpec.exclude_self && (!responsePlayer || responsePlayer.hand.length<2)) return {state,events:[],errors:[`${legal.card.name || cardId} requires another card in hand to discard.`]};
   const next=deepClone(state);
-  next.pending_response={ player_id:intent.player_id, card_id:cardId, response_hand_index:responseHandIndex, requires_hand_cost_choice:cardId==='S1-ARC-003', selected_hand_cost_index:null, selected_hand_cost_card_id:null, source_slot:normalizeSlotKey(intent.source_slot || intent.payload && intent.payload.source_slot), response_to:deepClone(state.response_window), redirect_target:redirect&&redirect.ok?{target_player_id:redirect.target_player_id,target_slot:redirect.target_slot}:null, cover_up_swap:redirect&&redirect.cover_up_swap?redirect.cover_up_swap:null, countering_frame_id:counteringPendingResponse?state.response_stack[state.response_stack.length-1].frameId:null };
+  next.pending_response={ player_id:intent.player_id, card_id:cardId, response_hand_index:responseHandIndex, requires_hand_cost_choice:Boolean(handDiscardSpec), selected_hand_cost_index:null, selected_hand_cost_card_id:null, source_slot:normalizeSlotKey(intent.source_slot || intent.payload && intent.payload.source_slot), response_to:deepClone(state.response_window), redirect_target:redirect&&redirect.ok?{target_player_id:redirect.target_player_id,target_slot:redirect.target_slot}:null, cover_up_swap:redirect&&redirect.cover_up_swap?redirect.cover_up_swap:null, countering_frame_id:counteringPendingResponse?state.response_stack[state.response_stack.length-1].frameId:null };
   const event=createRuntimeEvent(EVENT_TYPES.RESPONSE_DECLARED,next,{player_id:intent.player_id,card_id:cardId,source_slot:next.pending_response.source_slot||undefined,target_slot:state.response_window&&state.response_window.target_slot,payload:{response_to_card_id:counteringPendingResponse?state.response_stack[state.response_stack.length-1].cardId:state.pending_attack_resolution.card_id,counter_response:counteringPendingResponse,confirmed:false,cost_paid:false}});
   return {state:appendEvents(next,event),events:[event],errors:[]};
 }
 
 function selectResponseCostCard(state, intent) {
   if (!state.pending_response || state.pending_response.player_id !== intent.player_id) return { state, events: [], errors: ['No owned pending response requires a hand-cost choice.'] };
-  if (state.pending_response.card_id !== 'S1-ARC-003') return { state, events: [], errors: ['Pending response does not require selected hand discard.'] };
+  const responseCard=getCard(state,state.pending_response.card_id); const handDiscardSpec=responseAdditionalHandDiscardSpec(responseCard);
+  if (!handDiscardSpec) return { state, events: [], errors: ['Pending response does not require selected hand discard.'] };
   const player=getPlayer(state,intent.player_id), raw=intent.hand_index!==undefined?intent.hand_index:intent.payload&&intent.payload.hand_index, index=Number(raw);
   if(!player||!Number.isInteger(index)||index<0||index>=player.hand.length) return {state,events:[],errors:['Choose a valid card in your hand.']};
-  if(index===state.pending_response.response_hand_index) return {state,events:[],errors:['Escape Arrow cannot discard itself as its additional cost.']};
+  if(handDiscardSpec.exclude_self && index===state.pending_response.response_hand_index) return {state,events:[],errors:[`${responseCard && responseCard.name || state.pending_response.card_id} cannot discard itself as its additional cost.`]};
   const next=deepClone(state); next.pending_response.selected_hand_cost_index=index; next.pending_response.selected_hand_cost_card_id=player.hand[index];
   next.pending_response.mandatory_prompt={type:'SELECT_RESPONSE_COST_CARD',label:'Choose 1 other card in your Hand to discard.',required_count:1,selected_count:1,owner_visible:true};
-  const event=createRuntimeEvent(EVENT_TYPES.TARGET_SELECTED,next,{player_id:intent.player_id,card_id:'S1-ARC-003',payload:{target_type:'additional_hand_discard_cost',selected_hand_index:index,selected_card_id:player.hand[index],identity_visible_to_controller:true,identity_hidden_from_opponent:true}});
+  const event=createRuntimeEvent(EVENT_TYPES.TARGET_SELECTED,next,{player_id:intent.player_id,card_id:state.pending_response.card_id,payload:{target_type:'additional_hand_discard_cost',selected_hand_index:index,selected_card_id:player.hand[index],identity_visible_to_controller:true,identity_hidden_from_opponent:true}});
   return {state:appendEvents(next,event),events:[event],errors:[]};
 }
 
@@ -5266,13 +5267,14 @@ function confirmResponse(state, intent) {
   const legal = responseCardLegal(state, intent.player_id, state.pending_response.card_id, { countering_pending_response: countering, intent: state.pending_response });
   if (!legal.ok) return { state, events: [], errors: legal.errors };
   let next=deepClone(state); const response=next.pending_response, events=[];
-  if (response.card_id==='S1-ARC-003' && !Number.isInteger(response.selected_hand_cost_index)) return {state,events:[],errors:['Choose 1 other card in hand to discard for Escape Arrow.']};
-  if (response.card_id==='S1-ARC-003') {
+  const handDiscardSpec=responseAdditionalHandDiscardSpec(responseCard);
+  if (handDiscardSpec && !Number.isInteger(response.selected_hand_cost_index)) return {state,events:[],errors:[`Choose 1 other card in hand to discard for ${responseCard && responseCard.name || response.card_id}.`]};
+  if (handDiscardSpec) {
     const hand=next.players[intent.player_id].hand, costIndex=response.selected_hand_cost_index, responseIndex=response.response_hand_index;
-    if(costIndex<0||costIndex>=hand.length||costIndex===responseIndex||hand[costIndex]!==response.selected_hand_cost_card_id) return {state,events:[],errors:['Selected Escape Arrow discard cost is no longer legal. Choose the card again.']};
+    if(costIndex<0||costIndex>=hand.length||(handDiscardSpec.exclude_self&&costIndex===responseIndex)||hand[costIndex]!==response.selected_hand_cost_card_id) return {state,events:[],errors:[`Selected ${responseCard && responseCard.name || response.card_id} discard cost is no longer legal. Choose the card again.`]};
     const costCard=hand.splice(costIndex,1)[0]; next.players[intent.player_id].discard_pile.push(costCard);
     if(costIndex<responseIndex) response.response_hand_index=responseIndex-1;
-    events.push(createRuntimeEvent(EVENT_TYPES.CARD_MOVED,next,{player_id:intent.player_id,card_id:costCard,payload:{from:'Hand',to:'Discard Pile',escape_arrow_additional_cost:true,controller_selected:true}}));
+    events.push(createRuntimeEvent(EVENT_TYPES.CARD_MOVED,next,{player_id:intent.player_id,card_id:costCard,payload:{from:'Hand',to:'Discard Pile',response_additional_discard_cost:true,source_response_card_id:response.card_id,controller_selected:true}}));
   }
   const mana=cardCost(responseCard,state,intent.player_id,response.source_slot);
   next.players[intent.player_id].mana_pool=Math.max(0,Number(next.players[intent.player_id].mana_pool||0)-mana);
@@ -5614,9 +5616,9 @@ function racialTraitProfileForHeroCard(heroCard) {
   if (/Primal Strike/i.test(candidate)) return { name: 'Primal Strike', action_key: 'primal_strike', mode: 'active', phase: PHASES.BATTLE, target_required: true };
   if (/Dragon Scale/i.test(candidate) || action.type === 'response_damage_block') return { name: 'Dragon Scale', action_key: 'dragon_scale', mode: 'response', phase: 'Response' };
   if (/Stoneblood/i.test(candidate) || action.trigger === 'would_be_defeated') return { name: 'Stoneblood', action_key: 'stoneblood', mode: 'trigger', phase: 'would_be_defeated' };
-  if (/Second Chance/i.test(candidate) || action.trigger === 'this_hero_skill_card_dodged') return { name: 'Second Chance', action_key: 'second_chance', mode: 'trigger', phase: 'this_hero_skill_card_dodged' };
+  if (/Second Chance/i.test(candidate) || action.type === 'response_damage_dodge') return { name: 'Second Chance', action_key: 'second_chance', mode: 'response', phase: 'Response' };
   if (action.phase) return { name: name || 'Racial Trait', action_key: action.action_key || '', mode: 'active', phase: String(action.phase).replace(/ Phase$/i, '') };
-  if (action.type === 'response_damage_block') return { name: name || 'Racial Trait', action_key: action.action_key || '', mode: 'response', phase: 'Response' };
+  if (action.type === 'response_damage_block' || action.type === 'response_damage_dodge') return { name: name || 'Racial Trait', action_key: action.action_key || '', mode: 'response', phase: 'Response' };
   if (action.trigger) return { name: name || 'Racial Trait', action_key: action.action_key || '', mode: 'trigger', phase: action.trigger };
   return { name: name || 'Racial Trait', action_key: '', mode: 'unknown', phase: null };
 }
@@ -5656,6 +5658,34 @@ function racialResponseIdentity(heroCard, profile) {
   };
 }
 
+function racialEffectValue(heroCard, key, fallback) {
+  const racial = heroCard && heroCard.racial_ability || {};
+  const effect = racial.action && racial.action.effect || {};
+  const value = Number(effect[key]);
+  return Number.isFinite(value) && value > 0 ? value : fallback;
+}
+
+function useSecondChanceResponse(state, intent, sourceSlot, slotState, heroCard, profile) {
+  const playerId = intent.player_id;
+  if (!state.response_window || !state.pending_attack_resolution) return { state, events: [], errors: ['Second Chance requires an incoming damage response window.'] };
+  if (state.response_window.defending_player_id !== playerId) return { state, events: [], errors: ['Second Chance can only answer damage against its controller.'] };
+  const damageType = String(state.pending_attack_resolution.damage_type || state.response_window.damage_type || '').toLowerCase();
+  if (!['physical', 'magical'].includes(damageType)) return { state, events: [], errors: ['Second Chance only dodges incoming Physical or Magical damage.'] };
+  if (state.pending_attack_resolution.cannot_be_dodged) return { state, events: [], errors: ['Incoming attack cannot be dodged.'] };
+  if (!incomingDamageIncludesHeroSlot(state, playerId, sourceSlot)) return { state, events: [], errors: ['Second Chance can only protect the Halfling Hero using it.'] };
+  let next = deepClone(state);
+  const identity = racialResponseIdentity(heroCard, profile);
+  const events = [createRuntimeEvent(EVENT_TYPES.RESPONSE_DECLARED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: Object.assign({ response_to_card_id: state.response_window.card_id, racial_trait: 'Second Chance', response_identity: identity }, identity) })];
+  const spend = spendRacialToken(next, playerId, heroCard.card_id, events);
+  if (!spend.ok) return { state, events: [], errors: spend.errors };
+  next.pending_attack_resolution.response_result = Object.assign({ type: 'DODGE', card_id: heroCard.card_id, racial_trait: 'Second Chance', source_slot: sourceSlot, target_slot: sourceSlot, player_id: playerId, response_identity: identity }, identity);
+  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_CONFIRMED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: Object.assign({ racial_trait: 'Second Chance', response_identity: identity }, identity) }));
+  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_RESOLVED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: Object.assign({ result: Object.assign({ type: 'DODGE', racial_trait: 'Second Chance', response_identity: identity }, identity), response_identity: identity }, identity) }));
+  next.response_window = null;
+  resolvePendingAttackDamage(next, events, playerId);
+  return { state: appendEvents(next, events), events, errors: [] };
+}
+
 function useDragonScaleResponse(state, intent, sourceSlot, slotState, heroCard, profile) {
   const playerId = intent.player_id;
   if (!state.response_window || !state.pending_attack_resolution) return { state, events: [], errors: ['Dragon Scale requires an incoming damage response window.'] };
@@ -5664,13 +5694,14 @@ function useDragonScaleResponse(state, intent, sourceSlot, slotState, heroCard, 
   if (!['physical', 'magical'].includes(damageType)) return { state, events: [], errors: ['Dragon Scale only blocks incoming Physical or Magical damage.'] };
   if (!incomingDamageIncludesHeroSlot(state, playerId, sourceSlot)) return { state, events: [], errors: ['Dragon Scale can only protect the Dragonborn Hero using it.'] };
   let next = deepClone(state);
+  const blockAmount = racialEffectValue(heroCard, 'block_damage', 50);
   const identity = racialResponseIdentity(heroCard, profile);
   const events = [createRuntimeEvent(EVENT_TYPES.RESPONSE_DECLARED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: Object.assign({ response_to_card_id: state.response_window.card_id, racial_trait: 'Dragon Scale', response_identity: identity }, identity) })];
   const spend = spendRacialToken(next, playerId, heroCard.card_id, events);
   if (!spend.ok) return { state, events: [], errors: spend.errors };
-  next.pending_attack_resolution.response_result = Object.assign({ type: 'BLOCK', card_id: heroCard.card_id, racial_trait: 'Dragon Scale', block_amount: 40, block_target_player_id: playerId, block_target_slot: sourceSlot, response_identity: identity }, identity);
-  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_CONFIRMED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: Object.assign({ racial_trait: 'Dragon Scale', block_amount: 40, response_identity: identity }, identity) }));
-  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_RESOLVED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: Object.assign({ result: Object.assign({ type: 'BLOCK', block_amount: 40, racial_trait: 'Dragon Scale', response_identity: identity }, identity), response_identity: identity }, identity) }));
+  next.pending_attack_resolution.response_result = Object.assign({ type: 'BLOCK', card_id: heroCard.card_id, racial_trait: 'Dragon Scale', block_amount: blockAmount, block_target_player_id: playerId, block_target_slot: sourceSlot, response_identity: identity }, identity);
+  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_CONFIRMED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: Object.assign({ racial_trait: 'Dragon Scale', block_amount: blockAmount, response_identity: identity }, identity) }));
+  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_RESOLVED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: Object.assign({ result: Object.assign({ type: 'BLOCK', block_amount: blockAmount, racial_trait: 'Dragon Scale', response_identity: identity }, identity), response_identity: identity }, identity) }));
   next.response_window = null;
   resolvePendingAttackDamage(next, events, playerId);
   return { state: appendEvents(next, events), events, errors: [] };
@@ -5687,6 +5718,7 @@ function useRacialTrait(state, intent) {
   const heroCard = getCard(state, slotState.hero.card_id) || { card_id: slotState.hero.card_id };
   const profile = racialTraitProfileForHeroCard(heroCard);
   if (profile.mode === 'response' && profile.action_key === 'dragon_scale') return useDragonScaleResponse(state, intent, sourceSlot, slotState, heroCard, profile);
+  if (profile.mode === 'response' && profile.action_key === 'second_chance') return useSecondChanceResponse(state, intent, sourceSlot, slotState, heroCard, profile);
   const timingCheck = validateActiveRacialTraitTiming(state, playerId, profile);
   if (!timingCheck.ok) return { state, events: [], errors: timingCheck.errors };
 
@@ -5872,30 +5904,13 @@ function confirmTriggeredRacial(state, intent) {
     if (!spend.ok) return { state, events: [], errors: spend.errors };
     slotState.hero.pending_defeat = false;
     slotState.hero.stoneblood_used_turn = racialTraitTurnKey(next);
-    slotState.hero.hp = 10;
+    const stonebloodCard = getCard(next, slotState.hero.card_id) || {};
+    const stonebloodHp = racialEffectValue(stonebloodCard, 'set_hp', 30);
+    slotState.hero.hp = stonebloodHp;
     slotState.hero.defeated = false;
     slotState.slot_mode = 'HERO';
-    events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, { player_id: pending.player_id, card_id: slotState.hero.card_id, target_player_id: pending.player_id, target_slot: slot, payload: { result: 'STONEBLOOD_PREVENT_DEFEAT_RESOLVED', after_hp: 10, racial_token_spent: 1, usage_limit: 'racial_tokens_only' } }));
+    events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, { player_id: pending.player_id, card_id: slotState.hero.card_id, target_player_id: pending.player_id, target_slot: slot, payload: { result: 'STONEBLOOD_PREVENT_DEFEAT_RESOLVED', after_hp: stonebloodHp, racial_token_spent: 1, usage_limit: 'racial_tokens_only' } }));
     resumePendingAttackAfterMandatoryChoice(next, events);
-    return { state: appendEvents(next, events), events, errors: [] };
-  }
-  if (pending.trigger === 'second_chance') {
-    if (choice === 'decline' || choice === 'no' || choice === 'skip') {
-      events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, { player_id: pending.player_id, card_id: pending.source_hero_card_id, source_slot: slot, payload: { result: 'SECOND_CHANCE_DECLINED', dodged_card_id: pending.card_id } }));
-      return { state: appendEvents(next, events), events, errors: [] };
-    }
-    const spend = spendRacialToken(next, pending.player_id, pending.source_hero_card_id, events);
-    if (!spend.ok) return { state, events: [], errors: spend.errors };
-    const idx = (player.discard_pile || []).lastIndexOf(pending.card_id);
-    if (idx >= 0) player.discard_pile.splice(idx, 1);
-    const replayPending = { type: 'PLAY_CARD', player_id: pending.player_id, card_id: pending.card_id, source_required: true, target_required: true, target_owner_id: pending.target_player_id, target_player_id: pending.target_player_id, source_slot: slot, target_slot: pending.target_slot, confirmed: true, second_chance_replay: true };
-    const card = getCard(next, pending.card_id);
-    const attackResolution = buildPendingAttackResolution(next, replayPending, card);
-    if (!attackResolution) return { state, events: [], errors: ['Second Chance could not rebuild the dodged Skill attack.'] };
-    next.pending_attack_resolution = attackResolution;
-    next.response_window = { type: attackResolution.area ? 'AREA_ATTACK_DAMAGE_WOULD_BE_DEALT' : 'ATTACK_DAMAGE_WOULD_BE_DEALT', card_id: pending.card_id, attacking_player_id: pending.player_id, defending_player_id: pending.target_player_id, source_slot: slot, target_player_id: pending.target_player_id, target_slot: pending.target_slot, damage_type: attackResolution.damage_type, damage_amount: attackResolution.base_damage, area: attackResolution.area, second_chance_replay: true };
-    events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, { player_id: pending.player_id, card_id: pending.source_hero_card_id, source_slot: slot, payload: { result: 'SECOND_CHANCE_REPLAY_OPENED', replay_card_id: pending.card_id, racial_token_spent: 1, mana_cost: 0 } }));
-    events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_WINDOW_OPENED, next, { player_id: pending.target_player_id, card_id: pending.card_id, source_slot: slot, target_player_id: pending.target_player_id, target_slot: pending.target_slot, payload: { response_to: next.response_window.type, second_chance_replay: true } }));
     return { state: appendEvents(next, events), events, errors: [] };
   }
   return { state, events: [], errors: [`Unhandled triggered racial ${pending.trigger}`] };
@@ -6039,7 +6054,8 @@ function getLegalActions(state, playerId) {
         const profile = racialTraitProfileForHeroCard(heroCard || {});
         const damageType = String(state.pending_attack_resolution && state.pending_attack_resolution.damage_type || state.response_window.damage_type || '').toLowerCase();
         const tokens = Number(player.racial_token_pool || 0);
-        if (profile.action_key === 'dragon_scale' && tokens > 0 && racialTokenSpendAvailable(state, playerId) && ['physical','magical'].includes(damageType) && incomingDamageIncludesHeroSlot(state, playerId, slot)) actions.push({ type: 'USE_RACIAL_TRAIT', player_id: playerId, source_slot: slot, racial_trait: 'Dragon Scale', block_amount: 40 });
+        if (profile.action_key === 'dragon_scale' && tokens > 0 && racialTokenSpendAvailable(state, playerId) && ['physical','magical'].includes(damageType) && incomingDamageIncludesHeroSlot(state, playerId, slot)) actions.push({ type: 'USE_RACIAL_TRAIT', player_id: playerId, source_slot: slot, racial_trait: 'Dragon Scale', block_amount: racialEffectValue(heroCard, 'block_damage', 50) });
+        if (profile.action_key === 'second_chance' && tokens > 0 && racialTokenSpendAvailable(state, playerId) && ['physical','magical'].includes(damageType) && !(state.pending_attack_resolution && state.pending_attack_resolution.cannot_be_dodged) && incomingDamageIncludesHeroSlot(state, playerId, slot)) actions.push({ type: 'USE_RACIAL_TRAIT', player_id: playerId, source_slot: slot, racial_trait: 'Second Chance', response_kind: 'DODGE' });
       }
     }
     for (const cardId of player ? player.hand : []) {
@@ -6054,7 +6070,7 @@ function getLegalActions(state, playerId) {
     actions.push({ type: 'PASS_RESPONSE_PRIORITY', player_id: playerId, label: (state.response_stack || []).length ? 'Pass / resolve confirmed response chain' : 'No response' });
     return actions;
   }
-  if (state.pending_response && state.pending_response.player_id === playerId) { if (state.pending_response.card_id === 'S1-ARC-003' && !Number.isInteger(state.pending_response.selected_hand_cost_index)) { const player=getPlayer(state,playerId); return (player&&player.hand||[]).map((id,index)=>({type:'SELECT_RESPONSE_COST_CARD',player_id:playerId,hand_index:index,card_id:id,card_name:(getCard(state,id)||{}).name||id,owner_visible:true,prompt:'Choose 1 other card in your Hand to discard.'})).filter(a=>a.hand_index!==state.pending_response.response_hand_index); } return [{ type: 'CONFIRM_RESPONSE', player_id: playerId }]; }
+  if (state.pending_response && state.pending_response.player_id === playerId) { const pendingResponseCard=getCard(state,state.pending_response.card_id); const handDiscardSpec=responseAdditionalHandDiscardSpec(pendingResponseCard); if (handDiscardSpec && !Number.isInteger(state.pending_response.selected_hand_cost_index)) { const player=getPlayer(state,playerId); return (player&&player.hand||[]).map((id,index)=>({type:'SELECT_RESPONSE_COST_CARD',player_id:playerId,hand_index:index,card_id:id,card_name:(getCard(state,id)||{}).name||id,owner_visible:true,prompt:'Choose 1 other card in your Hand to discard.'})).filter(a=>!handDiscardSpec.exclude_self||a.hand_index!==state.pending_response.response_hand_index); } return [{ type: 'CONFIRM_RESPONSE', player_id: playerId }]; }
   if (state.active_player_id !== playerId || state.pending) return [];
   const player = getPlayer(state, playerId);
   const actions = [];
