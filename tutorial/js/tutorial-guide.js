@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.42 — separate first-use practices for Attack, Support, Tactical, Event, and Item cards; each stops at the final cancellable boundary. Area Attack responses teach every affected Hero. VS AI v6.11 base. */
+/* Grandis Legacy Tutorial Guide v0.43 — separate first-use practices for Attack, Support, Tactical, Event, and Item cards; each stops at the final cancellable boundary. Area Attack responses teach every affected Hero. VS AI v6.15 base. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;
@@ -138,12 +138,21 @@
   function regionRect(art,region){
     var r=art.getBoundingClientRect(),x=r.left,y=r.top,w=r.width,h=r.height;
     var fam=anatomy.activeFamily||anatomy.waitingFamily||'Skill';
-    var maps={
+    /* Desktop anatomy geometry is intentionally kept unchanged. Mobile owns a
+       separate map because the Card Preview is resized/reflowed independently. */
+    var desktopMaps={
       Skill:{name:[.205,.495,.655,.072],mana:[.012,.012,.19,.15],badge:[.285,.565,.39,.052],text:[.035,.613,.92,.372],exp:[.925,.018,.068,.964],lineage:[.075,.625,.47,.055]},
       UltimateSkill:{name:[.205,.495,.655,.072],mana:[.012,.012,.19,.15],badge:[.285,.565,.39,.052],text:[.035,.613,.92,.305],ultimate_rules:[.035,.925,.92,.055],exp:[.925,.018,.068,.964],lineage:[.075,.625,.47,.055]},
       Event:{name:[.205,.565,.655,.075],mana:[.012,.012,.19,.15],badge:[.285,.635,.39,.052],text:[.035,.643,.92,.307],exp:[.925,.018,.068,.964],lineage:[.075,.665,.47,.055]},
       Item:{name:[.205,.555,.655,.075],badge:[.285,.625,.39,.052],text:[.035,.643,.92,.322],exp:[.925,.018,.068,.964],lineage:[.075,.665,.47,.055]}
     };
+    var mobileMaps={
+      Skill:{name:[.205,.492,.655,.078],mana:[.006,.006,.205,.165],badge:[.278,.553,.405,.064],text:[.045,.615,.885,.345],exp:[.927,.345,.073,.245],lineage:[.075,.618,.505,.075]},
+      UltimateSkill:{name:[.205,.492,.655,.078],mana:[.006,.006,.205,.165],badge:[.278,.553,.405,.064],text:[.045,.615,.885,.285],ultimate_rules:[.045,.905,.885,.075],exp:[.927,.345,.073,.245],lineage:[.075,.618,.505,.075]},
+      Event:{name:[.205,.558,.655,.082],mana:[.006,.006,.205,.165],badge:[.278,.622,.405,.064],text:[.045,.650,.885,.295],exp:[.927,.345,.073,.245],lineage:[.075,.657,.505,.075]},
+      Item:{name:[.205,.548,.655,.082],badge:[.278,.612,.405,.064],text:[.045,.650,.885,.305],exp:[.927,.345,.073,.245],lineage:[.075,.657,.505,.075]}
+    };
+    var maps=isMobileTutorialViewport()?mobileMaps:desktopMaps;
     var map=maps[fam]||maps.Skill,m=map[region]||[0,0,1,1];
     return{left:x+w*m[0],top:y+h*m[1],width:w*m[2],height:h*m[3]};
   }
@@ -214,12 +223,14 @@
         if(entry.kind==='arrow'){
           var artRect=entry.el&&entry.el.getBoundingClientRect?entry.el.getBoundingClientRect():r;
           var targetInset=(entry.region==='badge'||entry.region==='lineage')?2:((entry.region==='name')?5:4),targetY=r.top+r.height/2;
-          var fromRight=isMobileTutorialViewport()&&entry.region==='exp';
+          var mobile=isMobileTutorialViewport(),fromRight=mobile&&entry.region==='exp';
           var targetX=fromRight?(r.right-targetInset):(r.left+targetInset);
           var length=Math.max(28,Math.min(46,artRect.width*.12));
           var arrow=document.createElement('div');arrow.className='gl-tutorial-anatomy-arrow '+(fromRight?'from-right':'from-left')+' gl-tutorial-anatomy-arrow--'+(entry.region||'point');
           arrow.style.top=Math.round(targetY-2)+'px';arrow.style.width=Math.round(length)+'px';
-          arrow.style.left=Math.round(fromRight?(targetX+7):(targetX-length-7))+'px';
+          var rawLeft=fromRight?(targetX+7):(targetX-length-7);
+          if(mobile)rawLeft=Math.max(4,Math.min(window.innerWidth-length-4,rawLeft));
+          arrow.style.left=Math.round(rawLeft)+'px';
           arrow.innerHTML='<span class="gl-tutorial-arrow-dot" aria-hidden="true"></span>';
           layer.appendChild(arrow);return;
         }
@@ -602,21 +613,23 @@
 
   function anatomyStepsFor(fam,cardId){
     var c=cardInfo(cardId),ultimate=c&&c.requirement&&c.requirement.ultimate||{},isUltimate=fam==='UltimateSkill'||!!ultimate.is_ultimate,exp=isUltimate?200:100;
+    var mobileAnatomy=isMobileTutorialViewport();
+    var anatomySelector=function(selector){return mobileAnatomy?null:selector;};
     if(fam==='UltimateSkill')return[
       {title:'Ultimate Skill — What Stays the Same',selector:'#previewBody .readable-card-art',compact:true,micro:true,html:'<p>An Ultimate is still a <b>Skill Card</b>. Its printed timing, source, target, Mana, Exhaust, and Response flow work like other Skills.</p><p>The next steps cover only the rules that are different.</p>'},
-      {title:'Bound Hero and Deck Limit',selector:'#previewBody .readable-card-ultimate-rules',printedRegion:'ultimate_rules',compact:true,micro:true,html:'<p>Only the specifically named <b>Bound Hero</b> may play this Ultimate or receive it as Tribute.</p><p>Each Ultimate is limited to <b>1 copy per deck</b>.</p>'},
+      {title:'Bound Hero and Deck Limit',selector:anatomySelector('#previewBody .readable-card-ultimate-rules'),printedRegion:'ultimate_rules',compact:true,micro:true,html:'<p>Only the specifically named <b>Bound Hero</b> may play this Ultimate or receive it as Tribute.</p><p>Each Ultimate is limited to <b>1 copy per deck</b>.</p>'},
       {title:'Ultimate EXP',selector:null,printedRegion:'exp',compact:true,micro:true,html:'<p>An Ultimate provides <b>200 EXP</b> when Tributed instead of the normal 100 EXP.</p><p>Ultimate Tribute remains restricted to its named Bound Hero.</p>'}
     ];
     var color=lineageColorInfo(c),colorHtml='<span class="gl-lineage-key gl-lineage-key--white">White — Cleric</span><span class="gl-lineage-key gl-lineage-key--red">Red — Warrior</span><span class="gl-lineage-key gl-lineage-key--green">Green — Archer</span>';
     var base=[
-      {title:'Card Name',selector:'#previewBody .readable-card-name',printedRegion:'name',highlightPadding:{top:5,right:5,bottom:5,left:5},compact:true,micro:true,html:'<p>Identifies the card.</p>'}
+      {title:'Card Name',selector:anatomySelector('#previewBody .readable-card-name'),printedRegion:'name',highlightPadding:{top:5,right:5,bottom:5,left:5},compact:true,micro:true,html:'<p>Identifies the card.</p>'}
     ];
-    if(fam!=='Item')base.push({title:'Mana Cost',selector:'#previewBody .readable-card-mana',printedRegion:'mana',compact:true,micro:true,html:'<p>Mana required to play it.</p>'});
-    base.push({title:'Card Badge',selector:'#previewBody .readable-card-badges',printedRegion:'badge',compact:true,micro:true,html:'<p>Shows the card role and timing.</p>'});
-    if(fam==='Skill'||fam==='UltimateSkill')base.push({id:'lineage_color_anatomy',title:'Lineage Color',selector:'#previewBody .readable-card-art',printedRegion:'lineage',compact:true,micro:true,dock:'top-right',html:'<p>This <b>'+esc(color.color)+'</b> Skill belongs to the <b>'+esc(color.lineage)+'</b> lineage.</p><div class="gl-lineage-keys">'+colorHtml+'</div><p>A hybrid Hero can use legal Skills from either of its lineages.</p>'});
+    if(fam!=='Item')base.push({title:'Mana Cost',selector:anatomySelector('#previewBody .readable-card-mana'),printedRegion:'mana',compact:true,micro:true,html:'<p>Mana required to play it.</p>'});
+    base.push({title:'Card Badge',selector:anatomySelector('#previewBody .readable-card-badges'),printedRegion:'badge',compact:true,micro:true,html:'<p>Shows the card role and timing.</p>'});
+    if(fam==='Skill'||fam==='UltimateSkill')base.push({id:'lineage_color_anatomy',title:'Lineage Color',selector:anatomySelector('#previewBody .readable-card-art'),printedRegion:'lineage',compact:true,micro:true,dock:'top-right',html:'<p>This <b>'+esc(color.color)+'</b> Skill belongs to the <b>'+esc(color.lineage)+'</b> lineage.</p><div class="gl-lineage-keys">'+colorHtml+'</div><p>A hybrid Hero can use legal Skills from either of its lineages.</p>'});
     if(fam==='Event')base.push({title:'Event Card Color',selector:'#previewBody .readable-card-art',compact:true,micro:true,dock:'top-right',html:'<p>The <b>orange frame</b> identifies an Event Card. This is a neutral card-family color, not a Hero Lineage color.</p><p>Use the <b>Event Card</b> badge to distinguish it from an Item.</p>'});
     if(fam==='Item')base.push({title:'Item Card Color',selector:'#previewBody .readable-card-art',compact:true,micro:true,dock:'top-right',html:'<p>The <b>brown frame</b> identifies an Item Card. This is a neutral card-family color, not a Hero Lineage color.</p><p>Use the <b>Item Card</b> badge to distinguish it from an Event.</p>'});
-    base.push({title:'Card Text',selector:'#previewBody .readable-card-text',printedRegion:'text',compact:true,micro:true,html:'<p>Read the printed effect and follow the timing, target, and resolution rules written on the card.</p>'});
+    base.push({title:'Card Text',selector:anatomySelector('#previewBody .readable-card-text'),printedRegion:'text',compact:true,micro:true,html:'<p>Read the printed effect and follow the timing, target, and resolution rules written on the card.</p>'});
     if(fam==='Skill'||fam==='UltimateSkill'){
       base.push({title:'EXP Value',selector:null,printedRegion:'exp',compact:true,micro:true,html:'<p>This '+(isUltimate?'Ultimate ':'')+'Skill provides <b>'+exp+' EXP</b> when Tributed during Reform Phase.</p>'});
       if(isUltimate)base.push({title:'Ultimate Rules',selector:'#previewBody .readable-card-ultimate-rules',compact:true,micro:true,html:'<p><b>Bound Hero</b> states the only named Hero who may play this Ultimate or use it as Tribute.</p><p>An Ultimate provides <b>200 EXP</b> when Tributed.</p>'});

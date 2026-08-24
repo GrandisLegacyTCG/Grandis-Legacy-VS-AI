@@ -31,8 +31,8 @@ for(const key of ['doubleCastingRequiresTimedMagicalAttack','doubleCastingAttack
 must(guide.includes("title:'Event Card Color',selector:'#previewBody .readable-card-art'"),'Event color lesson regressed');
 must(guide.includes("title:'Item Card Color',selector:'#previewBody .readable-card-art'"),'Item color lesson regressed');
 must(guide.includes("title:'Ultimate Skill — What Stays the Same',selector:'#previewBody .readable-card-art'"),'Ultimate first lesson regressed');
-must(guide.includes("title:'Lineage Color',selector:'#previewBody .readable-card-art'"),'Skill Lineage Color regressed');
-must(guide.includes("title:'Bound Hero and Deck Limit',selector:'#previewBody .readable-card-ultimate-rules',printedRegion:'ultimate_rules'"),'specific Ultimate Rules highlight regressed');
+must(guide.includes("title:'Lineage Color',selector:anatomySelector('#previewBody .readable-card-art')"),'Skill Lineage Color regressed');
+must(guide.includes("title:'Bound Hero and Deck Limit',selector:anatomySelector('#previewBody .readable-card-ultimate-rules'),printedRegion:'ultimate_rules'"),'specific Ultimate Rules highlight regressed');
 
 // Separate first-use practices by card category.
 for(const cat of ['Attack','Support','Tactical','Event','Item'])must(guide.includes("['Attack','Support','Tactical','Event','Item']"),'category list missing');

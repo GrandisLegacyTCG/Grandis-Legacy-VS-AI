@@ -1,17 +1,17 @@
-/* Grandis Legacy shared gameplay application v3.1 — VS AI v6.11.
+/* Grandis Legacy shared gameplay application v3.1 — VS AI v6.15.
    One Source Authority v1.7.0 + Runtime Foundation v1.86 / Runtime Core v0.54 / Runtime Data v0.14.0.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
   'use strict';
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.09 · VS AI v6.11 Battlefield · One Source v1.7.0 · Runtime Data v0.14.0 · Foundation v1.86 · Core v0.54':'Grandis Legacy VS AI v6.11 · Shared Gameplay Bundle v3.1 · One Source v1.7.0 · Runtime Data v0.14.0 · Foundation v1.86 · Core v0.54';
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.12 · VS AI v6.15 Battlefield · One Source v1.7.0 · Runtime Data v0.14.0 · Foundation v1.86 · Core v0.54':'Grandis Legacy VS AI v6.15 · Shared Gameplay Bundle v3.1 · One Source v1.7.0 · Runtime Data v0.14.0 · Foundation v1.86 · Core v0.54';
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
   var OPENING_HAND_SIZE=6;
   var RACIAL_TOKEN_CAP=2;
-  var GL_ASSET_REV='gl-vs-ai-6.11-osa-1.7';
+  var GL_ASSET_REV='gl-vs-ai-6.15-osa-1.7';
   var GL_SHARED_CARD_BASE='https://grandislegacytcg.github.io/shared/season1/v1/cards/';
   var GL_CARD_ZOOM_ID=null;
   var GL_LAST_PLAYER_TURN_BANNER_KEY='', GL_PLAYER_TURN_BANNER_TIMER=null;
@@ -4105,12 +4105,10 @@
     return true;
   }
   function responseProfileOverride(rc,incoming){
-    var id=rc&&rc.card_id, dt=String((incoming&&incoming.damage_type)||''), cannotBlock=!!(incoming&&incoming.cannot_block), cannotDodge=!!(incoming&&incoming.cannot_dodge);
-    if(id==='S1-MAG-004') return (!cannotBlock&&dt==='Magical')?{kind:'block',amount:40}:null;
+    // Compatibility-only response shape overrides. Numeric Block authority must come
+    // from the canonical structured runtime data, never from application-local values.
+    var id=rc&&rc.card_id, dt=String((incoming&&incoming.damage_type)||''), cannotDodge=!!(incoming&&incoming.cannot_dodge);
     if(id==='S1-MAG-005') return (/^(Physical|Magical)$/i.test(dt)&&!cannotDodge)?{kind:'dodge'}:null;
-    if(id==='S1-WAR-003') return (!cannotBlock&&dt==='Physical')?{kind:'block',amount:30}:null;
-    if(id==='S1-ARC-012') return (/^(Physical|Magical)$/i.test(dt)&&!cannotBlock)?{kind:'block',amount_by_class:{'Archer':30,'Marksman':40,'Grand Ranger':40}}:null;
-    if(id==='S1-THF-021') return (!cannotBlock&&dt==='Physical')?{kind:'block',amount_by_class:{'Thief':50,'Spell Blade':60,'Arcane Duelist':60}}:null;
     if(id==='S1-THF-022') return (/^(Physical|Magical)$/i.test(dt)&&!cannotDodge)?{kind:'dodge'}:null;
     return undefined;
   }
@@ -8471,11 +8469,79 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
       matchStarted=true; var oldSuppress=SUPPRESS_RENDER; SUPPRESS_RENDER=true; var s=buildInitialMatchState(); appState=s;
       s.turn='PLAYER'; s.phase='Deploy'; s.mana=10; s.playerHeroes.CENTER.card_id='S1-WAR-H001'; s.playerHeroes.CENTER.hp=90; s.playerHeroes.CENTER.exhausted=false; s.playerHeroes.CENTER.attachments=[null,null]; s.playerHeroes.LEFT.card_id='S1-THF-H001'; s.playerHeroes.LEFT.hp=80; s.playerHeroes.LEFT.exhausted=false; s.playerHeroes.LEFT.attachments=[null,null]; s.playerHand=['S1-ITM-011']; var lanes=legalTargetLanesFor(s,'PLAYER','S1-ITM-011',null); if(lanes.indexOf('CENTER')!==-1 || lanes.indexOf('LEFT')===-1) return {ok:false, reason:'Poison Vial host validator failed', lanes:lanes};
       s=buildInitialMatchState(); appState=s; s.turn='PLAYER'; s.phase='Battle'; s.round=2; s.mana=10; s.aiMana=10; s.playerHand=['S1-MAG-004','S1-MAG-005']; s.playerHeroes.CENTER.card_id='S1-MAG-H002'; s.playerHeroes.CENTER.hp=100; s.playerHeroes.CENTER.exhausted=false; openAttackResponseWindow(s,{card_id:'S1-WAR-001',source_side:'AI',source_lane:'CENTER',target_side:'PLAYER',target_lane:'CENTER'},{damage:40,persistent:false,attachmentSlot:-1}); var ids=(s.responseWindow.options||[]).map(function(o){return o.card_id;}); if(ids.indexOf('S1-MAG-004')!==-1 || ids.indexOf('S1-MAG-005')===-1) return {ok:false, reason:'Physical incoming response validator failed for Mana Shield/Mirror Image', ids:ids};
-      s=buildInitialMatchState(); appState=s; s.turn='PLAYER'; s.phase='Battle'; s.round=2; s.mana=10; s.playerHand=['S1-MAG-004']; s.playerHeroes.CENTER.card_id='S1-MAG-H002'; s.playerHeroes.CENTER.hp=100; s.playerHeroes.CENTER.exhausted=false; openAttackResponseWindow(s,{card_id:'S1-MAG-001',source_side:'AI',source_lane:'CENTER',target_side:'PLAYER',target_lane:'CENTER'},{damage:40,persistent:false,attachmentSlot:-1}); var opt=(s.responseWindow.options||[]).find(function(o){return o.card_id==='S1-MAG-004';}); if(!opt || responseBlockAmount(card('S1-MAG-004'),s.responseWindow,s.playerHeroes.CENTER)!==40) return {ok:false, reason:'Mana Shield magical block override failed', opts:s.responseWindow.options};
+      s=buildInitialMatchState(); appState=s; s.turn='PLAYER'; s.phase='Battle'; s.round=2; s.mana=10; s.playerHand=['S1-MAG-004']; s.playerHeroes.CENTER.card_id='S1-MAG-H002'; s.playerHeroes.CENTER.hp=100; s.playerHeroes.CENTER.exhausted=false; openAttackResponseWindow(s,{card_id:'S1-MAG-001',source_side:'AI',source_lane:'CENTER',target_side:'PLAYER',target_lane:'CENTER'},{damage:80,persistent:false,attachmentSlot:-1}); var opt=(s.responseWindow.options||[]).find(function(o){return o.card_id==='S1-MAG-004';}); if(!opt || responseBlockAmount(card('S1-MAG-004'),s.responseWindow,s.playerHeroes.CENTER)!==60) return {ok:false, reason:'Mana Shield canonical Block 60 failed', opts:s.responseWindow.options};
+      var defenseAuthorityChecks=[
+        ['S1-WAR-003','Physical','S1-WAR-H001',50],
+        ['S1-ARC-012','Physical','S1-ARC-H001',50],
+        ['S1-ARC-012','Magical','S1-ARC-H002',60],
+        ['S1-ARC-012','Magical','S1-ARC-H003',60],
+        ['S1-THF-021','Physical','S1-THF-H001',70],
+        ['S1-THF-021','Physical','S1-THF-H005',80],
+        ['S1-THF-021','Physical','S1-THF-H006',80],
+        ['S1-CLE-011','Physical','S1-CLE-H001',60],
+        ['S1-CLE-022','Magical','S1-CLE-H002',30],
+        ['S1-ITM-007','Magical','S1-MAG-H001',30],
+        ['S1-MAG-012','Physical','S1-MAG-H002',70],
+        ['S1-WAR-012','Physical','S1-WAR-H001',50],
+        ['S1-WAR-012','Physical','S1-WAR-H002',50],
+        ['S1-WAR-012','Physical','S1-WAR-H003',50],
+        ['S1-WAR-022','Physical','S1-WAR-H001',60],
+        ['S1-WAR-022','Magical','S1-WAR-H005',60]
+      ];
+      for(var di=0;di<defenseAuthorityChecks.length;di++){var dc=defenseAuthorityChecks[di],got=responseBlockAmount(card(dc[0]),{damage_type:dc[1]}, {card_id:dc[2]});if(got!==dc[3])return{ok:false,reason:'Canonical Defense authority mismatch',card_id:dc[0],hero_id:dc[2],damage_type:dc[1],expected:dc[3],actual:got};}
+      for(var staleBlockId of ['S1-MAG-004','S1-WAR-003','S1-ARC-012','S1-THF-021']){if(responseProfileOverride(card(staleBlockId),{damage_type:'Magical',cannot_block:false,cannot_dodge:false})!==undefined||responseProfileOverride(card(staleBlockId),{damage_type:'Physical',cannot_block:false,cannot_dodge:false})!==undefined)return{ok:false,reason:'Application-local numeric Defense override still active',card_id:staleBlockId};}
       s=buildInitialMatchState(); appState=s; s.turn='PLAYER'; s.phase='Deploy'; s.racial=2; s.playerHeroes.LEFT.card_id='S1-ARC-H001'; s.playerHeroes.LEFT.hp=80; s.playerHeroes.LEFT.maxHp=80; s.aiHeroes.CENTER.hp=70; s.aiHeroes.CENTER.maxHp=100; var rac=getActivatedRacialAbilities(s,'PLAYER','LEFT'); if(!rac.length) return {ok:false, reason:'Racial ability not initially available'}; resolveActivatedRacialAbility(s,'PLAYER','LEFT',rac[0].abilityId,'CENTER'); if(getActivatedRacialAbilities(s,'PLAYER','LEFT').length) return {ok:false, reason:'Racial ability can be used twice by same Hero in same turn'};
       return {ok:true, poisonVialLineage:true, responseDamageTypeValidator:true, manaShieldLatest:true, racialOncePerHeroPerTurn:true};
     }catch(e){ return {ok:false,error:String(e&&e.stack||e)}; } finally { SUPPRESS_RENDER=false; }
   };
+
+
+  function simulateCanonicalDefenseAuthorityV615(){
+    var oldApp=appState,oldMatch=matchStarted,oldSuppress=SUPPRESS_RENDER;
+    try{
+      SUPPRESS_RENDER=true;matchStarted=true;initCards();
+      var checks=[
+        ['S1-MAG-004','Magical','S1-MAG-H002',60],
+        ['S1-WAR-003','Physical','S1-WAR-H001',50],
+        ['S1-ARC-012','Physical','S1-ARC-H001',50],
+        ['S1-ARC-012','Magical','S1-ARC-H002',60],
+        ['S1-ARC-012','Magical','S1-ARC-H003',60],
+        ['S1-THF-021','Physical','S1-THF-H001',70],
+        ['S1-THF-021','Physical','S1-THF-H005',80],
+        ['S1-THF-021','Physical','S1-THF-H006',80],
+        ['S1-CLE-011','Physical','S1-CLE-H001',60],
+        ['S1-CLE-022','Magical','S1-CLE-H002',30],
+        ['S1-ITM-007','Magical','S1-MAG-H001',30],
+        ['S1-MAG-012','Physical','S1-MAG-H002',70],
+        ['S1-WAR-012','Physical','S1-WAR-H001',50],
+        ['S1-WAR-012','Physical','S1-WAR-H002',50],
+        ['S1-WAR-012','Physical','S1-WAR-H003',50],
+        ['S1-WAR-022','Physical','S1-WAR-H001',60],
+        ['S1-WAR-022','Magical','S1-WAR-H005',60]
+      ],results=[];
+      for(var i=0;i<checks.length;i++){
+        var row=checks[i],got=responseBlockAmount(card(row[0]),{damage_type:row[1],cannot_block:false,attack_type:'Single Target'},{card_id:row[2]});
+        results.push({card_id:row[0],hero_id:row[2],damage_type:row[1],expected:row[3],actual:got});
+        if(got!==row[3])return{ok:false,reason:'Canonical Defense authority mismatch',result:results[results.length-1],results:results};
+      }
+      for(var j=0;j<4;j++){
+        var staleId=['S1-MAG-004','S1-WAR-003','S1-ARC-012','S1-THF-021'][j];
+        var a=responseProfileOverride(card(staleId),{damage_type:'Physical',cannot_block:false,cannot_dodge:false});
+        var b=responseProfileOverride(card(staleId),{damage_type:'Magical',cannot_block:false,cannot_dodge:false});
+        if(a!==undefined||b!==undefined)return{ok:false,reason:'Application-local numeric Defense override still active',card_id:staleId,physical:a,magical:b};
+      }
+      var s=buildInitialMatchState();appState=s;s.turn='AI';s.phase='Battle';s.round=2;s.mana=10;s.playerHeroes.CENTER.card_id='S1-MAG-H002';s.playerHeroes.CENTER.hp=100;s.playerHeroes.CENTER.maxHp=100;s.playerHeroes.CENTER.exhausted=false;s.playerHand=['S1-MAG-004'];
+      openAttackResponseWindow(s,{card_id:'S1-MAG-009',source_side:'AI',source_lane:'CENTER',target_side:'PLAYER',target_lane:'CENTER'},{damage:50,persistent:false,attachmentSlot:-1});
+      var shield=s.responseWindow&&(s.responseWindow.options||[]).find(function(o){return o.card_id==='S1-MAG-004';});
+      if(!shield)return{ok:false,reason:'Mana Shield missing from legal Magical response window'};
+      resolveResponseWindow(shield);
+      if(s.playerHeroes.CENTER.hp!==100)return{ok:false,reason:'Mana Shield Block 60 did not fully prevent 50 Magical damage',hp:s.playerHeroes.CENTER.hp,log:(s.log||[]).slice(-8)};
+      if(!(s.log||[]).some(function(line){return /Mana Shield.*blocks 60 damage/i.test(String(line));}))return{ok:false,reason:'Mana Shield resolved with stale Block amount in battle log',log:(s.log||[]).slice(-12)};
+      return{ok:true,checks:results.length,results:results,noNumericBlockOverrides:true,manaShieldResolution60:true};
+    }catch(err){return{ok:false,reason:String(err&&err.message||err),stack:String(err&&err.stack||'')};}
+    finally{appState=oldApp;matchStarted=oldMatch;SUPPRESS_RENDER=oldSuppress;}
+  }
+  window.GL_V615_CANONICAL_DEFENSE_QA_SELF_TEST=simulateCanonicalDefenseAuthorityV615;
 
   window.GL_V342_AETHER_AND_HYBRID_ABILITY_AUDIT_SELF_TEST=simulateV341AetherAndHybridAbilityAudit;
   window.GL_V341_AETHER_AND_HYBRID_ABILITY_AUDIT_SELF_TEST=simulateV341AetherAndHybridAbilityAudit;

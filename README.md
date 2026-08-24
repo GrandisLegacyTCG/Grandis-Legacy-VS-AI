@@ -1,7 +1,16 @@
-# Grandis Legacy VS AI v6.14 + Tutorial v0.42
+# Grandis Legacy VS AI v6.15 + Tutorial v0.43
 
 Production-ready GitHub Pages package for local VS AI and the non-scripted tutorial.
 
+
+## v6.15 / v0.43 Canonical revised-card application parity hotfix
+
+- Re-audited all 30 revised Season 1 card IDs against Source Stack v1.7.0 / Runtime Data v0.14.0.
+- Removed stale application-local numeric Block overrides. Canonical structured runtime data now controls Mana Shield, Parry, Deflect Arrow, Deflection, and all other Block values.
+- Mana Shield now resolves at Block 60 in executable gameplay/logs.
+- Added deterministic canonical Defense tests covering lineage fallback and 17 current Block rows.
+- Preserves Conditional Follow-up behavior, lethal Poison End Phase result handling, retained audio lifecycle, and silent Game Result lobby reload from prior releases.
+- Tutorial v0.43 receives the same shared gameplay authority cleanup; tutorial-specific guidance remains unchanged.
 
 ## v6.14 / v0.42 Game Result lobby reload hotfix
 
