@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grandis-legacy.local/schema/conditional-follow-up.schema.json",
+  "title": "Grandis Legacy Conditional Follow-up Component",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "component_id",
+    "trigger_timing",
+    "condition",
+    "effect",
+    "source",
+    "target",
+    "opens_response_window",
+    "requires_primary_resolution",
+    "requires_primary_hit",
+    "requires_primary_hp_damage",
+    "trigger_on_dodge",
+    "trigger_on_block",
+    "trigger_if_primary_damage_zero",
+    "canceled_if_primary_negated",
+    "canceled_if_primary_canceled",
+    "primary_block_interaction",
+    "dodge_interaction",
+    "modifier_inheritance",
+    "follow_up_ordering",
+    "automatic"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "component_id": { "type": "string", "minLength": 1 },
+    "enabled": { "type": "boolean" },
+    "trigger_timing": { "const": "after_primary_resolution" },
+    "condition": { "type": "object" },
+    "effect": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "enum": ["damage", "healing", "draw", "status", "mana_change", "discard", "reposition_swap", "custom"]
+        },
+        "amount": { "type": "number" },
+        "value": { "type": "number" },
+        "amount_by_source_class": { "type": "object", "additionalProperties": { "type": "number" } },
+        "damage_type": { "enum": ["Physical", "Magical", "Direct"] }
+      },
+      "additionalProperties": true
+    },
+    "source": { "type": "string" },
+    "target": { "type": "string" },
+    "opens_response_window": { "type": "boolean" },
+    "requires_primary_resolution": { "type": "boolean" },
+    "requires_primary_hit": { "type": "boolean" },
+    "requires_primary_hp_damage": { "type": "boolean" },
+    "trigger_on_dodge": { "type": "boolean" },
+    "trigger_on_block": { "type": "boolean" },
+    "trigger_if_primary_damage_zero": { "type": "boolean" },
+    "canceled_if_primary_negated": { "type": "boolean" },
+    "canceled_if_primary_canceled": { "type": "boolean" },
+    "primary_block_interaction": { "enum": ["does_not_carry_over", "inherits_primary_block"] },
+    "dodge_interaction": { "type": "string" },
+    "modifier_inheritance": { "type": "string" },
+    "follow_up_ordering": { "type": "string" },
+    "automatic": { "type": "boolean" }
+  }
+}

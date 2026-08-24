@@ -7,6 +7,6 @@ if(!scale.includes('MOBILE_MAX=760')||!scale.includes('scrollHeight'))throw new 
 if(!css.includes('@media (min-width:521px) and (max-width:760px)')||!css.includes('height:52px!important'))throw new Error('Mobile Next Phase +4px lock missing');
 if(css.includes('@media(max-width:1450px)'))throw new Error('Legacy 1450px breakpoint still active');
 if(!app.includes("var blessingImmune=!!activeAttachmentForSide(state,targetSide,'S1-CLE-025')"))throw new Error('Blessing Attack immunity guard missing');
-if(!app.includes('connectionPrevented?0:(dodged?dodgeResidualDamage'))throw new Error('Blessing must override dodge residual');
+if(!app.includes('baseFinal=connectionPrevented||dodged?0:Math.max(0,baseIncoming-totalReduction)'))throw new Error('Blessing must suppress Primary and Conditional Follow-up resolution');
 if(!app.includes('Blessing of Divinity prevents Primal Strike damage'))throw new Error('Blessing Primal Strike guard missing');
 console.log('PASS v5.62 UI/effect locks');

@@ -1,0 +1,53 @@
+{
+  "version": "v2.48",
+  "schema_version": "2.48-consumer",
+  "policy": "RUNTIME_FIRST_FAIL_CLOSED_SYNC",
+  "application": "VS AI v6.12",
+  "local_ai": "v6.12",
+  "tutorial": "v0.42",
+  "pvp_reference": "v3.10",
+  "canonical_registry_hash": "f5de57e66f0191522537b6e2b66539dd1c3c2a9737e59bac76c48044c38a21c1",
+  "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
+  "one_source_authority": "v1.7.0",
+  "application_runtime_sync": "v2.48",
+  "runtime_foundation": "v1.86",
+  "runtime_core": "v0.54",
+  "runtime_data": "v0.14.0",
+  "effect_recipe": "v0.13.0",
+  "effect_checkpoint": "v0.13.0",
+  "legality_map": "v0.11.9",
+  "hero_component_authority": "v1.0.0",
+  "shared_runtime_manual": "v1.42",
+  "source_stack_bundle": "v1.7.0",
+  "conditional_follow_up_schema": "v1.0.0",
+  "starter60": "v1.3",
+  "ui_design_lock": "v2.48",
+  "shared_gameplay_sha256": "575e2d979c020c9a25963e31241903e5b20909d608c3d4faf280135c1eb94a96",
+  "runtime_authority_sha256": "81a5385d250167d0ac79c0c771a24f8ddf59296d97cbee532d8a495d77e83b26",
+  "runtime_source_browser_sha256": "81a5385d250167d0ac79c0c771a24f8ddf59296d97cbee532d8a495d77e83b26",
+  "static_data_sha256": "91071996d0af21e44436191d67f129bebf287d18c988161a53e88fa757ed0bd1",
+  "shared_ui_css_sha256": "14f1bf2fe03536f471380394bdb440a9a60b6d68a2c95b40031a7be9f6a1fbbe",
+  "mobile_app_nav_sha256": "5be991d8083c56f744f4499eb0f86031968d178dc55f5aacf8bcfcea3f6586d6",
+  "audio_assets": {
+    "coin_flip": {
+      "path": "assets/audio/Coin Flip.mp3",
+      "sha256": "b4842f9a3f2d25004223313f5473bef74afd79915b6af9bdb35c70f6df8c2b50"
+    },
+    "card_sound": {
+      "path": "assets/audio/Card Sound.mp3",
+      "sha256": "1c04e41918b392a643c22d6c02ef34eeab0341c70d46b7d517078725b79d8ee4"
+    }
+  },
+  "consumerAdoptionStatus": {
+    "currentApplicationsRebuiltInThisDelivery": true,
+    "currentAI": "VS AI v6.12",
+    "currentPvP": "PvP v3.10 navigation consumer",
+    "currentTutorial": "Tutorial v0.42 GitHub Pages",
+    "revisedSeason1": "ADOPTED",
+    "heroComponents": "ADOPTED",
+    "pendingStateAudit": "ADOPTED"
+  },
+  "conditionalFollowUpFramework": "GENERIC_POST_PRIMARY_SEPARATE_RESOLUTION",
+  "audioPlaybackPolicy": "RETAIN_ACTIVE_CLONES_UNTIL_ENDED_OR_ERROR",
+  "activeNormalMatchNavigationGuard": "BEFOREUNLOAD_AND_TOP_EDGE_PULL_TO_REFRESH_ONLY"
+}

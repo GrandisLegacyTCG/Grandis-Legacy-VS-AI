@@ -17,3 +17,4 @@ module.exports = {
 };
 
 module.exports.cardInstanceFinalizationPolicy = require('./card-instance-finalization-policy');
+module.exports.conditionalFollowUp = require('../effects/conditional-follow-up');

@@ -1,5 +1,5 @@
 {
   "type": "commonjs",
-  "version": "1.85.0",
-  "description": "Grandis Legacy Runtime Core v0.53 packaged with Runtime Foundation v1.85; Source Stack hotfix authority included."
+  "version": "1.86.0",
+  "description": "Grandis Legacy Runtime Core v0.54 packaged with Runtime Foundation v1.86; generic Conditional Follow-up Component included."
 }

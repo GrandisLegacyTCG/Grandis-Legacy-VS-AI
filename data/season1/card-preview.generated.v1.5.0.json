@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.4.1",
+  "schema_version": "1.5.0",
   "generated_at": "2026-08-24",
-  "generated_from": "src/data/season1/cards.canonical.v1.4.1.json",
-  "canonical_registry_hash": "b185307752fd523d6c1e4a450f8bdd82b96b4d4cbfbb884fca8a619e8c5c8057",
+  "generated_from": "src/data/season1/cards.canonical.v1.5.0.json",
+  "canonical_registry_hash": "f5de57e66f0191522537b6e2b66539dd1c3c2a9737e59bac76c48044c38a21c1",
   "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
   "generated_only": true,
   "count": 198,
@@ -8210,7 +8210,7 @@
         "format": "webp",
         "source_archive_sha256": "a16c238071a2400e6e902727b728576f5582d19e1bdf97560c55806748458c29"
       },
-      "canonical_hash": "02dfc8695cd4d82efddbc7a681b7a093aa3c4d7b0981e0689e16a30d4c965dc7"
+      "canonical_hash": "632ca0986cfca5f8642bef57d7e1d2dd4bf673b6543d2476e3046b38428871b9"
     },
     {
       "card_id": "S1-MAG-008",
@@ -10736,7 +10736,7 @@
         "format": "webp",
         "source_archive_sha256": "a16c238071a2400e6e902727b728576f5582d19e1bdf97560c55806748458c29"
       },
-      "canonical_hash": "d5683fada12052ad0429c76dee157c353c9daaad169fbc76d94c6c03dc4b5d83"
+      "canonical_hash": "454f36ae3fe2984a7aad316e5449e36d37748b4e2d3a58966e4aabc44f67e9b6"
     },
     {
       "card_id": "S1-THF-016",
@@ -12594,7 +12594,7 @@
         "format": "webp",
         "source_archive_sha256": "a16c238071a2400e6e902727b728576f5582d19e1bdf97560c55806748458c29"
       },
-      "canonical_hash": "629b7a665a7f8b2e075e84f89d6c8d7e3101d0037b2ec6927cd7292e013867b0"
+      "canonical_hash": "cd6c8b391bad71cb1a9113c1db0096a7e1357465c3927243c073afb8c5ec2a49"
     },
     {
       "card_id": "S1-WAR-011",

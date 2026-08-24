@@ -6197,3 +6197,13 @@ body.deck-setup-active{
   .v96-app .hand-card .hand-actions{height:34px!important;min-height:34px!important;gap:2px!important}
   .v96-app .hand-card .mini-action{height:16px!important;min-height:16px!important;flex:0 0 16px!important}
 }
+html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
+
+/* VS AI v6.12 — mobile cross-application hamburger navigation. */
+.gl-mobile-app-menu-button{display:none;position:fixed;top:max(10px,env(safe-area-inset-top));right:12px;z-index:880;width:36px;height:36px;padding:7px;border:1px solid rgba(255,255,255,.18);border-radius:9px;background:rgba(7,16,28,.92);box-shadow:0 8px 22px rgba(0,0,0,.34);align-items:center;justify-content:center;flex-direction:column;gap:4px}
+.gl-mobile-app-menu-button span{display:block;width:19px;height:2px;border-radius:3px;background:#fff}
+.gl-mobile-app-menu{position:fixed;z-index:881;width:min(230px,calc(100vw - 20px));padding:8px;border:1px solid #40566d;border-radius:12px;background:#101923;box-shadow:0 18px 42px rgba(0,0,0,.52)}
+.gl-mobile-app-menu[hidden]{display:none!important}
+.gl-mobile-app-menu a{display:block;padding:12px 14px;border-radius:8px;color:#edf5ff;text-decoration:none;font-size:12px;font-weight:900;letter-spacing:.04em}
+.gl-mobile-app-menu a:hover,.gl-mobile-app-menu a:focus-visible{background:#172638;color:#f4d35e}
+@media(max-width:760px){.gl-mobile-app-menu-button{display:flex}}

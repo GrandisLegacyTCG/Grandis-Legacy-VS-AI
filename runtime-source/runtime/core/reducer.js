@@ -11,6 +11,7 @@ const positioningPolicy = require('./positioning-policy');
 const responseEngine = require('../engines/response-engine');
 const { TICK_PHASE, tickAttachment } = require('../engines/attachment-engine');
 const attachmentLifecycle = require('./attachment-lifecycle-policy');
+const conditionalFollowUp = require('../effects/conditional-follow-up');
 
 const MINIMAL_REDUCER_INTENTS = Object.freeze([
   'START_GAME',
@@ -120,7 +121,7 @@ function createInitialRuntimeState(config) {
   players[opponentId] = buildPlayer(opponentId, safeConfig.opponent_deck || safeConfig.decks && safeConfig.decks[1]);
   return {
     game_id: safeConfig.game_id || `gl-${Date.now()}`,
-    version: 'runtime-reducer-v1.64',
+    version: 'runtime-reducer-v1.65',
     runtime_data: safeConfig.runtime_data || {},
     round: 1,
     active_player_id: playerId,
@@ -904,6 +905,8 @@ function buildCastingReleaseAttackResolution(next, ownerId, attachment) {
     surge_damage_bonus: Number(attachment.surge_damage_bonus || 0),
     surge_reason: attachment.surge_reason || null,
     modifier_breakdown: attachment.modifier_breakdown || [],
+    conditional_follow_ups: deepClone(attachment.conditional_follow_ups || []),
+    conditional_follow_up_resolution_keys: [],
     released_from_attachment_id: attachment.attachment_id,
     no_valid_target_at_resolution: !targetIsActiveHero,
     no_damage_reason: targetIsActiveHero ? null : 'Locked target position contains no active Hero (Legacy or empty slot).'
@@ -2192,20 +2195,160 @@ function targetHasStatus(next, target, statusName) {
   return heroHasStatus(slotState, statusName);
 }
 
-function conditionalDamageBonusForAttack(next, attackResolution) {
-  const cardId = attackResolution && attackResolution.card_id;
-  const targets = attackResolution && attackResolution.targets || [];
-  const primaryTarget = targets[0];
-  if (!primaryTarget) return { amount: 0, reason: null };
-  if (cardId === 'S1-WAR-010' && targetHasStatus(next, primaryTarget, 'Bleed')) {
-    return { amount: 20, reason: 'Rage Blast target has Bleed.' };
+function conditionalFollowUpsForCard(card) {
+  const execution = canonicalExecution(card);
+  const contracts = execution.conditional_follow_ups || card && card.conditional_follow_ups;
+  return Array.isArray(contracts) ? deepClone(contracts) : [];
+}
+
+function targetStatusNames(next, target) {
+  const player = next.players && next.players[target && target.target_player_id];
+  const slotState = player && player.board && player.board[normalizeSlotKey(target && target.target_slot)];
+  return (slotState && slotState.hero && slotState.hero.statuses || []).map(normalizeStatusName).filter(Boolean);
+}
+
+function primaryHpDamageForTarget(damagedTargets, target) {
+  const match = (damagedTargets || []).find(entry => entry.target_player_id === target.target_player_id
+    && normalizeSlotKey(entry.target_slot) === normalizeSlotKey(target.target_slot));
+  return Number(match && match.final_hp_damage || 0);
+}
+
+function conditionalFollowUpObservation(next, attackResolution, target, damagedTargets) {
+  const response = responseResultForTarget(attackResolution, target) || attackResolution.negating_response_result || null;
+  const responseKind = String(response && response.type || '').toUpperCase();
+  const primaryCanceled = responseKind === 'CANCEL';
+  const primaryNegated = !primaryCanceled && (attackResolution.attack_negated || responseKind === 'NEGATE' || responseKind === 'NEGATE_RETURN_TO_HAND');
+  const primaryDodged = responseDodgesDamageTarget(attackResolution, target);
+  const targetPlayer = next.players && next.players[target.target_player_id];
+  const slotState = targetPlayer && targetPlayer.board && targetPlayer.board[normalizeSlotKey(target.target_slot)];
+  return {
+    primary_resolved: true,
+    primary_hit: !primaryCanceled && !primaryNegated && !primaryDodged,
+    primary_hp_damage: primaryHpDamageForTarget(damagedTargets, target),
+    primary_response_kind: responseKind || null,
+    primary_blocked: responseKind === 'BLOCK',
+    primary_dodged: primaryDodged,
+    primary_negated: primaryNegated,
+    primary_canceled: primaryCanceled,
+    source_player_id: attackResolution.attacking_player_id,
+    source_slot: attackResolution.source_slot,
+    source_class: attackResolution.source_hero_class || '',
+    primary_card_id: attackResolution.card_id,
+    target_player_id: target.target_player_id,
+    target_slot: normalizeSlotKey(target.target_slot),
+    target_statuses: targetStatusNames(next, target),
+    target_hp_after_primary: Number(slotState && slotState.hero && slotState.hero.hp || 0)
+  };
+}
+
+function applyStandaloneConditionalFollowUpDamage(next, attackResolution, target, context, events) {
+  const contract = context.contract || {};
+  const effect = context.effect || {};
+  const targetPlayer = next.players && next.players[target.target_player_id];
+  const targetSlot = normalizeSlotKey(target.target_slot);
+  const slotState = targetPlayer && targetPlayer.board && targetPlayer.board[targetSlot];
+  const incomingAmount = Math.max(0, Number(context.effect_value || 0));
+  if (!slotState || slotState.slot_mode !== 'HERO' || !slotState.hero || slotState.hero.defeated) {
+    return { applied: false, reason: 'target_not_active_hero', incoming_amount: incomingAmount, final_hp_damage: 0 };
   }
-  if (cardId === 'S1-THF-015' && targetHasStatus(next, primaryTarget, 'Poison')) {
-    const cls = String(attackResolution.source_hero_class || '').toLowerCase();
-    const bonus = 40;
-    return { amount: bonus, reason: `Venom Sovereign target has Poison; ${cls.includes('renegade') ? 'Renegade' : 'Rogue'} text bonus.` };
+  const beforeHp = Number(slotState.hero.hp || 0);
+  const damageType = String(effect.damage_type || 'Direct');
+  const defense = contract.defense_interaction || {};
+  const physicalReduction = damageType.toLowerCase() === 'physical' && defense.passive_damage_reduction === 'apply_by_damage_type'
+    ? targetPhysicalDamageReduction(next, target.target_player_id, targetSlot)
+    : { amount: 0, reason: null };
+  const reducedAmount = Math.max(0, incomingAmount - Number(physicalReduction.amount || 0));
+  const preventedByImmunity = reducedAmount > 0 && defense.any_damage_immunity !== 'ignore' && heroHasAnyDamageImmunity(next, target.target_player_id, targetSlot);
+  const appliedAmount = preventedByImmunity ? 0 : reducedAmount;
+  const afterHp = Math.max(0, beforeHp - appliedAmount);
+  slotState.hero.hp = afterHp;
+  events.push(createRuntimeEvent(EVENT_TYPES.DAMAGE_APPLIED, next, {
+    player_id: attackResolution.attacking_player_id,
+    card_id: attackResolution.card_id,
+    source_slot: attackResolution.source_slot,
+    target_player_id: target.target_player_id,
+    target_slot: targetSlot,
+    payload: {
+      amount: appliedAmount,
+      incoming_damage: incomingAmount,
+      original_amount: incomingAmount,
+      damage_type: damageType,
+      before_hp: beforeHp,
+      after_hp: afterHp,
+      final_hp_damage: Math.max(0, beforeHp - afterHp),
+      source: 'conditional_follow_up',
+      component_id: contract.component_id,
+      opens_response_window: false,
+      primary_block_carried_over: false,
+      primary_block_interaction: contract.primary_block_interaction,
+      modifier_inheritance: contract.modifier_inheritance,
+      class_damage_reduction_amount: Number(physicalReduction.amount || 0),
+      class_damage_reduction_reason: physicalReduction.reason,
+      prevented_by: preventedByImmunity ? 'any_damage_immunity' : null,
+      prevented_amount: preventedByImmunity ? reducedAmount : 0
+    }
+  }));
+  if (afterHp <= 0 && !slotState.hero.defeated && !slotState.hero.pending_defeat) {
+    if (!applyStonebloodPreventDefeat(next, target.target_player_id, targetSlot, slotState, events, attackResolution.card_id)) {
+      queueHeroDefeatLegacyChoice(next, target.target_player_id, targetSlot, slotState, events, attackResolution.card_id);
+    }
   }
-  return { amount: 0, reason: null };
+  return {
+    applied: true,
+    incoming_amount: incomingAmount,
+    applied_amount: appliedAmount,
+    before_hp: beforeHp,
+    after_hp: afterHp,
+    final_hp_damage: Math.max(0, beforeHp - afterHp),
+    damage_type: damageType,
+    component_id: contract.component_id
+  };
+}
+
+function resolveConditionalFollowUpsForTarget(next, attackResolution, target, damagedTargets, events) {
+  const contracts = Array.isArray(attackResolution.conditional_follow_ups) ? attackResolution.conditional_follow_ups : [];
+  if (!contracts.length || !target) return [];
+  const targetKey = `${target.target_player_id}:${normalizeSlotKey(target.target_slot)}`;
+  attackResolution.conditional_follow_up_resolution_keys = attackResolution.conditional_follow_up_resolution_keys || [];
+  if (attackResolution.conditional_follow_up_resolution_keys.includes(targetKey)) return [];
+  attackResolution.conditional_follow_up_resolution_keys.push(targetKey);
+  const observation = conditionalFollowUpObservation(next, attackResolution, target, damagedTargets);
+  const results = [];
+  for (const contract of contracts) {
+    const result = conditionalFollowUp.resolveConditionalFollowUp(contract, observation, {
+      damage: context => applyStandaloneConditionalFollowUpDamage(next, attackResolution, target, context, events),
+      healing: context => ({ represented: true, automatic: context.contract.automatic, effect_value: context.effect_value }),
+      draw: context => ({ represented: true, automatic: context.contract.automatic, effect_value: context.effect_value }),
+      status: context => ({ represented: true, automatic: context.contract.automatic, status: context.effect.status || null }),
+      mana_change: context => ({ represented: true, automatic: context.contract.automatic, effect_value: context.effect_value }),
+      discard: context => ({ represented: true, automatic: context.contract.automatic, effect_value: context.effect_value }),
+      reposition_swap: context => ({ represented: true, automatic: context.contract.automatic, mode: context.effect.mode || null }),
+      custom: context => ({ represented: true, automatic: context.contract.automatic, handler: context.effect.handler || null })
+    });
+    results.push(result);
+    events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
+      player_id: attackResolution.attacking_player_id,
+      card_id: attackResolution.card_id,
+      source_slot: attackResolution.source_slot,
+      target_player_id: target.target_player_id,
+      target_slot: normalizeSlotKey(target.target_slot),
+      payload: {
+        result: result.resolved ? 'CONDITIONAL_FOLLOW_UP_RESOLVED' : 'CONDITIONAL_FOLLOW_UP_SKIPPED',
+        component_id: contract.component_id,
+        eligible: Boolean(result.eligible),
+        reason: result.reason,
+        effect_type: result.effect_type || contract.effect && (contract.effect.type || contract.effect.kind) || null,
+        effect_result: result.output || null,
+        primary_hp_damage: observation.primary_hp_damage,
+        primary_response_kind: observation.primary_response_kind,
+        opens_response_window: false,
+        automatic: contract.automatic !== false,
+        ordering: contract.follow_up_ordering
+      }
+    }));
+  }
+  attackResolution.conditional_follow_up_results = (attackResolution.conditional_follow_up_results || []).concat(deepClone(results));
+  return results;
 }
 
 function canUseStonebloodPreventDefeat(next, playerId, slotState) {
@@ -2404,16 +2547,11 @@ function applyDamageToTargets(next, attackResolution, amount, events, sourceLabe
     if (individualBlockAmount) adjustedAmount = Math.max(0, adjustedAmount - individualBlockAmount);
     if (response && response.type === 'PREVENT_ALL_ATTACK_DAMAGE') adjustedAmount = 0;
     const dodgedByResponse = responseDodgesDamageTarget(attackResolution, target);
-    const exactDamageAfterDodge = dodgedByResponse
-      && attackResolution.card_id === 'S1-MAG-007'
-      && /elementalist|elemental lord/i.test(String(attackResolution.source_hero_class || ''))
-      ? 40
-      : null;
     const physicalReduction = String(attackResolution.damage_type || '').toLowerCase() === 'physical' && !dodgedByResponse ? targetPhysicalDamageReduction(next, target.target_player_id, target.target_slot) : { amount: 0, reason: null };
     if (physicalReduction.amount) adjustedAmount = Math.max(0, adjustedAmount - Number(physicalReduction.amount || 0));
-    const amountAfterDodge = exactDamageAfterDodge !== null ? exactDamageAfterDodge : adjustedAmount;
-    const damagePreventedByImmunity = amountAfterDodge > 0 && (!dodgedByResponse || exactDamageAfterDodge !== null) && heroHasAnyDamageImmunity(next, target.target_player_id, target.target_slot);
-    const appliedAmount = dodgedByResponse && exactDamageAfterDodge === null ? 0 : (damagePreventedByImmunity ? 0 : amountAfterDodge);
+    const amountAfterDodge = adjustedAmount;
+    const damagePreventedByImmunity = amountAfterDodge > 0 && !dodgedByResponse && heroHasAnyDamageImmunity(next, target.target_player_id, target.target_slot);
+    const appliedAmount = dodgedByResponse ? 0 : (damagePreventedByImmunity ? 0 : amountAfterDodge);
     const afterHp = Math.max(0, beforeHp - appliedAmount);
     slotState.hero.hp = afterHp;
     const receivedHpDamage = appliedAmount > 0 && afterHp < beforeHp;
@@ -2431,7 +2569,6 @@ function applyDamageToTargets(next, attackResolution, amount, events, sourceLabe
         team_block_amount: teamBlockAmount,
         response_block_amount: individualBlockAmount,
         total_block_amount: teamBlockAmount + individualBlockAmount,
-        exact_damage_after_dodge: exactDamageAfterDodge,
         class_damage_reduction_amount: Number(physicalReduction.amount || 0),
         class_damage_reduction_reason: physicalReduction.reason,
         prevented_amount: damagePreventedByImmunity ? adjustedAmount : 0,
@@ -2444,10 +2581,10 @@ function applyDamageToTargets(next, attackResolution, amount, events, sourceLabe
         response_result: response || null,
         dodged_by_response: dodgedByResponse,
         final_hp_damage: Math.max(0, beforeHp - afterHp),
-        public_damage_breakdown: { attack_card_id: attackResolution.card_id, incoming_damage: incomingAmount, conditional_bonus_before_defense: Boolean(attackResolution.damage_computation && attackResolution.damage_computation.conditional_bonus_before_defense), conditional_bonus_amount: Number(attackResolution.damage_computation && attackResolution.damage_computation.conditional_bonus && attackResolution.damage_computation.conditional_bonus.amount || 0), defense_card_id: response && response.response_card_id !== undefined ? response.response_card_id : response && response.card_id || null, defense_display_name: response && (response.response_display_name || response.racial_trait) || null, defense_source_type: response && response.response_source_type || (response && response.card_id ? 'CARD' : null), defense_kind: response && response.type || null, team_block: teamBlockAmount, response_block: individualBlockAmount, passive_reduction: Number(physicalReduction.amount || 0), immunity_prevented: damagePreventedByImmunity ? amountAfterDodge : 0, final_hp_damage: Math.max(0, beforeHp - afterHp), before_hp: beforeHp, after_hp: afterHp }
+        public_damage_breakdown: { attack_card_id: attackResolution.card_id, incoming_damage: incomingAmount, conditional_follow_up_separate: Boolean(attackResolution.conditional_follow_ups && attackResolution.conditional_follow_ups.length), defense_card_id: response && response.response_card_id !== undefined ? response.response_card_id : response && response.card_id || null, defense_display_name: response && (response.response_display_name || response.racial_trait) || null, defense_source_type: response && response.response_source_type || (response && response.card_id ? 'CARD' : null), defense_kind: response && response.type || null, team_block: teamBlockAmount, response_block: individualBlockAmount, passive_reduction: Number(physicalReduction.amount || 0), immunity_prevented: damagePreventedByImmunity ? amountAfterDodge : 0, final_hp_damage: Math.max(0, beforeHp - afterHp), before_hp: beforeHp, after_hp: afterHp }
       }
     }));
-    events.push(createRuntimeEvent(EVENT_TYPES.OPPONENT_PLAYED_UPDATED, next, { player_id: attackResolution.attacking_player_id, card_id: attackResolution.card_id, source_slot: attackResolution.source_slot, target_player_id: target.target_player_id, target_slot: target.target_slot, payload: { public_record_type: 'ACTION_RESULT', status: attackResolution.attack_negated ? 'NEGATED' : 'RESOLVED', response_card_id: response && response.response_card_id !== undefined ? response.response_card_id : response && response.card_id || null, response_display_name: response && (response.response_display_name || response.racial_trait) || null, response_source_type: response && response.response_source_type || (response && response.card_id ? 'CARD' : null), response_kind: response && response.type || null, incoming_damage: incomingAmount, conditional_bonus_before_defense: Boolean(attackResolution.damage_computation && attackResolution.damage_computation.conditional_bonus_before_defense), conditional_bonus_amount: Number(attackResolution.damage_computation && attackResolution.damage_computation.conditional_bonus && attackResolution.damage_computation.conditional_bonus.amount || 0), total_block: teamBlockAmount + individualBlockAmount, passive_reduction: Number(physicalReduction.amount || 0), final_hp_damage: Math.max(0, beforeHp - afterHp), before_hp: beforeHp, after_hp: afterHp, keep_visible_when_canceled_or_negated: true } }));
+    events.push(createRuntimeEvent(EVENT_TYPES.OPPONENT_PLAYED_UPDATED, next, { player_id: attackResolution.attacking_player_id, card_id: attackResolution.card_id, source_slot: attackResolution.source_slot, target_player_id: target.target_player_id, target_slot: target.target_slot, payload: { public_record_type: 'ACTION_RESULT', status: attackResolution.attack_negated ? 'NEGATED' : 'RESOLVED', response_card_id: response && response.response_card_id !== undefined ? response.response_card_id : response && response.card_id || null, response_display_name: response && (response.response_display_name || response.racial_trait) || null, response_source_type: response && response.response_source_type || (response && response.card_id ? 'CARD' : null), response_kind: response && response.type || null, incoming_damage: incomingAmount, conditional_follow_up_separate: Boolean(attackResolution.conditional_follow_ups && attackResolution.conditional_follow_ups.length), total_block: teamBlockAmount + individualBlockAmount, passive_reduction: Number(physicalReduction.amount || 0), final_hp_damage: Math.max(0, beforeHp - afterHp), before_hp: beforeHp, after_hp: afterHp, keep_visible_when_canceled_or_negated: true } }));
     if (afterHp <= 0 && !slotState.hero.defeated) {
       if (!applyStonebloodPreventDefeat(next, target.target_player_id, target.target_slot, slotState, events, attackResolution.card_id)) {
         queueHeroDefeatLegacyChoice(next, target.target_player_id, target.target_slot, slotState, events, attackResolution.card_id);
@@ -3308,6 +3445,8 @@ function buildPendingAttackResolution(state, pending, card) {
     status_effects: attackStatusEffectsForCard(state, pending, card),
     source_hero_card_id: sourceHeroCard && sourceHeroCard.card_id,
     source_hero_class: String(sourceHeroCard && (sourceHeroCard.display_class || sourceHeroCard.class || (sourceHeroCard.identity && (sourceHeroCard.identity.display_class || sourceHeroCard.identity.class))) || ''),
+    conditional_follow_ups: conditionalFollowUpsForCard(card),
+    conditional_follow_up_resolution_keys: [],
     cannot_be_dodged: attackCannotBeDodged(card),
     cannot_be_blocked: attackCannotBeBlocked(card),
     response_result: null,
@@ -3327,38 +3466,20 @@ function getOrCreateAttackDamageComputation(next, attackResolution, events) {
   const response = responseResultForTarget(attackResolution, primaryTarget);
   if (attackResolution.attack_negated) amount = 0;
   const negated = response && responseNegatesAttack(response.type);
-  const exactDamageAfterDodge = response && response.type === 'DODGE' && attackResolution.card_id === 'S1-MAG-007' && /elementalist|elemental lord/i.test(String(attackResolution.source_hero_class || '')) ? 40 : null;
   if (attackResolution.attack_negated || negated) amount = 0;
   const abilityDamage = Boolean(attackResolution.ability_damage);
-  const attachmentModifierAmount = !abilityDamage && amount > 0 && exactDamageAfterDodge === null ? activeAttackDamageModifierAmount(next, attackResolution, events) : 0;
+  const attachmentModifierAmount = !abilityDamage && amount > 0 ? activeAttackDamageModifierAmount(next, attackResolution, events) : 0;
   amount += attachmentModifierAmount;
-  let conditionalBonus = { amount: 0, reason: null };
-  if (amount > 0) {
-    conditionalBonus = abilityDamage ? { amount: 0, reason: null } : conditionalDamageBonusForAttack(next, attackResolution);
-    amount += Number(conditionalBonus.amount || 0);
-    if (conditionalBonus.amount) {
-      events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
-        player_id: attackResolution.attacking_player_id,
-        card_id: attackResolution.card_id,
-        source_slot: attackResolution.source_slot,
-        target_player_id: attackResolution.target_player_id,
-        target_slot: attackResolution.target_slot,
-        payload: { result: 'CONDITIONAL_DAMAGE_BONUS_APPLIED', bonus_amount: conditionalBonus.amount, reason: conditionalBonus.reason }
-      }));
-    }
-  }
   const fullDamageMultiplier = amount > 0 ? activeAttackDamageMultiplier(next, attackResolution, response, events) : { multiplier: 1, reasons: [] };
   amount *= Number(fullDamageMultiplier.multiplier || 1);
   attackResolution.damage_computation = {
     amount,
     incoming_damage_before_defense: amount,
-    conditional_bonus_before_defense: true,
     ability_damage: abilityDamage,
     attachment_modifier_amount: attachmentModifierAmount,
-    conditional_bonus: conditionalBonus,
+    conditional_follow_up_separate: Boolean(attackResolution.conditional_follow_ups && attackResolution.conditional_follow_ups.length),
     full_damage_multiplier: Number(fullDamageMultiplier.multiplier || 1),
     full_damage_multiplier_reasons: fullDamageMultiplier.reasons || [],
-    exact_damage_after_dodge: exactDamageAfterDodge,
     primary_response: response || null
   };
   return attackResolution.damage_computation;
@@ -3377,6 +3498,7 @@ function resolvePendingAttackTargetDamage(next, events, resolverPlayerId, target
   });
   if (attackResolution.remove_poison_before_damage && !attackResolution.attack_negated) removePoisonStatusBeforeVenomDamage(next, scopedAttack, events);
   const damagedTargets = applyDamageToTargets(next, scopedAttack, computation.amount, events, computation.ability_damage ? 'racial_ability_damage' : 'attack');
+  resolveConditionalFollowUpsForTarget(next, attackResolution, scopedTarget, damagedTargets, events);
   attackResolution.sequential_resolution_started = true;
   attackResolution.resolved_target_keys = Array.from(new Set([...(attackResolution.resolved_target_keys || []), responseTargetKey(scopedTarget)]));
   attackResolution.sequential_damaged_targets = (attackResolution.sequential_damaged_targets || []).concat(deepClone(damagedTargets));
@@ -3410,8 +3532,6 @@ function resolvePendingAttackDamage(next, events, resolverPlayerId, options) {
   const amount = Number(computation.amount || 0);
   const abilityDamage = Boolean(computation.ability_damage);
   const attachmentModifierAmount = Number(computation.attachment_modifier_amount || 0);
-  const conditionalBonus = computation.conditional_bonus || { amount: 0, reason: null };
-  const exactDamageAfterDodge = computation.exact_damage_after_dodge;
   const primaryTarget = Array.isArray(attackResolution.targets) && attackResolution.targets.length
     ? attackResolution.targets[0]
     : { target_player_id: attackResolution.target_player_id, target_slot: attackResolution.target_slot };
@@ -3428,6 +3548,13 @@ function resolvePendingAttackDamage(next, events, resolverPlayerId, options) {
     if (attackResolution.remove_poison_before_damage && !attackResolution.attack_negated) removePoisonStatusBeforeVenomDamage(next, attackResolution, events);
     damagedTargets = applyDamageToTargets(next, Object.assign({}, attackResolution, { final_damage: amount }), amount, events, abilityDamage ? 'racial_ability_damage' : 'attack');
     attackResolution.total_hp_damage = damagedTargets.reduce((sum, target) => sum + Number(target.final_hp_damage || 0), 0);
+  }
+
+  if (!abilityDamage && !attackResolution.sequential_resolution_started && !mode.finalize_only) {
+    const followUpTargets = Array.isArray(attackResolution.targets) && attackResolution.targets.length
+      ? attackResolution.targets
+      : [primaryTarget];
+    for (const target of followUpTargets) resolveConditionalFollowUpsForTarget(next, attackResolution, target, damagedTargets, events);
   }
 
   if (!abilityDamage) {
@@ -3455,8 +3582,8 @@ function resolvePendingAttackDamage(next, events, resolverPlayerId, options) {
       class_attack_damage_bonus_reasons: attackResolution.class_attack_damage_bonus_reasons || [],
       surge_damage_bonus: Number(attackResolution.surge_damage_bonus || 0),
       surge_reason: attackResolution.surge_reason || null,
-      conditional_bonus: conditionalBonus,
-      exact_damage_after_dodge: exactDamageAfterDodge,
+      conditional_follow_up_separate: Boolean(attackResolution.conditional_follow_ups && attackResolution.conditional_follow_ups.length),
+      conditional_follow_up_results: deepClone(attackResolution.conditional_follow_up_results || []),
       response_result: response,
       sequential_per_hero: Boolean(attackResolution.sequential_resolution_started),
       resolved_target_keys: (attackResolution.resolved_target_keys || []).slice()
@@ -4905,7 +5032,7 @@ function confirmAction(state, intent) {
     const classBuff=attackDamageBuffForSourceHero(next,pending,card,{damage_type:damageType,action_profile:'Casting Attack'});
     const amount=Number(printedAmount||0)+Number(classBuff.amount||0);
     if(!Number.isFinite(printedAmount)||printedAmount<=0||!Number.isFinite(amount)||amount<=0) return {state,events:[],errors:['Casting Attack damage snapshot is missing or invalid.']};
-    const castingAttachment={attachment_id:`${pending.card_id}:casting:${Date.now()}`,card_id:pending.card_id,owner_id:pending.player_id,source_slot:pending.source_slot,original_source_slot:pending.source_slot,source_hero_card_id:sourceHeroCard&&sourceHeroCard.card_id,source_hero_class:primarySourceClassName(next,pending),target_player_id:pending.target_player_id||getOpponentId(next,pending.player_id),target_slot:pending.target_slot,locked_target_slot:pending.target_slot,attachment_state:'CASTING',casting_type:'TURN_COUNTDOWN_CASTING',base_damage:amount,printed_damage:printedAmount,damage_type:damageType,action_profile:'Casting Attack',class_attack_damage_bonus:Number(classBuff.amount||0),class_attack_damage_bonus_reasons:classBuff.reasons||[],modifier_breakdown:(classBuff.reasons||[]).map(reason=>({source_type:'Hero Ability',source_card_id:sourceHeroCard&&sourceHeroCard.card_id||null,source_name:sourceHeroCard&&sourceHeroCard.name||'Hero Ability',amount:Number(classBuff.amount||0),reason})),remaining_count:1,turns_remaining:1,tick_phase:TICK_PHASE.BATTLE_PHASE_START,created_checkpoint_id:`${next.round}:${next.active_player_id}:BATTLE_PHASE_START`,skip_creation_checkpoint:true,pending_attack_resolution:{}};
+    const castingAttachment={attachment_id:`${pending.card_id}:casting:${Date.now()}`,card_id:pending.card_id,owner_id:pending.player_id,source_slot:pending.source_slot,original_source_slot:pending.source_slot,source_hero_card_id:sourceHeroCard&&sourceHeroCard.card_id,source_hero_class:primarySourceClassName(next,pending),target_player_id:pending.target_player_id||getOpponentId(next,pending.player_id),target_slot:pending.target_slot,locked_target_slot:pending.target_slot,attachment_state:'CASTING',casting_type:'TURN_COUNTDOWN_CASTING',base_damage:amount,printed_damage:printedAmount,damage_type:damageType,action_profile:'Casting Attack',class_attack_damage_bonus:Number(classBuff.amount||0),class_attack_damage_bonus_reasons:classBuff.reasons||[],modifier_breakdown:(classBuff.reasons||[]).map(reason=>({source_type:'Hero Ability',source_card_id:sourceHeroCard&&sourceHeroCard.card_id||null,source_name:sourceHeroCard&&sourceHeroCard.name||'Hero Ability',amount:Number(classBuff.amount||0),reason})),conditional_follow_ups:conditionalFollowUpsForCard(card),remaining_count:1,turns_remaining:1,tick_phase:TICK_PHASE.BATTLE_PHASE_START,created_checkpoint_id:`${next.round}:${next.active_player_id}:BATTLE_PHASE_START`,skip_creation_checkpoint:true,pending_attack_resolution:{}};
     const added=addAttachmentWithCapacity(next,pending.player_id,castingAttachment,pending.source_slot,events);
     if(!added.ok) return {state,events:[],errors:added.errors};
     markSourceHeroCasting(next,pending,card,events); movedTo='Attachment Slot';
@@ -6144,6 +6271,9 @@ module.exports = {
     buildPendingAttackResolution,
     getOrCreateAttackDamageComputation,
     applyDamageToTargets,
+    conditionalFollowUpsForCard,
+    conditionalFollowUpObservation,
+    resolveConditionalFollowUpsForTarget,
     racialResponseIdentity,
     buildCastingReleaseAttackResolution,
     queueOrOpenCastingRelease,

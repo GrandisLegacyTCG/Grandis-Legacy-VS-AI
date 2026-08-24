@@ -7,7 +7,7 @@ need(app.includes('bindMobileHandLongPress'),'Android custom long-press binding 
 need(app.includes("el.addEventListener('contextmenu',function(ev){ev.preventDefault();})"),'Hand context-menu suppression missing');
 need(app.includes('prepareImageForPaint(img).then(function(){nextVisualFrame(startVisualAnimation);});'),'Single card motion does not wait for decode');
 need(app.includes('Promise.all(prepared.map(function(entry){return entry.ready;}))'),'Parallel card motion does not wait for decode');
-need(app.includes('installVisualDecodeObserver(); preloadCriticalVisualAssets(); render(); bind();'),'Decode observer/preload boot order missing');
+need(app.includes('installVisualDecodeObserver(); preloadCriticalVisualAssets(); bindVsMatchNavigationGuard(); render(); bind();'),'Decode observer/preload/navigation-guard boot order missing');
 need(app.includes('Racial-Token-Head.webp')&&app.includes('Racial-Token-Tail.webp'),'Optimized Racial Token assets not referenced');
 need(!app.includes('Racial-Token-Head.png')&&!app.includes('Racial-Token-Tail.png'),'Old Racial Token PNG references remain');
 need(css.includes('Opponent only: restore the compact fan'),'Mobile opponent fan lock missing');

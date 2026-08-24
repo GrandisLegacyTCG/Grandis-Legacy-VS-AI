@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.4.1",
+  "schema_version": "1.5.0",
   "generated_at": "2026-08-24",
-  "generated_from": "src/data/season1/cards.canonical.v1.4.1.json",
-  "canonical_registry_hash": "b185307752fd523d6c1e4a450f8bdd82b96b4d4cbfbb884fca8a619e8c5c8057",
+  "generated_from": "src/data/season1/cards.canonical.v1.5.0.json",
+  "canonical_registry_hash": "f5de57e66f0191522537b6e2b66539dd1c3c2a9737e59bac76c48044c38a21c1",
   "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
   "generated_only": true,
   "count": 198,
@@ -48173,7 +48173,7 @@
         "format": "webp",
         "source_archive_sha256": "a16c238071a2400e6e902727b728576f5582d19e1bdf97560c55806748458c29"
       },
-      "canonical_hash": "02dfc8695cd4d82efddbc7a681b7a093aa3c4d7b0981e0689e16a30d4c965dc7",
+      "canonical_hash": "632ca0986cfca5f8642bef57d7e1d2dd4bf673b6543d2476e3046b38428871b9",
       "class_group": "MAG",
       "rank_numeric": 1,
       "timing": {
@@ -48299,7 +48299,7 @@
           "Mage": 70,
           "Elementalist": 80
         },
-        "conditional_damage_note": "Mage 70; Elementalist 80; Dodged residual 40 fixed final"
+        "follow_up_component_note": "Elementalist/Elemental Lord Dodge follow-up is a separate fixed 40 Magical damage component after the avoided Primary."
       },
       "casting_delay": {
         "attachment_state": "CASTING",
@@ -48311,30 +48311,11 @@
         "card_zone_until_release": "Attachment Slot",
         "zone_after_release": "Discard Pile"
       },
-      "special_resolution": {
-        "Elementalist": "if attack is Dodged, it still deals exactly 40 fixed residual damage",
-        "residual_damage_rule_candidate": "residual damage is attack-connected but dodge override says fixed damage still applies; block/reduction interaction needs approval"
-      },
       "casting": {
         "runtime_model": "casting_time_delayed_active_effect",
         "zone_created": false,
         "played_definition": "Card is Played when it leaves Hand; casting state is tracked as delayed active effect, not a new zone."
       },
-      "conditional_damage_components": [
-        {
-          "component_id": "tornado_dodge_fallback_40",
-          "family": "conditional_damage_component",
-          "trigger_condition": "attack_was_dodged",
-          "amount": 40,
-          "damage_type": "Magical",
-          "is_attack_damage": false,
-          "dodge_interaction": "triggered_by_dodge; cannot be dodged again",
-          "block_interaction": "cannot_be_blocked",
-          "buff_modifier_interaction": "does_not_receive_attack_damage_modifiers_or_buffs",
-          "cancel_negate_interaction": "if Tornado is canceled/negated before resolution, this component does not resolve",
-          "notes": "Same conditional damage family as Rage Blast, but trigger is Dodge result instead of pre-existing target status."
-        }
-      ],
       "tribute": {
         "can_be_tributed": true,
         "exp_value": 100,
@@ -48368,7 +48349,8 @@
         "enabled": false,
         "buckets": [
           "pending_casting",
-          "deal_attack_damage"
+          "deal_attack_damage",
+          "conditional_follow_up"
         ]
       },
       "effects": [
@@ -48388,6 +48370,11 @@
           "tick_phase": "BATTLE_PHASE_START",
           "host": "source_hero_attachment_slot",
           "locked_target_required": true
+        },
+        {
+          "kind": "conditional_follow_up_reference",
+          "component_id": "tornado_dodge_follow_up",
+          "source_of_truth": "conditional_follow_ups"
         }
       ],
       "lifecycle": {
@@ -48424,16 +48411,58 @@
         "coverage_rule": "Coverage only applies during Battle Phase attacks; support/heal ignore Coverage.",
         "foundation_note": "Target belongs to Resolver, not top-level Skill Card."
       },
-      "dodge_residual_lock": {
-        "rule": "If Tornado from Elementalist or Elemental Lord is dodged by any legal Dodge response, including Spectral Grappling Hook, it still deals exactly 40 damage.",
-        "damage_amount": 40,
-        "exact": true,
-        "applies_after_response_kind": "DODGE",
-        "includes_response_card_ids": [
-          "S1-ITM-012"
-        ],
-        "not_zero_damage_unless_prevented_by_any_damage_immunity": true
-      },
+      "conditional_follow_ups": [
+        {
+          "schema_version": "1.0.0",
+          "component_id": "tornado_dodge_follow_up",
+          "enabled": true,
+          "trigger_timing": "after_primary_resolution",
+          "condition": {
+            "type": "all",
+            "conditions": [
+              {
+                "type": "primary_response_kind_is",
+                "response_kind": "DODGE"
+              },
+              {
+                "type": "source_class_in",
+                "values": [
+                  "Elementalist",
+                  "Elemental Lord"
+                ]
+              }
+            ]
+          },
+          "effect": {
+            "type": "damage",
+            "amount": 40,
+            "damage_type": "Magical",
+            "is_attack_damage": false
+          },
+          "source": "primary_source",
+          "target": "primary_target",
+          "opens_response_window": false,
+          "requires_primary_resolution": true,
+          "requires_primary_hit": false,
+          "requires_primary_hp_damage": false,
+          "trigger_on_dodge": true,
+          "trigger_on_block": true,
+          "trigger_if_primary_damage_zero": true,
+          "canceled_if_primary_negated": true,
+          "canceled_if_primary_canceled": true,
+          "primary_block_interaction": "does_not_carry_over",
+          "dodge_interaction": "dodge_triggers_follow_up",
+          "modifier_inheritance": "none",
+          "follow_up_ordering": "immediately_after_primary_before_attack_finalization",
+          "automatic": true,
+          "defense_interaction": {
+            "primary_block": "ignored",
+            "new_response_window": false,
+            "passive_damage_reduction": "apply_by_damage_type",
+            "any_damage_immunity": "applies"
+          }
+        }
+      ],
       "cost_mana": 5,
       "effect": [
         {
@@ -48452,6 +48481,11 @@
           "tick_phase": "BATTLE_PHASE_START",
           "host": "source_hero_attachment_slot",
           "locked_target_required": true
+        },
+        {
+          "kind": "conditional_follow_up_reference",
+          "component_id": "tornado_dodge_follow_up",
+          "source_of_truth": "conditional_follow_ups"
         }
       ],
       "effect_strings_by_class": {
@@ -48568,7 +48602,7 @@
             }
           },
           "coverage": "uses Battle Phase Attack Coverage",
-          "conditional_damage_note": "Mage 70; Elementalist 80; Dodged residual 40 fixed final"
+          "follow_up_component_note": "Elementalist/Elemental Lord Dodge follow-up is a separate fixed 40 Magical damage component after the avoided Primary."
         },
         "casting_delay": {
           "attachment_state": "CASTING",
@@ -48580,30 +48614,11 @@
           "card_zone_until_release": "Attachment Slot",
           "zone_after_release": "Discard Pile"
         },
-        "special_resolution": {
-          "Elementalist": "if attack is Dodged, it still deals exactly 40 fixed residual damage",
-          "residual_damage_rule_candidate": "residual damage is attack-connected but dodge override says fixed damage still applies; block/reduction interaction needs approval"
-        },
         "casting": {
           "runtime_model": "casting_time_delayed_active_effect",
           "zone_created": false,
           "played_definition": "Card is Played when it leaves Hand; casting state is tracked as delayed active effect, not a new zone."
         },
-        "conditional_damage_components": [
-          {
-            "component_id": "tornado_dodge_fallback_40",
-            "family": "conditional_damage_component",
-            "trigger_condition": "attack_was_dodged",
-            "amount": 40,
-            "damage_type": "Magical",
-            "is_attack_damage": false,
-            "dodge_interaction": "triggered_by_dodge; cannot be dodged again",
-            "block_interaction": "cannot_be_blocked",
-            "buff_modifier_interaction": "does_not_receive_attack_damage_modifiers_or_buffs",
-            "cancel_negate_interaction": "if Tornado is canceled/negated before resolution, this component does not resolve",
-            "notes": "Same conditional damage family as Rage Blast, but trigger is Dodge result instead of pre-existing target status."
-          }
-        ],
         "tribute": {
           "can_be_tributed": true,
           "exp_value": 100,
@@ -48637,7 +48652,8 @@
           "enabled": false,
           "buckets": [
             "pending_casting",
-            "deal_attack_damage"
+            "deal_attack_damage",
+            "conditional_follow_up"
           ]
         },
         "effects": [
@@ -48648,6 +48664,11 @@
             "tick_phase": "BATTLE_PHASE_START",
             "host": "source_hero_attachment_slot",
             "locked_target_required": true
+          },
+          {
+            "kind": "conditional_follow_up_reference",
+            "component_id": "tornado_dodge_follow_up",
+            "source_of_truth": "conditional_follow_ups"
           }
         ],
         "lifecycle": {
@@ -48684,16 +48705,58 @@
           "coverage_rule": "Coverage only applies during Battle Phase attacks; support/heal ignore Coverage.",
           "foundation_note": "Target belongs to Resolver, not top-level Skill Card."
         },
-        "dodge_residual_lock": {
-          "rule": "If Tornado from Elementalist or Elemental Lord is dodged by any legal Dodge response, including Spectral Grappling Hook, it still deals exactly 40 damage.",
-          "damage_amount": 40,
-          "exact": true,
-          "applies_after_response_kind": "DODGE",
-          "includes_response_card_ids": [
-            "S1-ITM-012"
-          ],
-          "not_zero_damage_unless_prevented_by_any_damage_immunity": true
-        }
+        "conditional_follow_ups": [
+          {
+            "schema_version": "1.0.0",
+            "component_id": "tornado_dodge_follow_up",
+            "enabled": true,
+            "trigger_timing": "after_primary_resolution",
+            "condition": {
+              "type": "all",
+              "conditions": [
+                {
+                  "type": "primary_response_kind_is",
+                  "response_kind": "DODGE"
+                },
+                {
+                  "type": "source_class_in",
+                  "values": [
+                    "Elementalist",
+                    "Elemental Lord"
+                  ]
+                }
+              ]
+            },
+            "effect": {
+              "type": "damage",
+              "amount": 40,
+              "damage_type": "Magical",
+              "is_attack_damage": false
+            },
+            "source": "primary_source",
+            "target": "primary_target",
+            "opens_response_window": false,
+            "requires_primary_resolution": true,
+            "requires_primary_hit": false,
+            "requires_primary_hp_damage": false,
+            "trigger_on_dodge": true,
+            "trigger_on_block": true,
+            "trigger_if_primary_damage_zero": true,
+            "canceled_if_primary_negated": true,
+            "canceled_if_primary_canceled": true,
+            "primary_block_interaction": "does_not_carry_over",
+            "dodge_interaction": "dodge_triggers_follow_up",
+            "modifier_inheritance": "none",
+            "follow_up_ordering": "immediately_after_primary_before_attack_finalization",
+            "automatic": true,
+            "defense_interaction": {
+              "primary_block": "ignored",
+              "new_response_window": false,
+              "passive_damage_reduction": "apply_by_damage_type",
+              "any_damage_immunity": "applies"
+            }
+          }
+        ]
       }
     },
     {
@@ -62948,7 +63011,7 @@
         "format": "webp",
         "source_archive_sha256": "a16c238071a2400e6e902727b728576f5582d19e1bdf97560c55806748458c29"
       },
-      "canonical_hash": "d5683fada12052ad0429c76dee157c353c9daaad169fbc76d94c6c03dc4b5d83",
+      "canonical_hash": "454f36ae3fe2984a7aad316e5449e36d37748b4e2d3a58966e4aabc44f67e9b6",
       "class_group": "THF",
       "rank_numeric": 2,
       "timing": {
@@ -62960,7 +63023,7 @@
       "valid_targets": "Opponent Hero inside source Hero Area of Attack only.",
       "legal_active_classes": "Rogue;Renegade",
       "zone_after_resolve": "Discard Pile",
-      "runtime_tags": "ATTACK;DAMAGE;PHYSICAL_DAMAGE;POISON;TARGETING",
+      "runtime_tags": "ATTACK;DAMAGE;MAGICAL_DAMAGE;POISON;TARGETING",
       "source_requirement": {
         "source_mode": "Hero Mode only",
         "legacy_mode_allowed": false,
@@ -63056,27 +63119,9 @@
         "damage_by_class": {
           "Rogue": 20,
           "Renegade": 40
-        }
+        },
+        "component_note": "Primary Magical Attack only: Rogue 20; Renegade 40. The Poison follow-up is a separate fixed 40 Magical damage component for both classes."
       },
-      "conditional_damage_components": [
-        {
-          "component_id": "venom_sovereign_poison_bonus",
-          "family": "conditional_damage_component",
-          "trigger_condition": "target_has_Poison and base attack component deals final HP damage > 0",
-          "amount_by_class": {
-            "Rogue": 40,
-            "Renegade": 60
-          },
-          "damage_type": "Physical",
-          "is_attack_damage": false,
-          "dodge_interaction": "prevented_by_dodge because base attack does not land",
-          "block_interaction": "cannot_be_blocked once triggered; however blocking/reducing the base attack to 0 prevents trigger because damage did not land",
-          "buff_modifier_interaction": "does_not_receive_attack_damage_modifiers_or_buffs",
-          "cancel_negate_interaction": "if Venom Sovereign is canceled/negated before resolution, this component does not resolve",
-          "approval_status": "approved.2_by_no_correction",
-          "notes": "Uses global conditional damage component family. Trigger includes final HP damage condition from source data."
-        }
-      ],
       "tribute": {
         "can_be_tributed": true,
         "exp_value": 100,
@@ -63099,7 +63144,7 @@
         "enabled": false,
         "buckets": [
           "deal_attack_damage",
-          "source_structured_effect_json"
+          "conditional_follow_up"
         ]
       },
       "effects": [
@@ -63113,26 +63158,9 @@
           }
         },
         {
-          "kind": "source_structured_effect_json",
-          "payload": {
-            "damage_by_class": {
-              "Rogue": {
-                "type": "Magical",
-                "amount": 20
-              },
-              "Renegade": {
-                "type": "Magical",
-                "amount": 40
-              }
-            },
-            "on_damage_lands_if_target_has_status": {
-              "status": "Poison",
-              "bonus_damage_by_class": {
-                "Rogue": 40,
-                "Renegade": 40
-              }
-            }
-          }
+          "kind": "conditional_follow_up_reference",
+          "component_id": "venom_sovereign_poison_follow_up",
+          "source_of_truth": "conditional_follow_ups"
         }
       ],
       "runtime_resolver": {
@@ -63147,6 +63175,47 @@
         "coverage_rule": "Coverage only applies during Battle Phase attacks; support/heal ignore Coverage.",
         "foundation_note": "Target belongs to Resolver, not top-level Skill Card."
       },
+      "conditional_follow_ups": [
+        {
+          "schema_version": "1.0.0",
+          "component_id": "venom_sovereign_poison_follow_up",
+          "enabled": true,
+          "trigger_timing": "after_primary_resolution",
+          "condition": {
+            "type": "target_has_status",
+            "status": "Poison",
+            "evaluated_at": "after_primary_resolution"
+          },
+          "effect": {
+            "type": "damage",
+            "amount": 40,
+            "damage_type": "Magical",
+            "is_attack_damage": false
+          },
+          "source": "primary_source",
+          "target": "primary_target",
+          "opens_response_window": false,
+          "requires_primary_resolution": true,
+          "requires_primary_hit": true,
+          "requires_primary_hp_damage": false,
+          "trigger_on_dodge": false,
+          "trigger_on_block": true,
+          "trigger_if_primary_damage_zero": true,
+          "canceled_if_primary_negated": true,
+          "canceled_if_primary_canceled": true,
+          "primary_block_interaction": "does_not_carry_over",
+          "dodge_interaction": "dodge_suppresses_follow_up",
+          "modifier_inheritance": "none",
+          "follow_up_ordering": "immediately_after_primary_before_attack_finalization",
+          "automatic": true,
+          "defense_interaction": {
+            "primary_block": "ignored",
+            "new_response_window": false,
+            "passive_damage_reduction": "apply_by_damage_type",
+            "any_damage_immunity": "applies"
+          }
+        }
+      ],
       "cost_mana": 4,
       "effect": [
         {
@@ -63159,26 +63228,9 @@
           }
         },
         {
-          "kind": "source_structured_effect_json",
-          "payload": {
-            "damage_by_class": {
-              "Rogue": {
-                "type": "Magical",
-                "amount": 20
-              },
-              "Renegade": {
-                "type": "Magical",
-                "amount": 40
-              }
-            },
-            "on_damage_lands_if_target_has_status": {
-              "status": "Poison",
-              "bonus_damage_by_class": {
-                "Rogue": 40,
-                "Renegade": 40
-              }
-            }
-          }
+          "kind": "conditional_follow_up_reference",
+          "component_id": "venom_sovereign_poison_follow_up",
+          "source_of_truth": "conditional_follow_ups"
         }
       ],
       "effect_strings_by_class": {
@@ -63205,7 +63257,7 @@
         "valid_targets": "Opponent Hero inside source Hero Area of Attack only.",
         "legal_active_classes": "Rogue;Renegade",
         "zone_after_resolve": "Discard Pile",
-        "runtime_tags": "ATTACK;DAMAGE;PHYSICAL_DAMAGE;POISON;TARGETING",
+        "runtime_tags": "ATTACK;DAMAGE;MAGICAL_DAMAGE;POISON;TARGETING",
         "source_requirement": {
           "source_mode": "Hero Mode only",
           "legacy_mode_allowed": false,
@@ -63283,27 +63335,9 @@
               "Renegade": 40
             }
           },
-          "coverage": "uses Battle Phase Attack Coverage"
+          "coverage": "uses Battle Phase Attack Coverage",
+          "component_note": "Primary Magical Attack only: Rogue 20; Renegade 40. The Poison follow-up is a separate fixed 40 Magical damage component for both classes."
         },
-        "conditional_damage_components": [
-          {
-            "component_id": "venom_sovereign_poison_bonus",
-            "family": "conditional_damage_component",
-            "trigger_condition": "target_has_Poison and base attack component deals final HP damage > 0",
-            "amount_by_class": {
-              "Rogue": 40,
-              "Renegade": 60
-            },
-            "damage_type": "Physical",
-            "is_attack_damage": false,
-            "dodge_interaction": "prevented_by_dodge because base attack does not land",
-            "block_interaction": "cannot_be_blocked once triggered; however blocking/reducing the base attack to 0 prevents trigger because damage did not land",
-            "buff_modifier_interaction": "does_not_receive_attack_damage_modifiers_or_buffs",
-            "cancel_negate_interaction": "if Venom Sovereign is canceled/negated before resolution, this component does not resolve",
-            "approval_status": "approved.2_by_no_correction",
-            "notes": "Uses global conditional damage component family. Trigger includes final HP damage condition from source data."
-          }
-        ],
         "tribute": {
           "can_be_tributed": true,
           "exp_value": 100,
@@ -63326,31 +63360,14 @@
           "enabled": false,
           "buckets": [
             "deal_attack_damage",
-            "source_structured_effect_json"
+            "conditional_follow_up"
           ]
         },
         "effects": [
           {
-            "kind": "source_structured_effect_json",
-            "payload": {
-              "damage_by_class": {
-                "Rogue": {
-                  "type": "Magical",
-                  "amount": 20
-                },
-                "Renegade": {
-                  "type": "Magical",
-                  "amount": 40
-                }
-              },
-              "on_damage_lands_if_target_has_status": {
-                "status": "Poison",
-                "bonus_damage_by_class": {
-                  "Rogue": 40,
-                  "Renegade": 40
-                }
-              }
-            }
+            "kind": "conditional_follow_up_reference",
+            "component_id": "venom_sovereign_poison_follow_up",
+            "source_of_truth": "conditional_follow_ups"
           }
         ],
         "runtime_resolver": {
@@ -63364,7 +63381,48 @@
           },
           "coverage_rule": "Coverage only applies during Battle Phase attacks; support/heal ignore Coverage.",
           "foundation_note": "Target belongs to Resolver, not top-level Skill Card."
-        }
+        },
+        "conditional_follow_ups": [
+          {
+            "schema_version": "1.0.0",
+            "component_id": "venom_sovereign_poison_follow_up",
+            "enabled": true,
+            "trigger_timing": "after_primary_resolution",
+            "condition": {
+              "type": "target_has_status",
+              "status": "Poison",
+              "evaluated_at": "after_primary_resolution"
+            },
+            "effect": {
+              "type": "damage",
+              "amount": 40,
+              "damage_type": "Magical",
+              "is_attack_damage": false
+            },
+            "source": "primary_source",
+            "target": "primary_target",
+            "opens_response_window": false,
+            "requires_primary_resolution": true,
+            "requires_primary_hit": true,
+            "requires_primary_hp_damage": false,
+            "trigger_on_dodge": false,
+            "trigger_on_block": true,
+            "trigger_if_primary_damage_zero": true,
+            "canceled_if_primary_negated": true,
+            "canceled_if_primary_canceled": true,
+            "primary_block_interaction": "does_not_carry_over",
+            "dodge_interaction": "dodge_suppresses_follow_up",
+            "modifier_inheritance": "none",
+            "follow_up_ordering": "immediately_after_primary_before_attack_finalization",
+            "automatic": true,
+            "defense_interaction": {
+              "primary_block": "ignored",
+              "new_response_window": false,
+              "passive_damage_reduction": "apply_by_damage_type",
+              "any_damage_immunity": "applies"
+            }
+          }
+        ]
       }
     },
     {
@@ -73163,7 +73221,7 @@
         "format": "webp",
         "source_archive_sha256": "a16c238071a2400e6e902727b728576f5582d19e1bdf97560c55806748458c29"
       },
-      "canonical_hash": "629b7a665a7f8b2e075e84f89d6c8d7e3101d0037b2ec6927cd7292e013867b0",
+      "canonical_hash": "cd6c8b391bad71cb1a9113c1db0096a7e1357465c3927243c073afb8c5ec2a49",
       "class_group": "WAR",
       "rank_numeric": 2,
       "timing": {
@@ -73269,7 +73327,7 @@
         "coverage": "uses Battle Phase Attack Coverage",
         "damage_type": "Physical",
         "damage": 60,
-        "component_note": "Base attack component only. Conditional +20 vs Bleed is not merged into attack.damage.",
+        "component_note": "Primary 60 Physical Attack only. The Bleed follow-up is a separate component after Primary resolution.",
         "effect_metadata": {
           "component_id": "rage_blast_attack_component",
           "component_rules": {
@@ -73303,7 +73361,7 @@
         "enabled": false,
         "buckets": [
           "deal_attack_damage",
-          "attack_connected_conditional_damage"
+          "conditional_follow_up"
         ]
       },
       "effects": [
@@ -73314,25 +73372,9 @@
           "amount": 60
         },
         {
-          "kind": "attack_connected_conditional_damage",
-          "component_id": "rage_blast_bleed_conditional_component",
-          "condition": "chosen enemy Hero has Bleed when Rage Blast resolves",
-          "amount": 20,
-          "damage_type": "Physical",
-          "is_attack_damage": false,
-          "raw_text": "If your opponent's hero has Bleed, this attack gains +20 damage.",
-          "component_rules": {
-            "can_be_dodged": true,
-            "can_be_blocked": false,
-            "affected_by_attack_damage_modifiers": false,
-            "conqueror_passive_plus_10_applies": false,
-            "cancel_or_negate_prevents": true,
-            "requires_condition_at_resolution": true
-          },
-          "notes": [
-            "Do not merge this amount into attack.damage total.",
-            "This rule also applies to Thief cards with similar conditional damage wording unless a card explicitly says it increases Attack Damage."
-          ]
+          "kind": "conditional_follow_up_reference",
+          "component_id": "rage_blast_bleed_follow_up",
+          "source_of_truth": "conditional_follow_ups"
         }
       ],
       "runtime_resolver": {
@@ -73347,6 +73389,47 @@
         "coverage_rule": "Coverage only applies during Battle Phase attacks; support/heal ignore Coverage.",
         "foundation_note": "Target belongs to Resolver, not top-level Skill Card."
       },
+      "conditional_follow_ups": [
+        {
+          "schema_version": "1.0.0",
+          "component_id": "rage_blast_bleed_follow_up",
+          "enabled": true,
+          "trigger_timing": "after_primary_resolution",
+          "condition": {
+            "type": "target_has_status",
+            "status": "Bleed",
+            "evaluated_at": "after_primary_resolution"
+          },
+          "effect": {
+            "type": "damage",
+            "amount": 20,
+            "damage_type": "Physical",
+            "is_attack_damage": false
+          },
+          "source": "primary_source",
+          "target": "primary_target",
+          "opens_response_window": false,
+          "requires_primary_resolution": true,
+          "requires_primary_hit": true,
+          "requires_primary_hp_damage": false,
+          "trigger_on_dodge": false,
+          "trigger_on_block": true,
+          "trigger_if_primary_damage_zero": true,
+          "canceled_if_primary_negated": true,
+          "canceled_if_primary_canceled": true,
+          "primary_block_interaction": "does_not_carry_over",
+          "dodge_interaction": "dodge_suppresses_follow_up",
+          "modifier_inheritance": "none",
+          "follow_up_ordering": "immediately_after_primary_before_attack_finalization",
+          "automatic": true,
+          "defense_interaction": {
+            "primary_block": "ignored",
+            "new_response_window": false,
+            "passive_damage_reduction": "apply_by_damage_type",
+            "any_damage_immunity": "applies"
+          }
+        }
+      ],
       "cost_mana": 6,
       "effect": [
         {
@@ -73356,25 +73439,9 @@
           "amount": 60
         },
         {
-          "kind": "attack_connected_conditional_damage",
-          "component_id": "rage_blast_bleed_conditional_component",
-          "condition": "chosen enemy Hero has Bleed when Rage Blast resolves",
-          "amount": 20,
-          "damage_type": "Physical",
-          "is_attack_damage": false,
-          "raw_text": "If your opponent's hero has Bleed, this attack gains +20 damage.",
-          "component_rules": {
-            "can_be_dodged": true,
-            "can_be_blocked": false,
-            "affected_by_attack_damage_modifiers": false,
-            "conqueror_passive_plus_10_applies": false,
-            "cancel_or_negate_prevents": true,
-            "requires_condition_at_resolution": true
-          },
-          "notes": [
-            "Do not merge this amount into attack.damage total.",
-            "This rule also applies to Thief cards with similar conditional damage wording unless a card explicitly says it increases Attack Damage."
-          ]
+          "kind": "conditional_follow_up_reference",
+          "component_id": "rage_blast_bleed_follow_up",
+          "source_of_truth": "conditional_follow_ups"
         }
       ],
       "effect_strings_by_class": {
@@ -73476,7 +73543,7 @@
             "amount": 60
           },
           "coverage": "uses Battle Phase Attack Coverage",
-          "component_note": "Base attack component only. Conditional +20 vs Bleed is not merged into attack.damage.",
+          "component_note": "Primary 60 Physical Attack only. The Bleed follow-up is a separate component after Primary resolution.",
           "effect_metadata": {
             "component_id": "rage_blast_attack_component",
             "component_rules": {
@@ -73510,30 +73577,14 @@
           "enabled": false,
           "buckets": [
             "deal_attack_damage",
-            "attack_connected_conditional_damage"
+            "conditional_follow_up"
           ]
         },
         "effects": [
           {
-            "kind": "attack_connected_conditional_damage",
-            "component_id": "rage_blast_bleed_conditional_component",
-            "condition": "chosen enemy Hero has Bleed when Rage Blast resolves",
-            "amount": 20,
-            "damage_type": "Physical",
-            "is_attack_damage": false,
-            "raw_text": "If your opponent's hero has Bleed, this attack gains +20 damage.",
-            "component_rules": {
-              "can_be_dodged": true,
-              "can_be_blocked": false,
-              "affected_by_attack_damage_modifiers": false,
-              "conqueror_passive_plus_10_applies": false,
-              "cancel_or_negate_prevents": true,
-              "requires_condition_at_resolution": true
-            },
-            "notes": [
-              "Do not merge this amount into attack.damage total.",
-              "This rule also applies to Thief cards with similar conditional damage wording unless a card explicitly says it increases Attack Damage."
-            ]
+            "kind": "conditional_follow_up_reference",
+            "component_id": "rage_blast_bleed_follow_up",
+            "source_of_truth": "conditional_follow_ups"
           }
         ],
         "runtime_resolver": {
@@ -73547,7 +73598,48 @@
           },
           "coverage_rule": "Coverage only applies during Battle Phase attacks; support/heal ignore Coverage.",
           "foundation_note": "Target belongs to Resolver, not top-level Skill Card."
-        }
+        },
+        "conditional_follow_ups": [
+          {
+            "schema_version": "1.0.0",
+            "component_id": "rage_blast_bleed_follow_up",
+            "enabled": true,
+            "trigger_timing": "after_primary_resolution",
+            "condition": {
+              "type": "target_has_status",
+              "status": "Bleed",
+              "evaluated_at": "after_primary_resolution"
+            },
+            "effect": {
+              "type": "damage",
+              "amount": 20,
+              "damage_type": "Physical",
+              "is_attack_damage": false
+            },
+            "source": "primary_source",
+            "target": "primary_target",
+            "opens_response_window": false,
+            "requires_primary_resolution": true,
+            "requires_primary_hit": true,
+            "requires_primary_hp_damage": false,
+            "trigger_on_dodge": false,
+            "trigger_on_block": true,
+            "trigger_if_primary_damage_zero": true,
+            "canceled_if_primary_negated": true,
+            "canceled_if_primary_canceled": true,
+            "primary_block_interaction": "does_not_carry_over",
+            "dodge_interaction": "dodge_suppresses_follow_up",
+            "modifier_inheritance": "none",
+            "follow_up_ordering": "immediately_after_primary_before_attack_finalization",
+            "automatic": true,
+            "defense_interaction": {
+              "primary_block": "ignored",
+              "new_response_window": false,
+              "passive_damage_reduction": "apply_by_damage_type",
+              "any_damage_immunity": "applies"
+            }
+          }
+        ]
       }
     },
     {

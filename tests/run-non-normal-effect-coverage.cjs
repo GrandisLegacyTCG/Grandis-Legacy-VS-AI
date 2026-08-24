@@ -3,11 +3,11 @@ const fs=require('fs');
 const path=require('path');
 const assert=require('assert');
 const root=path.resolve(__dirname,'..');
-const data=require(path.join(root,'data/season1/cards.runtime.v0.13.1.json'));
-const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.12.1.json'));
+const data=require(path.join(root,'data/season1/cards.runtime.v0.14.0.json'));
+const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.13.0.json'));
 const legality=require(path.join(root,'data/season1/legality-map.runtime.v0.11.9.json'));
-const preview=require(path.join(root,'data/season1/card-preview.generated.v1.4.1.json'));
-const H='b185307752fd523d6c1e4a450f8bdd82b96b4d4cbfbb884fca8a619e8c5c8057';
+const preview=require(path.join(root,'data/season1/card-preview.generated.v1.5.0.json'));
+const H='f5de57e66f0191522537b6e2b66539dd1c3c2a9737e59bac76c48044c38a21c1';
 for(const doc of [data,recipes,legality,preview]){
   assert.strictEqual(doc.canonical_registry_hash,H,'canonical registry hash');
   assert.strictEqual(doc.count,198,'198 record parity');
@@ -15,8 +15,8 @@ for(const doc of [data,recipes,legality,preview]){
 const expectedKinds=new Set([
   'add_to_hand','apply_exhaust','area_defense_exception_damage_reduction','attach_attack_damage_modifier',
   'attach_healing_received_modifier','attach_next_attack_status_buff','attach_targeting_filter','attach_untargetable_and_draw',
-  'attack_connected_conditional_damage','attack_restriction','block_damage','buff','buff_duration','buff_value','cancel_card',
-  'cancel_response_skill','conditional_attack_modifier','conditional_retaliation_damage','create_active_effect','create_active_effect_or_event_attachment','damage_immunity',
+  'attack_restriction','block_damage','buff','buff_duration','buff_value','cancel_card',
+  'cancel_response_skill','conditional_attack_modifier','conditional_follow_up_reference','conditional_retaliation_damage','create_active_effect','create_active_effect_or_event_attachment','damage_immunity',
   'deal_attack_damage','defeat_target_if_hp_threshold','discard_attack_card','discard_exp_from_opponent_hero','discard_then_draw','dodge_incoming_attack_damage',
   'dodge_incoming_damage','dodge_then_reposition','draw_cards','gain_mana','gain_racial_token','heal','heal_allied_heroes',
   'heal_target_hero','inflict_status','look_and_reorder_top_deck','move_cards','move_this_card_to_discard','negate',

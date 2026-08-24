@@ -1,13 +1,13 @@
 {
   "name": "grandis-legacy-tutorial",
-  "version": "0.41.0",
+  "version": "0.42.0",
   "private": true,
-  "description": "Grandis Legacy non-scripted Tutorial v0.41, synced with VS AI v6.10; audio filenames updated without changing tutorial or gameplay behavior.",
+  "description": "Grandis Legacy non-scripted Tutorial v0.42, synchronized with VS AI v6.11 and Source Stack v1.7.0 Conditional Follow-up authority, with retained mobile audio lifecycle.",
   "scripts": {
     "build:data": "node ../tools/build-static-data.cjs",
     "metadata": "node ../tools/update-release-metadata.cjs",
     "syntax": "node --check js/app.bundle.js && node --check js/tutorial-guide.js && node --check js/static-data.js && node --check js/runtime-authority.js && find runtime-source/runtime -type f \\( -name '*.js' -o -name '*.mjs' \\) -print0 | sort -z | xargs -0 -r -n1 node --check",
-    "test:base": "node ../tests/run-v69-source-pending.cjs && node tests/run-non-normal-effect-coverage.cjs && node tests/run-v551-lobby-and-defeat-cleanup.cjs && node tests/run-v552-source-adoption.cjs && node tests/run-runtime-executable-flows.cjs && node tests/run-local-ai-application-effects.cjs && node tests/run-opening-flow-test.cjs && node tests/run-tactical-ai-planner.cjs && node tests/run-card-played-audit.cjs && node tests/run-attachment-slot-parity.cjs",
+    "test:base": "node ../tests/run-v69-source-pending.cjs && node ../tests/run-v611-conditional-followup-audio-refresh.cjs && node tests/run-non-normal-effect-coverage.cjs && node tests/run-v551-lobby-and-defeat-cleanup.cjs && node tests/run-v552-source-adoption.cjs && node tests/run-runtime-executable-flows.cjs && node tests/run-local-ai-application-effects.cjs && node tests/run-opening-flow-test.cjs && node tests/run-tactical-ai-planner.cjs && node tests/run-card-played-audit.cjs && node tests/run-attachment-slot-parity.cjs",
     "test:tutorial": "node tests/run-tutorial-github-v041.cjs",
     "test": "npm run syntax && npm run test:base && npm run test:tutorial",
     "verify": "npm test && node tests/run-manifest-verification.cjs"

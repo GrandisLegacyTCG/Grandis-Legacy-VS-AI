@@ -14,9 +14,16 @@
     gtag('config', 'G-4C2Z5T0EWR');
   </script>
   <title>Grandis Legacy — VS AI Lobby</title>
-  <link rel="stylesheet" href="css/app.css?v=gl-vs-ai-6.10">
+  <link rel="stylesheet" href="css/app.css?v=gl-vs-ai-6.12">
 </head>
 <body>
+  <button id="glMobileAppMenuButton" class="gl-mobile-app-menu-button" type="button" aria-expanded="false" aria-controls="glMobileAppMenu" aria-label="Open Grandis Legacy menu"><span></span><span></span><span></span></button>
+  <nav id="glMobileAppMenu" class="gl-mobile-app-menu" aria-label="Grandis Legacy applications" hidden>
+    <a href="https://grandislegacytcg.github.io/Grandis-Legacy-VS-AI/">VS AI</a>
+    <a href="https://grandislegacytcg.github.io/pvp/">PVP</a>
+    <a href="https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-2/">DECK BUILDER</a>
+  </nav>
+
   <div id="app" aria-live="polite">
     <noscript>Grandis Legacy Local AI requires JavaScript enabled.</noscript>
   </div>
@@ -56,8 +63,9 @@
   <div id="glAnimationLayer" class="gl-animation-layer" aria-hidden="true"></div>
 
   <script>window.GL_APP_MODE="LOCAL_AI";</script>
-  <script src="js/static-data.js?v=gl-vs-ai-6.10"></script>
-  <script src="js/runtime-authority.js?v=gl-vs-ai-6.10"></script>
-  <script src="js/app.bundle.js?v=gl-vs-ai-6.10"></script>
+  <script src="js/static-data.js?v=gl-vs-ai-6.12"></script>
+  <script src="js/runtime-authority.js?v=gl-vs-ai-6.12"></script>
+  <script src="js/app.bundle.js?v=gl-vs-ai-6.12"></script>
+  <script src="js/mobile-app-nav.js?v=gl-vs-ai-6.12"></script>
 </body>
 </html>

@@ -6,10 +6,10 @@ const path = require('path');
 const { loadLocalAI } = require('./vm-local-ai-harness.cjs');
 
 const root = path.resolve(__dirname, '..');
-const CARD_HASH = 'b185307752fd523d6c1e4a450f8bdd82b96b4d4cbfbb884fca8a619e8c5c8057';
+const CARD_HASH = 'f5de57e66f0191522537b6e2b66539dd1c3c2a9737e59bac76c48044c38a21c1';
 const HERO_HASH = '487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9';
-const data = require(path.join(root, 'data/season1/cards.runtime.v0.13.1.json'));
-const recipes = require(path.join(root, 'data/season1/effect-recipes.runtime.v0.12.1.json'));
+const data = require(path.join(root, 'data/season1/cards.runtime.v0.14.0.json'));
+const recipes = require(path.join(root, 'data/season1/effect-recipes.runtime.v0.13.0.json'));
 const heroes = require(path.join(root, 'data/season1/hero-components.runtime.v1.0.0.json'));
 const byId = new Map(data.cards.map(card => [card.card_id, card]));
 const card = id => {
@@ -108,7 +108,7 @@ assert.deepStrictEqual(classRefs('Vaelis Stormweave'), classRefs('Aldric Ashford
 for (const appRoot of [root, path.join(root, 'tutorial')]) {
   const ctx = loadLocalAI(appRoot);
   const result = ctx.GL_LOCAL_AI_BRIDGE.testV69SourcePendingAudit();
-  assert.ok(result && result.ok, `${path.basename(appRoot)} v6.9 source/pending audit failed: ${JSON.stringify(result)}`);
+  assert.ok(result && result.ok, `${path.basename(appRoot)} v6.11 source/pending audit failed: ${JSON.stringify(result)}`);
   assert.strictEqual(result.endPhaseScenarios, 8);
   const source = fs.readFileSync(path.join(appRoot, 'js/app.bundle.js'), 'utf8');
   for (const retired of ['racial_second_chance','second_chance_replay','maybeOpenHalflingSecondChance']) assert.ok(!source.includes(retired), `${retired} remains in ${appRoot}`);
@@ -118,7 +118,7 @@ for (const appRoot of [root, path.join(root, 'tutorial')]) {
 assert.strictEqual(
   fs.readFileSync(path.join(root, 'runtime-source/runtime/core/reducer.js'), 'utf8'),
   fs.readFileSync(path.join(root, 'tutorial/runtime-source/runtime/core/reducer.js'), 'utf8'),
-  'Tutorial reducer differs from the VS AI v6.10 canonical reducer'
+  'Tutorial reducer differs from the VS AI v6.11 canonical reducer'
 );
 
 for (const appRoot of [root, path.join(root, 'tutorial')]) {
@@ -142,11 +142,11 @@ for (const appRoot of [root, path.join(root, 'tutorial')]) {
 }
 
 const authorityMirrors = [
-  ['data/season1/cards.runtime.v0.13.1.json','runtime-source/data/season1/cards.runtime.v0.13.1.json'],
-  ['data/season1/effect-recipes.runtime.v0.12.1.json','runtime-source/data/season1/effect-recipes.runtime.v0.12.1.json'],
+  ['data/season1/cards.runtime.v0.14.0.json','runtime-source/data/season1/cards.runtime.v0.14.0.json'],
+  ['data/season1/effect-recipes.runtime.v0.13.0.json','runtime-source/data/season1/effect-recipes.runtime.v0.13.0.json'],
   ['data/season1/legality-map.runtime.v0.11.9.json','runtime-source/data/season1/legality-map.runtime.v0.11.9.json'],
-  ['tutorial/data/season1/cards.runtime.v0.13.1.json','tutorial/runtime-source/data/season1/cards.runtime.v0.13.1.json'],
-  ['tutorial/data/season1/effect-recipes.runtime.v0.12.1.json','tutorial/runtime-source/data/season1/effect-recipes.runtime.v0.12.1.json'],
+  ['tutorial/data/season1/cards.runtime.v0.14.0.json','tutorial/runtime-source/data/season1/cards.runtime.v0.14.0.json'],
+  ['tutorial/data/season1/effect-recipes.runtime.v0.13.0.json','tutorial/runtime-source/data/season1/effect-recipes.runtime.v0.13.0.json'],
   ['tutorial/data/season1/legality-map.runtime.v0.11.9.json','tutorial/runtime-source/data/season1/legality-map.runtime.v0.11.9.json']
 ];
 for (const [current, mirror] of authorityMirrors) {
@@ -180,4 +180,4 @@ firstTurn.players.PLAYER.mana_pool = 99;
 const rejected = submitIntent(firstTurn, { type: 'PLAY_CARD', player_id: 'PLAYER', card_id: 'S1-WAR-001' });
 assert.ok((rejected.errors || []).some(message => /First player cannot play Attack Skill Cards/i.test(message)), 'core reducer did not reject first-player turn-1 Attack');
 
-console.log('PASS VS AI v6.10 + Tutorial v0.41: 30 revised IDs, Hero Components, non-trivial effects, Magic Scope, pending watchdogs, and core turn-1 Attack guard.');
+console.log('PASS VS AI v6.11 + Tutorial v0.42: 30 revised IDs, Hero Components, non-trivial effects, Magic Scope, pending watchdogs, and core turn-1 Attack guard.');

@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.41 — separate first-use practices for Attack, Support, Tactical, Event, and Item cards; each stops at the final cancellable boundary. Area Attack responses teach every affected Hero. VS AI v6.10 base. */
+/* Grandis Legacy Tutorial Guide v0.42 — separate first-use practices for Attack, Support, Tactical, Event, and Item cards; each stops at the final cancellable boundary. Area Attack responses teach every affected Hero. VS AI v6.11 base. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;
