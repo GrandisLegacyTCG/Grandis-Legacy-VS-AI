@@ -234,13 +234,17 @@
           else if(mobile)fromRight=((r.left+r.right)/2)>window.innerWidth*.72;
           var targetX=fromRight?(r.right-targetInset):(r.left+targetInset);
           var length=Math.max(28,Math.min(46,artRect.width*.12));
-          var arrow=document.createElement('div');arrow.className='gl-tutorial-anatomy-arrow '+(fromRight?'from-right':'from-left')+' gl-tutorial-anatomy-arrow--'+(entry.region||'point')+((mobile&&entry.region==='exp')?' gl-tutorial-anatomy-arrow--mobile-exp':'');
+          var isMobileExp=mobile&&entry.region==='exp';
+          var arrow=document.createElement('div');arrow.className='gl-tutorial-anatomy-arrow '+(fromRight?'from-right':'from-left')+' gl-tutorial-anatomy-arrow--'+(entry.region||'point')+(isMobileExp?' gl-tutorial-anatomy-arrow--mobile-exp':'');
           arrow.style.top=Math.round(targetY-2)+'px';arrow.style.width=Math.round(length)+'px';
-          // EXP gets a dedicated mobile right-side placement: the shaft stays outside the card
-          // and its arrowhead terminates on the EXP strip instead of crossing over the strip/text.
-          var arrowLeft=(mobile&&entry.region==='exp')?(r.right+10):(fromRight?(targetX+7):(targetX-length-7));
+          // Mobile EXP is fully independent from desktop geometry. The arrowhead sits on the
+          // RIGHT-side EXP strip and the shaft extends outward to the right.
+          var arrowLeft=isMobileExp?(r.right+2):(fromRight?(targetX+7):(targetX-length-7));
           if(mobile)arrowLeft=Math.max(6,Math.min(window.innerWidth-length-6,arrowLeft));
           arrow.style.left=Math.round(arrowLeft)+'px';
+          if(isMobileExp){
+            arrow.style.setProperty('--gl-mobile-exp-head-left','-12px');
+          }
           arrow.innerHTML='<span class="gl-tutorial-arrow-dot" aria-hidden="true"></span>';
           layer.appendChild(arrow);return;
         }

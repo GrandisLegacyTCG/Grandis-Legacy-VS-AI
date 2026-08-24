@@ -246,3 +246,25 @@ body.gl-tutorial-round-one-tribute-lock #nextPhaseButton{pointer-events:none!imp
     skew:none!important;
   }
 }
+
+/* Mobile visual HF6 — final mobile-only geometry corrections.
+   Keep desktop anatomy/highlight behavior untouched. */
+@media (max-width:760px), (max-height:610px) and (max-width:980px){
+  /* EXP arrow: head points inward to the printed 100 EXP strip; shaft extends right. */
+  .gl-tutorial-anatomy-arrow--mobile-exp::before,
+  .gl-tutorial-anatomy-arrow--mobile-exp::after{
+    right:auto!important;
+    transform:translateY(-50%)!important;
+    clip-path:polygon(100% 0,0 50%,100% 100%,72% 50%)!important;
+  }
+  .gl-tutorial-anatomy-arrow--mobile-exp::before{left:var(--gl-mobile-exp-head-left,-12px)!important;}
+  .gl-tutorial-anatomy-arrow--mobile-exp::after{left:-9px!important;}
+  .gl-tutorial-anatomy-arrow--mobile-exp .gl-tutorial-arrow-dot{left:-2px!important;right:auto!important;}
+
+  /* This is the actual generated Card Text highlight box. Force it perfectly axis-aligned. */
+  .gl-tutorial-highlight-box--printed-text{
+    transform:none!important;
+    rotate:0deg!important;
+    skew:none!important;
+  }
+}
