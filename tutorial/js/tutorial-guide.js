@@ -224,10 +224,14 @@
           var artRect=entry.el&&entry.el.getBoundingClientRect?entry.el.getBoundingClientRect():r;
           var targetInset=(entry.region==='badge'||entry.region==='lineage')?2:((entry.region==='name')?5:4),targetY=r.top+r.height/2;
           var mobile=isMobileTutorialViewport();
-          // Mobile callouts choose their side independently so arrows stay inside the viewport.
-          // Left-edge regions (Mana) are approached from the right; right-edge EXP is approached from the left.
-          var fromRight=mobile?(entry.region==='mana'||((r.left+r.right)/2)<window.innerWidth*.28):false;
-          if(mobile&&entry.region==='exp')fromRight=false;
+          // Mobile Card Preview has dedicated arrow sides. Keep these separate from desktop:
+          // Mana is on the card's LEFT edge, so approach it from the left and point RIGHT.
+          // EXP is on the card's RIGHT edge, so approach it from the right and point LEFT.
+          // Other printed regions keep their existing mobile side heuristic.
+          var fromRight=false;
+          if(mobile&&entry.region==='exp')fromRight=true;
+          else if(mobile&&entry.region==='mana')fromRight=false;
+          else if(mobile)fromRight=((r.left+r.right)/2)>window.innerWidth*.72;
           var targetX=fromRight?(r.right-targetInset):(r.left+targetInset);
           var length=Math.max(28,Math.min(46,artRect.width*.12));
           var arrow=document.createElement('div');arrow.className='gl-tutorial-anatomy-arrow '+(fromRight?'from-right':'from-left')+' gl-tutorial-anatomy-arrow--'+(entry.region||'point');
