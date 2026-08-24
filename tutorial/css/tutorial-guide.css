@@ -224,47 +224,12 @@ body.gl-tutorial-round-one-tribute-lock #nextPhaseButton{pointer-events:none!imp
 @media(max-width:760px),(max-height:610px) and (max-width:980px){.gl-tutorial-guide.is-prepositioning{visibility:hidden!important}}
 
 
-/* Mobile visual HF5 — EXP arrow uses its own right-side arrowhead geometry.
-   Desktop anatomy arrows remain unchanged. */
+/* Mobile visual hotfix 7 — printed anatomy overlays are mobile-owned and axis-aligned. */
 @media (max-width:760px), (max-height:610px) and (max-width:980px){
-  .gl-tutorial-anatomy-arrow--mobile-exp::before,
-  .gl-tutorial-anatomy-arrow--mobile-exp::after{
-    left:-14px!important;
-    right:auto!important;
-    transform:translateY(-50%)!important;
-    clip-path:polygon(100% 0,0 50%,100% 100%,72% 50%)!important;
-  }
-  .gl-tutorial-anatomy-arrow--mobile-exp::after{left:-11px!important;}
-  .gl-tutorial-anatomy-arrow--mobile-exp .gl-tutorial-arrow-dot{left:-4px!important;right:auto!important;}
-
-  /* Keep the readable effect-description cards perfectly square to the viewport on mobile. */
-  #previewBody .preview-effect-row,
-  #previewBody .readable-card-text,
-  #previewBody .readable-card-section{
-    transform:none!important;
-    rotate:0deg!important;
-    skew:none!important;
-  }
-}
-
-/* Mobile visual HF6 — final mobile-only geometry corrections.
-   Keep desktop anatomy/highlight behavior untouched. */
-@media (max-width:760px), (max-height:610px) and (max-width:980px){
-  /* EXP arrow: head points inward to the printed 100 EXP strip; shaft extends right. */
-  .gl-tutorial-anatomy-arrow--mobile-exp::before,
-  .gl-tutorial-anatomy-arrow--mobile-exp::after{
-    right:auto!important;
-    transform:translateY(-50%)!important;
-    clip-path:polygon(100% 0,0 50%,100% 100%,72% 50%)!important;
-  }
-  .gl-tutorial-anatomy-arrow--mobile-exp::before{left:var(--gl-mobile-exp-head-left,-12px)!important;}
-  .gl-tutorial-anatomy-arrow--mobile-exp::after{left:-9px!important;}
-  .gl-tutorial-anatomy-arrow--mobile-exp .gl-tutorial-arrow-dot{left:-2px!important;right:auto!important;}
-
-  /* This is the actual generated Card Text highlight box. Force it perfectly axis-aligned. */
   .gl-tutorial-highlight-box--printed-text{
-    transform:none!important;
-    rotate:0deg!important;
-    skew:none!important;
+    transform:none!important;rotate:0deg!important;skew:none!important;
+    perspective:none!important;transform-origin:center!important;
   }
+  .gl-tutorial-highlight-box--printed-text::before{transform:none!important;rotate:0deg!important;skew:none!important;}
+  .gl-tutorial-anatomy-arrow--exp.from-right{transform:none!important;}
 }

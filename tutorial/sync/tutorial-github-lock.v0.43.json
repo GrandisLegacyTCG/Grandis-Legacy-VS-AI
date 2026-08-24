@@ -14,8 +14,8 @@
   "ui_design_lock": "v2.48",
   "scope": "Tutorial v0.43 on VS AI v6.15 shared gameplay/runtime authority; tutorial-only guidance and mobile behavior retained.",
   "app_bundle_sha256": "e733fbc955df127c66fc720c50458f11516094d3e3b18d6320c2ca88ec1695cb",
-  "tutorial_guide_sha256": "12328dc8154617e8cdfa28e264465e913669716cbc7e4a1280a9b60ac88a3aed",
-  "tutorial_css_sha256": "69cfcab1344e0b6ed3905c4244137f4b7d83029f4a7ca2060a56a88ab937f473",
+  "tutorial_guide_sha256": "2def4107da88409bc00ee4b9284f4e2f0cedb9590be5df9d253414445ad6ed05",
+  "tutorial_css_sha256": "5284824d5a13e9099dcdf81584a8e5a02cb3f60eb7af2301b36bd88a87e32169",
   "runtime_authority_sha256": "81a5385d250167d0ac79c0c771a24f8ddf59296d97cbee532d8a495d77e83b26",
   "static_data_sha256": "91071996d0af21e44436191d67f129bebf287d18c988161a53e88fa757ed0bd1",
   "audio_assets": {

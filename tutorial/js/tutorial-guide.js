@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.43 — separate first-use practices for Attack, Support, Tactical, Event, and Item cards; each stops at the final cancellable boundary. Area Attack responses teach every affected Hero. VS AI v6.15 base. */
+/* Grandis Legacy Tutorial Guide v0.43 mobile visual hotfix 7 — mobile anatomy geometry is independent from desktop; Draw Phase Mana Pool highlight survives field rerenders. VS AI v6.15 runtime unchanged. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;
@@ -138,23 +138,24 @@
   function regionRect(art,region){
     var r=art.getBoundingClientRect(),x=r.left,y=r.top,w=r.width,h=r.height;
     var fam=anatomy.activeFamily||anatomy.waitingFamily||'Skill';
-    // Desktop and mobile intentionally use separate anatomy geometry. Do not merge these maps:
-    // the Card Preview artwork scales and sits differently on narrow screens.
+    // DESKTOP AUTHORITY: preserve the v0.43 desktop anatomy coordinates exactly.
     var desktopMaps={
       Skill:{name:[.205,.495,.655,.072],mana:[.012,.012,.19,.15],badge:[.285,.565,.39,.052],text:[.035,.613,.92,.372],exp:[.925,.018,.068,.964],lineage:[.075,.625,.47,.055]},
       UltimateSkill:{name:[.205,.495,.655,.072],mana:[.012,.012,.19,.15],badge:[.285,.565,.39,.052],text:[.035,.613,.92,.305],ultimate_rules:[.035,.925,.92,.055],exp:[.925,.018,.068,.964],lineage:[.075,.625,.47,.055]},
       Event:{name:[.205,.565,.655,.075],mana:[.012,.012,.19,.15],badge:[.285,.635,.39,.052],text:[.035,.643,.92,.307],exp:[.925,.018,.068,.964],lineage:[.075,.665,.47,.055]},
       Item:{name:[.205,.555,.655,.075],badge:[.285,.625,.39,.052],text:[.035,.643,.92,.322],exp:[.925,.018,.068,.964],lineage:[.075,.665,.47,.055]}
     };
+    // MOBILE AUTHORITY: coordinates are measured against the rendered CARD IMAGE, not the
+    // desktop/full-width figure. Keep this map separate from desktop by design.
     var mobileMaps={
-      Skill:{name:[.205,.492,.655,.076],mana:[.018,.020,.185,.142],badge:[.286,.565,.390,.055],text:[.045,.615,.855,.350],exp:[.935,.025,.052,.950],lineage:[.070,.625,.500,.065]},
-      UltimateSkill:{name:[.205,.492,.655,.076],mana:[.018,.020,.185,.142],badge:[.286,.565,.390,.055],text:[.045,.615,.855,.292],ultimate_rules:[.045,.918,.855,.060],exp:[.935,.025,.052,.950],lineage:[.070,.625,.500,.065]},
-      Event:{name:[.205,.562,.655,.078],mana:[.018,.020,.185,.142],badge:[.286,.635,.390,.055],text:[.045,.646,.855,.295],exp:[.935,.025,.052,.950],lineage:[.070,.665,.500,.065]},
-      Item:{name:[.205,.552,.655,.078],badge:[.286,.625,.390,.055],text:[.045,.646,.855,.305],exp:[.935,.025,.052,.950],lineage:[.070,.665,.500,.065]}
+      Skill:{name:[.205,.493,.655,.074],mana:[.012,.010,.190,.150],badge:[.285,.565,.390,.052],text:[.080,.610,.840,.340],exp:[.934,.018,.052,.964],lineage:[.082,.618,.455,.060]},
+      UltimateSkill:{name:[.205,.493,.655,.074],mana:[.012,.010,.190,.150],badge:[.285,.565,.390,.052],text:[.080,.610,.840,.300],ultimate_rules:[.080,.918,.840,.060],exp:[.934,.018,.052,.964],lineage:[.082,.618,.455,.060]},
+      Event:{name:[.205,.563,.655,.076],mana:[.012,.010,.190,.150],badge:[.285,.635,.390,.052],text:[.080,.642,.840,.300],exp:[.934,.018,.052,.964],lineage:[.082,.658,.455,.060]},
+      Item:{name:[.205,.553,.655,.076],badge:[.285,.625,.390,.052],text:[.080,.642,.840,.315],exp:[.934,.018,.052,.964],lineage:[.082,.658,.455,.060]}
     };
     var maps=isMobileTutorialViewport()?mobileMaps:desktopMaps;
     var map=maps[fam]||maps.Skill,m=map[region]||[0,0,1,1];
-    return{left:x+w*m[0],top:y+h*m[1],width:w*m[2],height:h*m[3]};
+    return{left:x+w*m[0],top:y+h*m[1],right:x+w*(m[0]+m[2]),bottom:y+h*(m[1]+m[3]),width:w*m[2],height:h*m[3]};
   }
   function highlightRect(entry){
     if(!entry)return null;
@@ -165,6 +166,12 @@
       var left=Math.min.apply(null,rects.map(function(x){return x.left;})),top=Math.min.apply(null,rects.map(function(x){return x.top;})),right=Math.max.apply(null,rects.map(function(x){return x.right;})),bottom=Math.max.apply(null,rects.map(function(x){return x.bottom;}));
       r={left:left,top:top,right:right,bottom:bottom,width:right-left,height:bottom-top};
     }else{
+      // Runtime UI can rerender the battlefield while an Arvon message is open. Rebind a
+      // selector-backed target before measuring it so highlights (especially Mana Pool during
+      // Draw Phase) do not disappear with a stale DOM node.
+      if((!entry.el||!document.documentElement.contains(entry.el))&&entry.liveSelector){
+        var liveMatches=qa(entry.liveSelector);entry.el=liveMatches[entry.liveIndex||0]||liveMatches[0]||null;
+      }
       if(!entry.el||!document.documentElement.contains(entry.el))return null;
       r=entry.region?regionRect(entry.el,entry.region):entry.el.getBoundingClientRect();
     }
@@ -222,28 +229,22 @@
         var r=highlightRect(entry);if(!r)return;
         if(entry.kind==='arrow'){
           var artRect=entry.el&&entry.el.getBoundingClientRect?entry.el.getBoundingClientRect():r;
-          var targetInset=(entry.region==='badge'||entry.region==='lineage')?2:((entry.region==='name')?5:4),targetY=r.top+r.height/2;
-          var mobile=isMobileTutorialViewport();
-          // Mobile Card Preview has dedicated arrow sides. Keep these separate from desktop:
-          // Mana is on the card's LEFT edge, so approach it from the left and point RIGHT.
-          // EXP is on the card's RIGHT edge, so approach it from the right and point LEFT.
-          // Other printed regions keep their existing mobile side heuristic.
-          var fromRight=false;
-          if(mobile&&entry.region==='exp')fromRight=true;
-          else if(mobile&&entry.region==='mana')fromRight=false;
-          else if(mobile)fromRight=((r.left+r.right)/2)>window.innerWidth*.72;
+          var mobile=isMobileTutorialViewport(),targetInset=(entry.region==='badge'||entry.region==='lineage')?2:((entry.region==='name')?5:4),targetY=r.top+r.height/2;
+          var fromRight=mobile&&entry.region==='exp';
           var targetX=fromRight?(r.right-targetInset):(r.left+targetInset);
           var length=Math.max(28,Math.min(46,artRect.width*.12));
-          var isMobileExp=mobile&&entry.region==='exp';
-          var arrow=document.createElement('div');arrow.className='gl-tutorial-anatomy-arrow '+(fromRight?'from-right':'from-left')+' gl-tutorial-anatomy-arrow--'+(entry.region||'point')+(isMobileExp?' gl-tutorial-anatomy-arrow--mobile-exp':'');
+          var arrow=document.createElement('div');
+          arrow.className='gl-tutorial-anatomy-arrow '+(fromRight?'from-right':'from-left')+' gl-tutorial-anatomy-arrow--'+(entry.region||'point');
           arrow.style.top=Math.round(targetY-2)+'px';arrow.style.width=Math.round(length)+'px';
-          // Mobile EXP is fully independent from desktop geometry. The arrowhead sits on the
-          // RIGHT-side EXP strip and the shaft extends outward to the right.
-          var arrowLeft=isMobileExp?(r.right+2):(fromRight?(targetX+7):(targetX-length-7));
-          if(mobile)arrowLeft=Math.max(6,Math.min(window.innerWidth-length-6,arrowLeft));
-          arrow.style.left=Math.round(arrowLeft)+'px';
-          if(isMobileExp){
-            arrow.style.setProperty('--gl-mobile-exp-head-left','-12px');
+          if(mobile&&entry.region==='exp'){
+            // EXP is printed on the RIGHT edge. Put the entire shaft outside the card and make
+            // the LEFT-pointing arrowhead terminate on the EXP strip. This is intentionally
+            // independent from desktop arrow placement.
+            var desiredLeft=r.right+13;
+            var maxLeft=Math.max(6,window.innerWidth-length-8);
+            arrow.style.left=Math.round(Math.min(desiredLeft,maxLeft))+'px';
+          }else{
+            arrow.style.left=Math.round(fromRight?(targetX+7):(targetX-length-7))+'px';
           }
           arrow.innerHTML='<span class="gl-tutorial-arrow-dot" aria-hidden="true"></span>';
           layer.appendChild(arrow);return;
@@ -262,9 +263,8 @@
   }
   function applyPrintedRegion(region){
     if(!region)return;
-    // Mobile Card Preview centers a narrower <img> inside a full-width figure.
-    // Printed-region coordinates must be anchored to the rendered card image itself;
-    // desktop keeps its existing figure anchor and geometry unchanged.
+    // Mobile anatomy is anchored to the actual rendered <img>. Desktop keeps the original
+    // figure anchor. The two coordinate systems must remain separate.
     var art=isMobileTutorialViewport()?q('#previewBody .readable-card-art img'):q('#previewBody .readable-card-art');
     if(!art)return;
     var boxed=(region==='text'||region==='ultimate_rules');
@@ -275,6 +275,13 @@
     var cls=className==='gl-tutorial-formation-highlight'?'gl-tutorial-highlight-box--formation':(className||''),found=[];
     if(spec&&typeof spec==='object'&&!Array.isArray(spec)&&!spec.nodeType&&spec.groupSelector){
       found=qa(spec.groupSelector);if(found.length)highlightEntries.push({elements:found,className:cls+' gl-tutorial-highlight-box--group',padding:padding||null});
+    }else if(typeof spec==='string'){
+      found=qa(spec);found.forEach(function(el,idx){highlightEntries.push({el:el,liveSelector:spec,liveIndex:idx,className:cls,padding:padding||null});});
+    }else if(Array.isArray(spec)){
+      spec.forEach(function(part){
+        if(typeof part==='string')qa(part).forEach(function(el,idx){found.push(el);highlightEntries.push({el:el,liveSelector:part,liveIndex:idx,className:cls,padding:padding||null});});
+        else if(part&&part.nodeType===1){found.push(part);highlightEntries.push({el:part,className:cls,padding:padding||null});}
+      });
     }else{
       found=resolveHighlightTargets(spec);found.forEach(function(el){highlightEntries.push({el:el,className:cls,padding:padding||null});});
     }
@@ -667,8 +674,8 @@
     if(step.id&&seen[step.id]){anatomy.step++;showAnatomyStep();return;}
     var isLast=anatomy.step===anatomy.steps.length-1,msgId=step.id||('anatomy_step_'+anatomyKey(anatomy.activeFamily)+'_'+anatomy.step);
     var ultimateTop=anatomy.activeFamily==='UltimateSkill';
-    // On mobile, printed-card anatomy must never inherit the desktop/readable-panel selector.
-    // The printed region is the sole visual target; desktop keeps its existing selector behavior.
+    // Printed-card anatomy on mobile has its own target geometry. Never combine it with the
+    // desktop/readable-detail selector, otherwise two unrelated highlight systems overlap.
     var anatomyHighlight=(isMobileTutorialViewport()&&step.printedRegion)?null:step.selector;
     enqueue({chain:'anatomy',priority:true,allowDuringPreview:true,id:msgId,title:step.title,expression:step.title==='Hero Source and Exhaust'?'serious':'advise',compact:step.compact!==false,micro:!!step.micro,dock:step.dock||(ultimateTop?'top-right':null),topOnly:ultimateTop,highlight:anatomyHighlight,highlightClass:step.highlightClass,highlightPadding:step.highlightPadding,printedRegion:step.printedRegion,html:step.html,nextLabel:isLast?'Finish':'Next',onNext:function(){closeActive();anatomy.step++;setTimeout(showAnatomyStep,100);}},true);
   }
@@ -1391,6 +1398,9 @@
     maybeQueueDeployAdvance(state);
     gameResult(state);
     refreshActiveInteractionTargets();
+    // Keep selector-backed highlights attached to the current runtime DOM. Battlefield render()
+    // replaces resource-zone nodes, including Mana Pool, during phase/resource updates.
+    if(active&&highlightEntries.length)updateHighlightLayer();
     syncGuideHold();previous=state;
   }
 
