@@ -222,3 +222,27 @@ body.gl-tutorial-round-one-tribute-lock #nextPhaseButton{pointer-events:none!imp
 
 /* v0.36 mobile force-scroll: Arvon stays hidden until the target is in its final viewport position. */
 @media(max-width:760px),(max-height:610px) and (max-width:980px){.gl-tutorial-guide.is-prepositioning{visibility:hidden!important}}
+
+
+/* Mobile visual HF5 — EXP arrow uses its own right-side arrowhead geometry.
+   Desktop anatomy arrows remain unchanged. */
+@media (max-width:760px), (max-height:610px) and (max-width:980px){
+  .gl-tutorial-anatomy-arrow--mobile-exp::before,
+  .gl-tutorial-anatomy-arrow--mobile-exp::after{
+    left:-14px!important;
+    right:auto!important;
+    transform:translateY(-50%)!important;
+    clip-path:polygon(100% 0,0 50%,100% 100%,72% 50%)!important;
+  }
+  .gl-tutorial-anatomy-arrow--mobile-exp::after{left:-11px!important;}
+  .gl-tutorial-anatomy-arrow--mobile-exp .gl-tutorial-arrow-dot{left:-4px!important;right:auto!important;}
+
+  /* Keep the readable effect-description cards perfectly square to the viewport on mobile. */
+  #previewBody .preview-effect-row,
+  #previewBody .readable-card-text,
+  #previewBody .readable-card-section{
+    transform:none!important;
+    rotate:0deg!important;
+    skew:none!important;
+  }
+}
