@@ -15,5 +15,5 @@ need(css.includes('.hero-stage.legacy-stage>.mobile-hero-action-trigger'),'Mobil
 need(css.includes('right:3px!important'),'Mobile Legacy action is not anchored top-right');
 need(css.includes('.legacy-name-bar .legacy-hero-info--desktop{display:none!important}'),'Desktop Legacy info is not hidden on mobile');
 const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
-assert.strictEqual(pkg.version,'6.12.0');
+assert.strictEqual(pkg.version,'6.13.0');
 console.log('PASS v6.11 mobile Legacy control anchor consistency');

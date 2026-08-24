@@ -1,6 +1,14 @@
-# Grandis Legacy VS AI v6.12 + Tutorial v0.42
+# Grandis Legacy VS AI v6.13 + Tutorial v0.42
 
 Production-ready GitHub Pages package for local VS AI and the non-scripted tutorial.
+
+
+## v6.13 / v0.42 End Phase lethal-status game-over hotfix
+
+- Fixes the VS AI lifecycle when Poison or another End Phase cleanup effect defeats the final active Hero.
+- Game-over state now immediately exits the AI End Phase director and presents the normal Game Result instead of remaining visually stuck on `END`.
+- The same game-over presentation guard covers the immediate AI path and automatic PLAYER End Phase path in VS AI.
+- Tutorial remains v0.42 and is unchanged. No card data, Source Stack rules, Conditional Follow-up behavior, mobile navigation, audio, or refresh-protection rules are changed.
 
 ## v6.12 / v0.42 Mobile cross-app navigation
 

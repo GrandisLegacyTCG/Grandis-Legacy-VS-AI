@@ -7,5 +7,5 @@ assert(app.includes('function returnToLobbyAfterGameResult()'));
 assert(app.includes('matchStarted=false;\n    renderStartupDeckSetup();'));
 assert(app.includes('scheduleGameResultCleanup();'));
 assert(css.includes('.game-result-actions'));
-assert.strictEqual(pkg.version,'6.12.0');
+assert.strictEqual(pkg.version,'6.13.0');
 console.log('PASS VS AI v6.11 inherited Back to Lobby + 1-minute result cleanup');

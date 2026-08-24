@@ -2,7 +2,7 @@ const fs=require('fs');
 const assert=require('assert');
 const app=fs.readFileSync('js/app.bundle.js','utf8');
 const pkg=require('../package.json');
-assert.strictEqual(pkg.version,'6.12.0');
+assert.strictEqual(pkg.version,'6.13.0');
 assert(app.includes('Grandis Legacy VS AI v6.11'));
 assert(app.includes("if(!(window.GL_PVP_SHARED_BOARD_ACTIVE && appState && appState.pvpHumanVsHuman)) return !!rw && rw.response_owner==='PLAYER';"));
 assert(/isExecuteEffect\(c\)[\s\S]{0,1800}action\.target_side==='AI'[\s\S]{0,300}autoResolveCurrentAIResponseWindow\(state\)/.test(app),'Execute must auto-resolve AI-owned defense window');

@@ -2071,7 +2071,8 @@
     state.phase='Reform'; state.tributeUsedThisReform=false; pushLog(state,'AI moves to Reform Phase and checks legal Tribute actions.');
     executeAIAction(state, chooseAIAction(state,'Reform')); if(state.pending || state.responseWindow || state.gameOver) return;
     state.phase='End'; cleanupHandLimit(state,'AI'); resolveEndPhaseCleanupForSide(state,'AI');
-    if(state.pending || state.responseWindow || state.gameOver) return;
+    if(state.gameOver){presentEndPhaseGameOver(state);return;}
+    if(state.pending || state.responseWindow) return;
     clearAIPlanAtTurnEnd(state); advanceRoundAfterCompletedTurnPair(state,'AI'); beginPlayerTurnDrawPhase(state,'AI ends turn. PLAYER begins Draw Phase for Round '+state.round+'.'); if(state.gameOver) showResult();
   }
   function resumeAITurnAfterPlayerResponseImmediate(state){
@@ -5339,11 +5340,21 @@ function getActivatedHeroAbilities(state, side, lane){
     state.pending={type:'hand_limit_discard', side:side, decision_side:side, required:hand.length-8, selected:[]};
     return false;
   }
+  function presentEndPhaseGameOver(state){
+    if(!state||!state.gameOver)return false;
+    state.autoEndTurnPending=false;
+    state.autoEndResumeScheduled=false;
+    if(typeof GL_AI_TURN_DIRECTOR!=='undefined'&&GL_AI_TURN_DIRECTOR)GL_AI_TURN_DIRECTOR.active=false;
+    syncCounts(state);
+    if(!SUPPRESS_RENDER){render();showResult();}
+    return true;
+  }
   function continueAutomaticPlayerEndTurn(state){
     if(!state||!state.autoEndTurnPending||state.turn!=='PLAYER'||state.phase!=='End'||state.pending||state.responseWindow||state.gameOver)return false;
     state.autoEndResumeScheduled=false;
     resolveEndPhaseCleanupForSide(state,'PLAYER');
-    if(state.pending||state.responseWindow||state.gameOver){syncCounts(state);render();return true;}
+    if(state.gameOver)return presentEndPhaseGameOver(state);
+    if(state.pending||state.responseWindow){syncCounts(state);render();return true;}
     state.autoEndTurnPending=false;
     finishPlayerEndToAI(state);
     return true;
@@ -5415,7 +5426,7 @@ function getActivatedHeroAbilities(state, side, lane){
   }
   function aiDirectorEnterEnd(state){
     if(!state || state.gameOver) return; state.phase='End'; aiDirectorStatus(state,'AI enters End Phase.');
-    aiDirectorSchedule(function(){ cleanupHandLimit(state,'AI'); resolveEndPhaseCleanupForSide(state,'AI'); if(state.pending||state.responseWindow||state.gameOver) return; aiDirectorStatus(state,'AI resolves End Phase cleanup.'); aiDirectorWaitForAnimations(state,function(){ clearAIPlanAtTurnEnd(state); advanceRoundAfterCompletedTurnPair(state,'AI'); GL_AI_TURN_DIRECTOR.active=false; beginPlayerTurnDrawPhase(state,'AI ends turn. PLAYER begins Draw Phase for Round '+state.round+'.'); if(state.gameOver) showResult(); },440); },500);
+    aiDirectorSchedule(function(){ cleanupHandLimit(state,'AI'); resolveEndPhaseCleanupForSide(state,'AI'); if(state.gameOver){presentEndPhaseGameOver(state);return;} if(state.pending||state.responseWindow) return; aiDirectorStatus(state,'AI resolves End Phase cleanup.'); aiDirectorWaitForAnimations(state,function(){ clearAIPlanAtTurnEnd(state); advanceRoundAfterCompletedTurnPair(state,'AI'); GL_AI_TURN_DIRECTOR.active=false; beginPlayerTurnDrawPhase(state,'AI ends turn. PLAYER begins Draw Phase for Round '+state.round+'.'); if(state.gameOver) showResult(); },440); },500);
   }
   function runAITurnDirector(state){
     cancelAITurnDirector(); GL_AI_TURN_DIRECTOR.active=true; GL_AI_TURN_DIRECTOR.token++; state.turn='AI'; state.aiControl=null; state.phase='Draw'; removeStartOfTurnTargetPreventionForSide(state,'AI'); pushLog(state,'AI turn begins.'); aiDirectorStatus(state,'AI enters Draw Phase.');
@@ -8879,6 +8890,27 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     }catch(err){return{ok:false,reason:String(err&&err.message||err),stack:String(err&&err.stack||'')};}
     finally{appState=oldApp;matchStarted=oldMatch;SUPPRESS_RENDER=oldSuppress;}
   }
+  function simulateV613PoisonGameOverHotfix(){
+    var oldApp=appState,oldMatch=matchStarted,oldSuppress=SUPPRESS_RENDER;
+    try{
+      SUPPRESS_RENDER=true;
+      var s=buildInitialMatchState();appState=s;matchStarted=true;s.turn='AI';s.phase='Battle';s.round=2;s.aiHand=[];s.pending=null;s.responseWindow=null;s.gameOver=false;
+      ['LEFT','CENTER'].forEach(function(lane){var h=s.aiHeroes[lane];h.hp=0;h.legacy_mode=true;h.mode='LEGACY';h.exhausted=false;h.statuses=[];});
+      var lethal=s.aiHeroes.RIGHT;lethal.card_id='S1-WAR-H001';lethal.hp=5;lethal.legacy_mode=false;lethal.mode='HERO';lethal.statuses=[];addStatus(lethal,'Poison',1,'v6.13 lethal End Phase regression');
+      finishAITurnFromBattleImmediate(s);
+      if(!s.gameOver||s.winner!=='PLAYER'||s.pending||s.responseWindow||s.phase!=='End')return{ok:false,reason:'AI final Hero lethal Poison did not terminate cleanly',state:s};
+
+      s=buildInitialMatchState();appState=s;matchStarted=true;s.turn='PLAYER';s.phase='End';s.round=2;s.autoEndTurnPending=true;s.pending=null;s.responseWindow=null;s.gameOver=false;
+      ['LEFT','CENTER'].forEach(function(lane){var h=s.playerHeroes[lane];h.hp=0;h.legacy_mode=true;h.mode='LEGACY';h.exhausted=false;h.statuses=[];});
+      lethal=s.playerHeroes.RIGHT;lethal.card_id='S1-WAR-H001';lethal.hp=5;lethal.legacy_mode=false;lethal.mode='HERO';lethal.statuses=[];addStatus(lethal,'Poison',1,'v6.13 lethal End Phase regression');
+      continueAutomaticPlayerEndTurn(s);
+      if(!s.gameOver||s.winner!=='AI'||s.pending||s.responseWindow||s.autoEndTurnPending)return{ok:false,reason:'PLAYER final Hero lethal Poison did not terminate cleanly',state:s};
+      return{ok:true,aiLethalPoison:true,playerLethalPoison:true,noPending:true,noResponseWindow:true};
+    }catch(err){return{ok:false,reason:String(err&&err.message||err),stack:String(err&&err.stack||'')};}
+    finally{appState=oldApp;matchStarted=oldMatch;SUPPRESS_RENDER=oldSuppress;}
+  }
+  window.GL_V613_POISON_GAMEOVER_QA_SELF_TEST=simulateV613PoisonGameOverHotfix;
+
   window.GL_LOCAL_AI_BRIDGE={
     version:GL_VERSION,
     getSnapshot:glPvpBridgeSnapshot,
