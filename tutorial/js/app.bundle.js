@@ -1,4 +1,4 @@
-/* Grandis Legacy shared gameplay application v3.1 — Tutorial v0.40 / VS AI v6.2.
+/* Grandis Legacy shared gameplay application v3.1 — Tutorial v0.41 / VS AI v6.10.
    One Source Authority v1.6.1 + Runtime Foundation v1.85 / Runtime Core v0.53 / Runtime Data v0.13.1.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
@@ -6,14 +6,14 @@
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
   var IS_TUTORIAL_APP=GL_APP_MODE==='TUTORIAL';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.07 · VS AI v6.9 Battlefield · One Source v1.6.1 · Runtime Data v0.13.1 · Foundation v1.85 · Core v0.53':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.40 GitHub Pages · VS AI v6.9 Base · Runtime Data v0.13.1 · Foundation v1.85 · Core v0.53':'Grandis Legacy VS AI v6.9 · Shared Gameplay Bundle v3.1 · One Source v1.6.1 · Runtime Data v0.13.1 · Foundation v1.85 · Core v0.53');
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.08 · VS AI v6.10 Battlefield · One Source v1.6.1 · Runtime Data v0.13.1 · Foundation v1.85 · Core v0.53':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.41 GitHub Pages · VS AI v6.10 Base · Runtime Data v0.13.1 · Foundation v1.85 · Core v0.53':'Grandis Legacy VS AI v6.10 · Shared Gameplay Bundle v3.1 · One Source v1.6.1 · Runtime Data v0.13.1 · Foundation v1.85 · Core v0.53');
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
   var OPENING_HAND_SIZE=6;
   var RACIAL_TOKEN_CAP=2;
   var GL_SHARED_CARD_BASE='https://grandislegacytcg.github.io/shared/season1/v1/cards/';
-  var GL_ASSET_REV=IS_TUTORIAL_APP?'gl-tutorial-0.40-osa-1.6':'gl-vs-ai-6.1-osa-1.5';
+  var GL_ASSET_REV=IS_TUTORIAL_APP?'gl-tutorial-0.41-osa-1.6':'gl-vs-ai-6.1-osa-1.5';
   var GL_CARD_ZOOM_ID=null;
   var GL_LAST_PLAYER_TURN_BANNER_KEY='', GL_PLAYER_TURN_BANNER_TIMER=null;
   var GL_MODAL_HOVER_GUARD_BOUND=false;
@@ -131,7 +131,7 @@
   function toggleCardMotionSound(){ setCardMotionSoundEnabled(!GL_CARD_SOUND_ENABLED); }
   function playCardMotionSound(){
     if(!animationDocumentReady())return false;
-    return playPreloadedAudio('assets/audio/freesound_community-flipcard-91468.mp3',.55);
+    return playPreloadedAudio('assets/audio/Card Sound.mp3',.55);
   }
   var GL_AI_TURN_DIRECTOR={active:false,token:0,timer:null};
   var GL_TUTORIAL_AI_PHASE_GATE={waiting:false,phase:null,resume:null,sequence:0};
@@ -6215,7 +6215,7 @@ function getActivatedHeroAbilities(state, side, lane){
     Array.prototype.forEach.call(document.querySelectorAll('[data-import-side]'), function(btn){ btn.addEventListener('click', function(){ var side=btn.getAttribute('data-import-side'); var input=$('import'+side); if(input) input.click(); }); });
     ['PLAYER','AI'].forEach(function(side){ var input=$('import'+side); if(!input) return; input.addEventListener('change', function(ev){ var file=ev.target.files&&ev.target.files[0]; if(!file) return; var reader=new FileReader(); reader.onload=function(){ try{ var parsed=normalizeDeck(JSON.parse(String(reader.result||''))); var val=validateDeck(parsed,side); if(!val.ok) throw new Error(val.errors[0]); importedDecks[side]=val.deck; selectedDeckKey[side]='IMPORTED'; decks[side]=val.deck; setupError=''; matchStarted=false; appState=null; render(); } catch(err){ setupError=err.message || 'Invalid deck file.'; refreshDeckSetupView(); } }; reader.onerror=function(){ setupError='Invalid deck file.'; refreshDeckSetupView(); }; reader.readAsText(file); }); });
   }
-  function playOpeningCoinSound(){return playPreloadedAudio('assets/audio/freesound_community-coin-flip-37787.mp3',.65);}
+  function playOpeningCoinSound(){return playPreloadedAudio('assets/audio/Coin Flip.mp3',.65);}
   function coinOutcomeFromUint32(value){return((Number(value)>>>0)&1)===0?'HEADS':'TAILS';}
   function fairOpeningCoinOutcome(){try{var cryptoApi=(typeof window!=='undefined'&&window.crypto&&typeof window.crypto.getRandomValues==='function')?window.crypto:(typeof crypto!=='undefined'&&crypto&&typeof crypto.getRandomValues==='function'?crypto:null);if(cryptoApi){var values=new Uint32Array(1);cryptoApi.getRandomValues(values);return coinOutcomeFromUint32(values[0]);}}catch(e){}return Math.random()<.5?'HEADS':'TAILS';}
   function closeLocalCoinModal(){var el=document.getElementById('glLocalCoinModal');if(el)el.remove();}
@@ -6733,8 +6733,8 @@ function getActivatedHeroAbilities(state, side, lane){
   }
   function bind(){
     bindModalStackManager();
-    primeAudioAsset('assets/audio/freesound_community-flipcard-91468.mp3');
-    primeAudioAsset('assets/audio/freesound_community-coin-flip-37787.mp3');
+    primeAudioAsset('assets/audio/Card Sound.mp3');
+    primeAudioAsset('assets/audio/Coin Flip.mp3');
     primeBattleFeedbackAssets();
     document.addEventListener('contextmenu',function(ev){if(ev.target&&ev.target.closest&&ev.target.closest('.hand-card'))ev.preventDefault();});
     document.addEventListener('dragstart',function(ev){if(ev.target&&ev.target.closest&&ev.target.closest('.hand-card'))ev.preventDefault();});

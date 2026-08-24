@@ -38,9 +38,12 @@ assert.ok(/additional_discard_from_hand/.test(app)&&/SELECT_RESPONSE_COST_CARD/.
 assert.ok(/fanMetrics/.test(app)&&/opacity:\.90!important/.test(css),'fan and 90 percent opacity');
 assert.ok(/data-zone-type="Main Deck"/.test(css)&&/data-zone-type="Legacy Deck"/.test(css)&&/inset:auto 0 7px!important/.test(css),'lower deck count placement');
 assert.ok(/Printed artwork is the only visible card frame[\s\S]*?hero-card\.hero-main[\s\S]*?border:0!important/.test(css),'card wrappers remain borderless');
-assert.ok(fs.existsSync(path.join(root,'assets/audio/freesound_community-coin-flip-37787.mp3')),'coin audio');
+assert.ok(fs.existsSync(path.join(root,'assets/audio/Coin Flip.mp3')),'coin audio');
+assert.ok(fs.existsSync(path.join(root,'assets/audio/Card Sound.mp3')),'card motion audio');
 assert.ok(fs.existsSync(path.join(root,'runtime-source/runtime/core/reducer.js')),'editable runtime source');
-const lock=json('sync/runtime-sync-lock.v2.47.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.hero_component_registry_hash,HH);assert.strictEqual(lock.application_runtime_sync,'v2.47');assert.strictEqual(lock.local_ai,'v6.9');
+const lock=json('sync/runtime-sync-lock.v2.47.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.hero_component_registry_hash,HH);assert.strictEqual(lock.application_runtime_sync,'v2.47');assert.strictEqual(lock.local_ai,'v6.10');
+assert.strictEqual(lock.audio_assets.coin_flip.sha256,sha('assets/audio/Coin Flip.mp3'));
+assert.strictEqual(lock.audio_assets.card_sound.sha256,sha('assets/audio/Card Sound.mp3'));
 for(const [rel,key] of [['js/app.bundle.js','shared_gameplay_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['runtime-source/runtime/browser/runtime-authority.browser.js','runtime_source_browser_sha256'],['js/static-data.js','static_data_sha256'],['css/app.css','shared_ui_css_sha256']])assert.strictEqual(sha(rel),lock[key],rel+' sync hash');
 for(const file of fs.readdirSync(path.join(root,'starter_deck_examples')).filter(x=>x.endsWith('.json'))){const text=read('starter_deck_examples/'+file);assert.ok(!/One Source Authority v1\.2|Runtime Data v0\.12\.2|ffe0192e/.test(text),'stale starter source metadata '+file)}
 assert.ok(/hero-card-anchor/.test(app)&&/hero-status-overlay/.test(app)&&/hero-health-overlay/.test(css)&&/game-result-summary/.test(css),'v5.35 inherited Hero/HP/status and result hierarchy');
@@ -56,4 +59,4 @@ assert.ok(/responseDisplayItemsFor/.test(app)&&/data-response-reason/.test(app)&
 assert.ok(!fs.existsSync(path.join(root,'deck-builder'))&&app.includes('https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/'),'dedicated external Deck Builder navigation');
 assert.ok(fs.existsSync(path.join(root,'tutorial/index.html'))&&app.includes('<nav class="ai-lobby-actions"><a id="aiLobbyTutorialButton" class="ai-lobby-btn ai-lobby-btn--outline" href="tutorial/">TUTORIAL</a><a id="aiLobbyDeckBuilderButton" class="ai-lobby-btn ai-lobby-btn--outline"'),'Tutorial application and equal-size secondary navigation');
 
-console.log('PASS VS AI v6.9 release audit: Source Stack 2026-08-24, Hero Components, runtime locks, and preserved UI contracts.');
+console.log('PASS VS AI v6.10 release audit: Source Stack 2026-08-24, Hero Components, runtime locks, and preserved UI contracts.');

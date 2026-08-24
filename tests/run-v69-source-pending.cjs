@@ -118,7 +118,7 @@ for (const appRoot of [root, path.join(root, 'tutorial')]) {
 assert.strictEqual(
   fs.readFileSync(path.join(root, 'runtime-source/runtime/core/reducer.js'), 'utf8'),
   fs.readFileSync(path.join(root, 'tutorial/runtime-source/runtime/core/reducer.js'), 'utf8'),
-  'Tutorial reducer differs from the VS AI v6.9 canonical reducer'
+  'Tutorial reducer differs from the VS AI v6.10 canonical reducer'
 );
 
 for (const appRoot of [root, path.join(root, 'tutorial')]) {
@@ -180,4 +180,4 @@ firstTurn.players.PLAYER.mana_pool = 99;
 const rejected = submitIntent(firstTurn, { type: 'PLAY_CARD', player_id: 'PLAYER', card_id: 'S1-WAR-001' });
 assert.ok((rejected.errors || []).some(message => /First player cannot play Attack Skill Cards/i.test(message)), 'core reducer did not reject first-player turn-1 Attack');
 
-console.log('PASS VS AI v6.9 + Tutorial v0.40: 30 revised IDs, Hero Components, non-trivial effects, Magic Scope, pending watchdogs, and core turn-1 Attack guard.');
+console.log('PASS VS AI v6.10 + Tutorial v0.41: 30 revised IDs, Hero Components, non-trivial effects, Magic Scope, pending watchdogs, and core turn-1 Attack guard.');

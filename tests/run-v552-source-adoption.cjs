@@ -14,4 +14,4 @@ if(!ultimate.includes('Ultimate Rules')||normal.includes('Ultimate Rules'))throw
 if(!app.includes("index===0?'current':''")||!app.includes('bringModalToFront(modal)'))throw new Error('progression stack/highlight missing');
 const reducer=require(path.join(root,'runtime-source/runtime/core/reducer.js'));
 if(!reducer.__test||typeof reducer.__test.racialResponseIdentity!=='function'||typeof reducer.__test.selectedTargetIsItemUserAndHost!=='function')throw new Error('Core v0.53 test exports missing');
-console.log('PASS VS AI v6.9 source adoption');
+console.log('PASS VS AI v6.10 source adoption');

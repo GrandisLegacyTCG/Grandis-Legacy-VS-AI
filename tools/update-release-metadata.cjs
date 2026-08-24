@@ -20,10 +20,10 @@ const rootLock = {
   version: 'v2.47',
   schema_version: '2.47-consumer',
   policy: 'RUNTIME_FIRST_FAIL_CLOSED_SYNC',
-  application: 'VS AI v6.9',
-  local_ai: 'v6.9',
-  tutorial: 'v0.40',
-  pvp_reference: 'v3.07',
+  application: 'VS AI v6.10',
+  local_ai: 'v6.10',
+  tutorial: 'v0.41',
+  pvp_reference: 'v3.08',
   canonical_registry_hash: HASH,
   hero_component_registry_hash: HERO_HASH,
   one_source_authority: 'v1.6.1',
@@ -43,11 +43,15 @@ const rootLock = {
   runtime_source_browser_sha256: sha('runtime-source/runtime/browser/runtime-authority.browser.js'),
   static_data_sha256: sha('js/static-data.js'),
   shared_ui_css_sha256: sha('css/app.css'),
+  audio_assets: {
+    coin_flip: { path: 'assets/audio/Coin Flip.mp3', sha256: sha('assets/audio/Coin Flip.mp3') },
+    card_sound: { path: 'assets/audio/Card Sound.mp3', sha256: sha('assets/audio/Card Sound.mp3') }
+  },
   consumerAdoptionStatus: {
     currentApplicationsRebuiltInThisDelivery: true,
-    currentAI: 'VS AI v6.9',
-    currentPvP: 'PvP v3.07 parity target',
-    currentTutorial: 'Tutorial v0.40 GitHub Pages',
+    currentAI: 'VS AI v6.10',
+    currentPvP: 'PvP v3.08 parity target',
+    currentTutorial: 'Tutorial v0.41 GitHub Pages',
     revisedSeason1: 'ADOPTED',
     heroComponents: 'ADOPTED',
     pendingStateAudit: 'ADOPTED'
@@ -56,10 +60,10 @@ const rootLock = {
 writeJSON('sync/runtime-sync-lock.v2.47.json', rootLock);
 
 const tutorialLock = {
-  version: 'v0.40',
-  tutorial: 'v0.40',
+  version: 'v0.41',
+  tutorial: 'v0.41',
   delivery: 'GitHub Pages',
-  base_vs_ai: 'v6.9',
+  base_vs_ai: 'v6.10',
   runtime_foundation: 'v1.85',
   runtime_core: 'v0.53',
   runtime_data: 'v0.13.1',
@@ -69,20 +73,24 @@ const tutorialLock = {
   canonical_registry_hash: HASH,
   hero_component_registry_hash: HERO_HASH,
   ui_design_lock: 'v2.48',
-  scope: 'Tutorial v0.40 on VS AI v6.9 shared gameplay/runtime authority; tutorial-only guidance and mobile behavior retained.',
+  scope: 'Tutorial v0.41 on VS AI v6.10 shared gameplay/runtime authority; tutorial-only guidance and mobile behavior retained.',
   app_bundle_sha256: sha('tutorial/js/app.bundle.js'),
   tutorial_guide_sha256: sha('tutorial/js/tutorial-guide.js'),
   tutorial_css_sha256: sha('tutorial/css/tutorial-guide.css'),
   runtime_authority_sha256: sha('tutorial/js/runtime-authority.js'),
-  static_data_sha256: sha('tutorial/js/static-data.js')
+  static_data_sha256: sha('tutorial/js/static-data.js'),
+  audio_assets: {
+    coin_flip: { path: 'assets/audio/Coin Flip.mp3', sha256: sha('tutorial/assets/audio/Coin Flip.mp3') },
+    card_sound: { path: 'assets/audio/Card Sound.mp3', sha256: sha('tutorial/assets/audio/Card Sound.mp3') }
+  }
 };
-writeJSON('tutorial/sync/tutorial-github-lock.v0.40.json', tutorialLock);
+writeJSON('tutorial/sync/tutorial-github-lock.v0.41.json', tutorialLock);
 
 const obsoleteRootLock = path.join(ROOT, 'sync/runtime-sync-lock.v2.44.json');
 if (fs.existsSync(obsoleteRootLock)) fs.unlinkSync(obsoleteRootLock);
 const supersededRootLock = path.join(ROOT, 'sync/runtime-sync-lock.v2.46.json');
 if (fs.existsSync(supersededRootLock)) fs.unlinkSync(supersededRootLock);
-const supersededTutorialLock = path.join(ROOT, 'tutorial/sync/tutorial-github-lock.v0.39.json');
+const supersededTutorialLock = path.join(ROOT, 'tutorial/sync/tutorial-github-lock.v0.40.json');
 if (fs.existsSync(supersededTutorialLock)) fs.unlinkSync(supersededTutorialLock);
 
-console.log('PASS: VS AI v6.9 and Tutorial v0.40 release locks updated.');
+console.log('PASS: VS AI v6.10 and Tutorial v0.41 release locks updated.');
