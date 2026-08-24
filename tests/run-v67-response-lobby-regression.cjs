@@ -2,7 +2,7 @@ const fs=require('fs');
 const assert=require('assert');
 const app=fs.readFileSync('js/app.bundle.js','utf8');
 const pkg=require('../package.json');
-assert.strictEqual(pkg.version,'6.13.0');
+assert.strictEqual(pkg.version,'6.14.0');
 assert(app.includes('Grandis Legacy VS AI v6.11'));
 assert(app.includes("if(!(window.GL_PVP_SHARED_BOARD_ACTIVE && appState && appState.pvpHumanVsHuman)) return !!rw && rw.response_owner==='PLAYER';"));
 assert(/isExecuteEffect\(c\)[\s\S]{0,1800}action\.target_side==='AI'[\s\S]{0,300}autoResolveCurrentAIResponseWindow\(state\)/.test(app),'Execute must auto-resolve AI-owned defense window');
@@ -11,6 +11,6 @@ assert(app.includes("responseOption.response_kind==='second_chance'"),'Second Ch
 assert(!app.includes('racial_second_chance')&&!app.includes('second_chance_replay')&&!app.includes('maybeOpenHalflingSecondChance'),'retired Second Chance replay flow must be absent');
 assert(app.includes("side==='AI'&&!state.pvpHumanVsHuman")&&app.includes('AI resolves Magic Scope reveal'),'AI Magic Scope reveal must auto-resolve without player-owned UI');
 assert(app.includes('function bindLocalGameResultActions()'));
-assert(app.includes('renderStartupDeckSetup();'));
+assert(app.includes('window.location.reload();'));
 assert(app.includes("showInfoHtml('Game Result', localGameResultHtml(appState));\n    bindLocalGameResultActions();"));
-console.log('PASS VS AI v6.11 response ownership, Second Chance, Magic Scope, and reliable Back to Lobby');
+console.log('PASS VS AI v6.14 response ownership, Second Chance, Magic Scope, and reload Back to Lobby');

@@ -1,6 +1,15 @@
-# Grandis Legacy VS AI v6.13 + Tutorial v0.42
+# Grandis Legacy VS AI v6.14 + Tutorial v0.42
 
 Production-ready GitHub Pages package for local VS AI and the non-scripted tutorial.
+
+
+## v6.14 / v0.42 Game Result lobby reload hotfix
+
+- Changes the VS AI Game Result **Back to Lobby** action to perform a clean same-page reload instead of rebuilding the lobby in-place.
+- The existing 60-second automatic return uses the same reload path.
+- The reload explicitly bypasses the active-match `beforeunload` warning, so finished matches return without a leave/reload confirmation.
+- The normal active-match refresh warning remains enabled while a match is still in progress.
+- Tutorial remains v0.42 and is unchanged. No gameplay, card, Source Stack, Conditional Follow-up, Poison, audio, or mobile-navigation behavior is changed.
 
 
 ## v6.13 / v0.42 End Phase lethal-status game-over hotfix

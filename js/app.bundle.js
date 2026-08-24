@@ -111,6 +111,7 @@
   var appState=null;
   var GL_RESULT_CLEANUP_MS=60*1000;
   var GL_RESULT_CLEANUP_TIMER=null;
+  var GL_RESULT_SILENT_RELOAD=false;
   var STARTUP_SHUFFLE_ENABLED=true;
   var selectedDiscardIndexes=[];
   function $(id){ return document.getElementById(id); }
@@ -5477,12 +5478,11 @@ function getActivatedHeroAbilities(state, side, lane){
   function returnToLobbyAfterGameResult(){
     clearGameResultCleanupTimer();
     cancelAITurnDirector();
-    GL_LAST_RENDERED_PHASE_KEY=null;
-    closeLocalCoinModal();
-    clearTransientUiState();
-    appState=null;
+    GL_RESULT_SILENT_RELOAD=true;
     matchStarted=false;
-    renderStartupDeckSetup();
+    if(appState) appState.gameOver=true;
+    syncVsMatchNavigationGuardState();
+    window.location.reload();
     return true;
   }
   function bindLocalGameResultActions(){
@@ -9026,7 +9026,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
   }
   function bindVsMatchNavigationGuard(){
     if(GL_VS_MATCH_NAV_GUARD_BOUND||IS_PVP_APP||typeof window==='undefined'||typeof document==='undefined')return;GL_VS_MATCH_NAV_GUARD_BOUND=true;
-    window.addEventListener('beforeunload',function(event){if(!isActiveNormalVsMatch())return;event.preventDefault();event.returnValue='';return'';});
+    window.addEventListener('beforeunload',function(event){if(GL_RESULT_SILENT_RELOAD||!isActiveNormalVsMatch())return;event.preventDefault();event.returnValue='';return'';});
     document.addEventListener('touchstart',function(event){var touch=event.touches&&event.touches[0];GL_VS_PULL_TOUCH_START_Y=touch?Number(touch.clientY):null;},{passive:true});
     document.addEventListener('touchmove',function(event){if(!isActiveNormalVsMatch()||GL_VS_PULL_TOUCH_START_Y===null)return;var touch=event.touches&&event.touches[0];if(!touch)return;var scrollTop=Number(window.scrollY||document.documentElement&&document.documentElement.scrollTop||document.body&&document.body.scrollTop||0);if(scrollTop<=0&&Number(touch.clientY)>GL_VS_PULL_TOUCH_START_Y+4)event.preventDefault();},{passive:false});
     document.addEventListener('touchend',function(){GL_VS_PULL_TOUCH_START_Y=null;},{passive:true});
