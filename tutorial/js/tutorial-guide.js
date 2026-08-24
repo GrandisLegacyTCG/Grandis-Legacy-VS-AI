@@ -251,7 +251,12 @@
     qa('.gl-tutorial-target-card').forEach(function(el){el.classList.remove('gl-tutorial-target-card');});
   }
   function applyPrintedRegion(region){
-    if(!region)return;var art=q('#previewBody .readable-card-art');if(!art)return;
+    if(!region)return;
+    // Mobile Card Preview centers a narrower <img> inside a full-width figure.
+    // Printed-region coordinates must be anchored to the rendered card image itself;
+    // desktop keeps its existing figure anchor and geometry unchanged.
+    var art=isMobileTutorialViewport()?q('#previewBody .readable-card-art img'):q('#previewBody .readable-card-art');
+    if(!art)return;
     var boxed=(region==='text'||region==='ultimate_rules');
     highlightEntries.push({kind:boxed?'box':'arrow',el:art,region:region,className:boxed?'gl-tutorial-highlight-box--printed-text':'gl-tutorial-anatomy-arrow--'+region});updateHighlightLayer();
   }
