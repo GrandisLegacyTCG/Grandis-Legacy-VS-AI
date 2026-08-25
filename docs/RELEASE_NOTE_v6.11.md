@@ -2,7 +2,7 @@
 
 Date: 2026-08-24
 
-This focused patch adopts Source Authority Stack v1.7.0 and its generic Conditional Follow-up Component.
+This focused patch adopts Source Authority Stack v1.7.1 and its generic Conditional Follow-up Component.
 
 - Rage Blast: separate automatic 20 Physical follow-up after its 60 Physical Primary when Bleed is present.
 - Venom Sovereign: Rogue 20 / Renegade 40 Magical Primary, then a separate automatic fixed 40 Magical follow-up when Poison is present.

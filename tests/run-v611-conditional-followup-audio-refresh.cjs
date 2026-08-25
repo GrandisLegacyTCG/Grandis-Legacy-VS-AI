@@ -6,8 +6,8 @@ const path = require('path');
 const { loadLocalAI } = require('./vm-local-ai-harness.cjs');
 
 const root = path.resolve(__dirname, '..');
-const hash = 'f5de57e66f0191522537b6e2b66539dd1c3c2a9737e59bac76c48044c38a21c1';
-const data = require(path.join(root, 'data/season1/cards.runtime.v0.14.0.json'));
+const hash = '8ee6bb98c22dc66ee72f49fa88b4f7fd05fce1c96a2932e28a1a8667c9d3932e';
+const data = require(path.join(root, 'data/season1/cards.runtime.v0.14.1.json'));
 const byId = Object.fromEntries(data.cards.map(card => [card.card_id, card]));
 
 assert.strictEqual(data.canonical_registry_hash, hash);

@@ -3,7 +3,7 @@
 ## 1. Source Stack adoption
 
 - Adopted Source Authority Stack 2026-08-24 / One Source Authority v1.6.0.
-- Runtime Foundation v1.84, Runtime Core v0.52, Runtime Data v0.13.0, Effect Recipe and Checkpoint v0.12.0, Legality Map v0.11.8, and Sync v2.46.
+- Runtime Foundation v1.84, Runtime Core v0.52, Runtime Data v0.13.1, Effect Recipe and Checkpoint v0.12.0, Legality Map v0.11.8, and Sync v2.46.
 - Locked the 198-card registry `f6560b21206a4f50670d9801442933d026768c3c704215f443d58a568980a3db` and Hero Component registry `487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9`.
 - Adopted 6 Racial Traits, 16 Class Abilities, 10 Hero profiles, and 30 Hero compositions.
 

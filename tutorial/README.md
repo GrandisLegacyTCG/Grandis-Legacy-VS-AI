@@ -1,6 +1,6 @@
 # Grandis Legacy Tutorial v0.42
 
-Non-scripted Tutorial under `/tutorial/`, synchronized with VS AI v6.11 and Source Authority Stack v1.7.0.
+Non-scripted Tutorial under `/tutorial/`, synchronized with VS AI v6.11 and Source Authority Stack v1.7.1.
 
 - Uses the generic Conditional Follow-up Component for Rage Blast, Venom Sovereign, and Tornado.
 - Retains active audio clones until playback ends or errors without changing their bytes, triggers, timing, or volume.

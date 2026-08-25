@@ -1,8 +1,8 @@
 {
   "schema_version": "1.5.0",
-  "generated_at": "2026-08-24",
+  "generated_at": "2026-08-25",
   "generated_from": "src/data/season1/cards.canonical.v1.5.0.json",
-  "canonical_registry_hash": "f5de57e66f0191522537b6e2b66539dd1c3c2a9737e59bac76c48044c38a21c1",
+  "canonical_registry_hash": "8ee6bb98c22dc66ee72f49fa88b4f7fd05fce1c96a2932e28a1a8667c9d3932e",
   "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
   "generated_only": true,
   "count": 198,
@@ -65968,7 +65968,7 @@
       "name": "Mana Shield",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "29a71fcfdadf7814bf40bedd187a7164dd4aed3d8265bf23cb542d102af947f6",
+      "canonical_hash": "fa317132f401035839b97b3fab53cea7424f2c9d09a59f9410041b6ae893b9e4",
       "timing": {
         "phase": "Response Window / Incoming Magical damage",
         "raw_phase": "Response Window / Incoming Magical damage"
@@ -66082,7 +66082,7 @@
           "response_damage_types": [
             "Magical"
           ],
-          "block_amount": 40
+          "block_amount": 60
         },
         "runtime_resolver": {
           "target": {
@@ -66144,7 +66144,7 @@
           "format": "webp",
           "source_archive_sha256": "a16c238071a2400e6e902727b728576f5582d19e1bdf97560c55806748458c29"
         },
-        "canonical_hash": "29a71fcfdadf7814bf40bedd187a7164dd4aed3d8265bf23cb542d102af947f6",
+        "canonical_hash": "fa317132f401035839b97b3fab53cea7424f2c9d09a59f9410041b6ae893b9e4",
         "class_group": "MAG",
         "rank_numeric": 1,
         "timing": {
@@ -66313,7 +66313,7 @@
           "response_damage_types": [
             "Magical"
           ],
-          "block_amount": 40
+          "block_amount": 60
         },
         "runtime_resolver": {
           "target": {
@@ -66489,7 +66489,7 @@
             "response_damage_types": [
               "Magical"
             ],
-            "block_amount": 40
+            "block_amount": 60
           },
           "runtime_resolver": {
             "target": {
@@ -74274,7 +74274,7 @@
       "name": "Double Casting",
       "card_family": "Skill",
       "card_subtype": "Tactical Skill",
-      "canonical_hash": "928dba7b2192711b2ff2e755d0042e0ae5a1fe86969360f3d87d9f3d822fd0ed",
+      "canonical_hash": "b49dbfc6b165a81fb4174e10a8a8ba8a4df7401934b0982172359ebb1dbb840b",
       "timing": {
         "phase": "Deploy Phase",
         "raw_phase": "Deploy Phase"
@@ -74312,16 +74312,18 @@
             "rank2": {
               "activation": "next_turn",
               "same_magical_attack_card_attacks_twice": true,
-              "each_attack_target_rule": "same_target",
+              "each_attack_target_rule": "same_or_different_legal_hero",
               "source_exhausts_on_setup": true,
-              "next_single_target_attack_skill_this_turn_attacks_twice": true
+              "next_single_target_attack_skill_this_turn_attacks_twice": true,
+              "effective_mana_cost": 5
             },
             "rank3": {
               "activation": "this_turn",
               "same_magical_attack_card_attacks_twice": true,
-              "each_attack_target_rule": "may_choose_different_hero",
+              "each_attack_target_rule": "same_or_different_legal_hero",
               "source_exhausts_on_setup": false,
-              "next_single_target_attack_skill_this_turn_attacks_twice": true
+              "next_single_target_attack_skill_this_turn_attacks_twice": true,
+              "effective_mana_cost": 2
             }
           }
         }
@@ -74373,18 +74375,18 @@
           "foundation_note": "Target belongs to Resolver, not top-level Skill Card."
         },
         "active_effect": {
-          "duration": "until next Single Target Attack Skill this turn is used, or until end of turn if unused",
+          "duration": "until the next eligible Magical Attack card is fully resolved twice, or the locked timing window expires",
           "owner": "source Hero",
-          "attachment": false,
+          "attachment": true,
           "effect_by_class": {
             "Elementalist": {
               "next_single_target_attack_skill_attacks_twice": true,
               "target_rule": "same or different legal Hero",
-              "effective_mana_cost": 4
+              "effective_mana_cost": 5
             },
             "Elemental Lord": {
               "next_single_target_attack_skill_attacks_twice": true,
-              "target_rule": "each attack may choose different legal Hero",
+              "target_rule": "same or different legal Hero",
               "effective_mana_cost": 2
             }
           },
@@ -74403,7 +74405,7 @@
         "is_ultimate": true,
         "zone_after_resolve": "Attachment Slot",
         "runtime_policy": {
-          "exhaust_policy": "This Tactical Skill does not Exhaust source Hero."
+          "exhaust_policy": "Rank II setup Exhausts source Hero; Rank III setup does not Exhaust source Hero."
         },
         "ultimate_owner": "Vaelis Stormweave",
         "ultimate_owner_lineage": "S1-MAG-H001;S1-MAG-H002;S1-MAG-H003",
@@ -74448,16 +74450,18 @@
               "rank2": {
                 "activation": "next_turn",
                 "same_magical_attack_card_attacks_twice": true,
-                "each_attack_target_rule": "same_target",
+                "each_attack_target_rule": "same_or_different_legal_hero",
                 "source_exhausts_on_setup": true,
-                "next_single_target_attack_skill_this_turn_attacks_twice": true
+                "next_single_target_attack_skill_this_turn_attacks_twice": true,
+                "effective_mana_cost": 5
               },
               "rank3": {
                 "activation": "this_turn",
                 "same_magical_attack_card_attacks_twice": true,
-                "each_attack_target_rule": "may_choose_different_hero",
+                "each_attack_target_rule": "same_or_different_legal_hero",
                 "source_exhausts_on_setup": false,
-                "next_single_target_attack_skill_this_turn_attacks_twice": true
+                "next_single_target_attack_skill_this_turn_attacks_twice": true,
+                "effective_mana_cost": 2
               }
             }
           }
@@ -74576,7 +74580,7 @@
           "format": "webp",
           "source_archive_sha256": "a16c238071a2400e6e902727b728576f5582d19e1bdf97560c55806748458c29"
         },
-        "canonical_hash": "928dba7b2192711b2ff2e755d0042e0ae5a1fe86969360f3d87d9f3d822fd0ed",
+        "canonical_hash": "b49dbfc6b165a81fb4174e10a8a8ba8a4df7401934b0982172359ebb1dbb840b",
         "class_group": "MAG",
         "rank_numeric": 2,
         "timing": {
@@ -74703,18 +74707,18 @@
           "foundation_note": "Target belongs to Resolver, not top-level Skill Card."
         },
         "active_effect": {
-          "duration": "until next Single Target Attack Skill this turn is used, or until end of turn if unused",
+          "duration": "until the next eligible Magical Attack card is fully resolved twice, or the locked timing window expires",
           "owner": "source Hero",
-          "attachment": false,
+          "attachment": true,
           "effect_by_class": {
             "Elementalist": {
               "next_single_target_attack_skill_attacks_twice": true,
               "target_rule": "same or different legal Hero",
-              "effective_mana_cost": 4
+              "effective_mana_cost": 5
             },
             "Elemental Lord": {
               "next_single_target_attack_skill_attacks_twice": true,
-              "target_rule": "each attack may choose different legal Hero",
+              "target_rule": "same or different legal Hero",
               "effective_mana_cost": 2
             }
           },
@@ -74732,7 +74736,7 @@
         },
         "is_ultimate": true,
         "runtime_policy": {
-          "exhaust_policy": "This Tactical Skill does not Exhaust source Hero."
+          "exhaust_policy": "Rank II setup Exhausts source Hero; Rank III setup does not Exhaust source Hero."
         },
         "ultimate_owner": "Vaelis Stormweave",
         "ultimate_owner_lineage": "S1-MAG-H001;S1-MAG-H002;S1-MAG-H003",
@@ -74777,16 +74781,18 @@
               "rank2": {
                 "activation": "next_turn",
                 "same_magical_attack_card_attacks_twice": true,
-                "each_attack_target_rule": "same_target",
+                "each_attack_target_rule": "same_or_different_legal_hero",
                 "source_exhausts_on_setup": true,
-                "next_single_target_attack_skill_this_turn_attacks_twice": true
+                "next_single_target_attack_skill_this_turn_attacks_twice": true,
+                "effective_mana_cost": 5
               },
               "rank3": {
                 "activation": "this_turn",
                 "same_magical_attack_card_attacks_twice": true,
-                "each_attack_target_rule": "may_choose_different_hero",
+                "each_attack_target_rule": "same_or_different_legal_hero",
                 "source_exhausts_on_setup": false,
-                "next_single_target_attack_skill_this_turn_attacks_twice": true
+                "next_single_target_attack_skill_this_turn_attacks_twice": true,
+                "effective_mana_cost": 2
               }
             }
           }
@@ -74844,16 +74850,18 @@
               "rank2": {
                 "activation": "next_turn",
                 "same_magical_attack_card_attacks_twice": true,
-                "each_attack_target_rule": "same_target",
+                "each_attack_target_rule": "same_or_different_legal_hero",
                 "source_exhausts_on_setup": true,
-                "next_single_target_attack_skill_this_turn_attacks_twice": true
+                "next_single_target_attack_skill_this_turn_attacks_twice": true,
+                "effective_mana_cost": 5
               },
               "rank3": {
                 "activation": "this_turn",
                 "same_magical_attack_card_attacks_twice": true,
-                "each_attack_target_rule": "may_choose_different_hero",
+                "each_attack_target_rule": "same_or_different_legal_hero",
                 "source_exhausts_on_setup": false,
-                "next_single_target_attack_skill_this_turn_attacks_twice": true
+                "next_single_target_attack_skill_this_turn_attacks_twice": true,
+                "effective_mana_cost": 2
               }
             }
           }
@@ -74966,18 +74974,18 @@
             "foundation_note": "Target belongs to Resolver, not top-level Skill Card."
           },
           "active_effect": {
-            "duration": "until next Single Target Attack Skill this turn is used, or until end of turn if unused",
+            "duration": "until the next eligible Magical Attack card is fully resolved twice, or the locked timing window expires",
             "owner": "source Hero",
-            "attachment": false,
+            "attachment": true,
             "effect_by_class": {
               "Elementalist": {
                 "next_single_target_attack_skill_attacks_twice": true,
                 "target_rule": "same or different legal Hero",
-                "effective_mana_cost": 4
+                "effective_mana_cost": 5
               },
               "Elemental Lord": {
                 "next_single_target_attack_skill_attacks_twice": true,
-                "target_rule": "each attack may choose different legal Hero",
+                "target_rule": "same or different legal Hero",
                 "effective_mana_cost": 2
               }
             },
@@ -74996,7 +75004,7 @@
           "is_ultimate": true,
           "zone_after_resolve": "Attachment Slot",
           "runtime_policy": {
-            "exhaust_policy": "This Tactical Skill does not Exhaust source Hero."
+            "exhaust_policy": "Rank II setup Exhausts source Hero; Rank III setup does not Exhaust source Hero."
           },
           "ultimate_owner": "Vaelis Stormweave",
           "ultimate_owner_lineage": "S1-MAG-H001;S1-MAG-H002;S1-MAG-H003",
@@ -75041,16 +75049,18 @@
                 "rank2": {
                   "activation": "next_turn",
                   "same_magical_attack_card_attacks_twice": true,
-                  "each_attack_target_rule": "same_target",
+                  "each_attack_target_rule": "same_or_different_legal_hero",
                   "source_exhausts_on_setup": true,
-                  "next_single_target_attack_skill_this_turn_attacks_twice": true
+                  "next_single_target_attack_skill_this_turn_attacks_twice": true,
+                  "effective_mana_cost": 5
                 },
                 "rank3": {
                   "activation": "this_turn",
                   "same_magical_attack_card_attacks_twice": true,
-                  "each_attack_target_rule": "may_choose_different_hero",
+                  "each_attack_target_rule": "same_or_different_legal_hero",
                   "source_exhausts_on_setup": false,
-                  "next_single_target_attack_skill_this_turn_attacks_twice": true
+                  "next_single_target_attack_skill_this_turn_attacks_twice": true,
+                  "effective_mana_cost": 2
                 }
               }
             }
@@ -91956,7 +91966,7 @@
       "name": "Deflection",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "4345b1a1600e425183d888b3f9576039698e380f3e3f8508e34e5ea2259fb638",
+      "canonical_hash": "bf02cd4c28d744d7701602dfed9362ae5ce22987467ba3e258b6bdda47f1f2ae",
       "timing": {
         "phase": "Response Window / Incoming Physical damage",
         "raw_phase": "Response Window / Incoming Physical damage"
@@ -92059,9 +92069,9 @@
             "Physical"
           ],
           "block_by_class": {
-            "Thief": 50,
-            "Spell Blade": 60,
-            "Arcane Duelist": 60
+            "Thief": 70,
+            "Spell Blade": 80,
+            "Arcane Duelist": 80
           }
         }
       },
@@ -92132,7 +92142,7 @@
           "format": "webp",
           "source_archive_sha256": "a16c238071a2400e6e902727b728576f5582d19e1bdf97560c55806748458c29"
         },
-        "canonical_hash": "4345b1a1600e425183d888b3f9576039698e380f3e3f8508e34e5ea2259fb638",
+        "canonical_hash": "bf02cd4c28d744d7701602dfed9362ae5ce22987467ba3e258b6bdda47f1f2ae",
         "class_group": "THF",
         "rank_numeric": 1,
         "timing": {
@@ -92282,9 +92292,9 @@
             "Physical"
           ],
           "block_by_class": {
-            "Thief": 50,
-            "Spell Blade": 60,
-            "Arcane Duelist": 60
+            "Thief": 70,
+            "Spell Blade": 80,
+            "Arcane Duelist": 80
           }
         },
         "cost_mana": 3,
@@ -92431,9 +92441,9 @@
               "Physical"
             ],
             "block_by_class": {
-              "Thief": 50,
-              "Spell Blade": 60,
-              "Arcane Duelist": 60
+              "Thief": 70,
+              "Spell Blade": 80,
+              "Arcane Duelist": 80
             }
           }
         }
@@ -97808,7 +97818,7 @@
       "name": "Parry",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "fb63d04f5c27895a06d59d881544fa735d5908e4bbb4f15ca4f0cae096c37420",
+      "canonical_hash": "bf9c87422e6a2ce587665a52b2fa613a5b65795d21f8c6e4d858fbc6622533cd",
       "timing": {
         "phase": "Response Window / Incoming Physical damage",
         "raw_phase": "Response Window / Incoming Physical damage"
@@ -97922,7 +97932,7 @@
           "response_damage_types": [
             "Physical"
           ],
-          "block_amount": 30
+          "block_amount": 50
         },
         "runtime_resolver": {
           "target": {
@@ -97984,7 +97994,7 @@
           "format": "webp",
           "source_archive_sha256": "a16c238071a2400e6e902727b728576f5582d19e1bdf97560c55806748458c29"
         },
-        "canonical_hash": "fb63d04f5c27895a06d59d881544fa735d5908e4bbb4f15ca4f0cae096c37420",
+        "canonical_hash": "bf9c87422e6a2ce587665a52b2fa613a5b65795d21f8c6e4d858fbc6622533cd",
         "class_group": "WAR",
         "rank_numeric": 1,
         "timing": {
@@ -98153,7 +98163,7 @@
           "response_damage_types": [
             "Physical"
           ],
-          "block_amount": 30
+          "block_amount": 50
         },
         "runtime_resolver": {
           "target": {
@@ -98329,7 +98339,7 @@
             "response_damage_types": [
               "Physical"
             ],
-            "block_amount": 30
+            "block_amount": 50
           },
           "runtime_resolver": {
             "target": {

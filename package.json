@@ -1,6 +1,6 @@
 {
   "name": "grandis-legacy-vs-ai-tutorial",
-  "version": "6.15.0",
+  "version": "6.16.0",
   "private": true,
   "scripts": {
     "build:data": "node tools/build-static-data.cjs",
@@ -13,5 +13,5 @@
     "verify": "npm test && npm run test:tutorial",
     "test:gameplay-foundation": "node tests/run-v559-gameplay-foundation.cjs"
   },
-  "description": "Grandis Legacy VS AI v6.15 + Tutorial v0.43 \u2014 canonical revised-card defense authority cleanup, full 30-card parity recheck, and preserved v6.13/v6.14 Poison game-over and silent lobby reload fixes on Source Stack v1.7.0."
+  "description": "Grandis Legacy VS AI v6.16 + Tutorial v0.44 — Source Stack v1.7.1 parity remediation and authority-driven gameplay data."
 }

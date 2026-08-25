@@ -5,7 +5,7 @@ Production-ready GitHub Pages package for local VS AI and the non-scripted tutor
 
 ## v6.15 / v0.43 Canonical revised-card application parity hotfix
 
-- Re-audited all 30 revised Season 1 card IDs against Source Stack v1.7.0 / Runtime Data v0.14.0.
+- Re-audited all 30 revised Season 1 card IDs against Source Stack v1.7.1 / Runtime Data v0.14.1.
 - Removed stale application-local numeric Block overrides. Canonical structured runtime data now controls Mana Shield, Parry, Deflect Arrow, Deflection, and all other Block values.
 - Mana Shield now resolves at Block 60 in executable gameplay/logs.
 - Added deterministic canonical Defense tests covering lineage fallback and 17 current Block rows.
@@ -33,12 +33,12 @@ Production-ready GitHub Pages package for local VS AI and the non-scripted tutor
 - Adds a mobile-only three-line menu on VS AI with VS AI / PVP / DECK BUILDER choices.
 - Mobile Deck Builder navigation points to Style 2.
 - Tutorial remains v0.42 and is unchanged.
-- Source Stack v1.7.0 gameplay, Conditional Follow-up, audio retention, and refresh protection from v6.11 are preserved.
+- Source Stack v1.7.1 gameplay, Conditional Follow-up, audio retention, and refresh protection from v6.11 are preserved.
 
 
 ## v6.11 / v0.42 Conditional Follow-up authority patch
 
-- Adopts Source Authority Stack v1.7.0 and the generic data-driven Conditional Follow-up Component.
+- Adopts Source Authority Stack v1.7.1 and the generic data-driven Conditional Follow-up Component.
 - Rage Blast, Venom Sovereign, and Tornado resolve their conditional damage as separate automatic post-Primary effects, without a second Response Window or Primary Block carryover.
 - Retains audio clones until playback ends or errors, preserving triggers, timing, volume, and bytes.
 - Adds active-normal-match `beforeunload` and top-edge pull-to-refresh protection to VS AI only while preserving ordinary vertical scrolling.
@@ -46,8 +46,8 @@ Production-ready GitHub Pages package for local VS AI and the non-scripted tutor
 
 ## Preserved Source Stack authority
 
-- Adopts One Source Authority v1.7.0 and the corrected 198-card Season 1 registry.
-- Pins the canonical card hash to `f5de57e66f0191522537b6e2b66539dd1c3c2a9737e59bac76c48044c38a21c1`.
+- Adopts One Source Authority v1.7.1 and the corrected 198-card Season 1 registry.
+- Pins the canonical card hash to `8ee6bb98c22dc66ee72f49fa88b4f7fd05fce1c96a2932e28a1a8667c9d3932e`.
 - Pins Hero Component Authority to `487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9` with 6 racial components, 16 class components, 10 profiles, and 30 legal compositions.
 - Carries all 30 revised card records, including **Back Slash**, and corrects every Resurrection metadata field to **3 Mana / 50 HP**.
 - Retains the already-correct defensive Dodge implementation for Halfling Second Chance and the authoritative first-player Turn 1 Attack rejection.

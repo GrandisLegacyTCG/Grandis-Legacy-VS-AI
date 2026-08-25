@@ -1,8 +1,8 @@
 {
   "name": "grandis-legacy-tutorial",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "private": true,
-  "description": "Grandis Legacy Tutorial v0.43 \u2014 synchronized with VS AI v6.15 and Source Stack v1.7.0, removing stale application-local numeric Defense overrides while preserving tutorial guidance and Conditional Follow-up behavior.",
+  "description": "Grandis Legacy Tutorial v0.43 — synchronized with VS AI v6.15 and Source Stack v1.7.1, removing stale application-local numeric Defense overrides while preserving tutorial guidance and Conditional Follow-up behavior.",
   "scripts": {
     "build:data": "node ../tools/build-static-data.cjs",
     "metadata": "node ../tools/update-release-metadata.cjs",

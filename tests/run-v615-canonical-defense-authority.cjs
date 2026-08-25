@@ -7,7 +7,7 @@ const root=path.resolve(__dirname,'..');
 const expected={
   'S1-MAG-004':60,'S1-WAR-003':50,'S1-CLE-011':60,'S1-CLE-022':30,'S1-ITM-007':30,'S1-MAG-012':70
 };
-const data=require(path.join(root,'data/season1/cards.runtime.v0.14.0.json'));
+const data=require(path.join(root,'data/season1/cards.runtime.v0.14.1.json'));
 const byId=Object.fromEntries(data.cards.map(c=>[c.card_id,c]));
 for(const [id,amount] of Object.entries(expected)){
   const eff=(byId[id].effects||byId[id].effect||[]).find(e=>e.kind==='block_damage');
