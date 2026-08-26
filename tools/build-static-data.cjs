@@ -118,32 +118,32 @@ function buildFor(targetRoot) {
   assertAuthority(runtimeData, recipes, preview, heroComponents);
 
   const sourceStack = {
-    source_authority_stack_bundle: 'v1.7.1',
-    runtime_foundation: 'v1.87',
+    source_authority_stack_bundle: 'v1.7.2',
+    runtime_foundation: 'v1.88',
     runtime_data: 'v0.14.1',
     effect_checkpoint: 'v0.13.1',
     effect_recipe: 'v0.13.1',
     legality_map: 'v0.11.9',
-    runtime_core: 'v0.55',
-    shared_manual: 'v1.43',
-    local_ai: 'v6.11',
-    pvp_railway: 'v3.09',
-    deck_builder: 'v1.19 (external; verified complete and untouched)',
+    runtime_core: 'v0.56',
+    shared_manual: 'v1.44',
+    local_ai: 'v6.17',
+    pvp_railway: 'v3.14',
+    deck_builder: 'v1.22 (external; navigation-only consumer)',
     starter60: 'v1.3',
     ui_lock: 'v2.49',
-    application_runtime_sync: 'v2.49',
+    application_runtime_sync: 'v2.50',
     rulebook_ai_game_flow: 'v2',
     card_visual_source: 'Season 1 v1.2 FINAL REVISED',
-    one_source_authority: 'v1.7.1',
+    one_source_authority: 'v1.7.2',
     hero_component_authority: 'v1.0.0',
     canonical_registry_hash: HASH,
     hero_component_registry_hash: HERO_HASH,
     card_count: 198,
     authority_mode: 'ONE_SOURCE_FAIL_CLOSED',
     generated_file: 'js/static-data.js',
-    public_deck_builder: 'v1.19 (external; verified complete and untouched)',
+    public_deck_builder: 'v1.22 (external; navigation-only consumer)',
     ui_design_lock: 'v2.49',
-    one_source_patch: 'v1.7.1',
+    one_source_patch: 'v1.7.2',
     conditional_follow_up_schema: 'v1.0.0'
   };
   const definitions = {
@@ -174,7 +174,7 @@ function buildFor(targetRoot) {
     effect_recipe: 'v0.13.1',
     effect_checkpoint: 'v0.13.1',
     legality_map: 'v0.11.9',
-    source_patch: 'v1.7.1',
+    source_patch: 'v1.7.2',
     conditional_follow_up_schema: 'v1.0.0'
   };
 

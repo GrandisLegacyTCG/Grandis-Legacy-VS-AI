@@ -6207,3 +6207,15 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
 .gl-mobile-app-menu a{display:block;padding:12px 14px;border-radius:8px;color:#edf5ff;text-decoration:none;font-size:12px;font-weight:900;letter-spacing:.04em}
 .gl-mobile-app-menu a:hover,.gl-mobile-app-menu a:focus-visible{background:#172638;color:#f4d35e}
 @media(max-width:760px){.gl-mobile-app-menu-button{display:flex}}
+
+
+/* Pending Attack Direction Indicator — v6.17/v0.45/v3.14 */
+.gl-pending-attack-direction-layer{position:fixed;inset:0;width:100%;height:100%;z-index:11840;pointer-events:none;overflow:visible;color:rgba(244,202,82,.84)}
+.gl-pending-attack-line{stroke:currentColor;stroke-width:2.2;stroke-linecap:round;fill:none;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 3px rgba(0,0,0,.72))}
+.gl-pending-attack-arrow{fill:currentColor}
+.gl-pending-attack-line.is-looping{stroke-dasharray:11 10;animation:glPendingAttackDirectionLoop 1.15s linear infinite}
+.gl-pending-attack-line.is-once{stroke-dasharray:16 12;animation:glPendingAttackDirectionOnce .72s ease-out both}
+@keyframes glPendingAttackDirectionLoop{to{stroke-dashoffset:-42}}
+@keyframes glPendingAttackDirectionOnce{0%{opacity:0;stroke-dashoffset:56}18%{opacity:.92}78%{opacity:.92}100%{opacity:0;stroke-dashoffset:0}}
+@media (max-width:700px){.gl-pending-attack-line{stroke-width:2.6}}
+@media (prefers-reduced-motion:reduce){.gl-pending-attack-line.is-looping,.gl-pending-attack-line.is-once{animation:none;stroke-dasharray:none;opacity:.9}}

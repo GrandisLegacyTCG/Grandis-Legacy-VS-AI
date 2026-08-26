@@ -20,10 +20,10 @@ assert.strictEqual(heroComponents.registry_hash,HH);
 assert.deepStrictEqual([heroComponents.racial_traits.length,heroComponents.class_abilities.length,heroComponents.hero_profiles.length,heroComponents.hero_compositions.length],[6,16,10,30]);
 const app=read('js/app.bundle.js'),css=read('css/app.css'),stat=read('js/static-data.js'),runtime=read('js/runtime-authority.js'),runtimeSource=read('runtime-source/runtime/browser/runtime-authority.browser.js'),runtimeReducer=read('runtime-source/runtime/core/reducer.js');
 assert.strictEqual(runtime,runtimeSource,'browser runtime must be generated from packaged editable runtime source');
-assert.ok(/one_source_authority":"v1\.7\.0/.test(stat),'static source version');
+assert.ok(/one_source_authority":"v1\.7\.2/.test(stat),'static source version');
 assert.ok(stat.includes(H),'static source hash');
 assert.ok(stat.includes(HH),'static Hero Component hash');
-assert.ok(/runtime_data":"v0\.14\.0/.test(stat)&&/effect_recipe":"v0\.13\.0/.test(stat)&&/runtime_foundation":"v1\.86/.test(stat)&&/runtime_core":"v0\.54/.test(stat)&&/hero_component_authority":"v1\.0\.0/.test(stat),'source stack versions');
+assert.ok(/runtime_data":"v0\.14\.1/.test(stat)&&/effect_recipe":"v0\.13\.1/.test(stat)&&/runtime_foundation":"v1\.88/.test(stat)&&/runtime_core":"v0\.56/.test(stat)&&/hero_component_authority":"v1\.0\.0/.test(stat),'source stack versions');
 const resurrection=data.cards.find(card=>card.card_id==='S1-CLE-015');
 assert.strictEqual(resurrection.canonical_cost.mana,3,'Resurrection Mana');
 assert.strictEqual(resurrection.effect.find(effect=>effect.kind==='revive').set_hp,50,'Resurrection HP');
@@ -41,7 +41,7 @@ assert.ok(/Printed artwork is the only visible card frame[\s\S]*?hero-card\.hero
 assert.ok(fs.existsSync(path.join(root,'assets/audio/Coin Flip.mp3')),'coin audio');
 assert.ok(fs.existsSync(path.join(root,'assets/audio/Card Sound.mp3')),'card motion audio');
 assert.ok(fs.existsSync(path.join(root,'runtime-source/runtime/core/reducer.js')),'editable runtime source');
-const lock=json('sync/runtime-sync-lock.v2.49.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.hero_component_registry_hash,HH);assert.strictEqual(lock.application_runtime_sync,'v2.49');assert.strictEqual(lock.local_ai,'v6.15');
+const lock=json('sync/runtime-sync-lock.v2.50.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.hero_component_registry_hash,HH);assert.strictEqual(lock.application_runtime_sync,'v2.50');assert.strictEqual(lock.local_ai,'v6.17');
 assert.strictEqual(lock.audio_assets.coin_flip.sha256,sha('assets/audio/Coin Flip.mp3'));
 assert.strictEqual(lock.audio_assets.card_sound.sha256,sha('assets/audio/Card Sound.mp3'));
 for(const [rel,key] of [['js/app.bundle.js','shared_gameplay_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['runtime-source/runtime/browser/runtime-authority.browser.js','runtime_source_browser_sha256'],['js/static-data.js','static_data_sha256'],['css/app.css','shared_ui_css_sha256']])assert.strictEqual(sha(rel),lock[key],rel+' sync hash');
@@ -59,4 +59,4 @@ assert.ok(/responseDisplayItemsFor/.test(app)&&/data-response-reason/.test(app)&
 assert.ok(!fs.existsSync(path.join(root,'deck-builder'))&&app.includes('https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/'),'dedicated external Deck Builder navigation');
 assert.ok(fs.existsSync(path.join(root,'tutorial/index.html'))&&app.includes('<nav class="ai-lobby-actions"><a id="aiLobbyTutorialButton" class="ai-lobby-btn ai-lobby-btn--outline" href="tutorial/">TUTORIAL</a><a id="aiLobbyDeckBuilderButton" class="ai-lobby-btn ai-lobby-btn--outline"'),'Tutorial application and equal-size secondary navigation');
 
-console.log('PASS VS AI v6.15 release audit: Source Stack 2026-08-24, Hero Components, runtime locks, and preserved UI contracts.');
+console.log('PASS VS AI v6.17 release audit: Source Stack 2026-08-24, Hero Components, runtime locks, and preserved UI contracts.');

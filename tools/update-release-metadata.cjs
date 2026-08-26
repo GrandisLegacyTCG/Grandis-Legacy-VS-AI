@@ -17,26 +17,26 @@ function writeJSON(relativePath, value) {
 }
 
 const rootLock = {
-  version: 'v2.49',
-  schema_version: '2.48-consumer',
+  version: 'v2.50',
+  schema_version: '2.50-consumer',
   policy: 'RUNTIME_FIRST_FAIL_CLOSED_SYNC',
-  application: 'VS AI v6.15',
-  local_ai: 'v6.15',
-  tutorial: 'v0.43',
-  pvp_reference: 'v3.12',
+  application: 'VS AI v6.17',
+  local_ai: 'v6.17',
+  tutorial: 'v0.45',
+  pvp_reference: 'v3.14',
   canonical_registry_hash: HASH,
   hero_component_registry_hash: HERO_HASH,
-  one_source_authority: 'v1.7.1',
-  application_runtime_sync: 'v2.49',
-  runtime_foundation: 'v1.87',
-  runtime_core: 'v0.55',
+  one_source_authority: 'v1.7.2',
+  application_runtime_sync: 'v2.50',
+  runtime_foundation: 'v1.88',
+  runtime_core: 'v0.56',
   runtime_data: 'v0.14.1',
   effect_recipe: 'v0.13.1',
   effect_checkpoint: 'v0.13.1',
   legality_map: 'v0.11.9',
   hero_component_authority: 'v1.0.0',
-  shared_runtime_manual: 'v1.43',
-  source_stack_bundle: 'v1.7.1',
+  shared_runtime_manual: 'v1.44',
+  source_stack_bundle: 'v1.7.2',
   conditional_follow_up_schema: 'v1.0.0',
   starter60: 'v1.3',
   ui_design_lock: 'v2.49',
@@ -52,9 +52,9 @@ const rootLock = {
   },
   consumerAdoptionStatus: {
     currentApplicationsRebuiltInThisDelivery: true,
-    currentAI: 'VS AI v6.15',
-    currentPvP: 'PvP v3.12 canonical-defense/navigation consumer',
-    currentTutorial: 'Tutorial v0.43 GitHub Pages',
+    currentAI: 'VS AI v6.17',
+    currentPvP: 'PvP v3.14 redirect-response consumer',
+    currentTutorial: 'Tutorial v0.45 GitHub Pages',
     revisedSeason1: 'ADOPTED',
     heroComponents: 'ADOPTED',
     pendingStateAudit: 'ADOPTED'
@@ -63,15 +63,15 @@ const rootLock = {
   audioPlaybackPolicy: 'RETAIN_ACTIVE_CLONES_UNTIL_ENDED_OR_ERROR',
   activeNormalMatchNavigationGuard: 'BEFOREUNLOAD_AND_TOP_EDGE_PULL_TO_REFRESH_ONLY'
 };
-writeJSON('sync/runtime-sync-lock.v2.49.json', rootLock);
+writeJSON('sync/runtime-sync-lock.v2.50.json', rootLock);
 
 const tutorialLock = {
-  version: 'v0.43',
-  tutorial: 'v0.43',
+  version: 'v0.45',
+  tutorial: 'v0.45',
   delivery: 'GitHub Pages',
-  base_vs_ai: 'v6.15',
-  runtime_foundation: 'v1.87',
-  runtime_core: 'v0.55',
+  base_vs_ai: 'v6.17',
+  runtime_foundation: 'v1.88',
+  runtime_core: 'v0.56',
   runtime_data: 'v0.14.1',
   effect_recipe: 'v0.13.1',
   legality_map: 'v0.11.9',
@@ -79,7 +79,7 @@ const tutorialLock = {
   canonical_registry_hash: HASH,
   hero_component_registry_hash: HERO_HASH,
   ui_design_lock: 'v2.49',
-  scope: 'Tutorial v0.43 on VS AI v6.15 shared gameplay/runtime authority; tutorial-only guidance and mobile behavior retained.',
+  scope: 'Tutorial v0.45 on VS AI v6.17 shared gameplay/runtime authority; tutorial-only guidance and mobile behavior retained.',
   app_bundle_sha256: sha('tutorial/js/app.bundle.js'),
   tutorial_guide_sha256: sha('tutorial/js/tutorial-guide.js'),
   tutorial_css_sha256: sha('tutorial/css/tutorial-guide.css'),
@@ -90,7 +90,7 @@ const tutorialLock = {
     card_sound: { path: 'assets/audio/Card Sound.mp3', sha256: sha('tutorial/assets/audio/Card Sound.mp3') }
   }
 };
-writeJSON('tutorial/sync/tutorial-github-lock.v0.43.json', tutorialLock);
+writeJSON('tutorial/sync/tutorial-github-lock.v0.45.json', tutorialLock);
 
 const obsoleteRootLock = path.join(ROOT, 'sync/runtime-sync-lock.v2.44.json');
 if (fs.existsSync(obsoleteRootLock)) fs.unlinkSync(obsoleteRootLock);
@@ -105,4 +105,4 @@ if (fs.existsSync(priorTutorialLock)) fs.unlinkSync(priorTutorialLock);
 const previousTutorialLock = path.join(ROOT, 'tutorial/sync/tutorial-github-lock.v0.42.json');
 if (fs.existsSync(previousTutorialLock)) fs.unlinkSync(previousTutorialLock);
 
-console.log('PASS: VS AI v6.15 and Tutorial v0.43 release locks updated.');
+console.log('PASS: VS AI v6.17 and Tutorial v0.45 release locks updated.');

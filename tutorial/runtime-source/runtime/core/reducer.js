@@ -121,7 +121,7 @@ function createInitialRuntimeState(config) {
   players[opponentId] = buildPlayer(opponentId, safeConfig.opponent_deck || safeConfig.decks && safeConfig.decks[1]);
   return {
     game_id: safeConfig.game_id || `gl-${Date.now()}`,
-    version: 'runtime-reducer-v1.65',
+    version: 'runtime-reducer-v1.66',
     runtime_data: safeConfig.runtime_data || {},
     round: 1,
     active_player_id: playerId,
@@ -3706,6 +3706,49 @@ function openNextPerHeroResponseWindow(next, events) {
   return true;
 }
 
+function reopenCurrentHeroResponseWindowAfterRedirect(next, events) {
+  const attack = next.pending_attack_resolution;
+  const target = next.response_current_target && Object.assign({}, next.response_current_target, { target_slot: normalizeSlotKey(next.response_current_target.target_slot) });
+  if (!attack || !target || attack.area || (Array.isArray(attack.targets) && attack.targets.length > 1)) return false;
+  const player = next.players && next.players[target.target_player_id];
+  const slotState = player && player.board && player.board[target.target_slot];
+  if (!slotState || slotState.slot_mode !== 'HERO' || !slotState.hero || slotState.hero.defeated || Number(slotState.hero.hp || 0) <= 0) return false;
+  next.response_stack = [];
+  next.pending_response = null;
+  next.response_priority_player_id = target.target_player_id;
+  const redirectDepth = Number(next.response_window && next.response_window.redirect_depth || 0) + 1;
+  next.response_window = {
+    type: 'PER_AFFECTED_HERO_DAMAGE_WOULD_BE_DEALT',
+    card_id: attack.card_id,
+    attacking_player_id: attack.attacking_player_id,
+    defending_player_id: target.target_player_id,
+    source_slot: attack.source_slot,
+    target_player_id: target.target_player_id,
+    target_slot: target.target_slot,
+    target_key: responseTargetKey(target),
+    damage_type: attack.damage_type,
+    damage_amount: attack.per_target_base_damage && attack.per_target_base_damage[responseTargetKey(target)] !== undefined ? attack.per_target_base_damage[responseTargetKey(target)] : attack.base_damage,
+    area: false,
+    multi_target: false,
+    global_window: false,
+    cannot_be_dodged: attack.cannot_be_dodged,
+    cannot_be_blocked: attack.cannot_be_blocked,
+    venom_detonation: attack.venom_detonation === true,
+    fresh_after_redirect: true,
+    redirect_depth: redirectDepth,
+    response_window_token: `RW:REDIRECT:${attack.card_id}:${attack.attacking_player_id}:${attack.source_slot}:${target.target_player_id}:${target.target_slot}:${redirectDepth}:${Date.now()}`
+  };
+  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_WINDOW_OPENED, next, {
+    player_id: target.target_player_id,
+    card_id: attack.card_id,
+    source_slot: attack.source_slot,
+    target_player_id: target.target_player_id,
+    target_slot: target.target_slot,
+    payload: { response_to: 'REDIRECTED_ATTACK_FRESH_DEFENSE', target_key: next.response_window.target_key, global_window: false, fresh_after_redirect: true, redirect_depth: redirectDepth, same_attack_instance: true, no_replay_cost_or_trigger: true, damage_amount: next.response_window.damage_amount, damage_type: attack.damage_type }
+  }));
+  return true;
+}
+
 function initializePerHeroResponseWindows(next, attackResolution, events) {
   const targets = (attackResolution.targets || []).filter(target => {
     const player = next.players && next.players[target.target_player_id];
@@ -5163,6 +5206,8 @@ function committedResponseFrame(state, response, responseCard) {
 function resolveCommittedResponseStack(next, events) {
   const stack = Array.isArray(next.response_stack) ? next.response_stack : [];
   const frames = deepClone(stack);
+  let resolvedBaseFrame = null;
+  let resolvedResponseResult = null;
   const byId = new Map(frames.map(frame => [frame.frameId, frame]));
   for (const frame of frames.slice().reverse()) {
     if (frame.cancelled) continue;
@@ -5174,12 +5219,14 @@ function resolveCommittedResponseStack(next, events) {
   const active = frames.filter(frame => !frame.cancelled);
   const baseFrame = active.find(frame => !frame.respondsToFrameId);
   if (baseFrame) {
+    resolvedBaseFrame = baseFrame;
     const responseCard = getCard(next, baseFrame.cardId);
     const kind = baseFrame.kind;
     const responseContext = { player_id: baseFrame.playerId, card_id: baseFrame.cardId, source_slot: baseFrame.sourceSlot, response_to: next.response_window, cover_up_swap: baseFrame.coverUpSwap };
     if (baseFrame.coverUpSwap) applyCoverUpBoardSwap(next, responseContext, events);
     if (baseFrame.cardId === 'S1-CLE-025') applyBlessingOfDivinityEffect(next, { player_id: baseFrame.playerId, source_slot: baseFrame.sourceSlot }, responseCard, events);
     const responseResult = { type: kind, card_id: baseFrame.cardId, player_id: baseFrame.playerId, source_slot: baseFrame.sourceSlot, target_slot: next.response_window && next.response_window.target_slot || null };
+    resolvedResponseResult = responseResult;
     if (kind === 'BLOCK') responseResult.block_amount = responseBlockAmount(responseCard, next, { player_id: baseFrame.playerId, source_slot: baseFrame.sourceSlot, response_to: next.response_window });
     if (baseFrame.cardId === 'S1-CLE-022' && kind === 'BLOCK' && next.pending_attack_resolution) {
       responseResult.team_scope = true;
@@ -5213,10 +5260,11 @@ function resolveCommittedResponseStack(next, events) {
   }
   next.response_stack = [];
   next.pending_response = null;
+  return { base_frame: resolvedBaseFrame, response_result: resolvedResponseResult, redirected: Boolean(resolvedBaseFrame && resolvedBaseFrame.coverUpSwap) };
 }
 
 function finishCurrentHeroResponseWindow(next, events, resolverPlayerId) {
-  resolveCommittedResponseStack(next, events);
+  const stackResolution = resolveCommittedResponseStack(next, events);
   const attack = next.pending_attack_resolution;
   if (!attack) return;
   if (attack.attack_negated) {
@@ -5228,6 +5276,7 @@ function finishCurrentHeroResponseWindow(next, events, resolverPlayerId) {
   }
   const sequential = Array.isArray(attack.targets) && attack.targets.length > 1;
   if (!sequential) {
+    if (stackResolution && stackResolution.redirected && reopenCurrentHeroResponseWindowAfterRedirect(next, events)) return;
     if (!openNextPerHeroResponseWindow(next, events)) resolvePendingAttackDamage(next, events, resolverPlayerId);
     return;
   }
@@ -6280,6 +6329,7 @@ module.exports = {
     cleanupConfirmedDefeatRuntimeState,
     clearConfirmedDefeatExp,
     applyReviveEffect,
-    remapHeroHostedAttachmentsForSlotSwap
+    remapHeroHostedAttachmentsForSlotSwap,
+    reopenCurrentHeroResponseWindowAfterRedirect
   }
 };
