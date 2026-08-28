@@ -1,6 +1,12 @@
-# Grandis Legacy VS AI v6.17 + Tutorial v0.45
+# Grandis Legacy VS AI v6.18 + Tutorial v0.46
 
 Production-ready GitHub Pages package for local VS AI and the non-scripted tutorial.
+
+## v6.18 / v0.46 Mobile vertical-scroll touch hotfix
+
+- Mobile Player Hand keeps horizontal card swiping while one-finger vertical gestures can scroll the page normally.
+- Removes the pan-x-only touch restriction from the Hand and card-art touch surfaces.
+- Cover Up/Redirect, Attack Direction Indicator, gameplay authority, and desktop behavior are unchanged from v6.17 / v0.45.
 
 
 ## v6.17 / v0.45 Canonical revised-card application parity hotfix

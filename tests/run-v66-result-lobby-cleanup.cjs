@@ -1,6 +1,6 @@
 const fs=require('fs');const assert=require('assert');
 const app=fs.readFileSync('js/app.bundle.js','utf8');const css=fs.readFileSync('css/app.css','utf8');const pkg=require('../package.json');
-assert(app.includes('Grandis Legacy VS AI v6.17'));
+assert(app.includes('Grandis Legacy VS AI v6.18'));
 assert(app.includes('GL_RESULT_CLEANUP_MS=60*1000'));
 assert(app.includes('id=\"gameResultBackLobby\"'));
 assert(app.includes('function returnToLobbyAfterGameResult()'));
@@ -8,5 +8,5 @@ assert(app.includes('GL_RESULT_SILENT_RELOAD=true;'));
 assert(app.includes('window.location.reload();'));
 assert(app.includes('scheduleGameResultCleanup();'));
 assert(css.includes('.game-result-actions'));
-assert.strictEqual(pkg.version,'6.17.0');
+assert.strictEqual(pkg.version,'6.18.0');
 console.log('PASS VS AI v6.17 Back to Lobby + 1-minute result reload cleanup');

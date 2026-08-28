@@ -48,6 +48,6 @@ assert.ok(!/gl-active-vs-match[^}]*overflow\s*:\s*hidden/i.test(css), 'VS AI gua
 assert.ok(!tutorialBundle.includes("window.addEventListener('beforeunload'"), 'Tutorial must not install active-match unload warning');
 assert.ok(!tutorialBundle.includes('GL_VS_ACTIVE_MATCH_NAV_GUARD'), 'Tutorial must preserve current navigation lifecycle');
 
-assert.strictEqual(require('../package.json').version, '6.17.0');
-assert.strictEqual(require('../tutorial/package.json').version, '0.45.0');
+assert.strictEqual(require('../package.json').version, '6.18.0');
+assert.strictEqual(require('../tutorial/package.json').version, '0.46.0');
 console.log('PASS VS AI v6.11 + Tutorial v0.42: generic follow-ups, retained audio lifecycle, VS-only unload/overscroll protection, and pending-state safety.');

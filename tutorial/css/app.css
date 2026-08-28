@@ -5365,7 +5365,7 @@ body.deck-setup-active{
   .v96-app .main-stage{grid-template-rows:24px 48px auto 6px auto 134px!important}
   .v96-app .hand-area--player .handPanel{
     overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;-ms-overflow-style:none!important;
-    overscroll-behavior-x:contain!important;touch-action:pan-x!important
+    overscroll-behavior-x:contain!important;touch-action:pan-x pan-y!important
   }
   .v96-app .hand-area--player .handPanel::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
   .v96-app .hand-area--player .handCards{height:130px!important;padding:5px 5px 2px!important;align-items:flex-start!important}
@@ -5425,7 +5425,7 @@ body.deck-setup-active{
     -webkit-touch-callout:none!important;
     -webkit-user-select:none!important;
     user-select:none!important;
-    touch-action:pan-x!important;
+    touch-action:pan-x pan-y!important;
   }
   .v96-app .hand-card .hand-art img{
     pointer-events:none!important;

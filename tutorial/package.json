@@ -1,8 +1,8 @@
 {
   "name": "grandis-legacy-tutorial",
-  "version": "0.45.0",
+  "version": "0.46.0",
   "private": true,
-  "description": "Grandis Legacy Tutorial v0.45 — VS AI v6.17 gameplay hotfix parity with Source Stack v1.7.2, including Cover Up/Redirect response handling and one-shot attack direction indicator.",
+  "description": "Grandis Legacy Tutorial v0.46 — mobile vertical-scroll touch hotfix with VS AI v6.18 gameplay parity and Source Stack v1.7.2 authority.",
   "scripts": {
     "build:data": "node ../tools/build-static-data.cjs",
     "metadata": "node ../tools/update-release-metadata.cjs",

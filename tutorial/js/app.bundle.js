@@ -1,4 +1,4 @@
-/* Grandis Legacy shared gameplay application v3.1 — Tutorial v0.45 / VS AI v6.17.
+/* Grandis Legacy shared gameplay application v3.1 — Tutorial v0.46 / VS AI v6.18.
    One Source Authority v1.7.1 + Runtime Foundation v1.88 / Runtime Core v0.56 / Runtime Data v0.14.1.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
@@ -6,7 +6,7 @@
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
   var IS_TUTORIAL_APP=GL_APP_MODE==='TUTORIAL';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.14 · VS AI v6.17 Battlefield · One Source v1.7.2 · Runtime Data v0.14.1 · Foundation v1.88 · Core v0.56':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.45 GitHub Pages · VS AI v6.17 Base · Runtime Data v0.14.1 · Foundation v1.88 · Core v0.56':'Grandis Legacy VS AI v6.17 · Shared Gameplay Bundle v3.1 · One Source v1.7.2 · Runtime Data v0.14.1 · Foundation v1.88 · Core v0.56');
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.15 · VS AI v6.18 Battlefield · One Source v1.7.2 · Runtime Data v0.14.1 · Foundation v1.88 · Core v0.56':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.46 GitHub Pages · VS AI v6.18 Base · Runtime Data v0.14.1 · Foundation v1.88 · Core v0.56':'Grandis Legacy VS AI v6.18 · Shared Gameplay Bundle v3.1 · One Source v1.7.2 · Runtime Data v0.14.1 · Foundation v1.88 · Core v0.56');
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
