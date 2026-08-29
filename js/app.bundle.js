@@ -1,11 +1,11 @@
-/* Grandis Legacy shared gameplay application v3.1 — VS AI v6.19.
+/* Grandis Legacy shared gameplay application v3.1 — VS AI v6.20.
    One Source Authority v1.7.1 + Runtime Foundation v1.88 / Runtime Core v0.56 / Runtime Data v0.14.1.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
   'use strict';
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.16 · VS AI v6.19 Battlefield · One Source v1.7.2 · Runtime Data v0.14.1 · Foundation v1.88 · Core v0.56':'Grandis Legacy VS AI v6.19 · Shared Gameplay Bundle v3.1 · One Source v1.7.2 · Runtime Data v0.14.1 · Foundation v1.88 · Core v0.56';
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.17 · VS AI v6.20 Battlefield · One Source v1.7.2 · Runtime Data v0.14.1 · Foundation v1.88 · Core v0.56':'Grandis Legacy VS AI v6.20 · Shared Gameplay Bundle v3.1 · One Source v1.7.2 · Runtime Data v0.14.1 · Foundation v1.88 · Core v0.56';
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
@@ -398,7 +398,7 @@
     /* Only the opening-hand batch after the coin flip owns the whole-page
        mobile viewport lock. Tribute, Rank Up, mandatory draw, and effect draw
        animations preserve the current page position. */
-    var shouldLock=(!isMobileViewport())&&animationBusy()&&GL_PAGE_SCROLL_LOCK_REQUESTED;
+    var shouldLock=animationBusy()&&GL_PAGE_SCROLL_LOCK_REQUESTED;
     if(shouldLock===GL_ANIMATION_SCROLL_LOCKED) return;
     GL_ANIMATION_SCROLL_LOCKED=shouldLock;
     document.documentElement.classList.toggle('gl-animation-scroll-locked',shouldLock);
@@ -9178,7 +9178,10 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
   function bindVsMatchNavigationGuard(){
     if(GL_VS_MATCH_NAV_GUARD_BOUND||IS_PVP_APP||typeof window==='undefined'||typeof document==='undefined')return;GL_VS_MATCH_NAV_GUARD_BOUND=true;
     window.addEventListener('beforeunload',function(event){if(GL_RESULT_SILENT_RELOAD||!isActiveNormalVsMatch())return;event.preventDefault();event.returnValue='';return'';});
-    /* Mobile scroll is native. Pull-to-refresh containment is CSS-only; do not cancel one-finger touchmove. */
+    document.addEventListener('touchstart',function(event){var touch=event.touches&&event.touches[0];GL_VS_PULL_TOUCH_START_Y=touch?Number(touch.clientY):null;},{passive:true});
+    document.addEventListener('touchmove',function(event){if(!isActiveNormalVsMatch()||GL_VS_PULL_TOUCH_START_Y===null)return;var touch=event.touches&&event.touches[0];if(!touch)return;var scrollTop=Number(window.scrollY||document.documentElement&&document.documentElement.scrollTop||document.body&&document.body.scrollTop||0);if(scrollTop<=0&&Number(touch.clientY)>GL_VS_PULL_TOUCH_START_Y+4)event.preventDefault();},{passive:false});
+    document.addEventListener('touchend',function(){GL_VS_PULL_TOUCH_START_Y=null;},{passive:true});
+    document.addEventListener('touchcancel',function(){GL_VS_PULL_TOUCH_START_Y=null;},{passive:true});
     syncVsMatchNavigationGuardState();
   }
   window.GL_VS_ACTIVE_MATCH_NAV_GUARD={isActive:isActiveNormalVsMatch,sync:syncVsMatchNavigationGuardState};

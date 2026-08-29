@@ -5367,7 +5367,7 @@ body.deck-setup-active{
   .v96-app .main-stage{grid-template-rows:24px 48px auto 6px auto 134px!important}
   .v96-app .hand-area--player .handPanel{
     overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;-ms-overflow-style:none!important;
-    overscroll-behavior-x:contain!important;touch-action:auto!important
+    overscroll-behavior-x:contain!important;touch-action:pan-x!important
   }
   .v96-app .hand-area--player .handPanel::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
   .v96-app .hand-area--player .handCards{height:130px!important;padding:5px 5px 2px!important;align-items:flex-start!important}
@@ -5427,7 +5427,7 @@ body.deck-setup-active{
     -webkit-touch-callout:none!important;
     -webkit-user-select:none!important;
     user-select:none!important;
-    touch-action:auto!important;
+    touch-action:pan-x!important;
   }
   .v96-app .hand-card .hand-art img{
     pointer-events:none!important;
@@ -6220,16 +6220,3 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
 @media (max-width:700px){.gl-pending-attack-line{stroke-width:2.6}}
 @media (prefers-reduced-motion:reduce){.gl-pending-attack-line.is-looping,.gl-pending-attack-line.is-once{animation:none;stroke-dasharray:none;opacity:.9}}
 
-/* Mobile one-finger page-scroll fail-safe — v6.19/v0.47/v3.16.
-   Mobile never inherits the animation viewport lock; native browser gesture
-   arbitration owns vertical page scroll and horizontal Hand scroll. */
-@media(max-width:760px){
-  html,body{touch-action:auto!important;-webkit-overflow-scrolling:touch!important}
-  html.gl-animation-scroll-locked,body.gl-animation-scroll-locked{
-    overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior-y:auto!important;touch-action:auto!important
-  }
-  .v96-app,.v96-app .gl-app,.v96-app .main-stage{touch-action:auto!important}
-  .v96-app .hand-area--player .handPanel,
-  .v96-app .hand-card,
-  .v96-app .hand-card .hand-art{touch-action:auto!important}
-}

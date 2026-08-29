@@ -1,4 +1,4 @@
-# Grandis Legacy Tutorial v0.47
+# Grandis Legacy Tutorial v0.48
 
-- Mirrors VS AI v6.19 one-finger mobile page-scroll correction.
+- Mirrors VS AI v6.20 one-finger mobile page-scroll correction.
 - Tutorial guide/gameplay behavior otherwise unchanged.

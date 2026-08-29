@@ -20,10 +20,10 @@ const rootLock = {
   version: 'v2.50',
   schema_version: '2.50-consumer',
   policy: 'RUNTIME_FIRST_FAIL_CLOSED_SYNC',
-  application: 'VS AI v6.19',
+  application: 'VS AI v6.20',
   local_ai: 'v6.17',
-  tutorial: 'v0.47',
-  pvp_reference: 'v3.16',
+  tutorial: 'v0.48',
+  pvp_reference: 'v3.17',
   canonical_registry_hash: HASH,
   hero_component_registry_hash: HERO_HASH,
   one_source_authority: 'v1.7.2',
@@ -52,24 +52,24 @@ const rootLock = {
   },
   consumerAdoptionStatus: {
     currentApplicationsRebuiltInThisDelivery: true,
-    currentAI: 'VS AI v6.19',
-    currentPvP: 'PvP v3.16 one-finger-scroll consumer',
-    currentTutorial: 'Tutorial v0.47 GitHub Pages',
+    currentAI: 'VS AI v6.20',
+    currentPvP: 'PvP v3.17 mobile-scroll rollback consumer',
+    currentTutorial: 'Tutorial v0.48 GitHub Pages',
     revisedSeason1: 'ADOPTED',
     heroComponents: 'ADOPTED',
     pendingStateAudit: 'ADOPTED'
   },
   conditionalFollowUpFramework: 'GENERIC_POST_PRIMARY_SEPARATE_RESOLUTION',
   audioPlaybackPolicy: 'RETAIN_ACTIVE_CLONES_UNTIL_ENDED_OR_ERROR',
-  activeNormalMatchNavigationGuard: 'BEFOREUNLOAD_PLUS_CSS_OVERSCROLL_CONTAINMENT_NO_TOUCHMOVE_CANCEL'
+  activeNormalMatchNavigationGuard: 'BEFOREUNLOAD_PLUS_LEGACY_PULL_REFRESH_TOUCH_GUARD'
 };
 writeJSON('sync/runtime-sync-lock.v2.50.json', rootLock);
 
 const tutorialLock = {
-  version: 'v0.47',
-  tutorial: 'v0.47',
+  version: 'v0.48',
+  tutorial: 'v0.48',
   delivery: 'GitHub Pages',
-  base_vs_ai: 'v6.19',
+  base_vs_ai: 'v6.20',
   runtime_foundation: 'v1.88',
   runtime_core: 'v0.56',
   runtime_data: 'v0.14.1',
@@ -79,7 +79,7 @@ const tutorialLock = {
   canonical_registry_hash: HASH,
   hero_component_registry_hash: HERO_HASH,
   ui_design_lock: 'v2.49',
-  scope: 'Tutorial v0.47 on VS AI v6.19 shared gameplay/runtime authority; mobile one-finger page scrolling uses native browser gesture handling, including from the Hand area.',
+  scope: 'Tutorial v0.48 on VS AI v6.20 shared gameplay/runtime authority; mobile touch and page scrolling restore the known-good pre-regression behavior.',
   app_bundle_sha256: sha('tutorial/js/app.bundle.js'),
   tutorial_guide_sha256: sha('tutorial/js/tutorial-guide.js'),
   tutorial_css_sha256: sha('tutorial/css/tutorial-guide.css'),
@@ -90,7 +90,7 @@ const tutorialLock = {
     card_sound: { path: 'assets/audio/Card Sound.mp3', sha256: sha('tutorial/assets/audio/Card Sound.mp3') }
   }
 };
-writeJSON('tutorial/sync/tutorial-github-lock.v0.47.json', tutorialLock);
+writeJSON('tutorial/sync/tutorial-github-lock.v0.48.json', tutorialLock);
 
 const obsoleteRootLock = path.join(ROOT, 'sync/runtime-sync-lock.v2.44.json');
 if (fs.existsSync(obsoleteRootLock)) fs.unlinkSync(obsoleteRootLock);
@@ -107,5 +107,7 @@ if (fs.existsSync(previousTutorialLock)) fs.unlinkSync(previousTutorialLock);
 
 const supersededMobileScrollTutorialLock = path.join(ROOT, 'tutorial/sync/tutorial-github-lock.v0.46.json');
 if (fs.existsSync(supersededMobileScrollTutorialLock)) fs.unlinkSync(supersededMobileScrollTutorialLock);
+const supersededOneFingerTutorialLock = path.join(ROOT, 'tutorial/sync/tutorial-github-lock.v0.47.json');
+if (fs.existsSync(supersededOneFingerTutorialLock)) fs.unlinkSync(supersededOneFingerTutorialLock);
 
-console.log('PASS: VS AI v6.19 and Tutorial v0.47 release locks updated.');
+console.log('PASS: VS AI v6.20 and Tutorial v0.48 release locks updated.');

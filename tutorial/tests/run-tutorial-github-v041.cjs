@@ -7,7 +7,7 @@ const read=r=>fs.readFileSync(path.join(root,r),'utf8');
 const sha=r=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,r))).digest('hex');
 const index=read('index.html'),app=read('js/app.bundle.js'),guide=read('js/tutorial-guide.js'),css=read('css/tutorial-guide.css'),appCss=read('css/app.css'),policy=read('runtime-source/runtime/core/response-availability-policy.js');
 
-must(index.includes('gl-tutorial-0.47'),'v0.43 cache revision missing');
+must(index.includes('gl-tutorial-0.48'),'v0.43 cache revision missing');
 must(index.includes('Non-Scripted Tutorial Gameplay'),'GitHub tutorial title missing');
 must(fs.existsSync(path.join(root,'..','.nojekyll')),'combined GitHub Pages root marker missing');
 const ctx=loadLocalAI(root,'TUTORIAL');
@@ -15,7 +15,7 @@ vm.runInContext(guide,ctx,{filename:'js/tutorial-guide.js'});
 const bridge=ctx.GL_TUTORIAL_BRIDGE,qa=ctx.GL_TUTORIAL_GUIDE_QA;
 must(bridge&&bridge.version==='tutorial-bridge-v0.40','bridge version mismatch');
 must(qa&&qa.version==='0.31','guide QA version mismatch');
-must(app.includes('Grandis Legacy Tutorial v0.47 GitHub Pages')&&app.includes('VS AI v6.19 Base'),'app marker mismatch');
+must(app.includes('Grandis Legacy Tutorial v0.48 GitHub Pages')&&app.includes('VS AI v6.20 Base'),'app marker mismatch');
 must(app.includes("NON-SCRIPTED — TUTORIAL GAMEPLAY"),'tutorial lobby heading missing');
 
 // Shared response wording and Mage setup-follow-up locks.
@@ -92,7 +92,7 @@ must(appCss.includes('@media(max-width:1450px)')&&!appCss.includes('Desktop adap
 must(appCss.includes('PLAY / TRIBUTE: 18px desktop, 16px mobile'),'Tutorial Hand action resolution lock missing');
 for(const name of ['NotoSans-Variable.woff2','NotoSans-Italic-Variable.woff2'])must(fs.existsSync(path.join(root,'assets/fonts/noto-sans',name)),name+' missing');
 must(appCss.includes('../assets/fonts/noto-sans/NotoSans-Variable.woff2'),'Noto Sans path missing');
-must(css.includes('Grandis Legacy Tutorial Guide v0.47'),'tutorial CSS marker mismatch');
+must(css.includes('Grandis Legacy Tutorial Guide v0.48'),'tutorial CSS marker mismatch');
 
 for(const [name,expected] of Object.entries({
   'Coin Flip.mp3':'b4842f9a3f2d25004223313f5473bef74afd79915b6af9bdb35c70f6df8c2b50',
@@ -104,8 +104,8 @@ for(const [name,expected] of Object.entries({
 }
 must(!/freesound_community-(?:coin-flip-37787|flipcard-91468)/.test(app),'stale audio route remains');
 
-const lock=JSON.parse(read('sync/tutorial-github-lock.v0.47.json'));
-must(lock.tutorial==='v0.47'&&lock.base_vs_ai==='v6.19'&&lock.delivery==='GitHub Pages','tutorial lock version mismatch');
+const lock=JSON.parse(read('sync/tutorial-github-lock.v0.48.json'));
+must(lock.tutorial==='v0.48'&&lock.base_vs_ai==='v6.20'&&lock.delivery==='GitHub Pages','tutorial lock version mismatch');
 for(const [rel,key] of [['js/app.bundle.js','app_bundle_sha256'],['js/tutorial-guide.js','tutorial_guide_sha256'],['css/tutorial-guide.css','tutorial_css_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['js/static-data.js','static_data_sha256']])must(sha(rel)===lock[key],rel+' lock mismatch');
 
-console.log('PASS Grandis Legacy Tutorial v0.47 GitHub Pages: VS AI v6.11 presentation parity with tutorial-only lesson flow preserved.');
+console.log('PASS Grandis Legacy Tutorial v0.48 GitHub Pages: VS AI v6.11 presentation parity with tutorial-only lesson flow preserved.');

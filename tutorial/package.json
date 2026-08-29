@@ -1,8 +1,8 @@
 {
   "name": "grandis-legacy-tutorial",
-  "version": "0.47.0",
+  "version": "0.48.0",
   "private": true,
-  "description": "Grandis Legacy Tutorial v0.47 \u2014 mobile one-finger page-scroll hotfix with VS AI v6.19 parity and Source Stack v1.7.2 authority.",
+  "description": "Grandis Legacy Tutorial v0.48 \u2014 restore known-good mobile touch/scroll behavior with VS AI v6.20 parity and Source Stack v1.7.2 authority.",
   "scripts": {
     "build:data": "node ../tools/build-static-data.cjs",
     "metadata": "node ../tools/update-release-metadata.cjs",

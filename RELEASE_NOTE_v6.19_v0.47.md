@@ -1,4 +1,4 @@
-# Grandis Legacy VS AI v6.19 / Tutorial v0.47
+# Grandis Legacy VS AI v6.20 / Tutorial v0.48
 
 Mobile one-finger scroll correction, 2026-08-29.
 

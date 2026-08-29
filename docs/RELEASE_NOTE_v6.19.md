@@ -1,4 +1,4 @@
-# Grandis Legacy VS AI v6.19
+# Grandis Legacy VS AI v6.20
 
 - Mobile one-finger page scroll fail-safe.
 - Mobile animation scroll lock disabled; native gesture routing restored.

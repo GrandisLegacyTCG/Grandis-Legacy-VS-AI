@@ -12,6 +12,6 @@ for(const rel of ['js/app.bundle.js','tutorial/js/app.bundle.js']){
 }
 const main=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
 assert(!/document\.addEventListener\('touchmove',[^\n]*preventDefault/.test(main),'VS AI still has a non-passive document touchmove cancellation path');
-assert(fs.readFileSync(path.join(root,'index.html'),'utf8').includes('gl-vs-ai-6.19'),'VS AI cache-bust revision missing');
-assert(fs.readFileSync(path.join(root,'tutorial/index.html'),'utf8').includes('gl-tutorial-0.47'),'Tutorial cache-bust revision missing');
-console.log('PASS VS AI v6.19 / Tutorial v0.47 mobile one-finger scroll fail-safe and native touch routing.');
+assert(fs.readFileSync(path.join(root,'index.html'),'utf8').includes('gl-vs-ai-6.20'),'VS AI cache-bust revision missing');
+assert(fs.readFileSync(path.join(root,'tutorial/index.html'),'utf8').includes('gl-tutorial-0.48'),'Tutorial cache-bust revision missing');
+console.log('PASS VS AI v6.20 / Tutorial v0.48 mobile one-finger scroll fail-safe and native touch routing.');

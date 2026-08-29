@@ -1,4 +1,4 @@
-# Grandis Legacy VS AI v6.19 + Tutorial v0.47
+# Grandis Legacy VS AI v6.20 + Tutorial v0.48
 
 Production-ready GitHub Pages package for local VS AI and the non-scripted tutorial.
 
