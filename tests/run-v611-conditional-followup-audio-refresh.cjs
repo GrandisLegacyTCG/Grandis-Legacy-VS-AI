@@ -40,14 +40,13 @@ const vsBundle = fs.readFileSync(path.join(root, 'js/app.bundle.js'), 'utf8');
 const tutorialBundle = fs.readFileSync(path.join(root, 'tutorial/js/app.bundle.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'css/app.css'), 'utf8');
 assert.ok(vsBundle.includes("window.addEventListener('beforeunload'"), 'VS AI beforeunload guard missing');
-assert.ok(vsBundle.includes("document.addEventListener('touchmove'"), 'VS AI pull-to-refresh touch guard missing');
-assert.ok(vsBundle.includes('{passive:false}'), 'VS AI pull-to-refresh listener must be cancelable');
+assert.ok(!vsBundle.includes("document.addEventListener('touchmove'"), 'VS AI must not cancel one-finger touchmove at document level');
 assert.ok(vsBundle.includes('isActiveNormalVsMatch'), 'VS AI active-match lifecycle gate missing');
 assert.ok(css.includes('overscroll-behavior-y:contain'), 'VS AI overscroll CSS guard missing');
 assert.ok(!/gl-active-vs-match[^}]*overflow\s*:\s*hidden/i.test(css), 'VS AI guard disables normal vertical scroll');
 assert.ok(!tutorialBundle.includes("window.addEventListener('beforeunload'"), 'Tutorial must not install active-match unload warning');
 assert.ok(!tutorialBundle.includes('GL_VS_ACTIVE_MATCH_NAV_GUARD'), 'Tutorial must preserve current navigation lifecycle');
 
-assert.strictEqual(require('../package.json').version, '6.18.0');
-assert.strictEqual(require('../tutorial/package.json').version, '0.46.0');
+assert.strictEqual(require('../package.json').version, '6.19.0');
+assert.strictEqual(require('../tutorial/package.json').version, '0.47.0');
 console.log('PASS VS AI v6.11 + Tutorial v0.42: generic follow-ups, retained audio lifecycle, VS-only unload/overscroll protection, and pending-state safety.');

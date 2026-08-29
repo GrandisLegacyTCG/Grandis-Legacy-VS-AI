@@ -17,6 +17,6 @@ for(const [appRoot,mode] of [[root,undefined],[path.join(root,'tutorial'),'TUTOR
   assert.ok(app.includes('glPendingAttackDirectionLayer')&&app.includes('pendingAttackDirectionShouldLoop'),'direction indicator runtime missing');
   assert.ok(css.includes('.gl-pending-attack-direction-layer')&&css.includes('glPendingAttackDirectionOnce'),'one-shot direction indicator CSS missing');
 }
-assert.strictEqual(require('../package.json').version,'6.18.0');
-assert.strictEqual(require('../tutorial/package.json').version,'0.46.0');
-console.log('PASS VS AI v6.18 / Tutorial v0.46 Cover Up redirect, post-validation Mana, fresh Defense, and one-shot direction indicator.');
+assert.strictEqual(require('../package.json').version,'6.19.0');
+assert.strictEqual(require('../tutorial/package.json').version,'0.47.0');
+console.log('PASS VS AI v6.19 / Tutorial v0.47 Cover Up redirect, post-validation Mana, fresh Defense, and one-shot direction indicator.');

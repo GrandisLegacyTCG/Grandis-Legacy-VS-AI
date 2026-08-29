@@ -2,10 +2,10 @@
   "version": "v2.50",
   "schema_version": "2.50-consumer",
   "policy": "RUNTIME_FIRST_FAIL_CLOSED_SYNC",
-  "application": "VS AI v6.18",
+  "application": "VS AI v6.19",
   "local_ai": "v6.17",
-  "tutorial": "v0.46",
-  "pvp_reference": "v3.15",
+  "tutorial": "v0.47",
+  "pvp_reference": "v3.16",
   "canonical_registry_hash": "8ee6bb98c22dc66ee72f49fa88b4f7fd05fce1c96a2932e28a1a8667c9d3932e",
   "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
   "one_source_authority": "v1.7.2",
@@ -22,11 +22,11 @@
   "conditional_follow_up_schema": "v1.0.0",
   "starter60": "v1.3",
   "ui_design_lock": "v2.49",
-  "shared_gameplay_sha256": "8da44f1b9925a40f9b287eca9f2135f8104da19b4a4e3467a6d5c1e986bfc8d7",
+  "shared_gameplay_sha256": "814c29a98d4e6da8594147bd804d506a5415afcdd961d80c64aa7c28d3337aaf",
   "runtime_authority_sha256": "78835f86a4a7e670178fd7721a8db078804204d6a358c4e4a45f57eef5b26ea8",
   "runtime_source_browser_sha256": "78835f86a4a7e670178fd7721a8db078804204d6a358c4e4a45f57eef5b26ea8",
   "static_data_sha256": "062b3c1ad15d193cdc1113951c513c68cabc74cc3a4ad557c5e38c8770dd4b19",
-  "shared_ui_css_sha256": "d931b6123aa1499d8f5d285f632ec896ce8c7879b569ac7e14e8fc75c15986d3",
+  "shared_ui_css_sha256": "256259d63375906e5d677d429b74e446e894b62eb82df2da1a276a23ea73060c",
   "mobile_app_nav_sha256": "5be991d8083c56f744f4499eb0f86031968d178dc55f5aacf8bcfcea3f6586d6",
   "audio_assets": {
     "coin_flip": {
@@ -40,14 +40,14 @@
   },
   "consumerAdoptionStatus": {
     "currentApplicationsRebuiltInThisDelivery": true,
-    "currentAI": "VS AI v6.18",
-    "currentPvP": "PvP v3.15 mobile-scroll consumer",
-    "currentTutorial": "Tutorial v0.46 GitHub Pages",
+    "currentAI": "VS AI v6.19",
+    "currentPvP": "PvP v3.16 one-finger-scroll consumer",
+    "currentTutorial": "Tutorial v0.47 GitHub Pages",
     "revisedSeason1": "ADOPTED",
     "heroComponents": "ADOPTED",
     "pendingStateAudit": "ADOPTED"
   },
   "conditionalFollowUpFramework": "GENERIC_POST_PRIMARY_SEPARATE_RESOLUTION",
   "audioPlaybackPolicy": "RETAIN_ACTIVE_CLONES_UNTIL_ENDED_OR_ERROR",
-  "activeNormalMatchNavigationGuard": "BEFOREUNLOAD_AND_TOP_EDGE_PULL_TO_REFRESH_ONLY"
+  "activeNormalMatchNavigationGuard": "BEFOREUNLOAD_PLUS_CSS_OVERSCROLL_CONTAINMENT_NO_TOUCHMOVE_CANCEL"
 }
