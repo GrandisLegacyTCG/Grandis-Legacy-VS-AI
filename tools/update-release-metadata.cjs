@@ -20,10 +20,10 @@ const rootLock = {
   version: 'v2.51',
   schema_version: '2.51-consumer',
   policy: 'RUNTIME_FIRST_FAIL_CLOSED_SYNC',
-  application: 'VS AI v6.22',
-  local_ai: 'v6.22',
-  tutorial: 'v0.50',
-  pvp_reference: 'v3.19',
+  application: 'VS AI v6.23',
+  local_ai: 'v6.23',
+  tutorial: 'v0.51',
+  pvp_reference: 'v3.20',
   canonical_registry_hash: HASH,
   hero_component_registry_hash: HERO_HASH,
   one_source_authority: 'v1.7.3',
@@ -38,7 +38,7 @@ const rootLock = {
   shared_runtime_manual: 'v1.45',
   source_stack_bundle: 'v1.7.3',
   conditional_follow_up_schema: 'v1.0.0',
-  starter60: 'v1.3',
+  starter60: 'v1.4',
   ui_design_lock: 'v2.49',
   shared_gameplay_sha256: sha('js/app.bundle.js'),
   runtime_authority_sha256: sha('js/runtime-authority.js'),
@@ -52,9 +52,9 @@ const rootLock = {
   },
   consumerAdoptionStatus: {
     currentApplicationsRebuiltInThisDelivery: true,
-    currentAI: 'VS AI v6.22',
-    currentPvP: 'PvP v3.19 redirect-response consumer',
-    currentTutorial: 'Tutorial v0.50 GitHub Pages',
+    currentAI: 'VS AI v6.23',
+    currentPvP: 'PvP v3.20 redirect-response consumer',
+    currentTutorial: 'Tutorial v0.51 GitHub Pages',
     revisedSeason1: 'ADOPTED',
     heroComponents: 'ADOPTED',
     pendingStateAudit: 'ADOPTED'
@@ -67,9 +67,9 @@ writeJSON('sync/runtime-sync-lock.v2.51.json', rootLock);
 
 const tutorialLock = {
   version: 'v0.50',
-  tutorial: 'v0.50',
+  tutorial: 'v0.51',
   delivery: 'GitHub Pages',
-  base_vs_ai: 'v6.22',
+  base_vs_ai: 'v6.23',
   runtime_foundation: 'v1.89',
   runtime_core: 'v0.57',
   runtime_data: 'v0.14.2',
@@ -79,7 +79,7 @@ const tutorialLock = {
   canonical_registry_hash: HASH,
   hero_component_registry_hash: HERO_HASH,
   ui_design_lock: 'v2.49',
-  scope: 'Tutorial v0.50 on VS AI v6.22 shared gameplay/runtime authority; tutorial-only guidance and mobile behavior retained.',
+  scope: 'Tutorial v0.51 on VS AI v6.23 shared gameplay/runtime authority; native mobile document scrolling restored while tutorial-only guidance and current gameplay remain intact.',
   app_bundle_sha256: sha('tutorial/js/app.bundle.js'),
   tutorial_guide_sha256: sha('tutorial/js/tutorial-guide.js'),
   tutorial_css_sha256: sha('tutorial/css/tutorial-guide.css'),
@@ -90,7 +90,7 @@ const tutorialLock = {
     card_sound: { path: 'assets/audio/Card Sound.mp3', sha256: sha('tutorial/assets/audio/Card Sound.mp3') }
   }
 };
-writeJSON('tutorial/sync/tutorial-github-lock.v0.50.json', tutorialLock);
+writeJSON('tutorial/sync/tutorial-github-lock.v0.51.json', tutorialLock);
 
 const obsoleteRootLock = path.join(ROOT, 'sync/runtime-sync-lock.v2.44.json');
 if (fs.existsSync(obsoleteRootLock)) fs.unlinkSync(obsoleteRootLock);
@@ -105,4 +105,4 @@ if (fs.existsSync(priorTutorialLock)) fs.unlinkSync(priorTutorialLock);
 const previousTutorialLock = path.join(ROOT, 'tutorial/sync/tutorial-github-lock.v0.42.json');
 if (fs.existsSync(previousTutorialLock)) fs.unlinkSync(previousTutorialLock);
 
-console.log('PASS: VS AI v6.22 and Tutorial v0.50 release locks updated.');
+console.log('PASS: VS AI v6.23 and Tutorial v0.51 release locks updated.');

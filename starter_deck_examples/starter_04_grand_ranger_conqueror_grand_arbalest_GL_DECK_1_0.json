@@ -445,7 +445,7 @@
     "RIGHT": "S1-ARC-H004"
   },
   "source_database_version": "One Source Authority v1.7.3 · registry 5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c",
-  "builder_version_note": "Normalized for Grandis Legacy VS AI v6.11 / PvP v3.09 while preserving the approved deck contents, Legacy packages, and default Formation.",
+  "builder_version_note": "Starter60 v1.4 propagation; approved Starter 3–5 composition preserved from the previous current-base preset.",
   "display_name": "Starter 4 — Grand Ranger / Conqueror / Grand Arbalest",
   "preset_id": "starter_04_grand_ranger_conqueror_grand_arbalest",
   "main_deck_expanded": [

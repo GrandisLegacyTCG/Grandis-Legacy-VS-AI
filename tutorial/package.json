@@ -1,6 +1,6 @@
 {
   "name": "grandis-legacy-tutorial",
-  "version": "0.50.0",
+  "version": "0.51.0",
   "private": true,
   "description": "Grandis Legacy Tutorial v0.50 — VS AI v6.22 gameplay parity, Source Stack v1.7.3 Hero HP, and clean one-finger mobile scrolling.",
   "scripts": {

@@ -31,6 +31,6 @@ for(const appRoot of [root,path.join(root,'tutorial')]){
     /S1-THF-021[^\n]{0,220}amount\s*:\s*(50|60)/
   ]) assert.ok(!stale.test(bundle),`${appRoot}: stale numeric Defense override pattern remains`);
 }
-assert.strictEqual(require('../package.json').version,'6.22.0');
-assert.strictEqual(require('../tutorial/package.json').version,'0.50.0');
-console.log('PASS VS AI v6.22 / Tutorial v0.50 canonical Defense authority: 17 executable rows, Mana Shield Block 60, no numeric app overrides.');
+assert.strictEqual(require('../package.json').version,'6.23.0');
+assert.strictEqual(require('../tutorial/package.json').version,'0.51.0');
+console.log('PASS VS AI v6.23 / Tutorial v0.51 canonical Defense authority: 17 executable rows, Mana Shield Block 60, no numeric app overrides.');

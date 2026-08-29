@@ -41,7 +41,7 @@ assert.ok(/Printed artwork is the only visible card frame[\s\S]*?hero-card\.hero
 assert.ok(fs.existsSync(path.join(root,'assets/audio/Coin Flip.mp3')),'coin audio');
 assert.ok(fs.existsSync(path.join(root,'assets/audio/Card Sound.mp3')),'card motion audio');
 assert.ok(fs.existsSync(path.join(root,'runtime-source/runtime/core/reducer.js')),'editable runtime source');
-const lock=json('sync/runtime-sync-lock.v2.51.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.hero_component_registry_hash,HH);assert.strictEqual(lock.application_runtime_sync,'v2.51');assert.strictEqual(lock.local_ai,'v6.22');
+const lock=json('sync/runtime-sync-lock.v2.51.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.hero_component_registry_hash,HH);assert.strictEqual(lock.application_runtime_sync,'v2.51');assert.strictEqual(lock.local_ai,'v6.23');
 assert.strictEqual(lock.audio_assets.coin_flip.sha256,sha('assets/audio/Coin Flip.mp3'));
 assert.strictEqual(lock.audio_assets.card_sound.sha256,sha('assets/audio/Card Sound.mp3'));
 for(const [rel,key] of [['js/app.bundle.js','shared_gameplay_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['runtime-source/runtime/browser/runtime-authority.browser.js','runtime_source_browser_sha256'],['js/static-data.js','static_data_sha256'],['css/app.css','shared_ui_css_sha256']])assert.strictEqual(sha(rel),lock[key],rel+' sync hash');
@@ -59,4 +59,4 @@ assert.ok(/responseDisplayItemsFor/.test(app)&&/data-response-reason/.test(app)&
 assert.ok(!fs.existsSync(path.join(root,'deck-builder'))&&app.includes('https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/'),'dedicated external Deck Builder navigation');
 assert.ok(fs.existsSync(path.join(root,'tutorial/index.html'))&&app.includes('<nav class="ai-lobby-actions"><a id="aiLobbyTutorialButton" class="ai-lobby-btn ai-lobby-btn--outline" href="tutorial/">TUTORIAL</a><a id="aiLobbyDeckBuilderButton" class="ai-lobby-btn ai-lobby-btn--outline"'),'Tutorial application and equal-size secondary navigation');
 
-console.log('PASS VS AI v6.22 release audit: Source Stack 2026-08-24, Hero Components, runtime locks, and preserved UI contracts.');
+console.log('PASS VS AI v6.23 release audit: Source Stack 2026-08-24, Hero Components, runtime locks, and preserved UI contracts.');
