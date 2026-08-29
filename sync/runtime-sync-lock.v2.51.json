@@ -22,11 +22,11 @@
   "conditional_follow_up_schema": "v1.0.0",
   "starter60": "v1.4",
   "ui_design_lock": "v2.49",
-  "shared_gameplay_sha256": "797e35582a446eff1f4961225bb26f1e20e8724aa22c3351a52b9f7cada6fbc1",
+  "shared_gameplay_sha256": "5b1b9684d62f2f67a48868717d11655ccc58d4f00b8f4667f549ce7bf08fb848",
   "runtime_authority_sha256": "adff82023e39ef2f3580d5841fcc9ab0d0b729c84e13a1df2d20e73412a1deea",
   "runtime_source_browser_sha256": "adff82023e39ef2f3580d5841fcc9ab0d0b729c84e13a1df2d20e73412a1deea",
   "static_data_sha256": "6a2b554c9bb638338ce0902c73d2a56094737dc90174d7e09d8577f7f5672225",
-  "shared_ui_css_sha256": "f3c524d684c1acdcbcb0484dd6924ad383d497b649fbf388e13adec1af70dc6f",
+  "shared_ui_css_sha256": "909fdd5e05802f36679f9e355c10e9b80765d4641d7093128f34bfbd621af870",
   "mobile_app_nav_sha256": "5be991d8083c56f744f4499eb0f86031968d178dc55f5aacf8bcfcea3f6586d6",
   "audio_assets": {
     "coin_flip": {

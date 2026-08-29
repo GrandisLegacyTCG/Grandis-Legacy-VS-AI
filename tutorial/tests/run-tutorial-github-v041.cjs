@@ -7,7 +7,7 @@ const read=r=>fs.readFileSync(path.join(root,r),'utf8');
 const sha=r=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,r))).digest('hex');
 const index=read('index.html'),app=read('js/app.bundle.js'),guide=read('js/tutorial-guide.js'),css=read('css/tutorial-guide.css'),appCss=read('css/app.css'),policy=read('runtime-source/runtime/core/response-availability-policy.js');
 
-must(index.includes('gl-tutorial-0.50'),'v0.43 cache revision missing');
+must(index.includes('gl-tutorial-0.51-mobile-hf1'),'v0.43 cache revision missing');
 must(index.includes('Non-Scripted Tutorial Gameplay'),'GitHub tutorial title missing');
 must(fs.existsSync(path.join(root,'..','.nojekyll')),'combined GitHub Pages root marker missing');
 const ctx=loadLocalAI(root,'TUTORIAL');

@@ -625,6 +625,23 @@
          coin flip. Mid-match draws preserve the current Hero/action context. */
       if(movePage){
         try{hand.scrollIntoView({behavior:options.smooth?'smooth':'auto',block:'end',inline:'nearest'});}catch(e){try{var pageScroller=mobileGameplayScroller();var pageBottom=Math.max(0,Number(pageScroller&&pageScroller.scrollHeight||0)-Number(typeof window!=='undefined'&&window.innerHeight||pageScroller&&pageScroller.clientHeight||0));if(typeof window!=='undefined'&&typeof window.scrollTo==='function')window.scrollTo(0,pageBottom);else if(pageScroller)pageScroller.scrollTop=pageBottom;}catch(ignore){}}
+        /* The mobile Phase Tracker is sticky at the viewport bottom. Keep the
+           player Hand (especially a newly drawn card) fully above it. */
+        try{
+          var phase=document.querySelector('.v96-app .phase-panel');
+          if(phase&&typeof phase.getBoundingClientRect==='function'&&typeof hand.getBoundingClientRect==='function'){
+            var phaseRect=phase.getBoundingClientRect(),handRect=hand.getBoundingClientRect();
+            var viewportH=Number(typeof window!=='undefined'&&window.innerHeight||document.documentElement&&document.documentElement.clientHeight||0);
+            if(viewportH>0&&phaseRect.top<viewportH&&phaseRect.bottom>0){
+              var visibleBottom=Math.max(0,phaseRect.top-10);
+              var overlap=Math.ceil(handRect.bottom-visibleBottom);
+              if(overlap>0){
+                if(typeof window!=='undefined'&&typeof window.scrollBy==='function')window.scrollBy(0,overlap);
+                else {var pageRoot=mobileGameplayScroller();if(pageRoot)pageRoot.scrollTop=Number(pageRoot.scrollTop||0)+overlap;}
+              }
+            }
+          }
+        }catch(ignorePhaseClearance){}
       }
       var left=Math.max(0,hand.scrollWidth-hand.clientWidth);
       if(hasTarget){
@@ -684,7 +701,8 @@
       }
       if(latest&&isMobileViewport()){
         var openingGroup=group.some(function(e){return e&&e.reason==='OPENING_HAND';});
-        focusMobilePlayerHand({targetIndex:Number(latest.hand_index),ensureVisible:openingGroup});
+        var drawPhaseGroup=group.some(function(e){return e&&e.side==='PLAYER'&&e.reason==='MANDATORY_DRAW_PHASE';});
+        focusMobilePlayerHand({targetIndex:Number(latest.hand_index),ensureVisible:(openingGroup||drawPhaseGroup)});
         nextVisualFrame(function(){nextVisualFrame(animateVisibleTarget);});
       }else animateVisibleTarget();
     }

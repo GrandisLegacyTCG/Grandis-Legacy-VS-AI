@@ -6240,7 +6240,7 @@ body.deck-setup-active{
     touch-action:pan-x pan-y!important;
   }
   html.gl-mobile-game-scroll-active #app::after{
-    content:"";display:block;width:1px;height:calc(64px + env(safe-area-inset-bottom,0px));pointer-events:none;
+    content:"";display:block;width:1px;height:max(2px,env(safe-area-inset-bottom,0px));pointer-events:none;
   }
   html.gl-mobile-game-scroll-active #app>.v96-app,
   html.gl-mobile-game-scroll-active #app>.v96-app>.gl-app,

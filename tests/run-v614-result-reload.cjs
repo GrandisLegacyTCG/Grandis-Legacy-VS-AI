@@ -8,6 +8,6 @@ assert(app.includes('var GL_RESULT_SILENT_RELOAD=false;'),'silent result reload 
 assert(/function returnToLobbyAfterGameResult\(\)\{[\s\S]{0,500}GL_RESULT_SILENT_RELOAD=true;[\s\S]{0,300}matchStarted=false;[\s\S]{0,300}window\.location\.reload\(\);/.test(app),'Game Result return must use silent same-page reload');
 assert(app.includes("if(GL_RESULT_SILENT_RELOAD||!isActiveNormalVsMatch())return;"),'beforeunload must bypass intentional finished-match reload');
 assert(/setTimeout\(function\(\)\{[\s\S]{0,250}returnToLobbyAfterGameResult\(\)/.test(app),'60-second automatic cleanup must use the same reload path');
-assert(index.includes('js/app.bundle.js?v=gl-vs-ai-6.22'),'v6.14 app bundle cache revision missing');
+assert(index.includes('js/app.bundle.js?v=gl-vs-ai-6.23-mobile-hf1'),'v6.14 app bundle cache revision missing');
 assert(!/function returnToLobbyAfterGameResult\(\)\{[\s\S]{0,500}renderStartupDeckSetup\(\)/.test(app),'old in-place lobby rebuild must not remain in Game Result return routine');
 console.log('PASS VS AI v6.23 Game Result Back to Lobby + 60-second auto-return silent reload');

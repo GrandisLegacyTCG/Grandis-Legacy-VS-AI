@@ -13,7 +13,7 @@
   "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
   "ui_design_lock": "v2.49",
   "scope": "Tutorial v0.51 on VS AI v6.23 shared gameplay/runtime authority; native mobile document scrolling restored while tutorial-only guidance and current gameplay remain intact.",
-  "app_bundle_sha256": "ec88518c45df60de40d288f23185dddf928d11c18cf9521318aa0af2e1bd67c8",
+  "app_bundle_sha256": "775be9f952b082ca6197f3831b9fb59b3df75130aee4898207eef6a41e071ad6",
   "tutorial_guide_sha256": "2def4107da88409bc00ee4b9284f4e2f0cedb9590be5df9d253414445ad6ed05",
   "tutorial_css_sha256": "a8655003a9beb256d453f7948df9a2f1dc9825a541632eac1c350e6fc7f70e19",
   "runtime_authority_sha256": "adff82023e39ef2f3580d5841fcc9ab0d0b729c84e13a1df2d20e73412a1deea",
