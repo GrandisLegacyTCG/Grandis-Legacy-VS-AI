@@ -5140,8 +5140,6 @@ body.deck-setup-active{
 
   /* Preserve the approved footer order while allowing the final row to be
      scrolled fully above the Android/browser navigation area. */
-  html,body{overflow-y:auto!important}
-  .v96-app .gl-app{padding-bottom:calc(42px + env(safe-area-inset-bottom,0px))!important}
 }
 
 /* ========================================================================== */
@@ -5161,8 +5159,6 @@ body.deck-setup-active{
 }
 
 @media(max-width:760px){
-  /* Remove the artificial trailing space below Player / Full Battle Log. */
-  .v96-app .gl-app{padding-bottom:0!important;margin-bottom:0!important}
   .v96-app .mobile-player-footer{margin-bottom:0!important;padding-bottom:0!important}
   .v96-app .mobile-player-footer+.card-played-panel{margin-top:0!important}
 
@@ -5367,7 +5363,7 @@ body.deck-setup-active{
   .v96-app .main-stage{grid-template-rows:24px 48px auto 6px auto 134px!important}
   .v96-app .hand-area--player .handPanel{
     overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;-ms-overflow-style:none!important;
-    overscroll-behavior-x:contain!important;touch-action:pan-x!important
+    overscroll-behavior-x:contain!important;touch-action:pan-x pan-y!important
   }
   .v96-app .hand-area--player .handPanel::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
   .v96-app .hand-area--player .handCards{height:130px!important;padding:5px 5px 2px!important;align-items:flex-start!important}
@@ -5427,7 +5423,7 @@ body.deck-setup-active{
     -webkit-touch-callout:none!important;
     -webkit-user-select:none!important;
     user-select:none!important;
-    touch-action:pan-x!important;
+    touch-action:pan-x pan-y!important;
   }
   .v96-app .hand-card .hand-art img{
     pointer-events:none!important;
@@ -6209,7 +6205,7 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
 @media(max-width:760px){.gl-mobile-app-menu-button{display:flex}}
 
 
-/* Pending Attack Direction Indicator — v6.17/v0.45/v3.14 */
+/* Pending Attack Direction Indicator — v6.21/v0.49/v3.18 */
 .gl-pending-attack-direction-layer{position:fixed;inset:0;width:100%;height:100%;z-index:11840;pointer-events:none;overflow:visible;color:rgba(244,202,82,.84)}
 .gl-pending-attack-line{stroke:currentColor;stroke-width:2.2;stroke-linecap:round;fill:none;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 3px rgba(0,0,0,.72))}
 .gl-pending-attack-arrow{fill:currentColor}
@@ -6219,4 +6215,41 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
 @keyframes glPendingAttackDirectionOnce{0%{opacity:0;stroke-dashoffset:56}18%{opacity:.92}78%{opacity:.92}100%{opacity:0;stroke-dashoffset:0}}
 @media (max-width:700px){.gl-pending-attack-line{stroke-width:2.6}}
 @media (prefers-reduced-motion:reduce){.gl-pending-attack-line.is-looping,.gl-pending-attack-line.is-once{animation:none;stroke-dasharray:none;opacity:.9}}
+
+/* Grandis Legacy mobile native scroll contract — clean 2026-08-29 fix.
+   One-finger vertical page scrolling must remain native. Horizontal Hand
+   scrolling remains available. Whole-page animation locks are desktop-only. */
+@media (max-width:760px){
+  html,body{
+    width:100%!important;
+    height:auto!important;
+    min-height:100%!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    touch-action:auto!important;
+    -webkit-overflow-scrolling:touch;
+  }
+  html.gl-animation-scroll-locked,
+  body.gl-animation-scroll-locked{
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+    overscroll-behavior-y:contain!important;
+    touch-action:auto!important;
+  }
+  .v96-app,
+  .v96-app .gl-app,
+  .v96-app .main-stage{
+    height:auto!important;
+    overflow:visible!important;
+  }
+  .v96-app .gl-app{
+    min-height:100dvh!important;
+    padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))!important;
+  }
+  .v96-app .hand-area--player .handPanel,
+  .v96-app .hand-card,
+  .v96-app .hand-card .hand-art{
+    touch-action:pan-x pan-y!important;
+  }
+}
 

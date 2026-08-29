@@ -15,6 +15,6 @@ assert.strictEqual(result.noResponseWindow,true);
 assert.ok(bundle.includes('function presentEndPhaseGameOver(state)'), 'shared End Phase game-over presenter missing');
 assert.ok(bundle.includes("if(state.gameOver){presentEndPhaseGameOver(state);return;}"), 'AI End Phase game-over fast path missing');
 assert.ok(bundle.includes('if(!SUPPRESS_RENDER){render();showResult();}'), 'terminal render/result presentation missing');
-assert.strictEqual(require('../package.json').version,'6.20.0');
-assert.strictEqual(require('../tutorial/package.json').version,'0.48.0');
+assert.strictEqual(require('../package.json').version,'6.21.0');
+assert.strictEqual(require('../tutorial/package.json').version,'0.49.0');
 console.log('PASS VS AI v6.13 lethal Poison/status End Phase game-over lifecycle; Tutorial v0.42 unchanged.');

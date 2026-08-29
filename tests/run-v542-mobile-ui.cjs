@@ -19,7 +19,7 @@ for(const token of [
 if(!app.includes('mobileRacialResourceZone')||!app.includes('Racial-Token-Head.webp')||!app.includes('Racial-Token-Tail.webp'))throw new Error('Racial Tokens are not rendered by the mobile resource flow');
 if(!css.includes('mobile-racial-token-stack')||!css.includes('grid-template-rows:repeat(2'))throw new Error('vertical Racial Token lock missing');
 if(!css.includes('@media(min-width:761px)')||!css.includes('.v96-app .mobile-player-footer')||!css.includes('.v96-app .desktop-player-footer{display:flex'))throw new Error('desktop/mobile isolation guard missing');
-if(!css.includes('.v96-app .gl-app{padding-bottom:0!important'))throw new Error('mobile footer trailing gap removal missing');
+if(!css.includes('padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))!important'))throw new Error('mobile safe bottom scroll room missing');
 if(!css.includes('padding:22px 3px 2px')||!css.includes('width:18px!important;height:18px'))throw new Error('compact mobile Hero controls missing');
 if(fs.existsSync(path.join(root,'deck-builder')))throw new Error('obsolete bundled Deck Builder should not remain');
 if(!app.includes('https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/'))throw new Error('external Deck Builder navigation missing');

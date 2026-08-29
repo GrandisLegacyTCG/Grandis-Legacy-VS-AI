@@ -2,10 +2,10 @@
   "version": "v2.50",
   "schema_version": "2.50-consumer",
   "policy": "RUNTIME_FIRST_FAIL_CLOSED_SYNC",
-  "application": "VS AI v6.20",
-  "local_ai": "v6.17",
-  "tutorial": "v0.48",
-  "pvp_reference": "v3.17",
+  "application": "VS AI v6.21",
+  "local_ai": "v6.21",
+  "tutorial": "v0.49",
+  "pvp_reference": "v3.18",
   "canonical_registry_hash": "8ee6bb98c22dc66ee72f49fa88b4f7fd05fce1c96a2932e28a1a8667c9d3932e",
   "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
   "one_source_authority": "v1.7.2",
@@ -22,11 +22,11 @@
   "conditional_follow_up_schema": "v1.0.0",
   "starter60": "v1.3",
   "ui_design_lock": "v2.49",
-  "shared_gameplay_sha256": "3e1a39f3236ac9d4a2cbf5597b33c3cb552de1b099edfdd0d1b621a4054ecb9b",
+  "shared_gameplay_sha256": "e241c26e30364c5fe116674edf328df80750175266156087b8bfb116e33ef9e6",
   "runtime_authority_sha256": "78835f86a4a7e670178fd7721a8db078804204d6a358c4e4a45f57eef5b26ea8",
   "runtime_source_browser_sha256": "78835f86a4a7e670178fd7721a8db078804204d6a358c4e4a45f57eef5b26ea8",
-  "static_data_sha256": "062b3c1ad15d193cdc1113951c513c68cabc74cc3a4ad557c5e38c8770dd4b19",
-  "shared_ui_css_sha256": "439b01cd5f80901f98f64c284c3bc694f0bf574d53c2b963ecec2418ce22ee88",
+  "static_data_sha256": "49f869cad6f0dec63d2301c60fd4b2c3c70824a0505e0e674f0079d36fd4a139",
+  "shared_ui_css_sha256": "09cfa4b4db3cfffeb9a60da75bf32f8aac7f823fda638c11fa5c990f765d7668",
   "mobile_app_nav_sha256": "5be991d8083c56f744f4499eb0f86031968d178dc55f5aacf8bcfcea3f6586d6",
   "audio_assets": {
     "coin_flip": {
@@ -40,14 +40,14 @@
   },
   "consumerAdoptionStatus": {
     "currentApplicationsRebuiltInThisDelivery": true,
-    "currentAI": "VS AI v6.20",
-    "currentPvP": "PvP v3.17 mobile-scroll rollback consumer",
-    "currentTutorial": "Tutorial v0.48 GitHub Pages",
+    "currentAI": "VS AI v6.21",
+    "currentPvP": "PvP v3.18 redirect-response consumer",
+    "currentTutorial": "Tutorial v0.49 GitHub Pages",
     "revisedSeason1": "ADOPTED",
     "heroComponents": "ADOPTED",
     "pendingStateAudit": "ADOPTED"
   },
   "conditionalFollowUpFramework": "GENERIC_POST_PRIMARY_SEPARATE_RESOLUTION",
   "audioPlaybackPolicy": "RETAIN_ACTIVE_CLONES_UNTIL_ENDED_OR_ERROR",
-  "activeNormalMatchNavigationGuard": "BEFOREUNLOAD_PLUS_LEGACY_PULL_REFRESH_TOUCH_GUARD"
+  "activeNormalMatchNavigationGuard": "BEFOREUNLOAD_AND_TOP_EDGE_PULL_TO_REFRESH_ONLY"
 }
