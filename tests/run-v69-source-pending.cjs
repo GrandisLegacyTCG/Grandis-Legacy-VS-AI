@@ -6,10 +6,10 @@ const path = require('path');
 const { loadLocalAI } = require('./vm-local-ai-harness.cjs');
 
 const root = path.resolve(__dirname, '..');
-const CARD_HASH = '8ee6bb98c22dc66ee72f49fa88b4f7fd05fce1c96a2932e28a1a8667c9d3932e';
+const CARD_HASH = '5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c';
 const HERO_HASH = '487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9';
-const data = require(path.join(root, 'data/season1/cards.runtime.v0.14.1.json'));
-const recipes = require(path.join(root, 'data/season1/effect-recipes.runtime.v0.13.1.json'));
+const data = require(path.join(root, 'data/season1/cards.runtime.v0.14.2.json'));
+const recipes = require(path.join(root, 'data/season1/effect-recipes.runtime.v0.13.2.json'));
 const heroes = require(path.join(root, 'data/season1/hero-components.runtime.v1.0.0.json'));
 const byId = new Map(data.cards.map(card => [card.card_id, card]));
 const card = id => {
@@ -142,11 +142,11 @@ for (const appRoot of [root, path.join(root, 'tutorial')]) {
 }
 
 const authorityMirrors = [
-  ['data/season1/cards.runtime.v0.14.1.json','runtime-source/data/season1/cards.runtime.v0.14.1.json'],
-  ['data/season1/effect-recipes.runtime.v0.13.1.json','runtime-source/data/season1/effect-recipes.runtime.v0.13.1.json'],
+  ['data/season1/cards.runtime.v0.14.2.json','runtime-source/data/season1/cards.runtime.v0.14.2.json'],
+  ['data/season1/effect-recipes.runtime.v0.13.2.json','runtime-source/data/season1/effect-recipes.runtime.v0.13.2.json'],
   ['data/season1/legality-map.runtime.v0.11.9.json','runtime-source/data/season1/legality-map.runtime.v0.11.9.json'],
-  ['tutorial/data/season1/cards.runtime.v0.14.1.json','tutorial/runtime-source/data/season1/cards.runtime.v0.14.1.json'],
-  ['tutorial/data/season1/effect-recipes.runtime.v0.13.1.json','tutorial/runtime-source/data/season1/effect-recipes.runtime.v0.13.1.json'],
+  ['tutorial/data/season1/cards.runtime.v0.14.2.json','tutorial/runtime-source/data/season1/cards.runtime.v0.14.2.json'],
+  ['tutorial/data/season1/effect-recipes.runtime.v0.13.2.json','tutorial/runtime-source/data/season1/effect-recipes.runtime.v0.13.2.json'],
   ['tutorial/data/season1/legality-map.runtime.v0.11.9.json','tutorial/runtime-source/data/season1/legality-map.runtime.v0.11.9.json']
 ];
 for (const [current, mirror] of authorityMirrors) {

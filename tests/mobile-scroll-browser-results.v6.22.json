@@ -1,0 +1,43 @@
+{
+  "engine": "Chromium headless mobile emulation",
+  "maxTouchPoints": 1,
+  "note": "Direct single-touch gestures at 100% zoom; current v6.22 CSS/JS inlined only for sandbox browser execution.",
+  "results": [
+    {
+      "viewport": "360x740",
+      "zoom": 1.0,
+      "scrollHeight": 1212,
+      "clientHeight": 740,
+      "heroOneFingerScrollTop": 291,
+      "heroReverseScrollTop": 246,
+      "staleAnimationLockScrollTop": 291,
+      "handHorizontalScrollLeft": 90,
+      "handVerticalParentScrollTop": 472,
+      "status": "PASS"
+    },
+    {
+      "viewport": "390x844",
+      "zoom": 1.0,
+      "scrollHeight": 1212,
+      "clientHeight": 844,
+      "heroOneFingerScrollTop": 302,
+      "heroReverseScrollTop": 142,
+      "staleAnimationLockScrollTop": 293,
+      "handHorizontalScrollLeft": 60,
+      "handVerticalParentScrollTop": 368,
+      "status": "PASS"
+    },
+    {
+      "viewport": "412x915",
+      "zoom": 1.0,
+      "scrollHeight": 1212,
+      "clientHeight": 915,
+      "heroOneFingerScrollTop": 297,
+      "heroReverseScrollTop": 69,
+      "staleAnimationLockScrollTop": 296,
+      "handHorizontalScrollLeft": 108,
+      "handVerticalParentScrollTop": 297,
+      "status": "PASS"
+    }
+  ]
+}

@@ -7,7 +7,7 @@ const root=path.resolve(__dirname,'..');
 const expected={
   'S1-MAG-004':60,'S1-WAR-003':50,'S1-CLE-011':60,'S1-CLE-022':30,'S1-ITM-007':30,'S1-MAG-012':70
 };
-const data=require(path.join(root,'data/season1/cards.runtime.v0.14.1.json'));
+const data=require(path.join(root,'data/season1/cards.runtime.v0.14.2.json'));
 const byId=Object.fromEntries(data.cards.map(c=>[c.card_id,c]));
 for(const [id,amount] of Object.entries(expected)){
   const eff=(byId[id].effects||byId[id].effect||[]).find(e=>e.kind==='block_damage');
@@ -31,6 +31,6 @@ for(const appRoot of [root,path.join(root,'tutorial')]){
     /S1-THF-021[^\n]{0,220}amount\s*:\s*(50|60)/
   ]) assert.ok(!stale.test(bundle),`${appRoot}: stale numeric Defense override pattern remains`);
 }
-assert.strictEqual(require('../package.json').version,'6.21.0');
-assert.strictEqual(require('../tutorial/package.json').version,'0.49.0');
-console.log('PASS VS AI v6.21 / Tutorial v0.49 canonical Defense authority: 17 executable rows, Mana Shield Block 60, no numeric app overrides.');
+assert.strictEqual(require('../package.json').version,'6.22.0');
+assert.strictEqual(require('../tutorial/package.json').version,'0.50.0');
+console.log('PASS VS AI v6.22 / Tutorial v0.50 canonical Defense authority: 17 executable rows, Mana Shield Block 60, no numeric app overrides.');

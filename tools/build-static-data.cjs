@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const HASH = '8ee6bb98c22dc66ee72f49fa88b4f7fd05fce1c96a2932e28a1a8667c9d3932e';
+const HASH = '5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c';
 const HERO_HASH = '487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9';
 const ASSET_BASE = 'https://grandislegacytcg.github.io/shared/season1/v1/cards';
 
@@ -95,11 +95,11 @@ function assignment(name, value) {
 
 function assertAuthorityMirrors() {
   const pairs = [
-    ['data/season1/cards.runtime.v0.14.1.json', 'runtime-source/data/season1/cards.runtime.v0.14.1.json'],
-    ['data/season1/effect-recipes.runtime.v0.13.1.json', 'runtime-source/data/season1/effect-recipes.runtime.v0.13.1.json'],
+    ['data/season1/cards.runtime.v0.14.2.json', 'runtime-source/data/season1/cards.runtime.v0.14.2.json'],
+    ['data/season1/effect-recipes.runtime.v0.13.2.json', 'runtime-source/data/season1/effect-recipes.runtime.v0.13.2.json'],
     ['data/season1/legality-map.runtime.v0.11.9.json', 'runtime-source/data/season1/legality-map.runtime.v0.11.9.json'],
-    ['tutorial/data/season1/cards.runtime.v0.14.1.json', 'tutorial/runtime-source/data/season1/cards.runtime.v0.14.1.json'],
-    ['tutorial/data/season1/effect-recipes.runtime.v0.13.1.json', 'tutorial/runtime-source/data/season1/effect-recipes.runtime.v0.13.1.json'],
+    ['tutorial/data/season1/cards.runtime.v0.14.2.json', 'tutorial/runtime-source/data/season1/cards.runtime.v0.14.2.json'],
+    ['tutorial/data/season1/effect-recipes.runtime.v0.13.2.json', 'tutorial/runtime-source/data/season1/effect-recipes.runtime.v0.13.2.json'],
     ['tutorial/data/season1/legality-map.runtime.v0.11.9.json', 'tutorial/runtime-source/data/season1/legality-map.runtime.v0.11.9.json']
   ];
   for (const [active, mirror] of pairs) {
@@ -111,44 +111,44 @@ function assertAuthorityMirrors() {
 
 function buildFor(targetRoot) {
   const dataPrefix = targetRoot === '.' ? 'data/season1' : `${targetRoot}/data/season1`;
-  const runtimeData = readJSON(`${dataPrefix}/cards.runtime.v0.14.1.json`);
-  const recipes = readJSON(`${dataPrefix}/effect-recipes.runtime.v0.13.1.json`);
+  const runtimeData = readJSON(`${dataPrefix}/cards.runtime.v0.14.2.json`);
+  const recipes = readJSON(`${dataPrefix}/effect-recipes.runtime.v0.13.2.json`);
   const preview = readJSON(`${dataPrefix}/card-preview.generated.v1.5.0.json`);
   const heroComponents = readJSON(`${dataPrefix}/hero-components.runtime.v1.0.0.json`);
   assertAuthority(runtimeData, recipes, preview, heroComponents);
 
   const sourceStack = {
-    source_authority_stack_bundle: 'v1.7.2',
-    runtime_foundation: 'v1.88',
-    runtime_data: 'v0.14.1',
-    effect_checkpoint: 'v0.13.1',
-    effect_recipe: 'v0.13.1',
+    source_authority_stack_bundle: 'v1.7.3',
+    runtime_foundation: 'v1.89',
+    runtime_data: 'v0.14.2',
+    effect_checkpoint: 'v0.13.2',
+    effect_recipe: 'v0.13.2',
     legality_map: 'v0.11.9',
-    runtime_core: 'v0.56',
-    shared_manual: 'v1.44',
-    local_ai: 'v6.21',
-    pvp_railway: 'v3.18',
-    deck_builder: 'v1.22 (external; navigation-only consumer)',
+    runtime_core: 'v0.57',
+    shared_manual: 'v1.45',
+    local_ai: 'v6.22',
+    pvp_railway: 'v3.19',
+    deck_builder: 'v1.23 (external; navigation-only consumer)',
     starter60: 'v1.3',
     ui_lock: 'v2.49',
-    application_runtime_sync: 'v2.50',
+    application_runtime_sync: 'v2.51',
     rulebook_ai_game_flow: 'v2',
-    card_visual_source: 'Season 1 v1.2 FINAL REVISED',
-    one_source_authority: 'v1.7.2',
+    card_visual_source: 'Season 1 v1.2.1 FINAL REVISED',
+    one_source_authority: 'v1.7.3',
     hero_component_authority: 'v1.0.0',
     canonical_registry_hash: HASH,
     hero_component_registry_hash: HERO_HASH,
     card_count: 198,
     authority_mode: 'ONE_SOURCE_FAIL_CLOSED',
     generated_file: 'js/static-data.js',
-    public_deck_builder: 'v1.22 (external; navigation-only consumer)',
+    public_deck_builder: 'v1.23 (external; navigation-only consumer)',
     ui_design_lock: 'v2.49',
-    one_source_patch: 'v1.7.2',
+    one_source_patch: 'v1.7.3',
     conditional_follow_up_schema: 'v1.0.0'
   };
   const definitions = {
-    version: 'v0.14.1',
-    date: '2026-08-24',
+    version: 'v0.14.2',
+    date: '2026-08-29',
     status: 'AUTHORITATIVE_GENERATED_RUNTIME_DATA',
     ...runtimeData,
     families: runtimeData.cards.reduce((groups, card) => {
@@ -159,8 +159,8 @@ function buildFor(targetRoot) {
     }, {})
   };
   const effectRecipes = {
-    version: 'v0.13.1',
-    date: '2026-08-24',
+    version: 'v0.13.2',
+    date: '2026-08-29',
     status: 'AUTHORITATIVE_GENERATED_EFFECT_RECIPES',
     ...recipes
   };
@@ -170,11 +170,11 @@ function buildFor(targetRoot) {
     card_count: 198,
     hero_component_counts: { racial_traits: 6, class_abilities: 16, hero_profiles: 10, hero_compositions: 30 },
     schema_version: '1.5.0',
-    runtime_data: 'v0.14.1',
-    effect_recipe: 'v0.13.1',
-    effect_checkpoint: 'v0.13.1',
+    runtime_data: 'v0.14.2',
+    effect_recipe: 'v0.13.2',
+    effect_checkpoint: 'v0.13.2',
     legality_map: 'v0.11.9',
-    source_patch: 'v1.7.2',
+    source_patch: 'v1.7.3',
     conditional_follow_up_schema: 'v1.0.0'
   };
 
@@ -199,4 +199,4 @@ function buildFor(targetRoot) {
 assertAuthorityMirrors();
 buildFor('.');
 buildFor('tutorial');
-console.log('PASS: VS AI and Tutorial static authority bundles regenerated from Source Stack 2026-08-24.');
+console.log('PASS: VS AI and Tutorial static authority bundles regenerated from Source Stack v1.7.3.');

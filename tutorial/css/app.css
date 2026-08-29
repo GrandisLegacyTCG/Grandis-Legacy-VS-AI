@@ -1,3 +1,4 @@
+/* Grandis Legacy Tutorial Guide v0.50 */
 @font-face{font-family:"Noto Sans";src:url("../assets/fonts/noto-sans/NotoSans-Variable.woff2") format("woff2");font-style:normal;font-weight:100 900;font-stretch:62.5% 100%;font-display:swap}
 @font-face{font-family:"Noto Sans";src:url("../assets/fonts/noto-sans/NotoSans-Italic-Variable.woff2") format("woff2");font-style:italic;font-weight:100 900;font-stretch:62.5% 100%;font-display:swap}
 
@@ -4015,23 +4016,14 @@ body::before{display:none!important}
 .mobile-match-menu-overlay[hidden]{display:none!important}
 
 @media(max-width:760px){
-  html,body{min-width:0!important;width:100%!important;min-height:100%!important;overflow-x:hidden!important;overflow-y:auto!important}
-  .v96-app{
-    width:100%!important;
-    height:auto!important;
-    min-height:100dvh!important;
-    overflow:visible!important;
-  }
+  .v96-app{width:100%!important;}
   .v96-app .gl-app{
     width:100%!important;
-    height:auto!important;
-    min-height:100dvh!important;
     padding:3px!important;
     display:grid!important;
     grid-template-columns:minmax(0,1fr)!important;
     grid-template-rows:auto auto auto auto!important;
     gap:4px!important;
-    overflow:visible!important;
   }
   .v96-app .control-sidebar{display:contents!important}
   .v96-app .turn-panel{grid-row:1!important}
@@ -5136,8 +5128,7 @@ body.deck-setup-active{
   }
   .v96-app .mobile-racial-resource strong{font-size:8px!important;color:#ffe079!important}
 
-  /* Preserve the approved footer order while allowing the final row to be
-     scrolled fully above the Android/browser navigation area. */
+  /* Footer scroll room is owned by the permanent #app mobile scroller. */
 }
 
 /* ========================================================================== */
@@ -5157,6 +5148,7 @@ body.deck-setup-active{
 }
 
 @media(max-width:760px){
+  /* Active-match bottom spacing is owned by the permanent #app mobile scroller. */
   .v96-app .mobile-player-footer{margin-bottom:0!important;padding-bottom:0!important}
   .v96-app .mobile-player-footer+.card-played-panel{margin-top:0!important}
 
@@ -6089,9 +6081,8 @@ body.deck-setup-active{
 /* v5.58 — Tutorial joins the right-side navigation group. */
 .ai-lobby-actions .ai-lobby-btn--outline{min-width:218px!important}
 
-/* LOCAL MOBILE UI — mobile may scroll; retain the approved slightly taller Next Phase control. */
+/* LOCAL MOBILE UI — retain the approved slightly taller Next Phase control. */
 @media (max-width:760px){
-  html,body{height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
   .v96-app .phase-actions .next-phase{height:34px!important;min-height:34px!important}
 }
 @media (min-width:521px) and (max-width:760px){
@@ -6197,7 +6188,7 @@ body.deck-setup-active{
 @media(max-width:820px){.gl-tutorial-mode .ai-lobby-heading h1{white-space:normal!important;font-size:14px!important;line-height:1.15!important}}
 
 
-/* Pending Attack Direction Indicator — v6.21/v0.49/v3.18 */
+/* Pending Attack Direction Indicator — v6.17/v0.45/v3.14 */
 .gl-pending-attack-direction-layer{position:fixed;inset:0;width:100%;height:100%;z-index:11840;pointer-events:none;overflow:visible;color:rgba(244,202,82,.84)}
 .gl-pending-attack-line{stroke:currentColor;stroke-width:2.2;stroke-linecap:round;fill:none;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 3px rgba(0,0,0,.72))}
 .gl-pending-attack-arrow{fill:currentColor}
@@ -6208,40 +6199,50 @@ body.deck-setup-active{
 @media (max-width:700px){.gl-pending-attack-line{stroke-width:2.6}}
 @media (prefers-reduced-motion:reduce){.gl-pending-attack-line.is-looping,.gl-pending-attack-line.is-once{animation:none;stroke-dasharray:none;opacity:.9}}
 
-/* Grandis Legacy mobile native scroll contract — clean 2026-08-29 fix.
-   One-finger vertical page scrolling must remain native. Horizontal Hand
-   scrolling remains available. Whole-page animation locks are desktop-only. */
-@media (max-width:760px){
-  html,body{
+/* ========================================================================== */
+/* Grandis Legacy mobile gameplay scroll contract — clean stable owner.        */
+/* #app is permanent across gameplay renders and is the only mobile Y scroller.*/
+/* ========================================================================== */
+@media(max-width:760px){
+  html.gl-mobile-game-scroll-active,
+  html.gl-mobile-game-scroll-active body{
     width:100%!important;
-    height:auto!important;
-    min-height:100%!important;
-    overflow-x:hidden!important;
-    overflow-y:auto!important;
-    touch-action:auto!important;
-    -webkit-overflow-scrolling:touch;
+    height:100%!important;
+    min-height:0!important;
+    overflow:hidden!important;
+    overscroll-behavior:none!important;
   }
-  html.gl-animation-scroll-locked,
-  body.gl-animation-scroll-locked{
+  html.gl-mobile-game-scroll-active body{touch-action:auto!important;}
+  html.gl-mobile-game-scroll-active #app{
+    display:block!important;
+    width:100%!important;
+    height:var(--gl-mobile-viewport-height,100dvh)!important;
+    min-height:0!important;
+    max-height:var(--gl-mobile-viewport-height,100dvh)!important;
     overflow-x:hidden!important;
     overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior-x:none!important;
     overscroll-behavior-y:contain!important;
-    touch-action:auto!important;
+    touch-action:pan-x pan-y pinch-zoom!important;
   }
-  .v96-app,
-  .v96-app .gl-app,
-  .v96-app .main-stage{
-    height:auto!important;
-    overflow:visible!important;
+  html.gl-mobile-game-scroll-active #app::after{
+    content:"";display:block;width:1px;height:calc(64px + env(safe-area-inset-bottom,0px));pointer-events:none;
   }
-  .v96-app .gl-app{
-    min-height:100dvh!important;
-    padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))!important;
+  html.gl-mobile-game-scroll-active #app>.v96-app,
+  html.gl-mobile-game-scroll-active #app>.v96-app>.gl-app,
+  html.gl-mobile-game-scroll-active #app>.v96-app>.gl-app>.main-stage{
+    height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;
   }
-  .v96-app .hand-area--player .handPanel,
-  .v96-app .hand-card,
-  .v96-app .hand-card .hand-art{
-    touch-action:pan-x pan-y!important;
-  }
+  html.gl-mobile-game-scroll-active #app>.v96-app{width:100%!important;max-width:100%!important;}
+  html.gl-mobile-game-scroll-active #app>.v96-app>.gl-app{width:100%!important;margin:0!important;padding-bottom:3px!important;}
+  html.gl-mobile-game-scroll-active .v96-app .hand-area--player .handPanel,
+  html.gl-mobile-game-scroll-active .v96-app .hand-card,
+  html.gl-mobile-game-scroll-active .v96-app .hand-card .hand-art{touch-action:pan-x pan-y!important;}
+  html.gl-mobile-game-scroll-active.gl-animation-scroll-locked #app,
+  html.gl-mobile-game-scroll-active body.gl-animation-scroll-locked #app{overflow-y:auto!important;touch-action:pan-x pan-y pinch-zoom!important;}
+}
+@supports not (height:100dvh){
+  @media(max-width:760px){html.gl-mobile-game-scroll-active #app{height:var(--gl-mobile-viewport-height,100vh)!important;max-height:var(--gl-mobile-viewport-height,100vh)!important;}}
 }
 

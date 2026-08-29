@@ -6,8 +6,8 @@ const path = require('path');
 const { loadLocalAI } = require('./vm-local-ai-harness.cjs');
 
 const root = path.resolve(__dirname, '..');
-const hash = '8ee6bb98c22dc66ee72f49fa88b4f7fd05fce1c96a2932e28a1a8667c9d3932e';
-const data = require(path.join(root, 'data/season1/cards.runtime.v0.14.1.json'));
+const hash = '5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c';
+const data = require(path.join(root, 'data/season1/cards.runtime.v0.14.2.json'));
 const byId = Object.fromEntries(data.cards.map(card => [card.card_id, card]));
 
 assert.strictEqual(data.canonical_registry_hash, hash);
@@ -47,6 +47,6 @@ assert.ok(!/gl-active-vs-match[^}]*overflow\s*:\s*hidden/i.test(css), 'VS AI gua
 assert.ok(!tutorialBundle.includes("window.addEventListener('beforeunload'"), 'Tutorial must not install active-match unload warning');
 assert.ok(!tutorialBundle.includes('GL_VS_ACTIVE_MATCH_NAV_GUARD'), 'Tutorial must preserve current navigation lifecycle');
 
-assert.strictEqual(require('../package.json').version, '6.21.0');
-assert.strictEqual(require('../tutorial/package.json').version, '0.49.0');
-console.log('PASS VS AI v6.21 + Tutorial v0.49: generic follow-ups, retained audio lifecycle, VS-only beforeunload/CSS overscroll protection, native touch scrolling, and pending-state safety.');
+assert.strictEqual(require('../package.json').version, '6.22.0');
+assert.strictEqual(require('../tutorial/package.json').version, '0.50.0');
+console.log('PASS VS AI v6.11 + Tutorial v0.42: generic follow-ups, retained audio lifecycle, VS-only unload/overscroll protection, and pending-state safety.');

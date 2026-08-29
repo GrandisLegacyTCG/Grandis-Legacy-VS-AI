@@ -1,7 +1,7 @@
 "use strict";
 const fs=require("fs"),path=require("path"),vm=require("vm");
 const root=path.join(__dirname,"..");
-const data=JSON.parse(fs.readFileSync(path.join(root,"data/season1/cards.runtime.v0.14.1.json"),"utf8"));
+const data=JSON.parse(fs.readFileSync(path.join(root,"data/season1/cards.runtime.v0.14.2.json"),"utf8"));
 const byId=new Map(data.cards.map(c=>[c.card_id,c]));
 const hero=byId.get("S1-THF-H006");
 const lineage=(hero.identity&&hero.identity.active_class_lineage)||[];

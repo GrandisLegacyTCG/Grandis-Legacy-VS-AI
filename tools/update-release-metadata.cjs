@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const HASH = '8ee6bb98c22dc66ee72f49fa88b4f7fd05fce1c96a2932e28a1a8667c9d3932e';
+const HASH = '5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c';
 const HERO_HASH = '487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9';
 
 function sha(relativePath) {
@@ -17,26 +17,26 @@ function writeJSON(relativePath, value) {
 }
 
 const rootLock = {
-  version: 'v2.50',
-  schema_version: '2.50-consumer',
+  version: 'v2.51',
+  schema_version: '2.51-consumer',
   policy: 'RUNTIME_FIRST_FAIL_CLOSED_SYNC',
-  application: 'VS AI v6.21',
-  local_ai: 'v6.21',
-  tutorial: 'v0.49',
-  pvp_reference: 'v3.18',
+  application: 'VS AI v6.22',
+  local_ai: 'v6.22',
+  tutorial: 'v0.50',
+  pvp_reference: 'v3.19',
   canonical_registry_hash: HASH,
   hero_component_registry_hash: HERO_HASH,
-  one_source_authority: 'v1.7.2',
-  application_runtime_sync: 'v2.50',
-  runtime_foundation: 'v1.88',
-  runtime_core: 'v0.56',
-  runtime_data: 'v0.14.1',
-  effect_recipe: 'v0.13.1',
-  effect_checkpoint: 'v0.13.1',
+  one_source_authority: 'v1.7.3',
+  application_runtime_sync: 'v2.51',
+  runtime_foundation: 'v1.89',
+  runtime_core: 'v0.57',
+  runtime_data: 'v0.14.2',
+  effect_recipe: 'v0.13.2',
+  effect_checkpoint: 'v0.13.2',
   legality_map: 'v0.11.9',
   hero_component_authority: 'v1.0.0',
-  shared_runtime_manual: 'v1.44',
-  source_stack_bundle: 'v1.7.2',
+  shared_runtime_manual: 'v1.45',
+  source_stack_bundle: 'v1.7.3',
   conditional_follow_up_schema: 'v1.0.0',
   starter60: 'v1.3',
   ui_design_lock: 'v2.49',
@@ -52,34 +52,34 @@ const rootLock = {
   },
   consumerAdoptionStatus: {
     currentApplicationsRebuiltInThisDelivery: true,
-    currentAI: 'VS AI v6.21',
-    currentPvP: 'PvP v3.18 redirect-response consumer',
-    currentTutorial: 'Tutorial v0.49 GitHub Pages',
+    currentAI: 'VS AI v6.22',
+    currentPvP: 'PvP v3.19 redirect-response consumer',
+    currentTutorial: 'Tutorial v0.50 GitHub Pages',
     revisedSeason1: 'ADOPTED',
     heroComponents: 'ADOPTED',
     pendingStateAudit: 'ADOPTED'
   },
   conditionalFollowUpFramework: 'GENERIC_POST_PRIMARY_SEPARATE_RESOLUTION',
   audioPlaybackPolicy: 'RETAIN_ACTIVE_CLONES_UNTIL_ENDED_OR_ERROR',
-  activeNormalMatchNavigationGuard: 'BEFOREUNLOAD_AND_TOP_EDGE_PULL_TO_REFRESH_ONLY'
+  activeNormalMatchNavigationGuard: 'BEFOREUNLOAD_ONLY_NATIVE_MOBILE_SCROLL'
 };
-writeJSON('sync/runtime-sync-lock.v2.50.json', rootLock);
+writeJSON('sync/runtime-sync-lock.v2.51.json', rootLock);
 
 const tutorialLock = {
-  version: 'v0.49',
-  tutorial: 'v0.49',
+  version: 'v0.50',
+  tutorial: 'v0.50',
   delivery: 'GitHub Pages',
-  base_vs_ai: 'v6.21',
-  runtime_foundation: 'v1.88',
-  runtime_core: 'v0.56',
-  runtime_data: 'v0.14.1',
-  effect_recipe: 'v0.13.1',
+  base_vs_ai: 'v6.22',
+  runtime_foundation: 'v1.89',
+  runtime_core: 'v0.57',
+  runtime_data: 'v0.14.2',
+  effect_recipe: 'v0.13.2',
   legality_map: 'v0.11.9',
   hero_component_authority: 'v1.0.0',
   canonical_registry_hash: HASH,
   hero_component_registry_hash: HERO_HASH,
   ui_design_lock: 'v2.49',
-  scope: 'Tutorial v0.49 on VS AI v6.21 shared gameplay/runtime authority; tutorial-only guidance and mobile behavior retained.',
+  scope: 'Tutorial v0.50 on VS AI v6.22 shared gameplay/runtime authority; tutorial-only guidance and mobile behavior retained.',
   app_bundle_sha256: sha('tutorial/js/app.bundle.js'),
   tutorial_guide_sha256: sha('tutorial/js/tutorial-guide.js'),
   tutorial_css_sha256: sha('tutorial/css/tutorial-guide.css'),
@@ -90,7 +90,7 @@ const tutorialLock = {
     card_sound: { path: 'assets/audio/Card Sound.mp3', sha256: sha('tutorial/assets/audio/Card Sound.mp3') }
   }
 };
-writeJSON('tutorial/sync/tutorial-github-lock.v0.49.json', tutorialLock);
+writeJSON('tutorial/sync/tutorial-github-lock.v0.50.json', tutorialLock);
 
 const obsoleteRootLock = path.join(ROOT, 'sync/runtime-sync-lock.v2.44.json');
 if (fs.existsSync(obsoleteRootLock)) fs.unlinkSync(obsoleteRootLock);
@@ -105,4 +105,4 @@ if (fs.existsSync(priorTutorialLock)) fs.unlinkSync(priorTutorialLock);
 const previousTutorialLock = path.join(ROOT, 'tutorial/sync/tutorial-github-lock.v0.42.json');
 if (fs.existsSync(previousTutorialLock)) fs.unlinkSync(previousTutorialLock);
 
-console.log('PASS: VS AI v6.21 and Tutorial v0.49 release locks updated.');
+console.log('PASS: VS AI v6.22 and Tutorial v0.50 release locks updated.');

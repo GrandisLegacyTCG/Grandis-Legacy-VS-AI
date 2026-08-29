@@ -1,16 +1,24 @@
-# Grandis Legacy VS AI v6.21 + Tutorial v0.49
+# Grandis Legacy VS AI v6.22 + Tutorial v0.50
 
 Production-ready GitHub Pages package for local VS AI and the non-scripted tutorial.
 
 
-## v6.21 / v0.49 Canonical revised-card application parity hotfix
+## v6.22 / v0.50 Source Stack v1.7.3 + mobile scroll rebuild
+
+- Synchronizes Hero HP and canonical card authority to Source Stack v1.7.3 / Runtime Data v0.14.2.
+- Rebuilds mobile gameplay scrolling around permanent `#app` as the single vertical scroll owner.
+- Preserves horizontal Hand scrolling while restoring native one-finger vertical gameplay scrolling.
+- Preserves Cover Up/Redirect fresh Defense Response behavior and Attack Direction Indicator.
+
+
+## v6.17 / v0.45 Canonical revised-card application parity hotfix
 
 - Re-audited all 30 revised Season 1 card IDs against Source Stack v1.7.2 / Runtime Data v0.14.1.
 - Removed stale application-local numeric Block overrides. Canonical structured runtime data now controls Mana Shield, Parry, Deflect Arrow, Deflection, and all other Block values.
 - Mana Shield now resolves at Block 60 in executable gameplay/logs.
 - Added deterministic canonical Defense tests covering lineage fallback and 17 current Block rows.
 - Preserves Conditional Follow-up behavior, lethal Poison End Phase result handling, retained audio lifecycle, and silent Game Result lobby reload from prior releases.
-- Tutorial v0.49 receives the same shared gameplay authority cleanup; tutorial-specific guidance remains unchanged.
+- Tutorial v0.45 receives the same shared gameplay authority cleanup; tutorial-specific guidance remains unchanged.
 
 ## v6.14 / v0.42 Game Result lobby reload hotfix
 

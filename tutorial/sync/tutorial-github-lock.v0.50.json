@@ -1,0 +1,31 @@
+{
+  "version": "v0.50",
+  "tutorial": "v0.50",
+  "delivery": "GitHub Pages",
+  "base_vs_ai": "v6.22",
+  "runtime_foundation": "v1.89",
+  "runtime_core": "v0.57",
+  "runtime_data": "v0.14.2",
+  "effect_recipe": "v0.13.2",
+  "legality_map": "v0.11.9",
+  "hero_component_authority": "v1.0.0",
+  "canonical_registry_hash": "5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c",
+  "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
+  "ui_design_lock": "v2.49",
+  "scope": "Tutorial v0.50 on VS AI v6.22 shared gameplay/runtime authority; tutorial-only guidance and mobile behavior retained.",
+  "app_bundle_sha256": "d7c9648ce5a6bd8800dcd6a572bcff5e93600a7d3c5db22ec86ac57e41a3ace1",
+  "tutorial_guide_sha256": "2def4107da88409bc00ee4b9284f4e2f0cedb9590be5df9d253414445ad6ed05",
+  "tutorial_css_sha256": "42a5612a5f10bfdb32fbb5317cfa363ce3f56bd286d38eef135a7c1df776a6ef",
+  "runtime_authority_sha256": "adff82023e39ef2f3580d5841fcc9ab0d0b729c84e13a1df2d20e73412a1deea",
+  "static_data_sha256": "f30fdf73b27d6efadea3fd139a86523cc654e9e2ba9e2f69f07354983c3c2b19",
+  "audio_assets": {
+    "coin_flip": {
+      "path": "assets/audio/Coin Flip.mp3",
+      "sha256": "b4842f9a3f2d25004223313f5473bef74afd79915b6af9bdb35c70f6df8c2b50"
+    },
+    "card_sound": {
+      "path": "assets/audio/Card Sound.mp3",
+      "sha256": "1c04e41918b392a643c22d6c02ef34eeab0341c70d46b7d517078725b79d8ee4"
+    }
+  }
+}
