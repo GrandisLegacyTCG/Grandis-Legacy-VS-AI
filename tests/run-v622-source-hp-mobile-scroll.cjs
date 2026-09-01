@@ -8,5 +8,5 @@ assert.strictEqual(data.canonical_registry_hash,'5d362f3c1dd785af82f12297d6ab1ec
 for(const [id,v] of Object.entries(hp)) assert.strictEqual(by[id].hp,v,`${id} HP`);
 for(const rel of ['../css/app.css','../tutorial/css/app.css']){const css=fs.readFileSync(require('path').join(__dirname,rel),'utf8');assert(css.includes('html.gl-mobile-game-scroll-active #app{'));assert(css.includes('overflow-y:auto!important'));assert(css.includes('touch-action:pan-x pan-y pinch-zoom!important'));assert(css.includes('#app::after'));assert(!css.includes('\\n'),'literal escaped newline remains in CSS');}
 for(const rel of ['../js/app.bundle.js','../tutorial/js/app.bundle.js']){const app=fs.readFileSync(require('path').join(__dirname,rel),'utf8');assert(app.includes("document.getElementById('app')"));assert(app.includes('setMobileGameplayScrollMode(true)'));assert(!app.includes("document.addEventListener('touchmove'"),'native mobile touchmove must not be cancelled');}
-assert.strictEqual(require('../package.json').version,'6.23.0');assert.strictEqual(require('../tutorial/package.json').version,'0.51.0');
+assert.strictEqual(require('../package.json').version,'6.24.0');assert.strictEqual(require('../tutorial/package.json').version,'0.52.0');
 console.log('PASS v6.23/v0.51 Source Stack v1.7.3 Hero HP + permanent #app mobile scroll contract');

@@ -344,6 +344,7 @@ function reactionPolicyForCard(card) {
   if ((kind === 'NEGATE' || kind === 'NEGATE_RETURN_TO_HAND') && /targeted\s+by\s+an\s+attack/i.test(text)) policy.illegalWhen.push('incoming_attack_is_area');
   if (/cannot\s+negate\s+(?:a\s+)?casting\s+attacks?/i.test(text)) policy.illegalWhen.push('incoming_attack_is_casting');
   if (/cannot\s+negate[^.]*ultimate\s+attacks?/i.test(text)) policy.illegalWhen.push('incoming_attack_is_ultimate');
+  if (id === 'S1-ITM-012') policy.hostLineageGate = ['Thief', 'Archer'];
   if (id === 'S1-ITM-016') policy.hostLineageGate = CHAIN_MAIL_ALLOWED_BASE_CLASSES.slice();
   if (id === 'S1-ITM-017') policy.allowedPendingCardFamily = 'Item';
   if (id === 'S1-EVT-007') policy.allowedPendingCardFamily = 'Event';
@@ -408,7 +409,7 @@ function validateReactionAgainstIncoming(card, incoming, hostHeroOrLineages, pen
   if (policy.illegalWhen.includes('incoming_attack_is_ultimate') && inc.is_ultimate) errors.push(`${idOrName(card)} is not legal against Ultimate Attacks.`);
   if (policy.hostLineageGate) {
     const lineages = Array.isArray(hostHeroOrLineages) ? hostHeroOrLineages.map(normalizeBaseLineage) : heroBaseLineages(hostHeroOrLineages);
-    if (!lineages.some(lineage => policy.hostLineageGate.includes(lineage))) errors.push(`${idOrName(card)} can be used only by/for Warrior, Archer, or Thief lineage Heroes.`);
+    if (!lineages.some(lineage => policy.hostLineageGate.includes(lineage))) errors.push(`${idOrName(card)} can be used only by/for ${policy.hostLineageGate.join(' or ')} lineage Heroes.`);
   }
   return { ok: errors.length === 0, errors, policy };
 }

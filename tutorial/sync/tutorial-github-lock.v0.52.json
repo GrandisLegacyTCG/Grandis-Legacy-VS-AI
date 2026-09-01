@@ -1,8 +1,8 @@
 {
-  "version": "v0.50",
-  "tutorial": "v0.51",
+  "version": "v0.52",
+  "tutorial": "v0.52",
   "delivery": "GitHub Pages",
-  "base_vs_ai": "v6.23",
+  "base_vs_ai": "v6.24",
   "runtime_foundation": "v1.89",
   "runtime_core": "v0.57",
   "runtime_data": "v0.14.2",
@@ -12,12 +12,12 @@
   "canonical_registry_hash": "5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c",
   "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
   "ui_design_lock": "v2.49",
-  "scope": "Tutorial v0.51 on VS AI v6.23 shared gameplay/runtime authority; native mobile document scrolling restored while tutorial-only guidance and current gameplay remain intact.",
-  "app_bundle_sha256": "775be9f952b082ca6197f3831b9fb59b3df75130aee4898207eef6a41e071ad6",
+  "scope": "Tutorial v0.52 on VS AI v6.24 shared gameplay/runtime authority; responsive fixes and current gameplay preserved.",
+  "app_bundle_sha256": "fda2ba581d2ba126c6e86fffc91390e45eab7e8585235203f71b9ff030edb744",
   "tutorial_guide_sha256": "2def4107da88409bc00ee4b9284f4e2f0cedb9590be5df9d253414445ad6ed05",
-  "tutorial_css_sha256": "a8655003a9beb256d453f7948df9a2f1dc9825a541632eac1c350e6fc7f70e19",
+  "tutorial_css_sha256": "8041a2268648017ee42f5a6ee10465ef5ce0f930979d280e6fa9cc23eafab6b1",
   "runtime_authority_sha256": "adff82023e39ef2f3580d5841fcc9ab0d0b729c84e13a1df2d20e73412a1deea",
-  "static_data_sha256": "6a2b554c9bb638338ce0902c73d2a56094737dc90174d7e09d8577f7f5672225",
+  "static_data_sha256": "8c505cb2702a219071016f12401b9b2cbda0c7a4431afb88cd95bf4a277719f7",
   "audio_assets": {
     "coin_flip": {
       "path": "assets/audio/Coin Flip.mp3",

@@ -5,7 +5,7 @@ const {loadLocalAI}=require('./vm-local-ai-harness.cjs');
 const root=path.resolve(__dirname,'..'),app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
 const ctx=loadLocalAI(root);
 const st=ctx.GL_SOURCE_STACK||{};
-for(const [k,v] of Object.entries({runtime_foundation:'v1.89',runtime_core:'v0.57',shared_manual:'v1.45',local_ai:'v6.23',pvp_railway:'v3.20',application_runtime_sync:'v2.51'}))if(st[k]!==v)throw new Error(k+'='+st[k]);
+for(const [k,v] of Object.entries({runtime_foundation:'v1.89',runtime_core:'v0.57',shared_manual:'v1.45',local_ai:'v6.24',pvp_railway:'v3.22',application_runtime_sync:'v2.51'}))if(st[k]!==v)throw new Error(k+'='+st[k]);
 const result=ctx.GL_V394_EVENT_ATTACHMENT_INSTANCE_QA_SELF_TEST();
 if(!result||!result.ok)throw new Error(JSON.stringify(result));
 for(const key of ['ringOfGraceExhaustedTargetHost','venomConditionalSeparateAfterPrimary','heroRankResponseInferenceBlocked'])if(result[key]!==true)throw new Error(key);

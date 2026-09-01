@@ -1,0 +1,146 @@
+{
+  "vs_ai": [
+    {
+      "viewport": [
+        1600,
+        900
+      ],
+      "visiblePlayed": 6,
+      "phaseHeight": 269,
+      "cardHeight": 428.41,
+      "errors": []
+    },
+    {
+      "viewport": [
+        1366,
+        768
+      ],
+      "visiblePlayed": 4,
+      "phaseHeight": 251,
+      "cardHeight": 154,
+      "errors": []
+    },
+    {
+      "viewport": [
+        1280,
+        720
+      ],
+      "visiblePlayed": 2,
+      "phaseHeight": 251,
+      "cardHeight": 112,
+      "errors": []
+    },
+    {
+      "viewport": [
+        1100,
+        700
+      ],
+      "visiblePlayed": 2,
+      "phaseHeight": 251,
+      "cardHeight": 112,
+      "errors": []
+    },
+    {
+      "viewport": [
+        1024,
+        768
+      ],
+      "visiblePlayed": 4,
+      "phaseHeight": 251,
+      "cardHeight": 154,
+      "errors": []
+    },
+    {
+      "viewport": [
+        900,
+        700
+      ],
+      "visiblePlayed": 2,
+      "phaseHeight": 251,
+      "cardHeight": 112,
+      "errors": []
+    },
+    {
+      "viewport": [
+        800,
+        650
+      ],
+      "visiblePlayed": 2,
+      "phaseHeight": 251,
+      "cardHeight": 112,
+      "errors": []
+    }
+  ],
+  "tutorial": [
+    {
+      "viewport": [
+        1600,
+        900
+      ],
+      "visiblePlayed": 6,
+      "phaseHeight": 269,
+      "cardHeight": 428.41,
+      "errors": []
+    },
+    {
+      "viewport": [
+        1366,
+        768
+      ],
+      "visiblePlayed": 4,
+      "phaseHeight": 251,
+      "cardHeight": 154,
+      "errors": []
+    },
+    {
+      "viewport": [
+        1280,
+        720
+      ],
+      "visiblePlayed": 2,
+      "phaseHeight": 251,
+      "cardHeight": 112,
+      "errors": []
+    },
+    {
+      "viewport": [
+        1100,
+        700
+      ],
+      "visiblePlayed": 2,
+      "phaseHeight": 251,
+      "cardHeight": 112,
+      "errors": []
+    },
+    {
+      "viewport": [
+        1024,
+        768
+      ],
+      "visiblePlayed": 4,
+      "phaseHeight": 251,
+      "cardHeight": 154,
+      "errors": []
+    },
+    {
+      "viewport": [
+        900,
+        700
+      ],
+      "visiblePlayed": 2,
+      "phaseHeight": 251,
+      "cardHeight": 112,
+      "errors": []
+    },
+    {
+      "viewport": [
+        800,
+        650
+      ],
+      "visiblePlayed": 2,
+      "phaseHeight": 251,
+      "cardHeight": 112,
+      "errors": []
+    }
+  ]
+}

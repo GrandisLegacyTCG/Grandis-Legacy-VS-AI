@@ -1,0 +1,12 @@
+{
+  "package": "Grandis Legacy VS AI",
+  "public_version": "6.24",
+  "tutorial_version": "0.52",
+  "date": "2026-09-02",
+  "custom_main_deck_legal_sizes": [60],
+  "normal_copy_limit": null,
+  "normal_copy_limit_note": "No 2/3 normal-card copy lock is enforced by VS AI custom import in this release.",
+  "ultimate_copy_limit": 1,
+  "source_stack": "1.7.3",
+  "scope": "Custom deck import validation; gameplay/card authority unchanged."
+}
