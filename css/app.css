@@ -6276,14 +6276,17 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
   .v96-app .phase-actions{grid-template-rows:26px 32px!important;gap:4px!important;min-height:62px!important;height:auto!important}
   .v96-app .phase-actions .reposition,.v96-app .phase-actions .cancel-action{height:26px!important;min-height:26px!important}
   .v96-app .phase-actions .next-phase{height:32px!important;min-height:32px!important}
-  .v96-app .card-played-panel{min-height:108px!important;max-height:154px!important;grid-template-rows:auto minmax(0,1fr) 25px!important;gap:4px!important;overflow:hidden!important}
-  .v96-app .played-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(0,1fr))!important;gap:4px!important;min-height:0!important}
+  /* Card Played is the flexible secondary panel. Fill the sidebar space left after
+     Phase Tracker, keep a 2x2 / max-4 preview, and scroll this panel rather than
+     sacrificing Phase Tracker when vertical room is tight. */
+  .v96-app .card-played-panel{min-height:108px!important;max-height:none!important;height:100%!important;grid-template-rows:auto minmax(0,1fr) 25px!important;gap:4px!important;overflow:hidden!important}
+  .v96-app .played-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(46px,1fr))!important;grid-auto-rows:minmax(46px,1fr)!important;gap:4px!important;min-height:0!important;overflow-x:hidden!important;overflow-y:auto!important;align-content:start!important;overscroll-behavior:contain!important;scrollbar-width:thin!important}
   .v96-app .played-grid .combined-played-card:nth-child(n+5){display:none!important}
 }
 @media (min-width:761px) and (max-width:1800px) and (max-height:720px){
-  .v96-app .card-played-panel{min-height:78px!important;max-height:112px!important}
-  .v96-app .played-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:1fr!important}
-  .v96-app .played-grid .combined-played-card:nth-child(n+3){display:none!important}
+  .v96-app .card-played-panel{min-height:78px!important;max-height:none!important;height:100%!important}
+  .v96-app .played-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(46px,1fr))!important;grid-auto-rows:minmax(46px,1fr)!important;overflow-x:hidden!important;overflow-y:auto!important;align-content:start!important}
+  .v96-app .played-grid .combined-played-card:nth-child(n+5){display:none!important}
 }
 
 /* Hero / Legacy display parity — Legacy metadata overlays instead of shrinking the artwork stage. */
