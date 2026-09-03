@@ -1,0 +1,10 @@
+{
+  "version": "v6.25",
+  "date": "2026-09-04",
+  "vs_ai_main_deck_required_count": 60,
+  "normal_copy_limit": 3,
+  "ultimate_copy_limit": 1,
+  "tutorial_version": "v0.52",
+  "tutorial_changed": false,
+  "source_stack": "v1.7.3"
+}

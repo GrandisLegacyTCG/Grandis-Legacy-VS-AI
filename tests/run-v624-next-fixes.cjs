@@ -7,7 +7,8 @@ const css=fs.readFileSync(path.join(root,'css/app.css'),'utf8');
 const rules=require(path.join(root,'runtime-source/runtime/core/source-sync-rules.js'));
 for(const [name,src] of [['VS AI',app],['Tutorial',tut]]){
   must(src.includes("main_deck must contain exactly 60 cards, found"),name+' exact-60 import guard missing');
-  must(!src.includes("normal card max 3 copies")&&!src.includes("normal card max 2 copies"),name+' normal copy lock should not be added');
+  if(name==='VS AI') must(src.includes("normal card max 3 copies"),name+' normal max-3 copy lock missing');
+  else must(!src.includes("normal card max 3 copies")&&!src.includes("normal card max 2 copies"),name+' normal copy lock should remain unchanged');
   must(src.includes("return openResponseExtraDiscardChoice(appState,rw,clone(opt));"),name+' explicit response extra-discard selector gate missing');
   must(src.includes("if(explicit.length) return explicit;"),name+' Chain / Responses explicit-event authority fix missing');
   must(src.includes("pending.after_legacy_deferred_pending=clone(state.pending)"),name+' immediate Legacy preemption missing');
@@ -20,4 +21,4 @@ must(css.includes('vNext responsive priority')&&css.includes('.played-grid .comb
 must(css.includes('Hero / Legacy display parity')&&css.includes('.hero-lane.legacy-slot>.legacy-health{position:absolute'), 'Hero/Legacy size parity CSS missing');
 must(css.includes('stroke-dasharray:5 6')&&css.includes('gl-pending-attack-sword'),'short-dash sword indicator CSS missing');
 for(const rel of ['assets/sword_4490822.png','tutorial/assets/sword_4490822.png','assets/favicon.png'])must(fs.existsSync(path.join(root,rel)),rel+' missing');
-console.log('PASS v6.24/v0.52 next-fix contract');
+console.log('PASS v6.25/v0.52 next-fix contract');

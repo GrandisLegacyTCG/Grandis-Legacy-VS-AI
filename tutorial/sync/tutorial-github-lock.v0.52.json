@@ -17,7 +17,7 @@
   "tutorial_guide_sha256": "2def4107da88409bc00ee4b9284f4e2f0cedb9590be5df9d253414445ad6ed05",
   "tutorial_css_sha256": "8041a2268648017ee42f5a6ee10465ef5ce0f930979d280e6fa9cc23eafab6b1",
   "runtime_authority_sha256": "adff82023e39ef2f3580d5841fcc9ab0d0b729c84e13a1df2d20e73412a1deea",
-  "static_data_sha256": "8c505cb2702a219071016f12401b9b2cbda0c7a4431afb88cd95bf4a277719f7",
+  "static_data_sha256": "cd20cd3dfee70fb1c86e81e157e6f65f93bd7162ea560e14e1219f43270b27e1",
   "audio_assets": {
     "coin_flip": {
       "path": "assets/audio/Coin Flip.mp3",

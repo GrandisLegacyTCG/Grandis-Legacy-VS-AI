@@ -1,5 +1,3 @@
-# Release records
+# Current release
 
-Current release: **v6.24 / Tutorial v0.52**.
-
-All new version-bump/release/update/verification records belong in this `release/` directory. Historical release records belong in `release/history/`; do not add new release-note files to the repository root.
+See `RELEASE_NOTE_v6.25_v0.52.md`, `DECK_IMPORT_RULE_LOCK_v6.25.json`, and `VERIFICATION_v6.25_v0.52.md`.

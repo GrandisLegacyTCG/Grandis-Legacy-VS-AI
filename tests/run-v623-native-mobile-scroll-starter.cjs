@@ -35,5 +35,5 @@ const s2=deck('starter_deck_examples/starter_02_saint_crusader_grand_ranger_GL_D
 assert.strictEqual(s1.main_deck.reduce((n,x)=>n+x.quantity,0),60);assert.strictEqual(s2.main_deck.reduce((n,x)=>n+x.quantity,0),60);
 const c2=Object.fromEntries(s2.main_deck.map(x=>[x.card_id,x.quantity]));assert.strictEqual(c2['S1-ARC-006'],1);assert.strictEqual(c2['S1-ARC-014'],1);
 assert(String(s1.format).includes('Starter60 v1.4')&&String(s2.format).includes('Starter60 v1.4'));
-assert.strictEqual(require('../package.json').version,'6.24.0');assert.strictEqual(require('../tutorial/package.json').version,'0.52.0');
+assert.strictEqual(require('../package.json').version,'6.25.0');assert.strictEqual(require('../tutorial/package.json').version,'0.52.0');
 console.log('PASS v6.23/v0.51 native mobile document scrolling + Starter60 v1.4 replacement + Source Stack v1.7.3 HP guard');

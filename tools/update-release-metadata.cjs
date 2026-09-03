@@ -20,8 +20,8 @@ const rootLock = {
   version: 'v2.51',
   schema_version: '2.51-consumer',
   policy: 'RUNTIME_FIRST_FAIL_CLOSED_SYNC',
-  application: 'VS AI v6.24',
-  local_ai: 'v6.24',
+  application: 'VS AI v6.25',
+  local_ai: 'v6.25',
   tutorial: 'v0.52',
   pvp_reference: 'v3.22',
   canonical_registry_hash: HASH,
@@ -52,7 +52,7 @@ const rootLock = {
   },
   consumerAdoptionStatus: {
     currentApplicationsRebuiltInThisDelivery: true,
-    currentAI: 'VS AI v6.24',
+    currentAI: 'VS AI v6.25',
     currentPvP: 'PvP v3.22 audiovisual/deck-format consumer',
     currentTutorial: 'Tutorial v0.52 GitHub Pages',
     revisedSeason1: 'ADOPTED',
@@ -107,4 +107,4 @@ if (fs.existsSync(previousTutorialLock)) fs.unlinkSync(previousTutorialLock);
 const immediatelyPriorTutorialLock = path.join(ROOT, 'tutorial/sync/tutorial-github-lock.v0.51.json');
 if (fs.existsSync(immediatelyPriorTutorialLock)) fs.unlinkSync(immediatelyPriorTutorialLock);
 
-console.log('PASS: VS AI v6.24 and Tutorial v0.52 release locks updated.');
+console.log('PASS: VS AI v6.25 and Tutorial v0.52 release locks updated.');
