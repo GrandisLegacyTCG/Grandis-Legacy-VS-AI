@@ -4,14 +4,14 @@ const path=require('path');
 const assert=require('assert');
 const crypto=require('crypto');
 const root=path.resolve(__dirname,'..');
-const H='5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c';
+const H='eb89ea56f2351f093fffbd7f7e47628f1cf0cd2b793c6efdfb82c9c9e798b868';
 const HH='487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9';
 const read=rel=>fs.readFileSync(path.join(root,rel),'utf8');
 const json=rel=>JSON.parse(read(rel));
 const sha=rel=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,rel))).digest('hex');
-const data=json('data/season1/cards.runtime.v0.14.2.json');
-const recipes=json('data/season1/effect-recipes.runtime.v0.13.2.json');
-const legality=json('data/season1/legality-map.runtime.v0.11.9.json');
+const data=json('data/season1/cards.runtime.v0.14.3.json');
+const recipes=json('data/season1/effect-recipes.runtime.v0.13.3.json');
+const legality=json('data/season1/legality-map.runtime.v0.11.10.json');
 const preview=json('data/season1/card-preview.generated.v1.5.0.json');
 const heroComponents=json('data/season1/hero-components.runtime.v1.0.0.json');
 for(const doc of [data,recipes,legality,preview]){assert.strictEqual(doc.canonical_registry_hash,H);assert.strictEqual(doc.count,198)}
@@ -20,10 +20,10 @@ assert.strictEqual(heroComponents.registry_hash,HH);
 assert.deepStrictEqual([heroComponents.racial_traits.length,heroComponents.class_abilities.length,heroComponents.hero_profiles.length,heroComponents.hero_compositions.length],[6,16,10,30]);
 const app=read('js/app.bundle.js'),css=read('css/app.css'),stat=read('js/static-data.js'),runtime=read('js/runtime-authority.js'),runtimeSource=read('runtime-source/runtime/browser/runtime-authority.browser.js'),runtimeReducer=read('runtime-source/runtime/core/reducer.js');
 assert.strictEqual(runtime,runtimeSource,'browser runtime must be generated from packaged editable runtime source');
-assert.ok(/one_source_authority":"v1\.7\.3/.test(stat),'static source version');
+assert.ok(/one_source_authority":"v1\.7\.4/.test(stat),'static source version');
 assert.ok(stat.includes(H),'static source hash');
 assert.ok(stat.includes(HH),'static Hero Component hash');
-assert.ok(/runtime_data":"v0\.14\.2/.test(stat)&&/effect_recipe":"v0\.13\.2/.test(stat)&&/runtime_foundation":"v1\.89/.test(stat)&&/runtime_core":"v0\.57/.test(stat)&&/hero_component_authority":"v1\.0\.0/.test(stat),'source stack versions');
+assert.ok(/runtime_data":"v0\.14\.3/.test(stat)&&/effect_recipe":"v0\.13\.3/.test(stat)&&/runtime_foundation":"v1\.90/.test(stat)&&/runtime_core":"v0\.58/.test(stat)&&/hero_component_authority":"v1\.0\.0/.test(stat),'source stack versions');
 const resurrection=data.cards.find(card=>card.card_id==='S1-CLE-015');
 assert.strictEqual(resurrection.canonical_cost.mana,3,'Resurrection Mana');
 assert.strictEqual(resurrection.effect.find(effect=>effect.kind==='revive').set_hp,50,'Resurrection HP');
@@ -41,7 +41,7 @@ assert.ok(/Printed artwork is the only visible card frame[\s\S]*?hero-card\.hero
 assert.ok(fs.existsSync(path.join(root,'assets/audio/Coin Flip.mp3')),'coin audio');
 assert.ok(fs.existsSync(path.join(root,'assets/audio/Card Sound.mp3')),'card motion audio');
 assert.ok(fs.existsSync(path.join(root,'runtime-source/runtime/core/reducer.js')),'editable runtime source');
-const lock=json('sync/runtime-sync-lock.v2.51.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.hero_component_registry_hash,HH);assert.strictEqual(lock.application_runtime_sync,'v2.51');assert.strictEqual(lock.local_ai,'v6.25');
+const lock=json('sync/runtime-sync-lock.v2.52.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.hero_component_registry_hash,HH);assert.strictEqual(lock.application_runtime_sync,'v2.52');assert.strictEqual(lock.local_ai,'v6.26');assert.strictEqual(lock.response_commit_payment_framework,'v1.0');
 assert.strictEqual(lock.audio_assets.coin_flip.sha256,sha('assets/audio/Coin Flip.mp3'));
 assert.strictEqual(lock.audio_assets.card_sound.sha256,sha('assets/audio/Card Sound.mp3'));
 for(const [rel,key] of [['js/app.bundle.js','shared_gameplay_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['runtime-source/runtime/browser/runtime-authority.browser.js','runtime_source_browser_sha256'],['js/static-data.js','static_data_sha256'],['css/app.css','shared_ui_css_sha256']])assert.strictEqual(sha(rel),lock[key],rel+' sync hash');
@@ -59,4 +59,4 @@ assert.ok(/responseDisplayItemsFor/.test(app)&&/data-response-reason/.test(app)&
 assert.ok(!fs.existsSync(path.join(root,'deck-builder'))&&app.includes('https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/'),'dedicated external Deck Builder navigation');
 assert.ok(fs.existsSync(path.join(root,'tutorial/index.html'))&&app.includes('<nav class="ai-lobby-actions"><a id="aiLobbyTutorialButton" class="ai-lobby-btn ai-lobby-btn--outline" href="tutorial/">TUTORIAL</a><a id="aiLobbyDeckBuilderButton" class="ai-lobby-btn ai-lobby-btn--outline"'),'Tutorial application and equal-size secondary navigation');
 
-console.log('PASS VS AI v6.23 release audit: Source Stack 2026-08-24, Hero Components, runtime locks, and preserved UI contracts.');
+console.log('PASS VS AI v6.26 release audit: Source Stack v1.7.4, Response commit/payment framework, Hero Components, runtime locks, and preserved UI contracts.');

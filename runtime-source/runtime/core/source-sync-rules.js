@@ -379,7 +379,7 @@ function validateReactionAgainstIncoming(card, incoming, hostHeroOrLineages, pen
   const kind = policy.kind;
   if (kind === 'CANCEL_EVENT') {
     const pendingFamily = normalizeText(inc.pending_card_family || pendingResponseCard && (pendingResponseCard.card_family || pendingResponseCard.family || pendingResponseCard.card_type));
-    const pendingOwner = normalizeText(inc.pending_card_owner_id || inc.pending_response_owner_id || inc.source_player_id || inc.attacking_player_id);
+    const pendingOwner = normalizeText(inc.pending_card_owner_id || inc.committed_response_owner_id || inc.response_selection_owner_id || inc.pending_response_owner_id || inc.source_player_id || inc.attacking_player_id);
     const responder = normalizeText(inc.responder_player_id || inc.response_player_id);
     if (pendingFamily.toLowerCase() !== 'event') errors.push('Intercept can cancel only an opponent Event Card, including an Event response.');
     if (pendingOwner && responder && !interceptSidesLegal(pendingOwner, responder)) errors.push('Intercept cannot respond to an Event controlled by the same player.');
@@ -391,9 +391,9 @@ function validateReactionAgainstIncoming(card, incoming, hostHeroOrLineages, pen
     return { ok: errors.length === 0, errors, policy };
   }
   if (kind === 'COUNTER_DEFEND_SKILL') {
-    const pendingFamily = normalizeText(inc.pending_response_family || pendingResponseCard && (pendingResponseCard.card_family || pendingResponseCard.family || pendingResponseCard.card_type));
-    const pendingClass = normalizeText(inc.pending_response_classification || pendingResponseCard && (pendingResponseCard.classification || pendingResponseCard.card_subtype || pendingResponseCard.action_category));
-    const pendingOwner = normalizeText(inc.pending_response_owner_id || inc.pending_card_owner_id || inc.source_player_id);
+    const pendingFamily = normalizeText(inc.committed_response_family || inc.response_selection_family || inc.pending_response_family || pendingResponseCard && (pendingResponseCard.card_family || pendingResponseCard.family || pendingResponseCard.card_type));
+    const pendingClass = normalizeText(inc.committed_response_classification || inc.response_selection_classification || inc.pending_response_classification || pendingResponseCard && (pendingResponseCard.classification || pendingResponseCard.card_subtype || pendingResponseCard.action_category));
+    const pendingOwner = normalizeText(inc.committed_response_owner_id || inc.response_selection_owner_id || inc.pending_response_owner_id || inc.pending_card_owner_id || inc.source_player_id);
     const responder = normalizeText(inc.responder_player_id || inc.response_player_id);
     if (pendingFamily.toLowerCase() !== 'skill' || !/defense skill|defend skill/i.test(pendingClass)) errors.push('Binding Light can counter only an opponent committed Defend Skill.');
     if (pendingOwner && responder && pendingOwner === responder) errors.push('Binding Light cannot counter a response controlled by the same player.');

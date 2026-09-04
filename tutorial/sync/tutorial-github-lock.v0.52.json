@@ -12,7 +12,7 @@
   "canonical_registry_hash": "5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c",
   "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
   "ui_design_lock": "v2.49",
-  "scope": "Tutorial v0.52 on VS AI v6.24 shared gameplay/runtime authority; responsive fixes and current gameplay preserved.",
+  "scope": "Tutorial v0.52 remains on its prior VS AI v6.24 / Source Stack v1.7.3 gameplay baseline; no Tutorial gameplay change in this delivery.",
   "app_bundle_sha256": "fda2ba581d2ba126c6e86fffc91390e45eab7e8585235203f71b9ff030edb744",
   "tutorial_guide_sha256": "2def4107da88409bc00ee4b9284f4e2f0cedb9590be5df9d253414445ad6ed05",
   "tutorial_css_sha256": "8041a2268648017ee42f5a6ee10465ef5ce0f930979d280e6fa9cc23eafab6b1",

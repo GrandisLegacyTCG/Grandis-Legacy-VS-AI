@@ -1,10 +1,10 @@
 'use strict';
 const assert=require('assert'),fs=require('fs'),path=require('path');
 const root=path.resolve(__dirname,'..');
-const data=require(path.join(root,'data/season1/cards.runtime.v0.14.2.json'));
+const data=require(path.join(root,'data/season1/cards.runtime.v0.14.3.json'));
 const by=Object.fromEntries(data.cards.map(c=>[c.card_id,c]));
 const hp={"S1-ARC-H001":90,"S1-ARC-H002":110,"S1-ARC-H003":130,"S1-WAR-H001":90,"S1-WAR-H002":120,"S1-WAR-H003":150,"S1-WAR-H004":100,"S1-WAR-H005":120,"S1-WAR-H006":150};
-assert.strictEqual(data.canonical_registry_hash,'5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c');
+assert.strictEqual(data.canonical_registry_hash,'eb89ea56f2351f093fffbd7f7e47628f1cf0cd2b793c6efdfb82c9c9e798b868');
 for(const [id,v] of Object.entries(hp))assert.strictEqual(by[id].hp,v,`${id} HP authority changed`);
 for(const rel of ['css/app.css','tutorial/css/app.css']){
   const css=fs.readFileSync(path.join(root,rel),'utf8');
@@ -35,5 +35,5 @@ const s2=deck('starter_deck_examples/starter_02_saint_crusader_grand_ranger_GL_D
 assert.strictEqual(s1.main_deck.reduce((n,x)=>n+x.quantity,0),60);assert.strictEqual(s2.main_deck.reduce((n,x)=>n+x.quantity,0),60);
 const c2=Object.fromEntries(s2.main_deck.map(x=>[x.card_id,x.quantity]));assert.strictEqual(c2['S1-ARC-006'],1);assert.strictEqual(c2['S1-ARC-014'],1);
 assert(String(s1.format).includes('Starter60 v1.4')&&String(s2.format).includes('Starter60 v1.4'));
-assert.strictEqual(require('../package.json').version,'6.25.0');assert.strictEqual(require('../tutorial/package.json').version,'0.52.0');
-console.log('PASS v6.23/v0.51 native mobile document scrolling + Starter60 v1.4 replacement + Source Stack v1.7.3 HP guard');
+assert.strictEqual(require('../package.json').version,'6.26.0');assert.strictEqual(require('../tutorial/package.json').version,'0.52.0');
+console.log('PASS v6.23/v0.51 native mobile document scrolling + Starter60 v1.4 replacement + Source Stack v1.7.4 HP guard');

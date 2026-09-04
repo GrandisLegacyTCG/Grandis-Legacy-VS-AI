@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.90",
+  "generated_at": "2026-09-05",
+  "source_authority_stack_bundle": "v1.7.4",
+  "canonical_schema": "v1.5.0",
+  "conditional_follow_up_schema": "v1.0.0",
+  "canonical_registry_hash": "eb89ea56f2351f093fffbd7f7e47628f1cf0cd2b793c6efdfb82c9c9e798b868",
+  "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
+  "one_source_authority": "v1.7.4",
+  "runtime_data": "v0.14.3",
+  "effect_recipe": "v0.13.3",
+  "effect_checkpoint": "v0.13.3",
+  "legality_map": "v0.11.10",
+  "hero_component_authority": "v1.0.0",
+  "runtime_foundation": "v1.90",
+  "runtime_core": "v0.58",
+  "application_runtime_sync": "v2.52",
+  "shared_runtime_manual": "v1.46",
+  "starter60": "v1.3",
+  "ui_design_lock": "v2.49",
+  "response_commit_payment_framework": "v1.0"
+}

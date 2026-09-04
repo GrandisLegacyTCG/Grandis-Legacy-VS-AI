@@ -6,10 +6,10 @@ const path = require('path');
 const { loadLocalAI } = require('./vm-local-ai-harness.cjs');
 
 const root = path.resolve(__dirname, '..');
-const CARD_HASH = '5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c';
+const CARD_HASH = 'eb89ea56f2351f093fffbd7f7e47628f1cf0cd2b793c6efdfb82c9c9e798b868';
 const HERO_HASH = '487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9';
-const data = require(path.join(root, 'data/season1/cards.runtime.v0.14.2.json'));
-const recipes = require(path.join(root, 'data/season1/effect-recipes.runtime.v0.13.2.json'));
+const data = require(path.join(root, 'data/season1/cards.runtime.v0.14.3.json'));
+const recipes = require(path.join(root, 'data/season1/effect-recipes.runtime.v0.13.3.json'));
 const heroes = require(path.join(root, 'data/season1/hero-components.runtime.v1.0.0.json'));
 const byId = new Map(data.cards.map(card => [card.card_id, card]));
 const card = id => {
@@ -115,11 +115,12 @@ for (const appRoot of [root, path.join(root, 'tutorial')]) {
   const reducer = fs.readFileSync(path.join(appRoot, 'runtime-source/runtime/core/reducer.js'), 'utf8');
   for (const retired of ['second_chance_replay','SECOND_CHANCE_REPLAY_OPENED','openSecondChanceChoiceAfterDodge']) assert.ok(!reducer.includes(retired), `${retired} remains in ${appRoot} reducer`);
 }
-assert.strictEqual(
-  fs.readFileSync(path.join(root, 'runtime-source/runtime/core/reducer.js'), 'utf8'),
-  fs.readFileSync(path.join(root, 'tutorial/runtime-source/runtime/core/reducer.js'), 'utf8'),
-  'Tutorial reducer differs from the VS AI v6.11 canonical reducer'
-);
+const vsReducerSource = fs.readFileSync(path.join(root, 'runtime-source/runtime/core/reducer.js'), 'utf8');
+const tutorialReducerSource = fs.readFileSync(path.join(root, 'tutorial/runtime-source/runtime/core/reducer.js'), 'utf8');
+assert.ok(vsReducerSource.includes('CONFIRM_RESPONSE_PAYMENT') && vsReducerSource.includes('response_payment'), 'VS AI v6.26 Response commit/payment reducer framework missing');
+assert.ok(!tutorialReducerSource.includes('CONFIRM_RESPONSE_PAYMENT'), 'Tutorial v0.52 must remain on its prior response lifecycle in this delivery');
+const tutorialData = JSON.parse(fs.readFileSync(path.join(root, 'tutorial/data/season1/cards.runtime.v0.14.2.json'), 'utf8'));
+assert.strictEqual(tutorialData.canonical_registry_hash, '5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c', 'Tutorial v0.52 source baseline changed unexpectedly');
 
 for (const appRoot of [root, path.join(root, 'tutorial')]) {
   const starterRoot = path.join(appRoot, 'starter_deck_examples');
@@ -142,9 +143,9 @@ for (const appRoot of [root, path.join(root, 'tutorial')]) {
 }
 
 const authorityMirrors = [
-  ['data/season1/cards.runtime.v0.14.2.json','runtime-source/data/season1/cards.runtime.v0.14.2.json'],
-  ['data/season1/effect-recipes.runtime.v0.13.2.json','runtime-source/data/season1/effect-recipes.runtime.v0.13.2.json'],
-  ['data/season1/legality-map.runtime.v0.11.9.json','runtime-source/data/season1/legality-map.runtime.v0.11.9.json'],
+  ['data/season1/cards.runtime.v0.14.3.json','runtime-source/data/season1/cards.runtime.v0.14.3.json'],
+  ['data/season1/effect-recipes.runtime.v0.13.3.json','runtime-source/data/season1/effect-recipes.runtime.v0.13.3.json'],
+  ['data/season1/legality-map.runtime.v0.11.10.json','runtime-source/data/season1/legality-map.runtime.v0.11.10.json'],
   ['tutorial/data/season1/cards.runtime.v0.14.2.json','tutorial/runtime-source/data/season1/cards.runtime.v0.14.2.json'],
   ['tutorial/data/season1/effect-recipes.runtime.v0.13.2.json','tutorial/runtime-source/data/season1/effect-recipes.runtime.v0.13.2.json'],
   ['tutorial/data/season1/legality-map.runtime.v0.11.9.json','tutorial/runtime-source/data/season1/legality-map.runtime.v0.11.9.json']

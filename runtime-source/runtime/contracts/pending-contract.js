@@ -7,6 +7,7 @@ const PENDING_TYPES = Object.freeze({
   CONFIRM_ACTION: 'Confirm Action',
   RESPONSE_WINDOW: 'Response Window',
   CONFIRM_RESPONSE: 'Confirm Response',
+  RESPONSE_PAYMENT: 'Response Payment',
   CHOOSE_DISCARD: 'Choose Discard',
   CHOOSE_EXP_CARD: 'Choose EXP Card',
   CHOOSE_LEGACY: 'Choose Legacy',

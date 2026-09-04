@@ -25,6 +25,7 @@ const MINIMAL_REDUCER_INTENTS = Object.freeze([
   'CONFIRM_ACTION',
   'DECLARE_RESPONSE',
   'CONFIRM_RESPONSE',
+  'CONFIRM_RESPONSE_PAYMENT',
   'PASS_RESPONSE_PRIORITY',
   'RESOLVE_PENDING',
   'REPOSITION',
@@ -130,7 +131,8 @@ function createInitialRuntimeState(config) {
     players,
     pending: null,
     pending_legacy_defeat_queue: [],
-    pending_response: null,
+    response_selection: null,
+    response_payment: null,
     pending_counter_response: null,
     response_window: null,
     response_window_queue: [],
@@ -1014,7 +1016,7 @@ function drawOneCardForPlayer(state, playerId, options) {
 }
 function drawPhaseAutoAdvanceBlocked(state) {
   if (!state || state.game_over || state.phase !== PHASES.DRAW) return true;
-  if (state.pending || state.pending_attack_resolution || state.response_window || state.pending_response) return true;
+  if (state.pending || state.pending_attack_resolution || state.response_window || state.response_selection || state.response_payment) return true;
   if (Array.isArray(state.response_window_queue) && state.response_window_queue.length) return true;
   if (Array.isArray(state.pending_legacy_defeat_queue) && state.pending_legacy_defeat_queue.length) return true;
   return (state.continuation_queue || []).some(item => item && (item.type === 'casting_release' || item.type === 'draw_replacement_choice'));
@@ -1155,7 +1157,7 @@ function addNegativeStatusImmunityAttachment(next, events, payload) {
     tick_phase: policy.tick_phase,
     counter_mode: policy.counter_mode,
     duration: 'this_turn',
-    origin_zone: payload.origin_zone || 'Response Pending',
+    origin_zone: payload.origin_zone || 'Response Committed',
     effect_result: {
       protected_slot: slot,
       negative_status_immunity: true,
@@ -1522,16 +1524,16 @@ function responseNegatesAttack(kind) {
   return kind === 'NEGATE' || kind === 'NEGATE_RETURN_TO_HAND' || kind === 'CANCEL';
 }
 
-function responseCanCounterPendingResponse(responseCard, pendingResponse, pendingResponseCard, responderPlayerId) {
+function responseCanCounterCommittedResponse(responseCard, pendingResponse, committedResponseCard, responderPlayerId) {
   if (!responseCard || !pendingResponse) return { ok: false, errors: ['No pending response to counter.'] };
   const sharedCheck = validateReactionAgainstIncoming(responseCard, {
-    pending_response_kind: pendingResponseCard ? responseKindForCard(pendingResponseCard) : null,
-    pending_response_family: pendingResponseCard && (pendingResponseCard.card_family || pendingResponseCard.family || pendingResponseCard.card_type),
-    pending_response_classification: pendingResponseCard && (pendingResponseCard.classification || pendingResponseCard.card_subtype || pendingResponseCard.action_category),
-    pending_card_family: pendingResponseCard && (pendingResponseCard.card_family || pendingResponseCard.family || pendingResponseCard.card_type),
+    response_selection_kind: committedResponseCard ? responseKindForCard(committedResponseCard) : null,
+    response_selection_family: committedResponseCard && (committedResponseCard.card_family || committedResponseCard.family || committedResponseCard.card_type),
+    response_selection_classification: committedResponseCard && (committedResponseCard.classification || committedResponseCard.card_subtype || committedResponseCard.action_category),
+    pending_card_family: committedResponseCard && (committedResponseCard.card_family || committedResponseCard.family || committedResponseCard.card_type),
     pending_card_owner_id: pendingResponse.player_id,
     responder_player_id: responderPlayerId
-  }, null, pendingResponseCard);
+  }, null, committedResponseCard);
   if (!sharedCheck.ok && sharedCheck.policy) return sharedCheck;
   if (sharedCheck.policy) return sharedCheck;
   const kind = responseKindForCard(responseCard);
@@ -1646,7 +1648,7 @@ function applyResponseCardFollowUps(next, response, responseCard, events) {
     const slot = inferResponseSourceSlot(next, response);
     if (slot) {
       if (response.card_id === 'S1-MAG-011' || tags.has('DAMAGE_IMMUNITY') || /cannot\s+take\s+any\s+damage/i.test(text)) {
-        addAnyDamageImmunityAttachment(next, events, { player_id: response.player_id, slot, card_id: response.card_id, current_turn_player_id: next.active_player_id, origin_zone: 'Response Pending' });
+        addAnyDamageImmunityAttachment(next, events, { player_id: response.player_id, slot, card_id: response.card_id, current_turn_player_id: next.active_player_id, origin_zone: 'Response Committed' });
       }
       addStatusToHero(next, events, {
         source_player_id: response.player_id,
@@ -1676,7 +1678,7 @@ function applyResponseCardFollowUps(next, response, responseCard, events) {
         slot,
         card_id: response.card_id,
         current_turn_player_id: next.active_player_id,
-        origin_zone: 'Response Pending'
+        origin_zone: 'Response Committed'
       });
     }
   }
@@ -1770,8 +1772,8 @@ function responseCardCanAnswerAttack(responseCard, attackResolution, context) {
   if (!attackResolution) return { ok: true, errors: [] };
   const incoming = Object.assign({}, attackResolution, context && context.incoming || {});
   const hostHero = context && context.hostHeroCard;
-  const pendingResponseCard = context && context.pendingResponseCard;
-  const sharedCheck = validateReactionAgainstIncoming(responseCard, incoming, hostHero, pendingResponseCard);
+  const committedResponseCard = context && context.committedResponseCard;
+  const sharedCheck = validateReactionAgainstIncoming(responseCard, incoming, hostHero, committedResponseCard);
   if (!sharedCheck.ok && sharedCheck.policy) return sharedCheck;
   if (sharedCheck.policy) return sharedCheck;
   const kind = responseKindForCard(responseCard);
@@ -3633,7 +3635,8 @@ function resolvePendingAttackDamage(next, events, resolverPlayerId, options) {
   next.response_current_target = null;
   next.response_window_queue = [];
   next.response_stack = [];
-  next.pending_response = null;
+  next.response_selection = null;
+  next.response_payment = null;
   next.response_priority_player_id = null;
   const activatedContinuation = activateNextContinuationIfPossible(next, events);
   if (!activatedContinuation && !(next.continuation_queue || []).length && !next.pending) runDeferredLoseChecks(next, events);
@@ -3675,7 +3678,8 @@ function openNextPerHeroResponseWindow(next, events) {
   }
   next.response_current_target = target;
   next.response_stack = [];
-  next.pending_response = null;
+  next.response_selection = null;
+  next.response_payment = null;
   next.response_priority_player_id = target.target_player_id;
   next.response_window = {
     type: 'PER_AFFECTED_HERO_DAMAGE_WOULD_BE_DEALT',
@@ -3714,7 +3718,8 @@ function reopenCurrentHeroResponseWindowAfterRedirect(next, events) {
   const slotState = player && player.board && player.board[target.target_slot];
   if (!slotState || slotState.slot_mode !== 'HERO' || !slotState.hero || slotState.hero.defeated || Number(slotState.hero.hp || 0) <= 0) return false;
   next.response_stack = [];
-  next.pending_response = null;
+  next.response_selection = null;
+  next.response_payment = null;
   next.response_priority_player_id = target.target_player_id;
   const redirectDepth = Number(next.response_window && next.response_window.redirect_depth || 0) + 1;
   next.response_window = {
@@ -5192,12 +5197,12 @@ function committedResponseFrame(state, response, responseCard) {
     cardId: response.card_id,
     kind,
     sourceSlot: response.source_slot || null,
-    targetKey: state.response_window && state.response_window.target_key || null,
+    targetKey: state.response_window && state.response_window.target_key || response.response_to && response.response_to.target_key || null,
     responseToCardId: countering ? top.cardId : state.pending_attack_resolution && state.pending_attack_resolution.card_id,
     respondsToFrameId: countering ? top.frameId : null,
     confirmed: true,
     costPaid: true,
-    zone: 'RESPONSE_PENDING',
+    zone: 'RESPONSE_COMMITTED',
     redirectTarget: response.redirect_target || null,
     coverUpSwap: response.cover_up_swap || null
   };
@@ -5256,10 +5261,11 @@ function resolveCommittedResponseStack(next, events) {
     if (player && !remainsAttached) player.discard_pile.push(frame.cardId);
     events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_RESOLVED, next, { player_id: frame.playerId, card_id: frame.cardId, payload: { frame_id: frame.frameId, cancelled: Boolean(frame.cancelled), resolution_order: 'LIFO', destination: remainsAttached ? 'Attachment Slot' : 'Discard Pile', response_to_card_id: frame.responseToCardId } }));
     events.push(createRuntimeEvent(EVENT_TYPES.OPPONENT_PLAYED_UPDATED, next, { player_id: frame.playerId, card_id: frame.cardId, payload: { public_record_type: 'RESPONSE', status: frame.cancelled ? 'CANCELED' : 'RESOLVED', response_to_card_id: frame.responseToCardId, response_kind: frame.kind, source_slot: frame.sourceSlot, destination: remainsAttached ? 'Attachment Slot' : 'Discard Pile', keep_original_action_visible: true } }));
-    if (!remainsAttached) events.push(createRuntimeEvent(EVENT_TYPES.CARD_MOVED, next, { player_id: frame.playerId, card_id: frame.cardId, payload: { from: 'Response Pending', to: 'Discard Pile', cancelled: Boolean(frame.cancelled) } }));
+    if (!remainsAttached) events.push(createRuntimeEvent(EVENT_TYPES.CARD_MOVED, next, { player_id: frame.playerId, card_id: frame.cardId, payload: { from: 'Response Committed', to: 'Discard Pile', cancelled: Boolean(frame.cancelled) } }));
   }
   next.response_stack = [];
-  next.pending_response = null;
+  next.response_selection = null;
+  next.response_payment = null;
   return { base_frame: resolvedBaseFrame, response_result: resolvedResponseResult, redirected: Boolean(resolvedBaseFrame && resolvedBaseFrame.coverUpSwap) };
 }
 
@@ -5326,7 +5332,8 @@ function resumePendingAttackAfterMandatoryChoice(next, events) {
 
 function passResponsePriority(state, intent) {
   if (!state.response_window || !state.pending_attack_resolution) return { state, events: [], errors: ['No per-Hero response window is open.'] };
-  if (state.pending_response) return { state, events: [], errors: ['Declared response must be confirmed or cancelled before passing.'] };
+  if (state.response_selection) return { state, events: [], errors: ['Selected response must be confirmed before passing.'] };
+  if (state.response_payment) return { state, events: [], errors: ['Committed Response payment must be completed before any new Response priority action.'] };
   if (state.response_priority_player_id !== intent.player_id) return { state, events: [], errors: ['Response priority belongs to the other player.'] };
   const next = deepClone(state), events=[];
   events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, { player_id: intent.player_id, card_id: next.pending_attack_resolution.card_id, target_player_id: next.response_window.target_player_id, target_slot: next.response_window.target_slot, payload: { result: 'NO_RESPONSE_FOR_CURRENT_PRIORITY', per_affected_hero: true } }));
@@ -5338,12 +5345,12 @@ function responseCardLegal(state, playerId, cardId, options) {
   const player = getPlayer(state, playerId);
   const card = getCard(state, cardId);
   const errors = [];
-  const counteringPendingResponse = Boolean(options && options.countering_pending_response) || Boolean(state.response_stack && state.response_stack.length);
-  if (!state.response_window && !counteringPendingResponse) errors.push('No response window is open.');
+  const counteringCommittedResponse = Boolean(options && options.countering_committed_response) || Boolean(state.response_stack && state.response_stack.length);
+  if (!state.response_window && !counteringCommittedResponse) errors.push('No response window is open.');
   if (state.response_priority_player_id && state.response_priority_player_id !== playerId) errors.push('Response priority belongs to the other player.');
   if (!player) errors.push(`Unknown player ${playerId}.`);
   if (!card) errors.push(`Unknown card ${cardId}.`);
-  if (state.response_window && state.response_window.attacking_player_id === playerId && !counteringPendingResponse) errors.push('Attacking player cannot respond to their own attack in this window.');
+  if (state.response_window && state.response_window.attacking_player_id === playerId && !counteringCommittedResponse) errors.push('Attacking player cannot respond to their own attack in this window.');
   if (player && !(player.hand || []).includes(cardId)) errors.push(`${cardId} is not in ${playerId}'s hand.`);
   if (card) {
     const timings = cardTimings(card);
@@ -5352,8 +5359,14 @@ function responseCardLegal(state, playerId, cardId, options) {
     const textForResponseLike = legacyRuleText(card);
     const effectKinds = structuredEffects(card).map(effect => String(effect && effect.kind || '')).join(' ');
     const responseLike = timings.includes('Response') || /response|reactive|DEF Response|damage would be dealt|targeted by an attack/i.test(rawTiming) || /block|dodge|negate|redirect|cancel|response/i.test(effectKinds) || /incoming|block|dodge|negate|redirect|cannot take any damage/i.test(textForResponseLike);
-    if (!responseLike && !counteringPendingResponse) errors.push(`${cardId} is not legal in a Response Window.`);
+    if (!responseLike && !counteringCommittedResponse) errors.push(`${cardId} is not legal in a Response Window.`);
     if (player && Number(player.mana_pool || 0) < cardCost(card, state, playerId, responseSourceSlotForValidation(state, playerId, card, options && options.intent || {}))) errors.push(`Not enough Mana Shards to use response ${cardId}.`);
+    const additionalDiscardSpec = responseAdditionalHandDiscardSpec(card);
+    const additionalDiscardCount = responseAdditionalHandDiscardCount(card);
+    if (player && additionalDiscardSpec && additionalDiscardCount > 0) {
+      const eligibleOtherCards = Math.max(0, (player.hand || []).length - (additionalDiscardSpec.exclude_self ? 1 : 0));
+      if (eligibleOtherCards < additionalDiscardCount) errors.push(`${card.name || cardId} requires ${additionalDiscardCount} ${additionalDiscardSpec.exclude_self ? 'other ' : ''}card${additionalDiscardCount === 1 ? '' : 's'} in hand to discard as an additional cost.`);
+    }
     const sourceSlot = responseSourceSlotForValidation(state, playerId, card, options && options.intent || {});
     const responseTargetSlot = normalizeSlotKey(state.response_window && state.response_window.target_slot);
     const hostHeroCard = responseHostHeroCardForValidation(state, playerId, sourceSlot);
@@ -5372,11 +5385,11 @@ function responseCardLegal(state, playerId, cardId, options) {
       const sourceCheck = sourceMatchesCard(state, card, slotState, { response: true });
       if (!sourceCheck.ok) errors.push(...sourceCheck.errors);
     }
-    if (counteringPendingResponse) {
+    if (counteringCommittedResponse) {
       const topFrame = state.response_stack && state.response_stack[state.response_stack.length - 1];
-      const pendingResponseCard = topFrame && getCard(state, topFrame.cardId);
-      const pendingResponseLike = topFrame && { player_id: topFrame.playerId, card_id: topFrame.cardId };
-      const counterCheck = responseCanCounterPendingResponse(card, pendingResponseLike, pendingResponseCard, playerId);
+      const committedResponseCard = topFrame && getCard(state, topFrame.cardId);
+      const committedResponseLike = topFrame && { player_id: topFrame.playerId, card_id: topFrame.cardId };
+      const counterCheck = responseCanCounterCommittedResponse(card, committedResponseLike, committedResponseCard, playerId);
       if (!counterCheck.ok) errors.push(...counterCheck.errors);
     } else {
       const responseCheck = responseCardCanAnswerAttack(card, state.pending_attack_resolution, { hostHeroCard, incoming: state.response_window || {} });
@@ -5398,74 +5411,129 @@ function responseAdditionalHandDiscardSpec(card) {
   const specs = [];
   if (cost.kind === 'discard_from_hand') specs.push(Object.assign({ kind: 'discard_from_hand' }, cost.discard_from_hand || {}));
   for (const extra of cost.additional_costs || []) if (extra && extra.kind === 'discard_from_hand') specs.push(extra);
-  const spec = specs.find(x => Number(x.count || 1) === 1);
-  return spec || null;
+  return specs.find(x => Number(x.count || 1) > 0) || null;
+}
+
+function responseAdditionalHandDiscardCount(card) {
+  const spec = responseAdditionalHandDiscardSpec(card);
+  return spec ? Math.max(0, Number(spec.count || 1)) : 0;
 }
 
 function declareResponse(state, intent) {
   const cardId = intent.card_id || intent.payload && intent.payload.card_id;
   if (!cardId) return { state, events: [], errors: ['DECLARE_RESPONSE requires card_id.'] };
-  if (state.pending_response) return { state, events: [], errors: ['Another response declaration is already pending confirmation.'] };
-  const counteringPendingResponse = Boolean(state.response_stack && state.response_stack.length);
-  const legal = responseCardLegal(state, intent.player_id, cardId, { countering_pending_response: counteringPendingResponse, intent });
+  if (state.response_selection || state.response_payment) return { state, events: [], errors: ['Another response choice or committed payment must finish first.'] };
+  const counteringCommittedResponse = Boolean(state.response_stack && state.response_stack.length);
+  const legal = responseCardLegal(state, intent.player_id, cardId, { countering_committed_response: counteringCommittedResponse, intent });
   if (!legal.ok) return { state, events: [], errors: legal.errors };
-  const redirect = counteringPendingResponse ? null : responseRedirectTargetForCard(state, intent.player_id, legal.card, intent);
+  const redirect = counteringCommittedResponse ? null : responseRedirectTargetForCard(state, intent.player_id, legal.card, intent);
   if (redirect && !redirect.ok) return { state, events: [], errors: redirect.errors };
-  const responsePlayer=getPlayer(state,intent.player_id);
-  const requestedHandIndex=Number(intent.hand_index ?? (intent.payload && intent.payload.hand_index));
-  const responseHandIndex=Number.isInteger(requestedHandIndex)&&responsePlayer&&responsePlayer.hand[requestedHandIndex]===cardId?requestedHandIndex:(responsePlayer?responsePlayer.hand.indexOf(cardId):-1);
-  const handDiscardSpec=responseAdditionalHandDiscardSpec(legal.card);
-  if(handDiscardSpec && handDiscardSpec.exclude_self && (!responsePlayer || responsePlayer.hand.length<2)) return {state,events:[],errors:[`${legal.card.name || cardId} requires another card in hand to discard.`]};
-  const next=deepClone(state);
-  next.pending_response={ player_id:intent.player_id, card_id:cardId, response_hand_index:responseHandIndex, requires_hand_cost_choice:Boolean(handDiscardSpec), selected_hand_cost_index:null, selected_hand_cost_card_id:null, source_slot:normalizeSlotKey(intent.source_slot || intent.payload && intent.payload.source_slot), response_to:deepClone(state.response_window), redirect_target:redirect&&redirect.ok?{target_player_id:redirect.target_player_id,target_slot:redirect.target_slot}:null, cover_up_swap:redirect&&redirect.cover_up_swap?redirect.cover_up_swap:null, countering_frame_id:counteringPendingResponse?state.response_stack[state.response_stack.length-1].frameId:null };
-  const event=createRuntimeEvent(EVENT_TYPES.RESPONSE_DECLARED,next,{player_id:intent.player_id,card_id:cardId,source_slot:next.pending_response.source_slot||undefined,target_slot:state.response_window&&state.response_window.target_slot,payload:{response_to_card_id:counteringPendingResponse?state.response_stack[state.response_stack.length-1].cardId:state.pending_attack_resolution.card_id,counter_response:counteringPendingResponse,confirmed:false,cost_paid:false}});
-  return {state:appendEvents(next,event),events:[event],errors:[]};
+  const responsePlayer = getPlayer(state, intent.player_id);
+  const requestedHandIndex = Number(intent.hand_index ?? (intent.payload && intent.payload.hand_index));
+  const responseHandIndex = Number.isInteger(requestedHandIndex) && responsePlayer && responsePlayer.hand[requestedHandIndex] === cardId ? requestedHandIndex : (responsePlayer ? responsePlayer.hand.indexOf(cardId) : -1);
+  const next = deepClone(state);
+  next.response_selection = {
+    player_id: intent.player_id,
+    card_id: cardId,
+    response_hand_index: responseHandIndex,
+    source_slot: normalizeSlotKey(intent.source_slot || intent.payload && intent.payload.source_slot),
+    response_to: deepClone(state.response_window),
+    redirect_target: redirect && redirect.ok ? { target_player_id: redirect.target_player_id, target_slot: redirect.target_slot } : null,
+    cover_up_swap: redirect && redirect.cover_up_swap ? redirect.cover_up_swap : null,
+    countering_frame_id: counteringCommittedResponse ? state.response_stack[state.response_stack.length - 1].frameId : null
+  };
+  const event = createRuntimeEvent(EVENT_TYPES.RESPONSE_DECLARED, next, { player_id: intent.player_id, card_id: cardId, source_slot: next.response_selection.source_slot || undefined, target_slot: state.response_window && state.response_window.target_slot, payload: { response_to_card_id: counteringCommittedResponse ? state.response_stack[state.response_stack.length - 1].cardId : state.pending_attack_resolution.card_id, counter_response: counteringCommittedResponse, confirmed: false, cost_paid: false } });
+  return { state: appendEvents(next, event), events: [event], errors: [] };
 }
 
 function selectResponseCostCard(state, intent) {
-  if (!state.pending_response || state.pending_response.player_id !== intent.player_id) return { state, events: [], errors: ['No owned pending response requires a hand-cost choice.'] };
-  const responseCard=getCard(state,state.pending_response.card_id); const handDiscardSpec=responseAdditionalHandDiscardSpec(responseCard);
-  if (!handDiscardSpec) return { state, events: [], errors: ['Pending response does not require selected hand discard.'] };
-  const player=getPlayer(state,intent.player_id), raw=intent.hand_index!==undefined?intent.hand_index:intent.payload&&intent.payload.hand_index, index=Number(raw);
-  if(!player||!Number.isInteger(index)||index<0||index>=player.hand.length) return {state,events:[],errors:['Choose a valid card in your hand.']};
-  if(handDiscardSpec.exclude_self && index===state.pending_response.response_hand_index) return {state,events:[],errors:[`${responseCard && responseCard.name || state.pending_response.card_id} cannot discard itself as its additional cost.`]};
-  const next=deepClone(state); next.pending_response.selected_hand_cost_index=index; next.pending_response.selected_hand_cost_card_id=player.hand[index];
-  next.pending_response.mandatory_prompt={type:'SELECT_RESPONSE_COST_CARD',label:'Choose 1 other card in your Hand to discard.',required_count:1,selected_count:1,owner_visible:true};
-  const event=createRuntimeEvent(EVENT_TYPES.TARGET_SELECTED,next,{player_id:intent.player_id,card_id:state.pending_response.card_id,payload:{target_type:'additional_hand_discard_cost',selected_hand_index:index,selected_card_id:player.hand[index],identity_visible_to_controller:true,identity_hidden_from_opponent:true}});
-  return {state:appendEvents(next,event),events:[event],errors:[]};
+  if (!state.response_payment || state.response_payment.player_id !== intent.player_id) return { state, events: [], errors: ['No committed Response payment requires a hand-cost choice.'] };
+  const responseCard = getCard(state, state.response_payment.card_id);
+  const handDiscardSpec = responseAdditionalHandDiscardSpec(responseCard);
+  const required = responseAdditionalHandDiscardCount(responseCard);
+  if (!handDiscardSpec || required <= 0) return { state, events: [], errors: ['Committed Response does not require a selected hand discard.'] };
+  const player = getPlayer(state, intent.player_id), raw = intent.hand_index !== undefined ? intent.hand_index : intent.payload && intent.payload.hand_index, index = Number(raw);
+  if (!player || !Number.isInteger(index) || index < 0 || index >= player.hand.length) return { state, events: [], errors: ['Choose a valid card in your hand.'] };
+  if (handDiscardSpec.exclude_self && index === state.response_payment.response_hand_index) return { state, events: [], errors: [`${responseCard && responseCard.name || state.response_payment.card_id} cannot discard itself as its additional cost.`] };
+  const next = deepClone(state);
+  const selected = Array.isArray(next.response_payment.selected_hand_cost_indices) ? next.response_payment.selected_hand_cost_indices.slice() : [];
+  const at = selected.indexOf(index);
+  if (at >= 0) selected.splice(at, 1);
+  else if (required === 1) selected.splice(0, selected.length, index);
+  else if (selected.length < required) selected.push(index);
+  next.response_payment.selected_hand_cost_indices = selected;
+  next.response_payment.selected_hand_cost_card_ids = selected.map(i => next.players[intent.player_id].hand[i]);
+  next.response_payment.mandatory_prompt = { type: 'SELECT_RESPONSE_COST_CARD', label: `Choose exactly ${required} other card${required === 1 ? '' : 's'} in your Hand to discard.`, required_count: required, selected_count: selected.length, owner_visible: true, committed: true };
+  const event = createRuntimeEvent(EVENT_TYPES.TARGET_SELECTED, next, { player_id: intent.player_id, card_id: state.response_payment.card_id, payload: { target_type: 'additional_hand_discard_cost', selected_hand_indices: selected, selected_card_ids: next.response_payment.selected_hand_cost_card_ids, identity_visible_to_controller: true, identity_hidden_from_opponent: true, response_already_committed: true } });
+  return { state: appendEvents(next, event), events: [event], errors: [] };
+}
+
+function completeResponsePayment(next, intent, events) {
+  const payment = next.response_payment;
+  if (!payment || payment.player_id !== intent.player_id) return { state: next, events, errors: ['No owned committed Response payment to complete.'] };
+  const responseCard = getCard(next, payment.card_id);
+  const handDiscardSpec = responseAdditionalHandDiscardSpec(responseCard);
+  const required = responseAdditionalHandDiscardCount(responseCard);
+  const player = next.players[intent.player_id];
+  let responseIndex = Number(payment.response_hand_index);
+  if (!player || player.hand[responseIndex] !== payment.card_id) return { state: next, events, errors: ['The committed Response card is no longer in its exact Hand instance position.'] };
+  const selected = Array.isArray(payment.selected_hand_cost_indices) ? payment.selected_hand_cost_indices.map(Number) : [];
+  if (required && selected.length !== required) return { state: next, events, errors: [`Choose exactly ${required} other card${required === 1 ? '' : 's'} in hand to complete ${responseCard && responseCard.name || payment.card_id} payment.`] };
+  const seen = new Set();
+  for (const index of selected) {
+    if (!Number.isInteger(index) || index < 0 || index >= player.hand.length || seen.has(index) || (handDiscardSpec && handDiscardSpec.exclude_self && index === responseIndex)) return { state: next, events, errors: ['Selected additional Response card cost is no longer legal.'] };
+    seen.add(index);
+  }
+  const mana = cardCost(responseCard, next, intent.player_id, payment.source_slot);
+  if (Number(player.mana_pool || 0) < mana) return { state: next, events, errors: [`Not enough Mana Shards to complete committed response ${payment.card_id}.`] };
+  player.mana_pool = Math.max(0, Number(player.mana_pool || 0) - mana);
+  for (const costIndex of selected.slice().sort((a, b) => b - a)) {
+    const costCard = player.hand.splice(costIndex, 1)[0];
+    player.discard_pile.push(costCard);
+    if (costIndex < responseIndex) responseIndex -= 1;
+    events.push(createRuntimeEvent(EVENT_TYPES.CARD_MOVED, next, { player_id: intent.player_id, card_id: costCard, payload: { from: 'Hand', to: 'Discard Pile', response_additional_discard_cost: true, source_response_card_id: payment.card_id, controller_selected: true, response_already_committed: true } }));
+  }
+  if (player.hand[responseIndex] !== payment.card_id) return { state: next, events, errors: ['Committed Response card instance shifted unexpectedly during payment.'] };
+  player.hand.splice(responseIndex, 1);
+  payment.response_hand_index = responseIndex;
+  const frame = committedResponseFrame(next, payment, responseCard);
+  next.response_stack = (next.response_stack || []).concat(frame);
+  next.response_payment = null;
+  next.response_priority_player_id = getOpponentId(next, intent.player_id);
+  const closedContext = payment.response_to || {};
+  next.response_window = Object.assign({}, closedContext, { type: 'RESPONSE_TO_COMMITTED_RESPONSE', response_to_frame_id: frame.frameId, response_to_card_id: frame.cardId, priority_player_id: next.response_priority_player_id, original_target_key: frame.targetKey, decision_window_closed_before_payment: true });
+  events.push(createRuntimeEvent(EVENT_TYPES.COST_PAID, next, { player_id: intent.player_id, card_id: payment.card_id, payload: { mana_cost: mana, response: true, additional_hand_discard_count: required, committed_before_payment: true, all_costs_paid_before_counter_window: true } }));
+  events.push(createRuntimeEvent(EVENT_TYPES.CARD_MOVED, next, { player_id: intent.player_id, card_id: payment.card_id, payload: { from: 'Hand', to: 'Response Committed', response: true } }));
+  events.push(createRuntimeEvent(EVENT_TYPES.OPPONENT_PLAYED_UPDATED, next, { player_id: intent.player_id, card_id: payment.card_id, source_slot: payment.source_slot || undefined, target_slot: next.response_current_target && next.response_current_target.target_slot, payload: { public_record_type: 'RESPONSE', status: 'COMMITTED_AND_PAID', response_to_card_id: frame.responseToCardId, response_kind: frame.kind, mana_cost: mana, additional_hand_discard_count: required, keep_original_action_visible: true } }));
+  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_WINDOW_OPENED, next, { player_id: next.response_priority_player_id, card_id: payment.card_id, target_player_id: next.response_current_target && next.response_current_target.target_player_id, target_slot: next.response_current_target && next.response_current_target.target_slot, payload: { response_to: 'COMMITTED_RESPONSE', response_to_frame_id: frame.frameId, cost_already_paid: true, previous_response_window_closed: true } }));
+  return { state: appendEvents(next, events), events, errors: [] };
 }
 
 function confirmResponse(state, intent) {
-  if (!state.pending_response) return { state, events: [], errors: ['No pending response to confirm.'] };
-  if (state.pending_response.player_id !== intent.player_id) return { state, events: [], errors: ['Only response owner may confirm.'] };
-  const responseCard = getCard(state, state.pending_response.card_id);
+  if (!state.response_selection) return { state, events: [], errors: ['No selected response to confirm.'] };
+  if (state.response_selection.player_id !== intent.player_id) return { state, events: [], errors: ['Only response owner may confirm.'] };
+  const responseCard = getCard(state, state.response_selection.card_id);
   const countering = Boolean(state.response_stack && state.response_stack.length);
-  const legal = responseCardLegal(state, intent.player_id, state.pending_response.card_id, { countering_pending_response: countering, intent: state.pending_response });
+  const legal = responseCardLegal(state, intent.player_id, state.response_selection.card_id, { countering_committed_response: countering, intent: state.response_selection });
   if (!legal.ok) return { state, events: [], errors: legal.errors };
-  let next=deepClone(state); const response=next.pending_response, events=[];
-  const handDiscardSpec=responseAdditionalHandDiscardSpec(responseCard);
-  if (handDiscardSpec && !Number.isInteger(response.selected_hand_cost_index)) return {state,events:[],errors:[`Choose 1 other card in hand to discard for ${responseCard && responseCard.name || response.card_id}.`]};
-  if (handDiscardSpec) {
-    const hand=next.players[intent.player_id].hand, costIndex=response.selected_hand_cost_index, responseIndex=response.response_hand_index;
-    if(costIndex<0||costIndex>=hand.length||(handDiscardSpec.exclude_self&&costIndex===responseIndex)||hand[costIndex]!==response.selected_hand_cost_card_id) return {state,events:[],errors:[`Selected ${responseCard && responseCard.name || response.card_id} discard cost is no longer legal. Choose the card again.`]};
-    const costCard=hand.splice(costIndex,1)[0]; next.players[intent.player_id].discard_pile.push(costCard);
-    if(costIndex<responseIndex) response.response_hand_index=responseIndex-1;
-    events.push(createRuntimeEvent(EVENT_TYPES.CARD_MOVED,next,{player_id:intent.player_id,card_id:costCard,payload:{from:'Hand',to:'Discard Pile',response_additional_discard_cost:true,source_response_card_id:response.card_id,controller_selected:true}}));
-  }
-  const mana=cardCost(responseCard,state,intent.player_id,response.source_slot);
-  next.players[intent.player_id].mana_pool=Math.max(0,Number(next.players[intent.player_id].mana_pool||0)-mana);
-  next.players[intent.player_id].hand=removeOneFromHand(next.players[intent.player_id],response.card_id);
-  const frame=committedResponseFrame(next,response,responseCard);
-  next.response_stack=(next.response_stack||[]).concat(frame);
-  next.pending_response=null;
-  next.response_priority_player_id=getOpponentId(next,intent.player_id);
-  next.response_window=Object.assign({},next.response_window,{type:'RESPONSE_TO_CONFIRMED_RESPONSE',response_to_frame_id:frame.frameId,response_to_card_id:frame.cardId,priority_player_id:next.response_priority_player_id,original_target_key:frame.targetKey});
-  events.push(createRuntimeEvent(EVENT_TYPES.COST_PAID,next,{player_id:intent.player_id,card_id:response.card_id,payload:{mana_cost:mana,response:true,committed_before_counter_window:true}}));
-  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_CONFIRMED,next,{player_id:intent.player_id,card_id:response.card_id,payload:{frame_id:frame.frameId,response_to_card_id:frame.responseToCardId,zone:'Response Pending'}}));
-  events.push(createRuntimeEvent(EVENT_TYPES.CARD_MOVED,next,{player_id:intent.player_id,card_id:response.card_id,payload:{from:'Hand',to:'Response Pending',response:true}}));
-  events.push(createRuntimeEvent(EVENT_TYPES.OPPONENT_PLAYED_UPDATED,next,{player_id:intent.player_id,card_id:response.card_id,source_slot:response.source_slot||undefined,target_slot:next.response_current_target&&next.response_current_target.target_slot,payload:{public_record_type:'RESPONSE',status:'COMMITTED',response_to_card_id:frame.responseToCardId,response_kind:frame.kind,mana_cost:mana,keep_original_action_visible:true}}));
-  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_WINDOW_OPENED,next,{player_id:next.response_priority_player_id,card_id:response.card_id,target_player_id:next.response_current_target&&next.response_current_target.target_player_id,target_slot:next.response_current_target&&next.response_current_target.target_slot,payload:{response_to:'CONFIRMED_RESPONSE',response_to_frame_id:frame.frameId,cost_already_paid:true}}));
-  return {state:appendEvents(next,events),events,errors:[]};
+  let next = deepClone(state);
+  const selection = next.response_selection;
+  const events = [];
+  const required = responseAdditionalHandDiscardCount(responseCard);
+  // Confirm Response is irreversible. Close the current decision window before any additional card selection occurs.
+  next.response_selection = null;
+  next.response_payment = Object.assign({}, selection, { committed: true, payment_required: true, required_hand_discard_count: required, selected_hand_cost_indices: [], selected_hand_cost_card_ids: [], response_to: deepClone(selection.response_to || state.response_window) });
+  next.response_window = null;
+  next.response_priority_player_id = null;
+  events.push(createRuntimeEvent(EVENT_TYPES.RESPONSE_CONFIRMED, next, { player_id: intent.player_id, card_id: selection.card_id, payload: { response_to_card_id: countering ? state.response_stack[state.response_stack.length - 1].cardId : state.pending_attack_resolution.card_id, committed: true, payment_complete: false, additional_hand_discard_count: required, previous_response_window_closed: true } }));
+  if (required > 0) return { state: appendEvents(next, events), events, errors: [] };
+  return completeResponsePayment(next, intent, events);
+}
+
+function confirmResponsePayment(state, intent) {
+  if (!state.response_payment) return { state, events: [], errors: ['No committed Response payment to confirm.'] };
+  if (state.response_payment.player_id !== intent.player_id) return { state, events: [], errors: ['Only the committed Response owner may complete payment.'] };
+  return completeResponsePayment(deepClone(state), intent, []);
 }
 
 function resolvePending(state, intent) {
@@ -6118,6 +6186,7 @@ function submitIntent(state, intent) {
     case 'CONFIRM_ACTION': result = confirmAction(state, intent); break;
     case 'DECLARE_RESPONSE': result = declareResponse(state, intent); break;
     case 'CONFIRM_RESPONSE': result = confirmResponse(state, intent); break;
+    case 'CONFIRM_RESPONSE_PAYMENT': result = confirmResponsePayment(state, intent); break;
     case 'PASS_RESPONSE_PRIORITY': result = passResponsePriority(state, intent); break;
     case 'RESOLVE_PENDING': result = resolvePending(state, intent); break;
     case 'REPOSITION': result = repositionAction(state, intent); break;
@@ -6220,7 +6289,7 @@ function getLegalActions(state, playerId) {
     if (pendingRequirementsSatisfied(state.pending)) actions.push({ type: 'CONFIRM_ACTION', player_id: playerId });
     return actions;
   }
-  if (state.response_window && !state.pending_response && state.response_priority_player_id === playerId) {
+  if (state.response_window && !state.response_selection && state.response_priority_player_id === playerId) {
     const player = getPlayer(state, playerId);
     const actions = [];
     if (player && player.board && !(state.response_stack || []).length) {
@@ -6234,19 +6303,36 @@ function getLegalActions(state, playerId) {
         if (profile.action_key === 'second_chance' && tokens > 0 && racialTokenSpendAvailable(state, playerId) && ['physical','magical'].includes(damageType) && !(state.pending_attack_resolution && state.pending_attack_resolution.cannot_be_dodged) && incomingDamageIncludesHeroSlot(state, playerId, slot)) actions.push({ type: 'USE_RACIAL_TRAIT', player_id: playerId, source_slot: slot, racial_trait: 'Second Chance', response_kind: 'DODGE' });
       }
     }
-    for (const cardId of player ? player.hand : []) {
+    for (const [handIndex, cardId] of (player ? player.hand : []).entries()) {
       const responseCard = getCard(state, cardId);
       const sourceSlots = responseCandidateSourceSlots(state, playerId, responseCard);
       for (const candidateSourceSlot of sourceSlots) {
-        const responseIntent = { source_slot: candidateSourceSlot };
-        const check = responseCardLegal(state, playerId, cardId, { countering_pending_response: Boolean(state.response_stack && state.response_stack.length), intent: responseIntent });
-        if (check.ok) actions.push({ type: 'DECLARE_RESPONSE', player_id: playerId, card_id: cardId, card_name: check.card && check.card.name, mana_cost: cardCost(check.card, state, playerId, responseSourceSlotForValidation(state, playerId, check.card, responseIntent)), source_slot: responseSourceSlotForValidation(state, playerId, check.card, responseIntent), affected_target_slot: state.response_window && state.response_window.target_slot, counter_response: Boolean(state.response_stack && state.response_stack.length) });
+        const responseIntent = { source_slot: candidateSourceSlot, hand_index: handIndex };
+        const check = responseCardLegal(state, playerId, cardId, { countering_committed_response: Boolean(state.response_stack && state.response_stack.length), intent: responseIntent });
+        if (check.ok) actions.push({ type: 'DECLARE_RESPONSE', player_id: playerId, hand_index: handIndex, card_id: cardId, card_name: check.card && check.card.name, mana_cost: cardCost(check.card, state, playerId, responseSourceSlotForValidation(state, playerId, check.card, responseIntent)), source_slot: responseSourceSlotForValidation(state, playerId, check.card, responseIntent), affected_target_slot: state.response_window && state.response_window.target_slot, counter_response: Boolean(state.response_stack && state.response_stack.length) });
       }
     }
     actions.push({ type: 'PASS_RESPONSE_PRIORITY', player_id: playerId, label: (state.response_stack || []).length ? 'Pass / resolve confirmed response chain' : 'No response' });
     return actions;
   }
-  if (state.pending_response && state.pending_response.player_id === playerId) { const pendingResponseCard=getCard(state,state.pending_response.card_id); const handDiscardSpec=responseAdditionalHandDiscardSpec(pendingResponseCard); if (handDiscardSpec && !Number.isInteger(state.pending_response.selected_hand_cost_index)) { const player=getPlayer(state,playerId); return (player&&player.hand||[]).map((id,index)=>({type:'SELECT_RESPONSE_COST_CARD',player_id:playerId,hand_index:index,card_id:id,card_name:(getCard(state,id)||{}).name||id,owner_visible:true,prompt:'Choose 1 other card in your Hand to discard.'})).filter(a=>!handDiscardSpec.exclude_self||a.hand_index!==state.pending_response.response_hand_index); } return [{ type: 'CONFIRM_RESPONSE', player_id: playerId }]; }
+  if (state.response_selection && state.response_selection.player_id === playerId) return [{ type: 'CONFIRM_RESPONSE', player_id: playerId, label: 'Confirm Response' }];
+  if (state.response_payment && state.response_payment.player_id === playerId) {
+    const paymentCard = getCard(state, state.response_payment.card_id);
+    const handDiscardSpec = responseAdditionalHandDiscardSpec(paymentCard);
+    const required = responseAdditionalHandDiscardCount(paymentCard);
+    const selected = Array.isArray(state.response_payment.selected_hand_cost_indices) ? state.response_payment.selected_hand_cost_indices.map(Number) : [];
+    const actions = [];
+    if (required > 0) {
+      const player = getPlayer(state, playerId);
+      actions.push(...(player && player.hand || []).map((id, index) => ({
+        type: 'SELECT_RESPONSE_COST_CARD', player_id: playerId, hand_index: index, card_id: id, card_name: (getCard(state, id) || {}).name || id,
+        owner_visible: true, selected: selected.includes(index), mandatory_payment: true, committed: true,
+        prompt: `Choose exactly ${required} ${handDiscardSpec && handDiscardSpec.exclude_self ? 'other ' : ''}card${required === 1 ? '' : 's'} in your Hand to discard.`
+      })).filter(action => !(handDiscardSpec && handDiscardSpec.exclude_self && action.hand_index === state.response_payment.response_hand_index)));
+    }
+    if (selected.length === required) actions.push({ type: 'CONFIRM_RESPONSE_PAYMENT', player_id: playerId, label: 'Confirm Payment', mandatory_payment: true, committed: true });
+    return actions;
+  }
   if (state.active_player_id !== playerId || state.pending) return [];
   const player = getPlayer(state, playerId);
   const actions = [];

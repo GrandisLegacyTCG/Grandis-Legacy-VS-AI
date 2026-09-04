@@ -2,8 +2,8 @@
 const assert=require('assert');
 const path=require('path');
 const root=path.resolve(__dirname,'..');
-const runtimeData=require(path.join(root,'data/season1/cards.runtime.v0.14.2.json'));
-const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.13.2.json'));
+const runtimeData=require(path.join(root,'data/season1/cards.runtime.v0.14.3.json'));
+const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.13.3.json'));
 const {createInitialRuntimeState,submitIntent,getLegalActions}=require(path.join(root,'runtime-source/runtime/core/reducer.js'));
 const cardsById=Object.fromEntries(runtimeData.cards.map(c=>[c.card_id,c]));
 function deck(ids=['S1-WAR-H001'],legacy=[]){return{starting_hero_ids:['Left','Center','Right'].map((slot,i)=>({slot,card_id:ids[i]||ids[0]})),main_deck_card_counts:{'S1-EVT-001':12,'S1-THF-003':1,'S1-WAR-001':2},legacy_deck_card_ids:legacy}}
@@ -26,8 +26,11 @@ function passAll(box){let guard=0;while(box.s.response_window&&guard++<20)ok(box
   const b=fresh(['S1-WAR-H001'],['S1-ARC-H001']);b.s.players.PLAYER.hand=['S1-WAR-001'];b.s.players.AI.hand=['S1-ARC-003','S1-EVT-001'];attack(b,'S1-WAR-001','Left','Left');
   assert.ok(getLegalActions(b.s,'AI').some(a=>a.type==='DECLARE_RESPONSE'&&a.card_id==='S1-ARC-003'),'Escape Arrow legal response');
   ok(b,{type:'DECLARE_RESPONSE',player_id:'AI',card_id:'S1-ARC-003',source_slot:'Left'});
+  ok(b,{type:'CONFIRM_RESPONSE',player_id:'AI'});
+  assert.ok(!b.s.response_window&&b.s.response_payment,'Confirm Response must close the decision window and enter mandatory payment');
   ok(b,{type:'SELECT_RESPONSE_COST_CARD',player_id:'AI',hand_index:1,card_id:'S1-EVT-001'});
-  ok(b,{type:'CONFIRM_RESPONSE',player_id:'AI'});ok(b,{type:'PASS_RESPONSE_PRIORITY',player_id:'PLAYER'});
+  ok(b,{type:'CONFIRM_RESPONSE_PAYMENT',player_id:'AI'});
+  ok(b,{type:'PASS_RESPONSE_PRIORITY',player_id:'PLAYER'});
   assert.ok(!b.s.players.AI.hand.includes('S1-ARC-003')&&!b.s.players.AI.hand.includes('S1-EVT-001'));
   assert.ok(b.s.players.AI.discard_pile.includes('S1-ARC-003')&&b.s.players.AI.discard_pile.includes('S1-EVT-001'));
   assert.strictEqual(b.s.players.AI.board.Left.hero.hp,100,'Escape Arrow Dodged damage');
