@@ -1,8 +1,8 @@
 {
   "name": "grandis-legacy-tutorial",
-  "version": "0.52.0",
+  "version": "0.53.0",
   "private": true,
-  "description": "Grandis Legacy Tutorial v0.52 — VS AI v6.24 parity fixes.",
+  "description": "Grandis Legacy Tutorial v0.53 — physical 4-slot Tribute EXP stack visualization; gameplay baseline unchanged.",
   "scripts": {
     "build:data": "node ../tools/build-static-data.cjs",
     "metadata": "node ../tools/update-release-metadata.cjs",

@@ -117,10 +117,10 @@ for (const appRoot of [root, path.join(root, 'tutorial')]) {
 }
 const vsReducerSource = fs.readFileSync(path.join(root, 'runtime-source/runtime/core/reducer.js'), 'utf8');
 const tutorialReducerSource = fs.readFileSync(path.join(root, 'tutorial/runtime-source/runtime/core/reducer.js'), 'utf8');
-assert.ok(vsReducerSource.includes('CONFIRM_RESPONSE_PAYMENT') && vsReducerSource.includes('response_payment'), 'VS AI v6.26 Response commit/payment reducer framework missing');
-assert.ok(!tutorialReducerSource.includes('CONFIRM_RESPONSE_PAYMENT'), 'Tutorial v0.52 must remain on its prior response lifecycle in this delivery');
+assert.ok(vsReducerSource.includes('CONFIRM_RESPONSE_PAYMENT') && vsReducerSource.includes('response_payment'), 'VS AI v6.27 Response commit/payment reducer framework missing');
+assert.ok(!tutorialReducerSource.includes('CONFIRM_RESPONSE_PAYMENT'), 'Tutorial v0.53 must remain on its prior response lifecycle in this delivery');
 const tutorialData = JSON.parse(fs.readFileSync(path.join(root, 'tutorial/data/season1/cards.runtime.v0.14.2.json'), 'utf8'));
-assert.strictEqual(tutorialData.canonical_registry_hash, '5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c', 'Tutorial v0.52 source baseline changed unexpectedly');
+assert.strictEqual(tutorialData.canonical_registry_hash, '5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c', 'Tutorial v0.53 source baseline changed unexpectedly');
 
 for (const appRoot of [root, path.join(root, 'tutorial')]) {
   const starterRoot = path.join(appRoot, 'starter_deck_examples');

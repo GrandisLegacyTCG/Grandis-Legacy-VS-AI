@@ -22,4 +22,4 @@ must(css.includes('vNext responsive priority')&&css.includes('.played-grid .comb
 must(css.includes('Hero / Legacy display parity')&&css.includes('.hero-lane.legacy-slot>.legacy-health{position:absolute'), 'Hero/Legacy size parity CSS missing');
 must(css.includes('stroke-dasharray:5 6')&&css.includes('gl-pending-attack-sword'),'short-dash sword indicator CSS missing');
 for(const rel of ['assets/sword_4490822.png','tutorial/assets/sword_4490822.png','assets/favicon.png'])must(fs.existsSync(path.join(root,rel)),rel+' missing');
-console.log('PASS v6.26/v0.52 next-fix contract + Response commit/payment migration');
+console.log('PASS v6.27/v0.53 next-fix contract + Response commit/payment migration');

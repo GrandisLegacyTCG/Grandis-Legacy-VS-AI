@@ -2232,7 +2232,6 @@ body::before{
   overflow:hidden!important;
   padding:1px 4px!important;
 }
-.v96-app .hero-stage.has-exp{padding-right:36px!important}
 .v96-app .hero-card.hero-main{
   width:clamp(88px,7.6vw,116px)!important;
   max-height:calc(100% - 2px)!important;
@@ -2241,86 +2240,6 @@ body::before{
   max-width:100%!important;
   max-height:100%!important;
   object-fit:contain!important;
-}
-.v96-app .hero-exp-stack{
-  position:absolute!important;
-  z-index:5!important;
-  right:4px!important;
-  top:50%!important;
-  translate:0 -50%!important;
-  width:31px!important;
-  height:88px!important;
-  pointer-events:none!important;
-}
-.v96-app .hero-exp-card{
-  position:absolute!important;
-  z-index:calc(10 + var(--exp-order))!important;
-  right:var(--exp-right)!important;
-  top:var(--exp-top)!important;
-  width:24px!important;
-  height:68px!important;
-  margin:0!important;
-  padding:0!important;
-  overflow:hidden!important;
-  border:1px solid #7e6724!important;
-  border-radius:4px!important;
-  background:#080b0e!important;
-  box-shadow:0 3px 9px rgba(0,0,0,.62)!important;
-  pointer-events:auto!important;
-  cursor:pointer!important;
-}
-.v96-app .hero-exp-card img{
-  position:absolute!important;
-  inset:0!important;
-  width:100%!important;
-  height:100%!important;
-  object-fit:cover!important;
-  opacity:.38!important;
-  filter:saturate(.72) brightness(.68)!important;
-}
-.v96-app .hero-exp-card span{
-  position:absolute!important;
-  inset:3px!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  writing-mode:vertical-rl!important;
-  transform:rotate(180deg)!important;
-  color:#fff!important;
-  font-size:7px!important;
-  font-weight:1000!important;
-  letter-spacing:.3px!important;
-  text-shadow:0 1px 3px #000!important;
-  white-space:nowrap!important;
-}
-.v96-app .hero-exp-total{
-  position:absolute!important;
-  z-index:30!important;
-  right:0!important;
-  bottom:0!important;
-  padding:1px 3px!important;
-  border:1px solid #8c7120!important;
-  border-radius:4px!important;
-  background:#171205!important;
-  color:#f4ca52!important;
-  font-size:6px!important;
-  font-style:normal!important;
-  font-weight:900!important;
-  white-space:nowrap!important;
-}
-.v96-app .hero-exp-more{
-  position:absolute!important;
-  z-index:31!important;
-  right:0!important;
-  top:0!important;
-  min-width:14px!important;
-  height:14px!important;
-  display:grid!important;
-  place-items:center!important;
-  border-radius:999px!important;
-  background:#d3a52b!important;
-  color:#100c02!important;
-  font-size:7px!important;
 }
 .v96-app .control-sidebar{
   grid-template-rows:auto auto minmax(0,1fr) auto!important;
@@ -2355,9 +2274,7 @@ body:has(.modal-overlay.open) .hover-card-zoom:not(.is-modal-zoom),
 body:has(.overlay.open) .hover-card-zoom:not(.is-modal-zoom){display:none!important}
 @media(max-height:820px){
   .v96-app .hero-card.hero-main{width:clamp(80px,7vw,102px)!important}
-  .v96-app .hero-exp-stack{height:76px!important;width:28px!important}
-  .v96-app .hero-exp-card{width:22px!important;height:58px!important}
-  .v96-app .phase-list{grid-template-rows:repeat(5,24px)!important}
+.v96-app .phase-list{grid-template-rows:repeat(5,24px)!important}
   .v96-app .phase-list button{height:24px!important;min-height:24px!important;font-size:8px!important}
   .v96-app .phase-actions button{height:24px!important;min-height:24px!important}
 }
@@ -2407,47 +2324,7 @@ body:has(.overlay.open) .hover-card-zoom:not(.is-modal-zoom){display:none!import
 .v96-app .hero-row--player .hero-lane{grid-template-rows:25px minmax(0,1fr) 28px!important}
 .v96-app .attachment-row .slot{border-radius:6px!important}
 /* EXP cards are layered underneath the Hero card, like a physical stack. */
-.v96-app .hero-stage.has-exp{padding-right:4px!important}
 .v96-app .hero-card.hero-main{position:relative!important;z-index:30!important}
-.v96-app .hero-exp-stack{
-  position:absolute!important;
-  z-index:6!important;
-  inset:50% auto auto 50%!important;
-  translate:-50% -50%!important;
-  width:clamp(88px,7.6vw,116px)!important;
-  height:calc(100% - 2px)!important;
-  pointer-events:none!important;
-}
-.v96-app .hero-exp-card{
-  left:calc(50% + var(--exp-right))!important;
-  right:auto!important;
-  top:calc(50% + var(--exp-top))!important;
-  transform:translate(-50%,-50%)!important;
-  width:92%!important;
-  height:auto!important;
-  aspect-ratio:.68!important;
-  z-index:calc(6 + var(--exp-order))!important;
-  border-color:#7b6320!important;
-  pointer-events:auto!important;
-}
-.v96-app .hero-exp-card img{
-  opacity:.72!important;
-  filter:saturate(.78) brightness(.66)!important;
-}
-.v96-app .hero-exp-card span{
-  inset:auto 2px 3px auto!important;
-  width:auto!important;
-  height:auto!important;
-  display:block!important;
-  writing-mode:vertical-rl!important;
-  transform:rotate(180deg)!important;
-  font-size:6px!important;
-  background:rgba(0,0,0,.55)!important;
-  border-radius:3px!important;
-  padding:2px 1px!important;
-}
-.v96-app .hero-exp-total{right:-1px!important;bottom:-1px!important;z-index:34!important}
-.v96-app .hero-exp-more{right:-2px!important;top:-2px!important;z-index:35!important}
 /* Hand cards get enough vertical room; playable borders are drawn inside the art. */
 .v96-app .handPanel,
 .v96-app .handCards{overflow:visible!important}
@@ -2582,7 +2459,6 @@ body:has(.overlay.open) .hover-card-zoom:not(.is-modal-zoom){display:none!import
 }
 /* EXP uses one compact runtime-owned total outside the Hero card, not a card stack. */
 .v96-app .hero-stage{overflow:visible!important}
-.v96-app .hero-stage.has-exp{padding-right:4px!important}
 .v96-app .hero-exp-badge{
   position:absolute!important;
   z-index:42!important;
@@ -6317,4 +6193,70 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
 @media (max-width:420px){
   .v96-app .hero-row--opponent .hero-lane.legacy-slot{grid-template-rows:22px minmax(0,1fr)!important}
   .v96-app .hero-row--player .hero-lane.legacy-slot{grid-template-rows:minmax(0,1fr) 22px!important}
+}
+
+/* VS AI v6.27 / Tutorial v0.53 — physical Tribute EXP stack.
+   Structural layout: Hero card + a permanently reserved 4-slot EXP rail.
+   The rail reads hero.exp_cards directly, so Rank Up/defeat/scouting cleanup
+   automatically clears or removes the corresponding physical EXP strips. */
+.v96-app .hero-card-composition{
+  display:grid!important;
+  grid-template-columns:max-content 28px!important;
+  grid-template-rows:minmax(0,max-content)!important;
+  align-items:stretch!important;
+  justify-content:center!important;
+  gap:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  overflow:visible!important;
+}
+.v96-app .hero-card-composition>.hero-card-anchor{
+  grid-column:1!important;
+  grid-row:1!important;
+  align-self:center!important;
+}
+.v96-app .hero-exp-stack{
+  grid-column:2!important;
+  grid-row:1!important;
+  align-self:stretch!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,7px)!important;
+  grid-template-rows:1fr!important;
+  width:28px!important;
+  min-width:28px!important;
+  max-width:28px!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  gap:0!important;
+  overflow:visible!important;
+  pointer-events:none!important;
+  z-index:20!important;
+}
+.v96-app .hero-exp-slot{
+  display:block!important;
+  width:7px!important;
+  min-width:7px!important;
+  height:100%!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:visible!important;
+  background:transparent!important;
+}
+.v96-app .hero-exp-slot.is-empty{visibility:hidden!important}
+.v96-app .hero-exp-slot>img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  object-fit:fill!important;
+  object-position:center!important;
 }

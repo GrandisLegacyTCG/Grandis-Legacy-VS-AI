@@ -1,6 +1,6 @@
 {
-  "version": "v0.52",
-  "tutorial": "v0.52",
+  "version": "v0.53",
+  "tutorial": "v0.53",
   "delivery": "GitHub Pages",
   "base_vs_ai": "v6.24",
   "runtime_foundation": "v1.89",
@@ -12,10 +12,10 @@
   "canonical_registry_hash": "5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c",
   "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
   "ui_design_lock": "v2.49",
-  "scope": "Tutorial v0.52 remains on its prior VS AI v6.24 / Source Stack v1.7.3 gameplay baseline; no Tutorial gameplay change in this delivery.",
-  "app_bundle_sha256": "fda2ba581d2ba126c6e86fffc91390e45eab7e8585235203f71b9ff030edb744",
+  "scope": "Tutorial v0.53 keeps the prior VS AI v6.24 / Source Stack v1.7.3 gameplay baseline; this delivery adds only the physical four-slot Tribute EXP presentation.",
+  "app_bundle_sha256": "702c8ad7b1b1464055633c1e99f7408e3a8d94301da1d16186a95ef9968069a7",
   "tutorial_guide_sha256": "2def4107da88409bc00ee4b9284f4e2f0cedb9590be5df9d253414445ad6ed05",
-  "tutorial_css_sha256": "8041a2268648017ee42f5a6ee10465ef5ce0f930979d280e6fa9cc23eafab6b1",
+  "tutorial_css_sha256": "8295445e6b738d296099d22b3ff3ce983fe9ddc68d79b5a1984b466c84cf5273",
   "runtime_authority_sha256": "adff82023e39ef2f3580d5841fcc9ab0d0b729c84e13a1df2d20e73412a1deea",
   "static_data_sha256": "cd20cd3dfee70fb1c86e81e157e6f65f93bd7162ea560e14e1219f43270b27e1",
   "audio_assets": {
@@ -26,6 +26,16 @@
     "card_sound": {
       "path": "assets/audio/Card Sound.mp3",
       "sha256": "1c04e41918b392a643c22d6c02ef34eeab0341c70d46b7d517078725b79d8ee4"
+    }
+  },
+  "exp_stack_assets": {
+    "exp_100": {
+      "path": "assets/exp/Stack-100-EXP.png",
+      "sha256": "d8e6fa2d6df0a7540773bf562d14bdc1946cbe5882ed352e8b9251efcf85080e"
+    },
+    "exp_200": {
+      "path": "assets/exp/Stack-200-EXP.png",
+      "sha256": "bfc8b200fd6bd7fd0eb8950b038ebd9766de825ce9610a5cc4bfce2dbb9ecac0"
     }
   }
 }
