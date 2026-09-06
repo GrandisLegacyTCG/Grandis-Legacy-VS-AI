@@ -18,4 +18,4 @@ for(const base of [root,path.join(root,'tutorial')]){
   assert.ok(fs.existsSync(path.join(base,'assets/exp/Stack 100-200EXP.png')),'master EXP sprite missing');
   assert.ok(!fs.existsSync(path.join(base,'assets/exp/Stack-100-EXP.png'))&&!fs.existsSync(path.join(base,'assets/exp/Stack-200-EXP.png')),'old split EXP assets must be removed');
 }
-console.log('PASS VS AI v6.28 / Tutorial v0.54: transparent master 100/200 EXP sprite, fixed four-slot rail, and rail height synchronized to the visible Hero artwork.');
+console.log('PASS VS AI v6.29 / Tutorial v0.55: transparent master 100/200 EXP sprite, fixed four-slot rail, and rail height synchronized to the visible Hero artwork.');

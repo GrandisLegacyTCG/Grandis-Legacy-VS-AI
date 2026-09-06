@@ -6195,11 +6195,11 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
   .v96-app .hero-row--player .hero-lane.legacy-slot{grid-template-rows:minmax(0,1fr) 22px!important}
 }
 
-/* VS AI v6.28 / Tutorial v0.54 — clean physical Tribute EXP stack.
-   Structural layout: Hero card + permanently reserved 4-slot EXP rail.
-   One transparent master sprite (Stack 100-200EXP.png) is sliced per slot.
-   JS measures the actual contained Hero artwork height, so the EXP rail matches
-   the visible Hero card rather than the taller button/object-fit letterbox. */
+/* VS AI v6.29 / Tutorial v0.55 — physical Tribute EXP stack follows Hero Exhaust.
+   Structural rule: the Hero artwork and its 4-slot EXP rail live in one physical
+   stack transform group. Exhaust rotates that group as one unit while HP/status
+   UI stays upright. The outer composition still reserves all 28px of EXP width
+   from the start, so Tribute never shifts the battlefield layout. */
 .v96-app .hero-card-composition{
   display:grid!important;
   grid-template-columns:max-content 28px!important;
@@ -6216,10 +6216,32 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
   grid-row:1!important;
   align-self:center!important;
 }
-.v96-app .hero-exp-stack{
-  grid-column:2!important;
-  grid-row:1!important;
-  align-self:center!important;
+.v96-app .hero-card-physical-stack{
+  position:relative!important;
+  display:grid!important;
+  place-items:center!important;
+  width:max-content!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:visible!important;
+  transform-origin:center center!important;
+  transition:transform .28s cubic-bezier(.2,.75,.2,1),filter .28s ease!important;
+}
+.v96-app .hero-card-physical-stack>.hero-card.hero-main{
+  grid-area:1/1!important;
+  margin:0!important;
+}
+.v96-app .hero-card-physical-stack.is-exhausted{
+  transform:rotate(-90deg) scale(.86)!important;
+  filter:saturate(.72) brightness(.84)!important;
+}
+.v96-app .hero-card-physical-stack>.hero-exp-stack{
+  position:absolute!important;
+  left:100%!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
   display:grid!important;
   grid-template-columns:repeat(4,7px)!important;
   grid-template-rows:1fr!important;
@@ -6253,3 +6275,7 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
 }
 .v96-app .hero-exp-slot[data-exp-value="200"]{background-position:right center!important}
 .v96-app .hero-exp-slot.is-empty{visibility:hidden!important;background-image:none!important}
+@media (prefers-reduced-motion:reduce){
+  .v96-app .hero-card-physical-stack{transition:none!important}
+}
+

@@ -43,7 +43,7 @@ assert.ok(fs.existsSync(path.join(root,'assets/audio/Card Sound.mp3')),'card mot
 assert.ok(fs.existsSync(path.join(root,'assets/exp/Stack 100-200EXP.png')),'clean physical EXP master sprite');assert.ok(!fs.existsSync(path.join(root,'assets/exp/Stack-100-EXP.png'))&&!fs.existsSync(path.join(root,'assets/exp/Stack-200-EXP.png')),'obsolete split EXP assets must be removed');
 assert.ok(/hero-card-composition/.test(app)&&/repeat\(4,7px\)/.test(css),'fixed four-slot physical EXP rail');
 assert.ok(fs.existsSync(path.join(root,'runtime-source/runtime/core/reducer.js')),'editable runtime source');
-const lock=json('sync/runtime-sync-lock.v2.52.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.hero_component_registry_hash,HH);assert.strictEqual(lock.application_runtime_sync,'v2.52');assert.strictEqual(lock.local_ai,'v6.28');assert.strictEqual(lock.response_commit_payment_framework,'v1.0');
+const lock=json('sync/runtime-sync-lock.v2.52.json');assert.strictEqual(lock.canonical_registry_hash,H);assert.strictEqual(lock.hero_component_registry_hash,HH);assert.strictEqual(lock.application_runtime_sync,'v2.52');assert.strictEqual(lock.local_ai,'v6.29');assert.strictEqual(lock.response_commit_payment_framework,'v1.0');
 assert.strictEqual(lock.audio_assets.coin_flip.sha256,sha('assets/audio/Coin Flip.mp3'));
 assert.strictEqual(lock.audio_assets.card_sound.sha256,sha('assets/audio/Card Sound.mp3'));
 for(const [rel,key] of [['js/app.bundle.js','shared_gameplay_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['runtime-source/runtime/browser/runtime-authority.browser.js','runtime_source_browser_sha256'],['js/static-data.js','static_data_sha256'],['css/app.css','shared_ui_css_sha256']])assert.strictEqual(sha(rel),lock[key],rel+' sync hash');
@@ -61,4 +61,4 @@ assert.ok(/responseDisplayItemsFor/.test(app)&&/data-response-reason/.test(app)&
 assert.ok(!fs.existsSync(path.join(root,'deck-builder'))&&app.includes('https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/'),'dedicated external Deck Builder navigation');
 assert.ok(fs.existsSync(path.join(root,'tutorial/index.html'))&&app.includes('<nav class="ai-lobby-actions"><a id="aiLobbyTutorialButton" class="ai-lobby-btn ai-lobby-btn--outline" href="tutorial/">TUTORIAL</a><a id="aiLobbyDeckBuilderButton" class="ai-lobby-btn ai-lobby-btn--outline"'),'Tutorial application and equal-size secondary navigation');
 
-console.log('PASS VS AI v6.28 release audit: Source Stack v1.7.4, Response commit/payment framework, Hero Components, runtime locks, and preserved UI contracts.');
+console.log('PASS VS AI v6.29 release audit: Source Stack v1.7.4, Response commit/payment framework, Hero Components, runtime locks, and preserved UI contracts.');

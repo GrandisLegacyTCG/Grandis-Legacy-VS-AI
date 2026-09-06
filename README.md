@@ -1,5 +1,5 @@
-# Grandis Legacy VS AI v6.28 + Tutorial v0.54
+# Grandis Legacy VS AI v6.29 + Tutorial v0.55
 
-EXP presentation correction only. The four-slot Tribute EXP rail remains permanently reserved to the right of each Hero, but now uses one transparent `Stack 100-200EXP.png` sprite and matches the actual visible Hero artwork height exactly. Gameplay authority remains unchanged on Source Stack v1.7.4.
+2026-09-07 presentation update: Tribute EXP rails now rotate together with an Exhausted Hero as one physical card stack. The four-slot rail remains permanently reserved, uses the transparent `Stack 100-200EXP.png` sprite, and continues to read exact EXP-card instances. Gameplay authority is unchanged.
 
-See `release/RELEASE_NOTE_v6.28_v0.54.md` and `release/VERIFICATION_v6.28_v0.54.md`.
+See `release/RELEASE_NOTE_v6.29_v0.55.md` and `release/VERIFICATION_v6.29_v0.55.md`.

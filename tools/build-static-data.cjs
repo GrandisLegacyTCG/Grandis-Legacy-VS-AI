@@ -118,7 +118,7 @@ function buildFor(targetRoot) {
     hash: ROOT_HASH,
     sourceStack: 'v1.7.4', oneSource: 'v1.7.4', runtimeFoundation: 'v1.90', runtimeCore: 'v0.58',
     runtimeDataVersion: 'v0.14.3', recipeVersion: 'v0.13.3', checkpointVersion: 'v0.13.3', legalityVersion: 'v0.11.10', sharedManual: 'v1.46', appSync: 'v2.52',
-    localAI: 'v6.28', deckBuilder: 'v1.29 (external; permissive save/export, match legality enforced by consumers)', date: '2026-09-07'
+    localAI: 'v6.29', deckBuilder: 'v1.29 (external; permissive save/export, match legality enforced by consumers)', date: '2026-09-07'
   } : {
     runtimeData: 'cards.runtime.v0.14.2.json',
     recipes: 'effect-recipes.runtime.v0.13.2.json',
@@ -218,4 +218,4 @@ function buildFor(targetRoot) {
 assertAuthorityMirrors();
 buildFor('.');
 buildFor('tutorial');
-console.log('PASS: VS AI v6.28 regenerated from Source Stack v1.7.4; Tutorial v0.54 preserves its v1.7.3 gameplay source baseline.');
+console.log('PASS: VS AI v6.29 regenerated from Source Stack v1.7.4; Tutorial v0.55 preserves its v1.7.3 gameplay source baseline.');

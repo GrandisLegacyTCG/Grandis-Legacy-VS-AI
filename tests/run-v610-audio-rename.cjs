@@ -32,6 +32,6 @@ for (const base of ['.', 'tutorial']) {
   }
 }
 
-assert.strictEqual(require('../package.json').version, '6.28.0');
-assert.strictEqual(require('../tutorial/package.json').version, '0.54.0');
+assert.strictEqual(require('../package.json').version, '6.29.0');
+assert.strictEqual(require('../tutorial/package.json').version, '0.55.0');
 console.log('PASS VS AI v6.11 + Tutorial v0.42 audio rename: exact bytes, safe space-bearing URLs, and zero stale executable references.');

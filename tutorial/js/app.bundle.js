@@ -1,4 +1,4 @@
-/* Grandis Legacy shared gameplay application v3.1 — Tutorial v0.54 / VS AI v6.24.
+/* Grandis Legacy shared gameplay application v3.1 — Tutorial v0.55 / VS AI v6.24.
    One Source Authority v1.7.3 + Runtime Foundation v1.89 / Runtime Core v0.57 / Runtime Data v0.14.2.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
@@ -6,7 +6,7 @@
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
   var IS_TUTORIAL_APP=GL_APP_MODE==='TUTORIAL';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.22 · VS AI v6.24 Battlefield · One Source v1.7.3 · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.54 GitHub Pages · VS AI v6.24 Base · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57':'Grandis Legacy VS AI v6.24 · Shared Gameplay Bundle v3.1 · One Source v1.7.3 · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57');
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.22 · VS AI v6.24 Battlefield · One Source v1.7.3 · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.55 GitHub Pages · VS AI v6.24 Base · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57':'Grandis Legacy VS AI v6.24 · Shared Gameplay Bundle v3.1 · One Source v1.7.3 · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57');
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
@@ -6064,7 +6064,7 @@ function getActivatedHeroAbilities(state, side, lane){
     if(typeof document==='undefined')return;
     var root=(scope&&scope.querySelectorAll)?scope:document;
     Array.prototype.forEach.call(root.querySelectorAll('.hero-card-composition'),function(composition){
-      var img=composition.querySelector('.hero-card-anchor>.hero-card.hero-main>img.heroImg');
+      var img=composition.querySelector('.hero-card-physical-stack>.hero-card.hero-main>img.heroImg');
       var rail=composition.querySelector('.hero-exp-stack');
       if(!img||!rail)return;
       var boxW=Number(img.clientWidth||img.offsetWidth||0),boxH=Number(img.clientHeight||img.offsetHeight||0);
@@ -6134,7 +6134,7 @@ function getActivatedHeroAbilities(state, side, lane){
     if(terminalDefeated){
       stage='<div class="hero-stage terminal-defeated-stage"><div class="hero-card-anchor"><button class="hero-card hero-main terminal-defeated-card" type="button" disabled aria-label="Defeated Hero card back"><img class="heroImg terminal-defeated-card-back" src="https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Back-of-Card-Main-Deck.webp" alt="Defeated Hero"></button>'+health+'</div><div class="heroActions"></div></div>';
     }else{
-      var mobileAction=v540MobileActionTrigger(side,lane,h,c,false);stage='<div class="hero-stage">'+statusLayer+mobileAction+'<div class="hero-card-composition"><div class="hero-card-anchor"><button class="hero-card hero-main" type="button" data-preview="'+esc(id)+'"><img class="heroImg '+(h.exhausted?'exhausted-card':'')+'" src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(c))+'"></button>'+health+'</div>'+expStack+'</div><div class="heroActions">'+actions+'</div></div>';
+      var mobileAction=v540MobileActionTrigger(side,lane,h,c,false);stage='<div class="hero-stage">'+statusLayer+mobileAction+'<div class="hero-card-composition"><div class="hero-card-anchor"><div class="hero-card-physical-stack '+(h.exhausted?'is-exhausted':'is-ready')+'"><button class="hero-card hero-main" type="button" data-preview="'+esc(id)+'"><img class="heroImg" src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(c))+'"></button>'+expStack+'</div>'+health+'</div></div><div class="heroActions">'+actions+'</div></div>';
     }
     return '<article class="hero-lane hero-panel '+(terminalDefeated?'terminal-defeated-slot ':'')+esc(selection)+'" data-side="'+esc(side)+'" data-lane="'+esc(lane)+'" data-slot-mode="'+(terminalDefeated?'DEFEATED':'HERO')+'">'+(isAI?attachments+stage:stage+attachments)+'</article>';
   }

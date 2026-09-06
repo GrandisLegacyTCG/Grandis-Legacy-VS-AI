@@ -1,6 +1,6 @@
 {
-  "version": "v0.54",
-  "tutorial": "v0.54",
+  "version": "v0.55",
+  "tutorial": "v0.55",
   "delivery": "GitHub Pages",
   "base_vs_ai": "v6.24",
   "runtime_foundation": "v1.89",
@@ -12,10 +12,10 @@
   "canonical_registry_hash": "5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c",
   "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
   "ui_design_lock": "v2.49",
-  "scope": "Tutorial v0.54 keeps the prior VS AI v6.24 / Source Stack v1.7.3 gameplay baseline; this delivery adds only the physical four-slot Tribute EXP presentation.",
-  "app_bundle_sha256": "7d2b3105dea2cdbbac400057493d65a875c0e4d30c1d3f6e7e9e8158fd8c93ee",
+  "scope": "Tutorial v0.55 keeps the prior VS AI v6.24 / Source Stack v1.7.3 gameplay baseline; this delivery keeps the physical four-slot Tribute EXP presentation and makes the EXP rail rotate with the Hero on Exhaust.",
+  "app_bundle_sha256": "b3b0f4269566e7ed12db4a5af00aff5e28f39c291a8bfd6ecadfed3254b2f522",
   "tutorial_guide_sha256": "2def4107da88409bc00ee4b9284f4e2f0cedb9590be5df9d253414445ad6ed05",
-  "tutorial_css_sha256": "8bdb3ccee76c9bbb937ac3dc706f9f64d482e125f88cd101c3e0260d0993ed68",
+  "tutorial_css_sha256": "bd990965e13d430c3d33a0ae5aebc0ba7dd5ed0b7c9e1cdbd9d6792e26cc39e4",
   "runtime_authority_sha256": "adff82023e39ef2f3580d5841fcc9ab0d0b729c84e13a1df2d20e73412a1deea",
   "static_data_sha256": "cd20cd3dfee70fb1c86e81e157e6f65f93bd7162ea560e14e1219f43270b27e1",
   "audio_assets": {
