@@ -1,4 +1,4 @@
-/* Grandis Legacy shared gameplay application v3.1 — Tutorial v0.53 / VS AI v6.24.
+/* Grandis Legacy shared gameplay application v3.1 — Tutorial v0.54 / VS AI v6.24.
    One Source Authority v1.7.3 + Runtime Foundation v1.89 / Runtime Core v0.57 / Runtime Data v0.14.2.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
@@ -6,7 +6,7 @@
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
   var IS_TUTORIAL_APP=GL_APP_MODE==='TUTORIAL';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.22 · VS AI v6.24 Battlefield · One Source v1.7.3 · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.53 GitHub Pages · VS AI v6.24 Base · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57':'Grandis Legacy VS AI v6.24 · Shared Gameplay Bundle v3.1 · One Source v1.7.3 · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57');
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.22 · VS AI v6.24 Battlefield · One Source v1.7.3 · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.54 GitHub Pages · VS AI v6.24 Base · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57':'Grandis Legacy VS AI v6.24 · Shared Gameplay Bundle v3.1 · One Source v1.7.3 · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57');
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
@@ -6059,6 +6059,29 @@ function getActivatedHeroAbilities(state, side, lane){
   function v55ZoomPlayedCard(side,eventId){
     v96ShowCardPlayedDetail(side,eventId);
   }
+  var GL_EXP_STACK_GEOMETRY_RESIZE_BOUND=false,GL_EXP_STACK_GEOMETRY_RAF=0;
+  function v628SyncHeroExpStackGeometry(scope){
+    if(typeof document==='undefined')return;
+    var root=(scope&&scope.querySelectorAll)?scope:document;
+    Array.prototype.forEach.call(root.querySelectorAll('.hero-card-composition'),function(composition){
+      var img=composition.querySelector('.hero-card-anchor>.hero-card.hero-main>img.heroImg');
+      var rail=composition.querySelector('.hero-exp-stack');
+      if(!img||!rail)return;
+      var boxW=Number(img.clientWidth||img.offsetWidth||0),boxH=Number(img.clientHeight||img.offsetHeight||0);
+      var naturalW=Number(img.naturalWidth||0),naturalH=Number(img.naturalHeight||0),visibleH=boxH;
+      if(boxW>0&&boxH>0&&naturalW>0&&naturalH>0)visibleH=Math.min(boxH,boxW*(naturalH/naturalW));
+      if(visibleH>0)rail.style.setProperty('--gl-exp-stack-height',String(Math.round(visibleH*100)/100)+'px');
+    });
+  }
+  function v628BindHeroExpStackGeometry(){
+    if(GL_EXP_STACK_GEOMETRY_RESIZE_BOUND||typeof window==='undefined'||!window.addEventListener)return;
+    GL_EXP_STACK_GEOMETRY_RESIZE_BOUND=true;
+    window.addEventListener('resize',function(){
+      if(GL_EXP_STACK_GEOMETRY_RAF&&typeof cancelAnimationFrame==='function')cancelAnimationFrame(GL_EXP_STACK_GEOMETRY_RAF);
+      if(typeof requestAnimationFrame==='function')GL_EXP_STACK_GEOMETRY_RAF=requestAnimationFrame(function(){GL_EXP_STACK_GEOMETRY_RAF=0;v628SyncHeroExpStackGeometry(document);});
+      else setTimeout(function(){v628SyncHeroExpStackGeometry(document);},0);
+    },{passive:true});
+  }
   function v54HeroExpStack(hero){
     var expCards=(hero&&Array.isArray(hero.exp_cards)?hero.exp_cards:[]).slice(0,4);
     var total=Number(hero&&hero.exp_total||0), slots=[];
@@ -6066,8 +6089,7 @@ function getActivatedHeroAbilities(state, side, lane){
       var cardId=expCards[i]||'';
       if(!cardId){ slots.push('<span class="hero-exp-slot is-empty" aria-hidden="true"></span>'); continue; }
       var expCard=card(cardId), value=tributeExpValue(expCard)>=200?200:100;
-      var asset=value===200?'assets/exp/Stack-200-EXP.png':'assets/exp/Stack-100-EXP.png';
-      slots.push('<span class="hero-exp-slot is-filled" data-exp-value="'+value+'" title="'+esc(cardName(expCard))+' · '+value+' EXP"><img src="'+asset+'" alt="'+value+' EXP"></span>');
+      slots.push('<span class="hero-exp-slot is-filled" data-exp-value="'+value+'" title="'+esc(cardName(expCard))+' · '+value+' EXP" role="img" aria-label="'+value+' EXP"></span>');
     }
     return '<div class="hero-exp-stack '+(expCards.length?'has-cards':'is-empty')+'" data-exp-count="'+expCards.length+'" data-exp-total="'+total+'" aria-label="EXP Stack: '+expCards.length+' card'+(expCards.length===1?'':'s')+', '+total+' total EXP">'+slots.join('')+'</div>';
   }
@@ -6273,7 +6295,9 @@ function getActivatedHeroAbilities(state, side, lane){
         '<div id="mobileMatchMenuOverlay" class="mobile-match-menu-overlay" hidden><section class="mobile-match-menu-sheet" role="dialog" aria-modal="true" aria-labelledby="mobileMatchMenuTitle"><header><strong id="mobileMatchMenuTitle">Match Menu</strong><button id="mobileMatchMenuClose" type="button" aria-label="Close Match Menu">Close</button></header><div class="mobile-match-menu-actions"><button id="mobileDeckSetupButton" type="button">Deck Setup</button><button id="mobileSoundToggleButton" class="sound-toggle" type="button" aria-pressed="'+(GL_CARD_SOUND_ENABLED?'true':'false')+'">'+esc(cardMotionSoundLabel())+'</button>'+(IS_PVP_APP?'<button id="mobilePvpRoomButton" class="pvp-room-mobile" type="button">PvP Room</button>':'')+'<button id="mobileSurrenderButton" class="surrender" type="button">Surrender</button></div></section></div>'+
       '</aside>'+
     '</main></div>';
-    prepareRenderedImages(root);
+    v628BindHeroExpStackGeometry();
+    v628SyncHeroExpStackGeometry(root);
+    prepareRenderedImages(root).then(function(){v628SyncHeroExpStackGeometry(root);});
     bindDynamicButtons();
     bindLocalMobileHandScroll();
     restoreLocalMobileHandScroll(savedMobileHandScroll);

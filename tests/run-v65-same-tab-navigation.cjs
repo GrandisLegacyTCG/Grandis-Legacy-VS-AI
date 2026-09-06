@@ -1,7 +1,7 @@
 'use strict';
 const fs=require('fs'),assert=require('assert');
 const app=fs.readFileSync('js/app.bundle.js','utf8');
-assert.ok(app.includes('Grandis Legacy VS AI v6.27'),'VS AI v6.23 marker missing');
+assert.ok(app.includes('Grandis Legacy VS AI v6.28'),'VS AI v6.23 marker missing');
 assert.ok(app.includes('href="https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/"'),'Deck Builder Style 1 route missing');
 assert.ok(app.includes('href="https://grandislegacytcg.github.io/pvp/"'),'Public PvP route missing');
 assert.ok(!/aiLobbyDeckBuilderButton[^>]*target=["']_blank["']/.test(app),'Deck Builder still opens a new tab');

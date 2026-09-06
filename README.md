@@ -1,3 +1,5 @@
-# Grandis Legacy VS AI v6.27 + Tutorial v0.53
+# Grandis Legacy VS AI v6.28 + Tutorial v0.54
 
-Visual-only EXP presentation update. Tribute EXP Cards now render as physical `100 EXP` / `200 EXP` strips in a permanently reserved four-slot rail to the right of each active Hero. The rail reads exact `hero.exp_cards` instances, follows the Hero during Reposition, updates when EXP Cards are removed, and clears automatically when Rank Up/defeat cleanup clears the EXP stack. Gameplay authority remains unchanged: VS AI stays on Source Stack v1.7.4; Tutorial stays on its prior VS AI v6.24 / Source Stack v1.7.3 gameplay baseline.
+EXP presentation correction only. The four-slot Tribute EXP rail remains permanently reserved to the right of each Hero, but now uses one transparent `Stack 100-200EXP.png` sprite and matches the actual visible Hero artwork height exactly. Gameplay authority remains unchanged on Source Stack v1.7.4.
+
+See `release/RELEASE_NOTE_v6.28_v0.54.md` and `release/VERIFICATION_v6.28_v0.54.md`.

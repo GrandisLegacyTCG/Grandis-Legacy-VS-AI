@@ -1,3 +1,1 @@
-# Current Release
-
-See `RELEASE_NOTE_v6.27_v0.53.md` and `VERIFICATION_v6.27_v0.53.md`. Historical release files are under `history/`.
+Current release: `RELEASE_NOTE_v6.28_v0.54.md` and `VERIFICATION_v6.28_v0.54.md`. Historical release files are under `history/`.

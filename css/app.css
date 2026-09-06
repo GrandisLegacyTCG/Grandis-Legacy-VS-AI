@@ -6195,15 +6195,16 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
   .v96-app .hero-row--player .hero-lane.legacy-slot{grid-template-rows:minmax(0,1fr) 22px!important}
 }
 
-/* VS AI v6.27 / Tutorial v0.53 — physical Tribute EXP stack.
-   Structural layout: Hero card + a permanently reserved 4-slot EXP rail.
-   The rail reads hero.exp_cards directly, so Rank Up/defeat/scouting cleanup
-   automatically clears or removes the corresponding physical EXP strips. */
+/* VS AI v6.28 / Tutorial v0.54 — clean physical Tribute EXP stack.
+   Structural layout: Hero card + permanently reserved 4-slot EXP rail.
+   One transparent master sprite (Stack 100-200EXP.png) is sliced per slot.
+   JS measures the actual contained Hero artwork height, so the EXP rail matches
+   the visible Hero card rather than the taller button/object-fit letterbox. */
 .v96-app .hero-card-composition{
   display:grid!important;
   grid-template-columns:max-content 28px!important;
   grid-template-rows:minmax(0,max-content)!important;
-  align-items:stretch!important;
+  align-items:center!important;
   justify-content:center!important;
   gap:0!important;
   max-width:100%!important;
@@ -6218,14 +6219,14 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
 .v96-app .hero-exp-stack{
   grid-column:2!important;
   grid-row:1!important;
-  align-self:stretch!important;
+  align-self:center!important;
   display:grid!important;
   grid-template-columns:repeat(4,7px)!important;
   grid-template-rows:1fr!important;
   width:28px!important;
   min-width:28px!important;
   max-width:28px!important;
-  height:auto!important;
+  height:var(--gl-exp-stack-height,100%)!important;
   min-height:0!important;
   margin:0!important;
   padding:0!important;
@@ -6244,19 +6245,11 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
   padding:0!important;
   border:0!important;
   overflow:visible!important;
-  background:transparent!important;
+  background-color:transparent!important;
+  background-image:url("../assets/exp/Stack 100-200EXP.png")!important;
+  background-repeat:no-repeat!important;
+  background-size:200% 100%!important;
+  background-position:left center!important;
 }
-.v96-app .hero-exp-slot.is-empty{visibility:hidden!important}
-.v96-app .hero-exp-slot>img{
-  display:block!important;
-  width:100%!important;
-  height:100%!important;
-  max-width:none!important;
-  max-height:none!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:0!important;
-  object-fit:fill!important;
-  object-position:center!important;
-}
+.v96-app .hero-exp-slot[data-exp-value="200"]{background-position:right center!important}
+.v96-app .hero-exp-slot.is-empty{visibility:hidden!important;background-image:none!important}

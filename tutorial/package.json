@@ -1,8 +1,8 @@
 {
   "name": "grandis-legacy-tutorial",
-  "version": "0.53.0",
+  "version": "0.54.0",
   "private": true,
-  "description": "Grandis Legacy Tutorial v0.53 — physical 4-slot Tribute EXP stack visualization; gameplay baseline unchanged.",
+  "description": "Grandis Legacy Tutorial v0.54 \u2014 clean transparent 4-slot Tribute EXP sprite rail synchronized to visible Hero-card height; gameplay baseline unchanged.",
   "scripts": {
     "build:data": "node ../tools/build-static-data.cjs",
     "metadata": "node ../tools/update-release-metadata.cjs",

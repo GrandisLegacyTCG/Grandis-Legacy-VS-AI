@@ -2,9 +2,9 @@
   "version": "v2.52",
   "schema_version": "2.52-consumer",
   "policy": "RUNTIME_FIRST_FAIL_CLOSED_SYNC",
-  "application": "VS AI v6.27",
-  "local_ai": "v6.27",
-  "tutorial": "v0.53",
+  "application": "VS AI v6.28",
+  "local_ai": "v6.28",
+  "tutorial": "v0.54",
   "pvp_reference": "v3.38",
   "canonical_registry_hash": "eb89ea56f2351f093fffbd7f7e47628f1cf0cd2b793c6efdfb82c9c9e798b868",
   "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
@@ -23,11 +23,11 @@
   "response_commit_payment_framework": "v1.0",
   "starter60": "v1.4",
   "ui_design_lock": "v2.49",
-  "shared_gameplay_sha256": "a558ba9494e6f8aa7922a577a7f4f7451e754e70b3b40df88f38c446fa7da69c",
+  "shared_gameplay_sha256": "30d4a05e439755e79019b1d28656c1a0586714b1a35ed08694aaebab7db20269",
   "runtime_authority_sha256": "17d0f1b31c0c1530f9b19da2569d152a2ede1c046ef7656d5a5ba5a54a48b8fb",
   "runtime_source_browser_sha256": "17d0f1b31c0c1530f9b19da2569d152a2ede1c046ef7656d5a5ba5a54a48b8fb",
-  "static_data_sha256": "d4be3c2f3108025f5d976c610fda41dfbc1027058bf4fa4b342449d645434efb",
-  "shared_ui_css_sha256": "bf67e3c74944389a7a16f8bc72363ebd37f086a4c6ec27cc720c4d2041a90960",
+  "static_data_sha256": "0b76c89c7038bdcbef9d01fabad10f1e0a36949d81158bd69c317b611f725ab1",
+  "shared_ui_css_sha256": "fa8a0f6867f45bf433f516705fd65b4ce2f07126bf0fc888b90943788e14aa41",
   "mobile_app_nav_sha256": "5be991d8083c56f744f4499eb0f86031968d178dc55f5aacf8bcfcea3f6586d6",
   "audio_assets": {
     "coin_flip": {
@@ -40,20 +40,20 @@
     }
   },
   "exp_stack_assets": {
-    "exp_100": {
-      "path": "assets/exp/Stack-100-EXP.png",
-      "sha256": "d8e6fa2d6df0a7540773bf562d14bdc1946cbe5882ed352e8b9251efcf85080e"
-    },
-    "exp_200": {
-      "path": "assets/exp/Stack-200-EXP.png",
-      "sha256": "bfc8b200fd6bd7fd0eb8950b038ebd9766de825ce9610a5cc4bfce2dbb9ecac0"
+    "master": {
+      "path": "assets/exp/Stack 100-200EXP.png",
+      "sha256": "cadec62c02c8427f13e07490068b31de1f59643a220a5fa0540fd01a16e2250b",
+      "sprite_halves": {
+        "left": 100,
+        "right": 200
+      }
     }
   },
   "consumerAdoptionStatus": {
     "currentApplicationsRebuiltInThisDelivery": true,
-    "currentAI": "VS AI v6.27",
+    "currentAI": "VS AI v6.28",
     "currentPvP": "PvP v3.38 authoritative consumer",
-    "currentTutorial": "Tutorial v0.53 GitHub Pages (visual-only EXP stack update)",
+    "currentTutorial": "Tutorial v0.54 GitHub Pages (visual-only EXP stack update)",
     "revisedSeason1": "ADOPTED",
     "heroComponents": "ADOPTED",
     "responseCommitPaymentFramework": "ADOPTED"
