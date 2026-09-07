@@ -1,4 +1,4 @@
-/* Grandis Legacy shared gameplay application v3.1 — Tutorial v0.55 / VS AI v6.24.
+/* Grandis Legacy shared gameplay application v3.1 — Tutorial v0.56 / VS AI v6.24.
    One Source Authority v1.7.3 + Runtime Foundation v1.89 / Runtime Core v0.57 / Runtime Data v0.14.2.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
@@ -6,7 +6,7 @@
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
   var IS_TUTORIAL_APP=GL_APP_MODE==='TUTORIAL';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.22 · VS AI v6.24 Battlefield · One Source v1.7.3 · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.55 GitHub Pages · VS AI v6.24 Base · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57':'Grandis Legacy VS AI v6.24 · Shared Gameplay Bundle v3.1 · One Source v1.7.3 · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57');
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.22 · VS AI v6.24 Battlefield · One Source v1.7.3 · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.56 GitHub Pages · VS AI v6.24 Base · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57':'Grandis Legacy VS AI v6.24 · Shared Gameplay Bundle v3.1 · One Source v1.7.3 · Runtime Data v0.14.2 · Foundation v1.89 · Core v0.57');
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
@@ -6068,9 +6068,17 @@ function getActivatedHeroAbilities(state, side, lane){
       var rail=composition.querySelector('.hero-exp-stack');
       if(!img||!rail)return;
       var boxW=Number(img.clientWidth||img.offsetWidth||0),boxH=Number(img.clientHeight||img.offsetHeight||0);
-      var naturalW=Number(img.naturalWidth||0),naturalH=Number(img.naturalHeight||0),visibleH=boxH;
-      if(boxW>0&&boxH>0&&naturalW>0&&naturalH>0)visibleH=Math.min(boxH,boxW*(naturalH/naturalW));
-      if(visibleH>0)rail.style.setProperty('--gl-exp-stack-height',String(Math.round(visibleH*100)/100)+'px');
+      var naturalW=Number(img.naturalWidth||0),naturalH=Number(img.naturalHeight||0),visibleH=boxH,visibleW=boxW;
+      if(boxW>0&&boxH>0&&naturalW>0&&naturalH>0){
+        visibleH=Math.min(boxH,boxW*(naturalH/naturalW));
+        visibleW=Math.min(boxW,boxH*(naturalW/naturalH));
+      }
+      if(visibleH>0){
+        var exhaustScale=.86, exhaustedWidth=visibleH*exhaustScale, exhaustedHalfHeight=(visibleW*exhaustScale)/2;
+        rail.style.setProperty('--gl-exp-stack-height',String(Math.round(visibleH*100)/100)+'px');
+        rail.style.setProperty('--gl-exp-exhausted-stack-width',String(Math.round(exhaustedWidth*100)/100)+'px');
+        rail.style.setProperty('--gl-exp-exhausted-half-height',String(Math.round(exhaustedHalfHeight*100)/100)+'px');
+      }
     });
   }
   function v628BindHeroExpStackGeometry(){

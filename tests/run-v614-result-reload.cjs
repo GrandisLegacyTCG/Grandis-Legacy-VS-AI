@@ -3,7 +3,7 @@ const assert=require('assert');
 const app=fs.readFileSync('js/app.bundle.js','utf8');
 const index=fs.readFileSync('index.html','utf8');
 const pkg=require('../package.json');
-assert.strictEqual(pkg.version,'6.29.0');
+assert.strictEqual(pkg.version,'6.30.0');
 assert(app.includes('var GL_RESULT_SILENT_RELOAD=false;'),'silent result reload flag missing');
 assert(/function returnToLobbyAfterGameResult\(\)\{[\s\S]{0,500}GL_RESULT_SILENT_RELOAD=true;[\s\S]{0,300}matchStarted=false;[\s\S]{0,300}window\.location\.reload\(\);/.test(app),'Game Result return must use silent same-page reload');
 assert(app.includes("if(GL_RESULT_SILENT_RELOAD||!isActiveNormalVsMatch())return;"),'beforeunload must bypass intentional finished-match reload');

@@ -13,4 +13,4 @@ for(const base of [root,path.join(root,'tutorial')]){
   assert.ok(css.includes('grid-template-columns:max-content 28px!important'),'outer composition must reserve the four-slot EXP width before Tribute');
   assert.ok(app.includes("</button>'+expStack+'</div>'+health+'</div>"),'HP overlay must remain outside the rotating physical stack');
 }
-console.log('PASS VS AI v6.29 / Tutorial v0.55: Hero artwork + EXP rail rotate as one physical stack on Exhaust; HP/status presentation remains upright.');
+console.log('PASS VS AI v6.30 / Tutorial v0.56: Hero artwork + EXP rail rotate as one physical stack on Exhaust; HP/status presentation remains upright.');

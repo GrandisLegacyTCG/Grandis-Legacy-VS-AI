@@ -6188,11 +6188,12 @@ body.deck-setup-active{
   .v96-app .hero-row--player .hero-lane.legacy-slot{grid-template-rows:minmax(0,1fr) 22px!important}
 }
 
-/* VS AI v6.29 / Tutorial v0.55 — physical Tribute EXP stack follows Hero Exhaust.
-   Structural rule: the Hero artwork and its 4-slot EXP rail live in one physical
-   stack transform group. Exhaust rotates that group as one unit while HP/status
-   UI stays upright. The outer composition still reserves all 28px of EXP width
-   from the start, so Tribute never shifts the battlefield layout. */
+/* VS AI v6.30 / Tutorial v0.56 — orientation-aware physical Tribute EXP stack.
+   Ready: the four fixed EXP card edges live on the Hero's right edge.
+   Exhausted: the Hero artwork rotates independently and the same four EXP card
+   instances move to the Hero's upper edge, stacked bottom-to-top (oldest/slot 1
+   nearest the Hero, slot 4 furthest upward). HP/status UI stays upright.
+   The outer composition continues to reserve the full 28px EXP capacity. */
 .v96-app .hero-card-composition{
   display:grid!important;
   grid-template-columns:max-content 28px!important;
@@ -6219,19 +6220,32 @@ body.deck-setup-active{
   margin:0!important;
   padding:0!important;
   overflow:visible!important;
-  transform-origin:center center!important;
-  transition:transform .28s cubic-bezier(.2,.75,.2,1),filter .28s ease!important;
 }
 .v96-app .hero-card-physical-stack>.hero-card.hero-main{
   grid-area:1/1!important;
   margin:0!important;
+  transform-origin:center center!important;
+  transition:transform .28s cubic-bezier(.2,.75,.2,1),filter .28s ease!important;
 }
-.v96-app .hero-card-physical-stack.is-exhausted{
+.v96-app .hero-card-physical-stack.is-ready>.hero-card.hero-main{
+  transform:none!important;
+  filter:none!important;
+}
+.v96-app .hero-card-physical-stack.is-exhausted>.hero-card.hero-main{
   transform:rotate(-90deg) scale(.86)!important;
   filter:saturate(.72) brightness(.84)!important;
 }
 .v96-app .hero-card-physical-stack>.hero-exp-stack{
   position:absolute!important;
+  margin:0!important;
+  padding:0!important;
+  gap:0!important;
+  overflow:visible!important;
+  pointer-events:none!important;
+  z-index:20!important;
+}
+/* READY: four physical card edges on the right side. */
+.v96-app .hero-card-physical-stack.is-ready>.hero-exp-stack{
   left:100%!important;
   top:50%!important;
   transform:translateY(-50%)!important;
@@ -6243,32 +6257,71 @@ body.deck-setup-active{
   max-width:28px!important;
   height:var(--gl-exp-stack-height,100%)!important;
   min-height:0!important;
-  margin:0!important;
-  padding:0!important;
-  gap:0!important;
-  overflow:visible!important;
-  pointer-events:none!important;
-  z-index:20!important;
+}
+/* EXHAUSTED: card edges move to the upper edge and stack bottom -> top.
+   flex column-reverse intentionally places DOM slot 1 nearest the Hero. */
+.v96-app .hero-card-physical-stack.is-exhausted>.hero-exp-stack{
+  left:50%!important;
+  top:auto!important;
+  bottom:calc(50% + var(--gl-exp-exhausted-half-height,0px))!important;
+  transform:translateX(-50%)!important;
+  display:flex!important;
+  flex-direction:column-reverse!important;
+  width:var(--gl-exp-exhausted-stack-width,100px)!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:28px!important;
+  min-height:28px!important;
+  max-height:28px!important;
 }
 .v96-app .hero-exp-slot{
+  position:relative!important;
   display:block!important;
-  width:7px!important;
-  min-width:7px!important;
-  height:100%!important;
-  min-height:0!important;
   margin:0!important;
   padding:0!important;
   border:0!important;
   overflow:visible!important;
+  background:none!important;
+}
+.v96-app .hero-card-physical-stack.is-ready .hero-exp-slot{
+  width:7px!important;
+  min-width:7px!important;
+  height:100%!important;
+  min-height:0!important;
+}
+.v96-app .hero-card-physical-stack.is-exhausted .hero-exp-slot{
+  width:100%!important;
+  min-width:0!important;
+  height:7px!important;
+  min-height:7px!important;
+  flex:0 0 7px!important;
+}
+/* The master sprite stays vertical. On Exhaust each edge is physically rotated
+   into a horizontal strip while preserving the exact 100/200 half selection. */
+.v96-app .hero-exp-slot::before{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:7px!important;
+  height:var(--gl-exp-stack-height,100%)!important;
+  transform:translate(-50%,-50%)!important;
+  transform-origin:center center!important;
   background-color:transparent!important;
   background-image:url("../assets/exp/Stack 100-200EXP.png")!important;
   background-repeat:no-repeat!important;
   background-size:200% 100%!important;
   background-position:left center!important;
 }
-.v96-app .hero-exp-slot[data-exp-value="200"]{background-position:right center!important}
-.v96-app .hero-exp-slot.is-empty{visibility:hidden!important;background-image:none!important}
+.v96-app .hero-exp-slot[data-exp-value="200"]::before{background-position:right center!important}
+.v96-app .hero-card-physical-stack.is-exhausted .hero-exp-slot::before{
+  height:var(--gl-exp-exhausted-stack-width,100px)!important;
+  transform:translate(-50%,-50%) rotate(-90deg)!important;
+}
+.v96-app .hero-exp-slot.is-empty{visibility:hidden!important}
+.v96-app .hero-exp-slot.is-empty::before{background-image:none!important}
 @media (prefers-reduced-motion:reduce){
-  .v96-app .hero-card-physical-stack{transition:none!important}
+  .v96-app .hero-card-physical-stack>.hero-card.hero-main{transition:none!important}
+}
 }
 

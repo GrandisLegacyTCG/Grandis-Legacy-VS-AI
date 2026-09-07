@@ -1,8 +1,8 @@
 {
   "name": "grandis-legacy-tutorial",
-  "version": "0.55.0",
+  "version": "0.56.0",
   "private": true,
-  "description": "Grandis Legacy Tutorial v0.55 \u2014 4-slot Tribute EXP rail now rotates with the Hero on Exhaust while HP/status UI remains upright; gameplay baseline unchanged.",
+  "description": "Grandis Legacy Tutorial v0.56 \u2014 Exhausted Tribute EXP cards now move to the Hero upper edge and stack bottom-to-top while Ready EXP remains on the right; gameplay baseline unchanged.",
   "scripts": {
     "build:data": "node ../tools/build-static-data.cjs",
     "metadata": "node ../tools/update-release-metadata.cjs",

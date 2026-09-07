@@ -13,9 +13,9 @@ for(const base of [root,path.join(root,'tutorial')]){
   assert.ok(css.includes('grid-template-columns:repeat(4,7px)!important'),'EXP rail must expose exactly four fixed slots');
   assert.ok(css.includes('height:var(--gl-exp-stack-height,100%)!important'),'EXP rail must consume synchronized visible-Hero height');
   assert.ok(css.includes('Stack 100-200EXP.png')&&css.includes('background-size:200% 100%!important'),'single 100/200 EXP master sprite slicing missing');
-  assert.ok(css.includes('.hero-exp-slot[data-exp-value="200"]{background-position:right center!important}'),'200 EXP sprite half mapping missing');
+  assert.ok(css.includes('.hero-exp-slot[data-exp-value="200"]::before{background-position:right center!important}'),'200 EXP sprite half mapping missing');
   assert.ok(!css.includes('.hero-exp-slot>img'),'old stretched IMG implementation remains');
   assert.ok(fs.existsSync(path.join(base,'assets/exp/Stack 100-200EXP.png')),'master EXP sprite missing');
   assert.ok(!fs.existsSync(path.join(base,'assets/exp/Stack-100-EXP.png'))&&!fs.existsSync(path.join(base,'assets/exp/Stack-200-EXP.png')),'old split EXP assets must be removed');
 }
-console.log('PASS VS AI v6.29 / Tutorial v0.55: transparent master 100/200 EXP sprite, fixed four-slot rail, and rail height synchronized to the visible Hero artwork.');
+console.log('PASS VS AI v6.30 / Tutorial v0.56: transparent master 100/200 EXP sprite, fixed four-slot rail, and rail height synchronized to the visible Hero artwork.');
