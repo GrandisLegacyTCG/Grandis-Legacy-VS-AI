@@ -1,5 +1,5 @@
 {
   "type": "commonjs",
-  "version": "1.89.0",
-  "description": "Grandis Legacy Runtime Core v0.57 packaged with Runtime Foundation v1.89; Season 1 Hero HP authority refresh."
+  "version": "1.91.0",
+  "description": "Grandis Legacy Runtime Core v0.59 packaged with Runtime Foundation v1.91; manual Reposition once-per-active-turn authority."
 }

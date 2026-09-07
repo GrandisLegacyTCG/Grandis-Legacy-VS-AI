@@ -117,10 +117,10 @@ for (const appRoot of [root, path.join(root, 'tutorial')]) {
 }
 const vsReducerSource = fs.readFileSync(path.join(root, 'runtime-source/runtime/core/reducer.js'), 'utf8');
 const tutorialReducerSource = fs.readFileSync(path.join(root, 'tutorial/runtime-source/runtime/core/reducer.js'), 'utf8');
-assert.ok(vsReducerSource.includes('CONFIRM_RESPONSE_PAYMENT') && vsReducerSource.includes('response_payment'), 'VS AI v6.30 Response commit/payment reducer framework missing');
-assert.ok(!tutorialReducerSource.includes('CONFIRM_RESPONSE_PAYMENT'), 'Tutorial v0.56 must remain on its prior response lifecycle in this delivery');
-const tutorialData = JSON.parse(fs.readFileSync(path.join(root, 'tutorial/data/season1/cards.runtime.v0.14.2.json'), 'utf8'));
-assert.strictEqual(tutorialData.canonical_registry_hash, '5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c', 'Tutorial v0.56 source baseline changed unexpectedly');
+assert.ok(vsReducerSource.includes('CONFIRM_RESPONSE_PAYMENT') && vsReducerSource.includes('response_payment'), 'VS AI v6.31 Response commit/payment reducer framework missing');
+assert.ok(tutorialReducerSource.includes('CONFIRM_RESPONSE_PAYMENT') && tutorialReducerSource.includes('response_payment'), 'Tutorial v0.57 must share the Response commit/payment reducer framework');
+const tutorialData = JSON.parse(fs.readFileSync(path.join(root, 'tutorial/data/season1/cards.runtime.v0.14.3.json'), 'utf8'));
+assert.strictEqual(tutorialData.canonical_registry_hash, 'eb89ea56f2351f093fffbd7f7e47628f1cf0cd2b793c6efdfb82c9c9e798b868', 'Tutorial v0.57 must use the shared v1.7.5 canonical registry');
 
 for (const appRoot of [root, path.join(root, 'tutorial')]) {
   const starterRoot = path.join(appRoot, 'starter_deck_examples');
@@ -146,9 +146,9 @@ const authorityMirrors = [
   ['data/season1/cards.runtime.v0.14.3.json','runtime-source/data/season1/cards.runtime.v0.14.3.json'],
   ['data/season1/effect-recipes.runtime.v0.13.3.json','runtime-source/data/season1/effect-recipes.runtime.v0.13.3.json'],
   ['data/season1/legality-map.runtime.v0.11.10.json','runtime-source/data/season1/legality-map.runtime.v0.11.10.json'],
-  ['tutorial/data/season1/cards.runtime.v0.14.2.json','tutorial/runtime-source/data/season1/cards.runtime.v0.14.2.json'],
-  ['tutorial/data/season1/effect-recipes.runtime.v0.13.2.json','tutorial/runtime-source/data/season1/effect-recipes.runtime.v0.13.2.json'],
-  ['tutorial/data/season1/legality-map.runtime.v0.11.9.json','tutorial/runtime-source/data/season1/legality-map.runtime.v0.11.9.json']
+  ['tutorial/data/season1/cards.runtime.v0.14.3.json','tutorial/runtime-source/data/season1/cards.runtime.v0.14.3.json'],
+  ['tutorial/data/season1/effect-recipes.runtime.v0.13.3.json','tutorial/runtime-source/data/season1/effect-recipes.runtime.v0.13.3.json'],
+  ['tutorial/data/season1/legality-map.runtime.v0.11.10.json','tutorial/runtime-source/data/season1/legality-map.runtime.v0.11.10.json']
 ];
 for (const [current, mirror] of authorityMirrors) {
   assert.deepStrictEqual(

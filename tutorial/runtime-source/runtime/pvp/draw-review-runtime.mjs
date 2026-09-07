@@ -64,19 +64,22 @@ function updateDrawCounterCastings(state, side, cardsById) {
   for (const pending of state.pendingCastings) {
     if (!pending || pending.side !== side) continue;
     const card = cardsById[pending.card_id] || {};
+    // Runtime Data v0.14.x exposes executable fields at the card root. Keep the
+    // older nested `rules` shape as a compatibility fallback, but never require it.
     const rules = card.rules || {};
-    const legality = rules.legality || {};
-    const execution = rules.execution || {};
-    const lifecycle = execution.lifecycle || {};
-    const attachmentPolicy = execution.attachment_policy || lifecycle.attachment_policy || {};
-    const staging = legality.staging || lifecycle.staging || {};
-    const effects = Array.isArray(execution.effects) ? execution.effects : [];
-    const tags = Array.isArray(legality.runtime_tags) ? legality.runtime_tags : String(legality.runtime_tags || '').split(/[;,\s]+/).filter(Boolean);
+    const legality = rules.legality || card.runtime_legality || card.legality || {};
+    const execution = rules.execution || card.canonical_execution || card.execution || {};
+    const lifecycle = card.lifecycle || execution.lifecycle || {};
+    const attachmentPolicy = card.attachment_policy || execution.attachment_policy || lifecycle.attachment_policy || {};
+    const staging = card.staging || legality.staging || lifecycle.staging || {};
+    const effects = Array.isArray(card.effects) ? card.effects : (Array.isArray(execution.effects) ? execution.effects : []);
+    const rawTags = card.runtime_tags !== undefined ? card.runtime_tags : legality.runtime_tags;
+    const tags = Array.isArray(rawTags) ? rawTags : String(rawTags || '').split(/[;,\s]+/).filter(Boolean);
     const drawCounterEffect = effects.find((effect) => effect && effect.kind === 'pending_casting_draw_counter') || null;
     const isDrawCounter = attachmentPolicy.role === 'draw_counter_casting' || tags.includes('DRAW_COUNTER_CASTING') || Boolean(drawCounterEffect);
     if (!isDrawCounter) continue;
     pending.counters = Number(pending.counters || 0) + 1;
-    const required = Number((drawCounterEffect && drawCounterEffect.counters_required) || staging.counters_required || execution.casting_delay && execution.casting_delay.remaining_count_on_entry || attachmentPolicy.remaining_count || 5);
+    const required = Number((drawCounterEffect && drawCounterEffect.counters_required) || staging.counters_required || (card.casting_delay || execution.casting_delay) && (card.casting_delay || execution.casting_delay).remaining_count_on_entry || attachmentPolicy.remaining_count || 5);
     if (Array.isArray(state.activeAttachments)) {
       for (const attachment of state.activeAttachments) {
         if (attachment && attachment.side === pending.side && attachment.lane === pending.source_lane && Number(attachment.slot) === Number(pending.attachmentSlot) && attachment.card_id === pending.card_id) {

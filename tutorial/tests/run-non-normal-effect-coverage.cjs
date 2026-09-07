@@ -3,11 +3,11 @@ const fs=require('fs');
 const path=require('path');
 const assert=require('assert');
 const root=path.resolve(__dirname,'..');
-const data=require(path.join(root,'data/season1/cards.runtime.v0.14.2.json'));
-const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.13.2.json'));
-const legality=require(path.join(root,'data/season1/legality-map.runtime.v0.11.9.json'));
+const data=require(path.join(root,'data/season1/cards.runtime.v0.14.3.json'));
+const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.13.3.json'));
+const legality=require(path.join(root,'data/season1/legality-map.runtime.v0.11.10.json'));
 const preview=require(path.join(root,'data/season1/card-preview.generated.v1.5.0.json'));
-const H='5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c';
+const H='eb89ea56f2351f093fffbd7f7e47628f1cf0cd2b793c6efdfb82c9c9e798b868';
 for(const doc of [data,recipes,legality,preview]){
   assert.strictEqual(doc.canonical_registry_hash,H,'canonical registry hash');
   assert.strictEqual(doc.count,198,'198 record parity');

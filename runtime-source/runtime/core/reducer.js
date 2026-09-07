@@ -5560,6 +5560,15 @@ function resolvePending(state, intent) {
   return { state: appendEvents(next, events), events, errors: [] };
 }
 
+function manualRepositionTurnKey(state, playerId) {
+  return `${Number(state && state.round || 1)}|${String(playerId || state && state.active_player_id || '')}`;
+}
+
+function manualRepositionUsedThisTurn(state, playerId) {
+  const player = getPlayer(state, playerId);
+  return !!(player && player.manual_reposition_used_turn_key === manualRepositionTurnKey(state, playerId));
+}
+
 function repositionAction(state, intent) {
   if (state.active_player_id !== intent.player_id) return { state, events: [], errors: ['Only active player may reposition.'] };
   if (![PHASES.DEPLOY, PHASES.REFORM].includes(state.phase)) return { state, events: [], errors: ['Reposition is only legal during Deploy or Reform Phase unless a card effect allows it.'] };
@@ -5567,9 +5576,11 @@ function repositionAction(state, intent) {
   const secondSlot = intent.second_slot || intent.payload && intent.payload.second_slot;
   const player = getPlayer(state, intent.player_id);
   if (!player) return { state, events: [], errors: [`Unknown player ${intent.player_id}`] };
+  if (manualRepositionUsedThisTurn(state, intent.player_id)) return { state, events: [], errors: ['Manual Reposition can be used at most once during one active turn. Deploy and Reform share this limit.'] };
   const moved = repositionSlots(player.board, firstSlot, secondSlot);
   if (!moved.ok) return { state, events: [], errors: moved.errors };
-  const next = updatePlayer(state, intent.player_id, current => Object.assign({}, current, { board: moved.board }));
+  const turnKey = manualRepositionTurnKey(state, intent.player_id);
+  const next = updatePlayer(state, intent.player_id, current => Object.assign({}, current, { board: moved.board, manual_reposition_used_turn_key: turnKey }));
   const events = [];
   if (!moved.no_op) remapHeroHostedAttachmentsForSlotSwap(next.players[intent.player_id], normalizeSlotKey(firstSlot), normalizeSlotKey(secondSlot), events, next, intent.player_id);
   events.push(
@@ -6364,7 +6375,7 @@ function getLegalActions(state, playerId) {
       if ((cls === 'paladin' || cls === 'crusader') && state.phase === PHASES.DEPLOY && !slotState.hero.exhausted && !heroHasStatus(slotState, 'Stun') && slotState.hero.hero_ability_used_turn !== racialTraitTurnKey(state) && Number(player.mana_pool || 0) >= 1 && hasLegalHealTarget) actions.push({ type: 'USE_ABILITY', player_id: playerId, source_slot: slot, ability_name: cls === 'crusader' ? 'Radiant Oblivion' : 'Holy Resurgence' });
     }
   }
-  if ([PHASES.DEPLOY, PHASES.REFORM].includes(state.phase)) actions.push({ type: 'REPOSITION', player_id: playerId });
+  if ([PHASES.DEPLOY, PHASES.REFORM].includes(state.phase) && !manualRepositionUsedThisTurn(state, playerId)) actions.push({ type: 'REPOSITION', player_id: playerId });
   actions.push({ type: 'NEXT_PHASE', player_id: playerId });
   actions.push({ type: 'SURRENDER', player_id: playerId });
   return actions;

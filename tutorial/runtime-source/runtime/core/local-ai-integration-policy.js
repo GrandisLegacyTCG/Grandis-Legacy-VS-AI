@@ -45,24 +45,6 @@ function normalizeSelfHostedAttachmentIntent(card, action) {
   return normalized;
 }
 
-function beginChildResponseChoice(parentFrame, childChoice) {
-  if (!parentFrame || !parentFrame.response_window_token) {
-    throw new Error('A committed parent response frame with response_window_token is required.');
-  }
-  const child = clone(childChoice || {}) || {};
-  child.parent_response_token = parentFrame.response_window_token;
-  child.parent_response_hidden = true;
-  child.parent_response_preserved = true;
-  return child;
-}
-
-function resumeParentResponseChoice(parentFrame, childChoice) {
-  if (!parentFrame || !childChoice) return false;
-  if (!parentFrame.response_window_token || !childChoice.parent_response_token) return false;
-  return parentFrame.response_window_token === childChoice.parent_response_token &&
-    childChoice.parent_response_preserved === true;
-}
-
 function inherentRankExp(rank) {
   const n = Number(rank || 1);
   if (n >= 3) return 700;
@@ -82,8 +64,6 @@ module.exports = {
   SELF_HOSTED_PERSISTENT_ITEM_IDS,
   isSelfHostedPersistentItem,
   normalizeSelfHostedAttachmentIntent,
-  beginChildResponseChoice,
-  resumeParentResponseChoice,
   inherentRankExp,
   resetExpStackToRankFloor
 };

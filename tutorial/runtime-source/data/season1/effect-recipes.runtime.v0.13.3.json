@@ -1,8 +1,8 @@
 {
   "schema_version": "1.5.0",
-  "generated_at": "2026-08-29",
+  "generated_at": "2026-09-05",
   "generated_from": "src/data/season1/cards.canonical.v1.5.0.json",
-  "canonical_registry_hash": "5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c",
+  "canonical_registry_hash": "eb89ea56f2351f093fffbd7f7e47628f1cf0cd2b793c6efdfb82c9c9e798b868",
   "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
   "generated_only": true,
   "count": 198,
@@ -25441,7 +25441,7 @@
       "name": "Spectral Grappling Hook",
       "card_family": "Item",
       "card_subtype": "Item",
-      "canonical_hash": "00e0cb151cb8ff92943e4a3a7abc5450136b1a80aaae432c2d9c5383ec8c9bd1",
+      "canonical_hash": "076df28dfa6924738bedada30b5f8f25ee25a35a6b0005d5eec1bb8ff94dffad",
       "timing": {
         "phase_or_window": "Battle Phase",
         "default_policy": "Deploy/Reform by default; card-specific timing overrides",
@@ -25452,7 +25452,7 @@
       },
       "cost": {
         "kind": "none",
-        "payment_timing": "after response legality validation and controller discard selection",
+        "payment_timing": "Response commits on Confirm Response; all additional card costs are paid in a mandatory payment step before counter-response priority opens",
         "additional_costs": [
           {
             "kind": "discard_from_hand",
@@ -25461,7 +25461,7 @@
             "selection": "controller_selects_exact_card_instance"
           }
         ],
-        "validation_failure_rule": "no discard; Spectral Grappling Hook remains in hand if no legal selected other card"
+        "validation_failure_rule": "Response is unavailable before Confirm if its required additional card cost cannot be paid; after Confirm, payment is mandatory and cannot be canceled"
       },
       "cost_mana": null,
       "cost_display": "No Mana cost + Discard 1 other card from Hand",
@@ -25619,8 +25619,20 @@
           "count": 1,
           "exclude_self": true,
           "selection": "controller_selects_exact_card_instance",
-          "must_be_paid_before_response_is_committed": true
-        }
+          "response_commits_on_confirm": true,
+          "payment_step_is_response_window": false,
+          "payment_is_mandatory_after_commit": true,
+          "must_be_paid_before_counter_response_priority": true,
+          "paid_costs_not_refunded_if_response_is_canceled": true
+        },
+        "interaction_flow": [
+          "Runtime opens the matching Response Window and verifies the affected Hero and host-lineage legality.",
+          "Before offering Spectral Grappling Hook, verify that the controller has at least 1 other exact card instance in Hand to pay its additional discard cost.",
+          "Confirm Response commits Spectral Grappling Hook and closes the current Response Window.",
+          "Resolve a separate mandatory payment step and choose exactly 1 other card in Hand to discard. Spectral Grappling Hook cannot pay for itself.",
+          "After payment completes, open a new Response Window for any legal counter-response.",
+          "If no counter stops it, Spectral Grappling Hook Dodges the incoming Attack for the current affected Hero. Paid costs are not refunded if it is later canceled."
+        ]
       },
       "raw_locked_definition": {
         "card_id": "S1-ITM-012",
@@ -25669,7 +25681,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "00e0cb151cb8ff92943e4a3a7abc5450136b1a80aaae432c2d9c5383ec8c9bd1",
+        "canonical_hash": "076df28dfa6924738bedada30b5f8f25ee25a35a6b0005d5eec1bb8ff94dffad",
         "class_group": "Neutral",
         "timing": {
           "phase_or_window": "Battle Phase",
@@ -25711,8 +25723,8 @@
             "exclude_self": true,
             "selection": "controller_selects_exact_card_instance"
           },
-          "payment_timing": "after response legality validation and controller discard selection",
-          "validation_failure_rule": "no discard; Spectral Grappling Hook remains in hand if no legal selected other card"
+          "payment_timing": "Response commits on Confirm Response; all additional card costs are paid in a mandatory payment step before counter-response priority opens",
+          "validation_failure_rule": "Response is unavailable before Confirm if its required additional card cost cannot be paid; after Confirm, payment is mandatory and cannot be canceled"
         },
         "response_window": "Battle Phase Battle Phase Battle Phase",
         "requirement": {
@@ -25847,8 +25859,20 @@
           "count": 1,
           "exclude_self": true,
           "selection": "controller_selects_exact_card_instance",
-          "must_be_paid_before_response_is_committed": true
+          "response_commits_on_confirm": true,
+          "payment_step_is_response_window": false,
+          "payment_is_mandatory_after_commit": true,
+          "must_be_paid_before_counter_response_priority": true,
+          "paid_costs_not_refunded_if_response_is_canceled": true
         },
+        "interaction_flow": [
+          "Runtime opens the matching Response Window and verifies the affected Hero and host-lineage legality.",
+          "Before offering Spectral Grappling Hook, verify that the controller has at least 1 other exact card instance in Hand to pay its additional discard cost.",
+          "Confirm Response commits Spectral Grappling Hook and closes the current Response Window.",
+          "Resolve a separate mandatory payment step and choose exactly 1 other card in Hand to discard. Spectral Grappling Hook cannot pay for itself.",
+          "After payment completes, open a new Response Window for any legal counter-response.",
+          "If no counter stops it, Spectral Grappling Hook Dodges the incoming Attack for the current affected Hero. Paid costs are not refunded if it is later canceled."
+        ],
         "effect": [
           {
             "kind": "dodge_incoming_attack_damage",
@@ -25870,7 +25894,7 @@
         },
         "canonical_cost": {
           "kind": "none",
-          "payment_timing": "after response legality validation and controller discard selection",
+          "payment_timing": "Response commits on Confirm Response; all additional card costs are paid in a mandatory payment step before counter-response priority opens",
           "additional_costs": [
             {
               "kind": "discard_from_hand",
@@ -25879,7 +25903,7 @@
               "selection": "controller_selects_exact_card_instance"
             }
           ],
-          "validation_failure_rule": "no discard; Spectral Grappling Hook remains in hand if no legal selected other card"
+          "validation_failure_rule": "Response is unavailable before Confirm if its required additional card cost cannot be paid; after Confirm, payment is mandatory and cannot be canceled"
         },
         "cost_display": "No Mana cost + Discard 1 other card from Hand",
         "canonical_legality": {
@@ -25919,7 +25943,7 @@
           },
           "cost": {
             "kind": "none",
-            "payment_timing": "after response legality validation and controller discard selection",
+            "payment_timing": "Response commits on Confirm Response; all additional card costs are paid in a mandatory payment step before counter-response priority opens",
             "additional_costs": [
               {
                 "kind": "discard_from_hand",
@@ -25928,7 +25952,7 @@
                 "selection": "controller_selects_exact_card_instance"
               }
             ],
-            "validation_failure_rule": "no discard; Spectral Grappling Hook remains in hand if no legal selected other card"
+            "validation_failure_rule": "Response is unavailable before Confirm if its required additional card cost cannot be paid; after Confirm, payment is mandatory and cannot be canceled"
           },
           "response_window": "Battle Phase Battle Phase Battle Phase"
         },
@@ -26055,8 +26079,20 @@
             "count": 1,
             "exclude_self": true,
             "selection": "controller_selects_exact_card_instance",
-            "must_be_paid_before_response_is_committed": true
-          }
+            "response_commits_on_confirm": true,
+            "payment_step_is_response_window": false,
+            "payment_is_mandatory_after_commit": true,
+            "must_be_paid_before_counter_response_priority": true,
+            "paid_costs_not_refunded_if_response_is_canceled": true
+          },
+          "interaction_flow": [
+            "Runtime opens the matching Response Window and verifies the affected Hero and host-lineage legality.",
+            "Before offering Spectral Grappling Hook, verify that the controller has at least 1 other exact card instance in Hand to pay its additional discard cost.",
+            "Confirm Response commits Spectral Grappling Hook and closes the current Response Window.",
+            "Resolve a separate mandatory payment step and choose exactly 1 other card in Hand to discard. Spectral Grappling Hook cannot pay for itself.",
+            "After payment completes, open a new Response Window for any legal counter-response.",
+            "If no counter stops it, Spectral Grappling Hook Dodges the incoming Attack for the current affected Hero. Paid costs are not refunded if it is later canceled."
+          ]
         }
       }
     },
@@ -35667,7 +35703,7 @@
       "name": "Escape Arrow",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "cf9dbe03a595574b5aee0a1925544d4d452dc6fa59ea79151cf6e1adaf86a4bf",
+      "canonical_hash": "672109a36a2c187aa8e0cc11e530904cc91de9dd7ef91f405504013f942e5c90",
       "timing": {
         "phase": "Response Window / Incoming Physical or Magical damage",
         "raw_phase": "Response Window / Incoming Physical or Magical damage"
@@ -35683,8 +35719,8 @@
             "selection": "controller_selects_exact_card_instance"
           }
         ],
-        "payment_timing": "after response legality validation and controller discard selection",
-        "validation_failure_rule": "no mana payment, no discard, and Escape Arrow remains in hand if no legal selected other card"
+        "payment_timing": "Response commits on Confirm Response; all Mana and additional card costs are paid in a mandatory payment step before counter-response priority opens",
+        "validation_failure_rule": "Response is unavailable before Confirm if its required additional card cost cannot be paid; after Confirm, payment is mandatory and cannot be canceled"
       },
       "cost_mana": 0,
       "cost_display": "0 Mana + Discard 1 other card from Hand",
@@ -35716,11 +35752,12 @@
       "structured_execution": {
         "interaction_flow": [
           "Runtime opens the matching Defense Response Window.",
-          "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
-          "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Choose and confirm exactly 1 other card from Hand as the additional discard cost; do not auto-select even when only one is legal.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
-          "Resolve the Defense Response through the response chain.",
+          "Validate source class, lineage, rank, response condition, required choices, Mana, and ability to pay all additional costs before offering the Response.",
+          "Controller chooses the legal source Hero and selects Escape Arrow.",
+          "Confirm Response commits Escape Arrow and closes the current Response Window. The committed Response cannot be canceled by its controller after this point.",
+          "Resolve a separate mandatory payment step: pay Mana and choose exactly 1 other exact card instance from Hand to discard. Escape Arrow cannot pay for itself.",
+          "After all costs are fully paid, open a new Response Window for the opponent to counter, Negate, or Cancel the committed Response if legal.",
+          "Resolve the committed Defense Response through the response chain. Paid costs are not refunded if the Response is later canceled.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
         ],
@@ -35749,9 +35786,12 @@
           "selection": "exact_other_hand_card",
           "exclude_response_card_itself": true,
           "owner_visible": true,
-          "confirm_required": true,
-          "auto_select_forbidden": true,
-          "random_discard_forbidden": true
+          "selection_occurs_after_response_commit": true,
+          "payment_step_is_response_window": false,
+          "payment_is_mandatory_after_commit": true,
+          "human_controller_auto_select_forbidden": true,
+          "random_discard_forbidden": true,
+          "cost_paid_before_counter_response_priority": true
         },
         "tribute": {
           "can_be_tributed": true,
@@ -35875,7 +35915,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "cf9dbe03a595574b5aee0a1925544d4d452dc6fa59ea79151cf6e1adaf86a4bf",
+        "canonical_hash": "672109a36a2c187aa8e0cc11e530904cc91de9dd7ef91f405504013f942e5c90",
         "class_group": "ARC",
         "rank_numeric": 1,
         "timing": {
@@ -35938,8 +35978,8 @@
             "exclude_self": true,
             "selection": "controller_selects_exact_card_instance"
           },
-          "payment_timing": "after response legality validation and controller discard selection",
-          "validation_failure_rule": "no mana payment, no discard, and Escape Arrow remains in hand if no legal selected other card"
+          "payment_timing": "Response commits on Confirm Response; all Mana and additional card costs are paid in a mandatory payment step before counter-response priority opens",
+          "validation_failure_rule": "Response is unavailable before Confirm if its required additional card cost cannot be paid; after Confirm, payment is mandatory and cannot be canceled"
         },
         "runtime_legality": {
           "legal_active_classes": "Archer;Marksman;Grand Ranger;Arbalest;Grand Arbalest"
@@ -35979,11 +36019,12 @@
         },
         "interaction_flow": [
           "Runtime opens the matching Defense Response Window.",
-          "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
-          "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Choose and confirm exactly 1 other card from Hand as the additional discard cost; do not auto-select even when only one is legal.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
-          "Resolve the Defense Response through the response chain.",
+          "Validate source class, lineage, rank, response condition, required choices, Mana, and ability to pay all additional costs before offering the Response.",
+          "Controller chooses the legal source Hero and selects Escape Arrow.",
+          "Confirm Response commits Escape Arrow and closes the current Response Window. The committed Response cannot be canceled by its controller after this point.",
+          "Resolve a separate mandatory payment step: pay Mana and choose exactly 1 other exact card instance from Hand to discard. Escape Arrow cannot pay for itself.",
+          "After all costs are fully paid, open a new Response Window for the opponent to counter, Negate, or Cancel the committed Response if legal.",
+          "Resolve the committed Defense Response through the response chain. Paid costs are not refunded if the Response is later canceled.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
         ],
@@ -36012,9 +36053,12 @@
           "selection": "exact_other_hand_card",
           "exclude_response_card_itself": true,
           "owner_visible": true,
-          "confirm_required": true,
-          "auto_select_forbidden": true,
-          "random_discard_forbidden": true
+          "selection_occurs_after_response_commit": true,
+          "payment_step_is_response_window": false,
+          "payment_is_mandatory_after_commit": true,
+          "human_controller_auto_select_forbidden": true,
+          "random_discard_forbidden": true,
+          "cost_paid_before_counter_response_priority": true
         },
         "tribute": {
           "can_be_tributed": true,
@@ -36114,8 +36158,8 @@
               "selection": "controller_selects_exact_card_instance"
             }
           ],
-          "payment_timing": "after response legality validation and controller discard selection",
-          "validation_failure_rule": "no mana payment, no discard, and Escape Arrow remains in hand if no legal selected other card"
+          "payment_timing": "Response commits on Confirm Response; all Mana and additional card costs are paid in a mandatory payment step before counter-response priority opens",
+          "validation_failure_rule": "Response is unavailable before Confirm if its required additional card cost cannot be paid; after Confirm, payment is mandatory and cannot be canceled"
         },
         "cost_display": "0 Mana + Discard 1 other card from Hand",
         "canonical_legality": {
@@ -36185,8 +36229,8 @@
                 "selection": "controller_selects_exact_card_instance"
               }
             ],
-            "payment_timing": "after response legality validation and controller discard selection",
-            "validation_failure_rule": "no mana payment, no discard, and Escape Arrow remains in hand if no legal selected other card"
+            "payment_timing": "Response commits on Confirm Response; all Mana and additional card costs are paid in a mandatory payment step before counter-response priority opens",
+            "validation_failure_rule": "Response is unavailable before Confirm if its required additional card cost cannot be paid; after Confirm, payment is mandatory and cannot be canceled"
           },
           "runtime_legality": {
             "legal_active_classes": "Archer;Marksman;Grand Ranger;Arbalest;Grand Arbalest"
@@ -36195,11 +36239,12 @@
         "canonical_execution": {
           "interaction_flow": [
             "Runtime opens the matching Defense Response Window.",
-            "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
-            "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Choose and confirm exactly 1 other card from Hand as the additional discard cost; do not auto-select even when only one is legal.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
-            "Resolve the Defense Response through the response chain.",
+            "Validate source class, lineage, rank, response condition, required choices, Mana, and ability to pay all additional costs before offering the Response.",
+            "Controller chooses the legal source Hero and selects Escape Arrow.",
+            "Confirm Response commits Escape Arrow and closes the current Response Window. The committed Response cannot be canceled by its controller after this point.",
+            "Resolve a separate mandatory payment step: pay Mana and choose exactly 1 other exact card instance from Hand to discard. Escape Arrow cannot pay for itself.",
+            "After all costs are fully paid, open a new Response Window for the opponent to counter, Negate, or Cancel the committed Response if legal.",
+            "Resolve the committed Defense Response through the response chain. Paid costs are not refunded if the Response is later canceled.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
           ],
@@ -36228,9 +36273,12 @@
             "selection": "exact_other_hand_card",
             "exclude_response_card_itself": true,
             "owner_visible": true,
-            "confirm_required": true,
-            "auto_select_forbidden": true,
-            "random_discard_forbidden": true
+            "selection_occurs_after_response_commit": true,
+            "payment_step_is_response_window": false,
+            "payment_is_mandatory_after_commit": true,
+            "human_controller_auto_select_forbidden": true,
+            "random_discard_forbidden": true,
+            "cost_paid_before_counter_response_priority": true
           },
           "tribute": {
             "can_be_tributed": true,
@@ -40536,7 +40584,7 @@
       "name": "Back Step",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "9682d10921cb4fc2625868322ed1fd57197e0e3edbe049ef7fe2ddea34d214e4",
+      "canonical_hash": "f592c3ce2e52e24109c5ae767a6db6faa6cd548ab36ac36b6556248285df9b29",
       "timing": {
         "phase": "Response Window / Incoming Physical or Magical damage",
         "raw_phase": "Response Window / Incoming Physical or Magical damage"
@@ -40579,7 +40627,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -40710,7 +40758,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "9682d10921cb4fc2625868322ed1fd57197e0e3edbe049ef7fe2ddea34d214e4",
+        "canonical_hash": "f592c3ce2e52e24109c5ae767a6db6faa6cd548ab36ac36b6556248285df9b29",
         "class_group": "ARC",
         "rank_numeric": 2,
         "timing": {
@@ -40798,7 +40846,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -40966,7 +41014,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -41059,7 +41107,7 @@
       "name": "Deflect Arrow",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "3c070de12eba0300e4efec27f207a135fd9eea316382ce40ff53e9b41b16ff08",
+      "canonical_hash": "67b0b2ceb29d07869196233a30b7c386d4d9b8497abc0a3365d8e809e7f5780e",
       "timing": {
         "phase": "Response Window / Incoming Physical or Magical damage",
         "raw_phase": "Response Window / Incoming Physical or Magical damage"
@@ -41118,7 +41166,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -41278,7 +41326,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "3c070de12eba0300e4efec27f207a135fd9eea316382ce40ff53e9b41b16ff08",
+        "canonical_hash": "67b0b2ceb29d07869196233a30b7c386d4d9b8497abc0a3365d8e809e7f5780e",
         "class_group": "ARC",
         "rank_numeric": 1,
         "timing": {
@@ -41378,7 +41426,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -41577,7 +41625,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -49842,7 +49890,7 @@
       "name": "Brilliant Radiance",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "dcaeee6d2b71471bb55d49638632642e9367122902f1f9109bb68455bf343e46",
+      "canonical_hash": "684d44c5a64746a0220624fc9d266e53aee43481697d50bb1654222fba086e70",
       "timing": {
         "phase": "Response Window / Targeted non-Casting non-Ultimate Attack",
         "raw_phase": "Response Window / Targeted non-Casting non-Ultimate Attack"
@@ -49887,7 +49935,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -50037,7 +50085,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "dcaeee6d2b71471bb55d49638632642e9367122902f1f9109bb68455bf343e46",
+        "canonical_hash": "684d44c5a64746a0220624fc9d266e53aee43481697d50bb1654222fba086e70",
         "class_group": "CLE",
         "rank_numeric": 1,
         "timing": {
@@ -50143,7 +50191,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -50340,7 +50388,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -54913,7 +54961,7 @@
       "name": "Holy Barrier",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "ce3829584234879f50c1812ea82ca5c12ceacd221173165630547af5779d7644",
+      "canonical_hash": "c221dd8939c8fc8aae29eacd4a0cd824d5b6a4afcd9527cacde2f92cf4a39b96",
       "timing": {
         "phase": "Response Window / Incoming Physical or Magical damage",
         "raw_phase": "Response Window / Incoming Physical or Magical damage"
@@ -54960,7 +55008,7 @@
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "The legal source Hero may differ from the allied Hero or Heroes affected by the incoming attack.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -55106,7 +55154,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "ce3829584234879f50c1812ea82ca5c12ceacd221173165630547af5779d7644",
+        "canonical_hash": "c221dd8939c8fc8aae29eacd4a0cd824d5b6a4afcd9527cacde2f92cf4a39b96",
         "class_group": "CLE",
         "rank_numeric": 2,
         "timing": {
@@ -55195,7 +55243,7 @@
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "The legal source Hero may differ from the allied Hero or Heroes affected by the incoming attack.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -55382,7 +55430,7 @@
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "The legal source Hero may differ from the allied Hero or Heroes affected by the incoming attack.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -55490,7 +55538,7 @@
       "name": "Binding Light",
       "card_family": "Skill",
       "card_subtype": "Tactical Skill",
-      "canonical_hash": "b5c2323183df07ae8348d596c7e2befa92ee660539e5d9179e5c76bcd06af6d7",
+      "canonical_hash": "0fdd73ece94eb38528f818aa5998ca15e6694d3925f960d271ee19127130e5a8",
       "timing": {
         "phase": "Battle Phase / Reactive",
         "raw_phase": "Battle Phase / Reactive"
@@ -55576,8 +55624,8 @@
           "response_window": "counter_opponent_committed_defend_skill",
           "illegal_when": [],
           "attachment_policy": "no_attachment_slot",
-          "allowed_pending_response_family": "Skill",
-          "allowed_pending_response_classification": "Defense Skill"
+          "allowed_committed_response_family": "Skill",
+          "allowed_committed_response_classification": "Defense Skill"
         },
         "binding_light_policy": {
           "counter_target": "any opponent committed Defend Skill",
@@ -55670,7 +55718,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "b5c2323183df07ae8348d596c7e2befa92ee660539e5d9179e5c76bcd06af6d7",
+        "canonical_hash": "0fdd73ece94eb38528f818aa5998ca15e6694d3925f960d271ee19127130e5a8",
         "class_group": "CLE",
         "rank_numeric": 2,
         "timing": {
@@ -55793,8 +55841,8 @@
           "response_window": "counter_opponent_committed_defend_skill",
           "illegal_when": [],
           "attachment_policy": "no_attachment_slot",
-          "allowed_pending_response_family": "Skill",
-          "allowed_pending_response_classification": "Defense Skill"
+          "allowed_committed_response_family": "Skill",
+          "allowed_committed_response_classification": "Defense Skill"
         },
         "binding_light_policy": {
           "counter_target": "any opponent committed Defend Skill",
@@ -55964,8 +56012,8 @@
             "response_window": "counter_opponent_committed_defend_skill",
             "illegal_when": [],
             "attachment_policy": "no_attachment_slot",
-            "allowed_pending_response_family": "Skill",
-            "allowed_pending_response_classification": "Defense Skill"
+            "allowed_committed_response_family": "Skill",
+            "allowed_committed_response_classification": "Defense Skill"
           },
           "binding_light_policy": {
             "counter_target": "any opponent committed Defend Skill",
@@ -61567,7 +61615,7 @@
       "name": "Sacred Bulwark",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "a46af5793bb5892e996a625cd6c8cdedbc62cdd03bb13ff67944896e1be376df",
+      "canonical_hash": "d7be636df3e404c9ebe783976891c0251e758aca2ebb0188e1bbf7b032d9f5d9",
       "timing": {
         "phase": "Response Window / Incoming Physical or Magical damage",
         "raw_phase": "Response Window / Incoming Physical or Magical damage"
@@ -61616,7 +61664,7 @@
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "The legal source Hero may differ from the allied Hero or Heroes affected by the incoming attack.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -61788,7 +61836,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "a46af5793bb5892e996a625cd6c8cdedbc62cdd03bb13ff67944896e1be376df",
+        "canonical_hash": "d7be636df3e404c9ebe783976891c0251e758aca2ebb0188e1bbf7b032d9f5d9",
         "class_group": "CLE",
         "rank_numeric": 2,
         "timing": {
@@ -61885,7 +61933,7 @@
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "The legal source Hero may differ from the allied Hero or Heroes affected by the incoming attack.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -62104,7 +62152,7 @@
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "The legal source Hero may differ from the allied Hero or Heroes affected by the incoming attack.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -63471,7 +63519,7 @@
       "name": "Blessing of Divinity",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "1dfb40bd29404bc393e8246c09ef32f57baf898e993012b8bac4dbc6e9f3966a",
+      "canonical_hash": "adacf1023083b73c763b90cc5c5c5c76ea86ab520417b45a4ec9eab4a0cc83fb",
       "timing": {
         "phase": "Response Window / Incoming damage",
         "raw_phase": "Response Window / Incoming damage"
@@ -63552,7 +63600,7 @@
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "The legal source Hero may differ from the allied Hero or Heroes affected by the incoming attack.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Place the resolved ongoing effect in its registered Attachment Slot until expiry."
@@ -63793,7 +63841,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "1dfb40bd29404bc393e8246c09ef32f57baf898e993012b8bac4dbc6e9f3966a",
+        "canonical_hash": "adacf1023083b73c763b90cc5c5c5c76ea86ab520417b45a4ec9eab4a0cc83fb",
         "class_group": "CLE",
         "rank_numeric": 2,
         "timing": {
@@ -63910,7 +63958,7 @@
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "The legal source Hero may differ from the allied Hero or Heroes affected by the incoming attack.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Place the resolved ongoing effect in its registered Attachment Slot until expiry."
@@ -64197,7 +64245,7 @@
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "The legal source Hero may differ from the allied Hero or Heroes affected by the incoming attack.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Place the resolved ongoing effect in its registered Attachment Slot until expiry."
@@ -65968,7 +66016,7 @@
       "name": "Mana Shield",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "aa80c5c6308bc908970484b3499f60f8731a699f8da22d340a9a95f020e74905",
+      "canonical_hash": "99f6ac7852362c1d5ebb54e07bbe31095aabbdd11c5670404620ee88808ac517",
       "timing": {
         "phase": "Response Window / Incoming Magical damage",
         "raw_phase": "Response Window / Incoming Magical damage"
@@ -66013,7 +66061,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -66144,7 +66192,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "aa80c5c6308bc908970484b3499f60f8731a699f8da22d340a9a95f020e74905",
+        "canonical_hash": "99f6ac7852362c1d5ebb54e07bbe31095aabbdd11c5670404620ee88808ac517",
         "class_group": "MAG",
         "rank_numeric": 1,
         "timing": {
@@ -66244,7 +66292,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -66420,7 +66468,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -66513,7 +66561,7 @@
       "name": "Mirror Image",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "64c0db26c62e9626583a7b079f3bfdc64d805422a3d8dc5a81439f1d5f383ed0",
+      "canonical_hash": "f50af7c1c784bec96863e53d9922e2841ec50a17f5a9d94fbd3096e051621859",
       "timing": {
         "phase": "Response Window / Incoming Physical or Magical damage",
         "raw_phase": "Response Window / Incoming Physical or Magical damage"
@@ -66557,7 +66605,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -66689,7 +66737,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "64c0db26c62e9626583a7b079f3bfdc64d805422a3d8dc5a81439f1d5f383ed0",
+        "canonical_hash": "f50af7c1c784bec96863e53d9922e2841ec50a17f5a9d94fbd3096e051621859",
         "class_group": "MAG",
         "rank_numeric": 1,
         "timing": {
@@ -66789,7 +66837,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -66965,7 +67013,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -70300,7 +70348,7 @@
       "name": "Ice Block",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "c05d035a6bb3dce8a189d5d69f55b30afe5aa5e360deb83a39bd3346f42b33dc",
+      "canonical_hash": "a4189c6c5891a3f43ed928ac4439a88df0a50b8ff472e2b3a175e7cdc073e48d",
       "timing": {
         "phase": "Response Window / Incoming damage",
         "raw_phase": "Response Window / Incoming damage"
@@ -70379,7 +70427,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Place the resolved ongoing effect in its registered Attachment Slot until expiry."
@@ -70553,7 +70601,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "c05d035a6bb3dce8a189d5d69f55b30afe5aa5e360deb83a39bd3346f42b33dc",
+        "canonical_hash": "a4189c6c5891a3f43ed928ac4439a88df0a50b8ff472e2b3a175e7cdc073e48d",
         "class_group": "MAG",
         "rank_numeric": 2,
         "timing": {
@@ -70650,7 +70698,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Place the resolved ongoing effect in its registered Attachment Slot until expiry."
@@ -70875,7 +70923,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Place the resolved ongoing effect in its registered Attachment Slot until expiry."
@@ -71011,7 +71059,7 @@
       "name": "Fire Wall",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "d5beee468d6f383b5abbc05ec28437fcd4636df12e9396912faac6536d29116b",
+      "canonical_hash": "25e31942727d6d5cf8abc5075ef1a85dc0c60f3d63cda6d75f5e98903ed4f0f4",
       "timing": {
         "phase": "Response Window / Incoming Physical damage",
         "raw_phase": "Response Window / Incoming Physical damage"
@@ -71065,7 +71113,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -71199,7 +71247,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "d5beee468d6f383b5abbc05ec28437fcd4636df12e9396912faac6536d29116b",
+        "canonical_hash": "25e31942727d6d5cf8abc5075ef1a85dc0c60f3d63cda6d75f5e98903ed4f0f4",
         "class_group": "MAG",
         "rank_numeric": 2,
         "timing": {
@@ -71287,7 +71335,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -71468,7 +71516,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -80613,7 +80661,7 @@
       "name": "Evasion",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "8135aa8538e5c0ac022879e225af9e6c3b1058ed0642954f4f04eb9f357e69ac",
+      "canonical_hash": "d097a865c58e40b89832e84f48abff7292f1f5c48ed4b3d27006b8615d681ba7",
       "timing": {
         "phase": "Response Window / Incoming Physical or Magical damage",
         "raw_phase": "Response Window / Incoming Physical or Magical damage"
@@ -80656,7 +80704,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -80787,7 +80835,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "8135aa8538e5c0ac022879e225af9e6c3b1058ed0642954f4f04eb9f357e69ac",
+        "canonical_hash": "d097a865c58e40b89832e84f48abff7292f1f5c48ed4b3d27006b8615d681ba7",
         "class_group": "THF",
         "rank_numeric": 1,
         "timing": {
@@ -80895,7 +80943,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -81073,7 +81121,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -81166,7 +81214,7 @@
       "name": "Smoke Screen",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "0fdf7c2c3be6a98282ca1a07f7b975cc67a40a81e0107a73094b5198b99130bb",
+      "canonical_hash": "dfb0a55ccacd4f3d54a02fd7e33dc3e3aecd51eeb36df6102e19c0d0dcb1f1dd",
       "timing": {
         "phase": "Response Window / Targeted non-Casting Attack",
         "raw_phase": "Response Window / Targeted non-Casting Attack"
@@ -81219,7 +81267,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -81367,7 +81415,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "0fdf7c2c3be6a98282ca1a07f7b975cc67a40a81e0107a73094b5198b99130bb",
+        "canonical_hash": "dfb0a55ccacd4f3d54a02fd7e33dc3e3aecd51eeb36df6102e19c0d0dcb1f1dd",
         "class_group": "THF",
         "rank_numeric": 1,
         "timing": {
@@ -81475,7 +81523,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -81678,7 +81726,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -85388,7 +85436,7 @@
       "name": "Elusive Escape",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "f704b68e85222b0b7f2c893f60fe6bfaa695dce30ec5419ec9272c6e5ee48821",
+      "canonical_hash": "c6224d849e08c847415d4bdb301af502b23a8a23adf61d508134417ea06013de",
       "timing": {
         "phase": "Response Window / Incoming Physical or Magical damage",
         "raw_phase": "Response Window / Incoming Physical or Magical damage"
@@ -85431,7 +85479,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -85562,7 +85610,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "f704b68e85222b0b7f2c893f60fe6bfaa695dce30ec5419ec9272c6e5ee48821",
+        "canonical_hash": "c6224d849e08c847415d4bdb301af502b23a8a23adf61d508134417ea06013de",
         "class_group": "THF",
         "rank_numeric": 2,
         "timing": {
@@ -85650,7 +85698,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -85818,7 +85866,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -91966,7 +92014,7 @@
       "name": "Deflection",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "7255dc61d915348df06a32bfa527b84fbfd62201d9ea7a540a93b40a2e512a31",
+      "canonical_hash": "c30f06cff0c28c35f87759e641ced40a3673aa9e3f1930dacfe62e9240c982ea",
       "timing": {
         "phase": "Response Window / Incoming Physical damage",
         "raw_phase": "Response Window / Incoming Physical damage"
@@ -92030,7 +92078,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -92142,7 +92190,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "7255dc61d915348df06a32bfa527b84fbfd62201d9ea7a540a93b40a2e512a31",
+        "canonical_hash": "c30f06cff0c28c35f87759e641ced40a3673aa9e3f1930dacfe62e9240c982ea",
         "class_group": "THF",
         "rank_numeric": 1,
         "timing": {
@@ -92253,7 +92301,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -92402,7 +92450,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -92456,7 +92504,7 @@
       "name": "Step In",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "e0acfe71ed8de70460856d7510cdf1070dffc833312d3cead9f0d580cac2b81e",
+      "canonical_hash": "08544178212616590dd54849b21c838b3410a483287bf750e81f3b62cc056e95",
       "timing": {
         "phase": "Response Window / Incoming Physical or Magical damage",
         "raw_phase": "Response Window / Incoming Physical or Magical damage"
@@ -92543,7 +92591,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -92637,7 +92685,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "e0acfe71ed8de70460856d7510cdf1070dffc833312d3cead9f0d580cac2b81e",
+        "canonical_hash": "08544178212616590dd54849b21c838b3410a483287bf750e81f3b62cc056e95",
         "class_group": "THF",
         "rank_numeric": 2,
         "timing": {
@@ -92747,7 +92795,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -92909,7 +92957,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -94618,7 +94666,7 @@
       "name": "Dodge Instinct",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "11b49066a5836dacdcd3fd856018502b561444202d7e1717354bb1f4a997a7f4",
+      "canonical_hash": "b8ff419283b71900bc140bec32bca015748a012f0a7880406780a6a262bcb8b9",
       "timing": {
         "phase": "Response Window / Incoming Physical or Magical damage",
         "raw_phase": "Response Window / Incoming Physical or Magical damage"
@@ -94688,7 +94736,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -94767,7 +94815,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "11b49066a5836dacdcd3fd856018502b561444202d7e1717354bb1f4a997a7f4",
+        "canonical_hash": "b8ff419283b71900bc140bec32bca015748a012f0a7880406780a6a262bcb8b9",
         "class_group": "THF",
         "rank_numeric": 2,
         "timing": {
@@ -94873,7 +94921,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -95015,7 +95063,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -97818,7 +97866,7 @@
       "name": "Parry",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "bde7c5583c3a93a5481e96545a8b69ba7b71db32eabd377707721b8a1fa829c1",
+      "canonical_hash": "2bf48cfed628262a999b6b93a2ace4215d788e4631cdf4cc5941a6a85d0a7dee",
       "timing": {
         "phase": "Response Window / Incoming Physical damage",
         "raw_phase": "Response Window / Incoming Physical damage"
@@ -97863,7 +97911,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -97994,7 +98042,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "bde7c5583c3a93a5481e96545a8b69ba7b71db32eabd377707721b8a1fa829c1",
+        "canonical_hash": "2bf48cfed628262a999b6b93a2ace4215d788e4631cdf4cc5941a6a85d0a7dee",
         "class_group": "WAR",
         "rank_numeric": 1,
         "timing": {
@@ -98094,7 +98142,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -98270,7 +98318,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -98363,7 +98411,7 @@
       "name": "Cover Up",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "34c2a2064b663f783d77081f55641301a11c2df901ce3e3adafb0bd841c093e9",
+      "canonical_hash": "6d71877c21ea6c225842bc37b334d334dbac20a3808d642bc86bc7773c73082b",
       "timing": {
         "phase": "Response Window / Incoming single-target Attack",
         "raw_phase": "Response Window / Incoming single-target Attack"
@@ -98423,7 +98471,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -98607,7 +98655,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "34c2a2064b663f783d77081f55641301a11c2df901ce3e3adafb0bd841c093e9",
+        "canonical_hash": "6d71877c21ea6c225842bc37b334d334dbac20a3808d642bc86bc7773c73082b",
         "class_group": "WAR",
         "rank_numeric": 1,
         "timing": {
@@ -98707,7 +98755,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -98951,7 +98999,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -102537,7 +102585,7 @@
       "name": "Side Step",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "b5966152aedc92858cf275878a3ecdb943d0dc05ece6a9ea48ccbd67d39bd0fd",
+      "canonical_hash": "36054c5a31bc673e192d3386c81f378305cf37acdd89e19706007d7aa417cf29",
       "timing": {
         "phase": "Response Window / Incoming Physical or Magical damage",
         "raw_phase": "Response Window / Incoming Physical or Magical damage"
@@ -102586,7 +102634,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -102720,7 +102768,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "b5966152aedc92858cf275878a3ecdb943d0dc05ece6a9ea48ccbd67d39bd0fd",
+        "canonical_hash": "36054c5a31bc673e192d3386c81f378305cf37acdd89e19706007d7aa417cf29",
         "class_group": "WAR",
         "rank_numeric": 2,
         "timing": {
@@ -102808,7 +102856,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -102985,7 +103033,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -103081,7 +103129,7 @@
       "name": "Deflect",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "806df1c51d670839b02e778dff033a80c67ca86a45c2d620c4598b5862103beb",
+      "canonical_hash": "dcc08cea7a9ac067c3ad371887da5c9c497e087983df0393137140b570db7416",
       "timing": {
         "phase": "Response Window / Incoming Physical or Magical damage",
         "raw_phase": "Response Window / Incoming Physical or Magical damage"
@@ -103145,7 +103193,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -103313,7 +103361,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "806df1c51d670839b02e778dff033a80c67ca86a45c2d620c4598b5862103beb",
+        "canonical_hash": "dcc08cea7a9ac067c3ad371887da5c9c497e087983df0393137140b570db7416",
         "class_group": "WAR",
         "rank_numeric": 1,
         "timing": {
@@ -103413,7 +103461,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Move the resolved card to Discard after the response finishes."
@@ -103626,7 +103674,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Move the resolved card to Discard after the response finishes."
@@ -109390,7 +109438,7 @@
       "name": "Unbroken Stand",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "28ee049f3f72b1ed850f6e1bb59121d8757102fd13fc8e409c4cf855dd4814fd",
+      "canonical_hash": "5dfc26b5b2543d745a5b2612d2bb2a3f82056136ece416d37fe926b2a8642db8",
       "timing": {
         "phase": "Response Window / Incoming damage",
         "raw_phase": "Response Window / Incoming damage"
@@ -109474,7 +109522,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Place the resolved ongoing effect in its registered Attachment Slot until expiry."
@@ -109674,7 +109722,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "28ee049f3f72b1ed850f6e1bb59121d8757102fd13fc8e409c4cf855dd4814fd",
+        "canonical_hash": "5dfc26b5b2543d745a5b2612d2bb2a3f82056136ece416d37fe926b2a8642db8",
         "class_group": "WAR",
         "rank_numeric": 1,
         "timing": {
@@ -109791,7 +109839,7 @@
           "Runtime opens the matching Defense Response Window.",
           "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
           "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-          "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+          "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
           "Resolve the Defense Response through the response chain.",
           "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
           "Place the resolved ongoing effect in its registered Attachment Slot until expiry."
@@ -110038,7 +110086,7 @@
             "Runtime opens the matching Defense Response Window.",
             "Controller chooses and confirms a legal source Hero. Existing Exhaust does not block this Defense Response.",
             "Validate source class, lineage, rank, response condition, required choices, and Mana before payment.",
-            "Pay cost and move the card from Hand to Response Pending before counter-response priority.",
+            "Confirm Response commits the card and closes the current decision window; complete all required costs in the mandatory payment step before counter-response priority opens.",
             "Resolve the Defense Response through the response chain.",
             "Using this Defense Response does not create Exhaust and does not ready an already Exhausted source Hero.",
             "Place the resolved ongoing effect in its registered Attachment Slot until expiry."

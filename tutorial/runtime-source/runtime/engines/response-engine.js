@@ -32,8 +32,8 @@ function createResponseChain({ attackingPlayerId, defendingPlayerId, window }) {
 function commitResponse(chain, frame) {
   if (!chain || chain.closed) return { ok: false, errors: ['Response chain is closed.'] };
   if (!frame || frame.playerId !== chain.priorityPlayerId) return { ok: false, errors: ['Response priority belongs to the other player.'] };
-  if (!frame.confirmed || !frame.costPaid || frame.zone !== 'RESPONSE_PENDING') {
-    return { ok: false, errors: ['Response must be confirmed, cost-paid, and in Response Pending before counter priority opens.'] };
+  if (!frame.confirmed || !frame.costPaid || frame.zone !== 'RESPONSE_COMMITTED') {
+    return { ok: false, errors: ['Response must be confirmed and fully paid before counter priority opens.'] };
   }
   const next = JSON.parse(JSON.stringify(chain));
   next.stack.push(Object.assign({ cancelled: false }, frame));

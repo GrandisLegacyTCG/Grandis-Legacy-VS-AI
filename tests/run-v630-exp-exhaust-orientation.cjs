@@ -17,4 +17,4 @@ for(const base of [root,path.join(root,'tutorial')]){
   assert.ok(css.includes('grid-template-columns:max-content 28px!important'),'four-slot width must remain reserved before Tribute');
   assert.ok(css.includes('.v96-app .hero-card-physical-stack.is-ready>.hero-exp-stack{')&&css.includes('left:100%!important'),'Ready EXP must remain on Hero right edge');
 }
-console.log('PASS VS AI v6.30 / Tutorial v0.56: Ready EXP stays right; Exhausted EXP anchors above Hero and stacks bottom-to-top.');
+console.log('PASS VS AI v6.31 / Tutorial v0.57: Ready EXP stays right; Exhausted EXP anchors above Hero and stacks bottom-to-top.');

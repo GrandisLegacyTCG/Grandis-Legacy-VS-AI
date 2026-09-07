@@ -5,7 +5,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const ROOT_HASH = 'eb89ea56f2351f093fffbd7f7e47628f1cf0cd2b793c6efdfb82c9c9e798b868';
-const TUTORIAL_HASH = '5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c';
+const TUTORIAL_HASH = ROOT_HASH;
 const HERO_HASH = '487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9';
 const ASSET_BASE = 'https://grandislegacytcg.github.io/shared/season1/v1/cards';
 
@@ -99,9 +99,9 @@ function assertAuthorityMirrors() {
     ['data/season1/cards.runtime.v0.14.3.json', 'runtime-source/data/season1/cards.runtime.v0.14.3.json'],
     ['data/season1/effect-recipes.runtime.v0.13.3.json', 'runtime-source/data/season1/effect-recipes.runtime.v0.13.3.json'],
     ['data/season1/legality-map.runtime.v0.11.10.json', 'runtime-source/data/season1/legality-map.runtime.v0.11.10.json'],
-    ['tutorial/data/season1/cards.runtime.v0.14.2.json', 'tutorial/runtime-source/data/season1/cards.runtime.v0.14.2.json'],
-    ['tutorial/data/season1/effect-recipes.runtime.v0.13.2.json', 'tutorial/runtime-source/data/season1/effect-recipes.runtime.v0.13.2.json'],
-    ['tutorial/data/season1/legality-map.runtime.v0.11.9.json', 'tutorial/runtime-source/data/season1/legality-map.runtime.v0.11.9.json']
+    ['tutorial/data/season1/cards.runtime.v0.14.3.json', 'tutorial/runtime-source/data/season1/cards.runtime.v0.14.3.json'],
+    ['tutorial/data/season1/effect-recipes.runtime.v0.13.3.json', 'tutorial/runtime-source/data/season1/effect-recipes.runtime.v0.13.3.json'],
+    ['tutorial/data/season1/legality-map.runtime.v0.11.10.json', 'tutorial/runtime-source/data/season1/legality-map.runtime.v0.11.10.json']
   ];
   for (const [active, mirror] of pairs) {
     if (!fs.readFileSync(path.join(ROOT, active)).equals(fs.readFileSync(path.join(ROOT, mirror)))) {
@@ -116,16 +116,16 @@ function buildFor(targetRoot) {
     runtimeData: 'cards.runtime.v0.14.3.json',
     recipes: 'effect-recipes.runtime.v0.13.3.json',
     hash: ROOT_HASH,
-    sourceStack: 'v1.7.4', oneSource: 'v1.7.4', runtimeFoundation: 'v1.90', runtimeCore: 'v0.58',
-    runtimeDataVersion: 'v0.14.3', recipeVersion: 'v0.13.3', checkpointVersion: 'v0.13.3', legalityVersion: 'v0.11.10', sharedManual: 'v1.46', appSync: 'v2.52',
-    localAI: 'v6.30', deckBuilder: 'v1.29 (external; permissive save/export, match legality enforced by consumers)', date: '2026-09-07'
+    sourceStack: 'v1.7.5', oneSource: 'v1.7.5', runtimeFoundation: 'v1.91', runtimeCore: 'v0.59',
+    runtimeDataVersion: 'v0.14.3', recipeVersion: 'v0.13.3', checkpointVersion: 'v0.13.3', legalityVersion: 'v0.11.10', sharedManual: 'v1.47', appSync: 'v2.53',
+    localAI: 'v6.31', deckBuilder: 'v1.29 (external; permissive save/export, match legality enforced by consumers)', date: '2026-09-07'
   } : {
-    runtimeData: 'cards.runtime.v0.14.2.json',
-    recipes: 'effect-recipes.runtime.v0.13.2.json',
+    runtimeData: 'cards.runtime.v0.14.3.json',
+    recipes: 'effect-recipes.runtime.v0.13.3.json',
     hash: TUTORIAL_HASH,
-    sourceStack: 'v1.7.3', oneSource: 'v1.7.3', runtimeFoundation: 'v1.89', runtimeCore: 'v0.57',
-    runtimeDataVersion: 'v0.14.2', recipeVersion: 'v0.13.2', checkpointVersion: 'v0.13.2', legalityVersion: 'v0.11.9', sharedManual: 'v1.45', appSync: 'v2.51',
-    localAI: 'v6.24', deckBuilder: 'v1.28 (external; permissive save/export, match legality enforced by consumers)', date: '2026-08-29'
+    sourceStack: 'v1.7.5', oneSource: 'v1.7.5', runtimeFoundation: 'v1.91', runtimeCore: 'v0.59',
+    runtimeDataVersion: 'v0.14.3', recipeVersion: 'v0.13.3', checkpointVersion: 'v0.13.3', legalityVersion: 'v0.11.10', sharedManual: 'v1.47', appSync: 'v2.53',
+    localAI: 'v6.31', deckBuilder: 'v1.29 (external; permissive save/export, match legality enforced by consumers)', date: '2026-09-07'
   };
   const dataPrefix = targetRoot === '.' ? 'data/season1' : `${targetRoot}/data/season1`;
   const runtimeData = readJSON(`${dataPrefix}/${profile.runtimeData}`);
@@ -144,7 +144,7 @@ function buildFor(targetRoot) {
     runtime_core: profile.runtimeCore,
     shared_manual: profile.sharedManual,
     local_ai: profile.localAI,
-    pvp_railway: rootProfile ? 'v3.38' : 'v3.22',
+    pvp_railway: 'v3.39',
     deck_builder: profile.deckBuilder,
     starter60: 'v1.4',
     ui_lock: 'v2.49',
@@ -162,7 +162,7 @@ function buildFor(targetRoot) {
     ui_design_lock: 'v2.49',
     one_source_patch: profile.oneSource,
     conditional_follow_up_schema: 'v1.0.0',
-    ...(rootProfile ? {response_commit_payment_framework:'v1.0'} : {})
+    response_commit_payment_framework:'v1.0', manual_reposition_limit:'v1.0'
   };
   const definitions = {
     version: profile.runtimeDataVersion,
@@ -194,7 +194,7 @@ function buildFor(targetRoot) {
     legality_map: profile.legalityVersion,
     source_patch: profile.oneSource,
     conditional_follow_up_schema: 'v1.0.0',
-    ...(rootProfile ? {response_commit_payment_framework:'v1.0'} : {})
+    response_commit_payment_framework:'v1.0', manual_reposition_limit:'v1.0'
   };
 
   const output = [
@@ -218,4 +218,4 @@ function buildFor(targetRoot) {
 assertAuthorityMirrors();
 buildFor('.');
 buildFor('tutorial');
-console.log('PASS: VS AI v6.30 regenerated from Source Stack v1.7.4; Tutorial v0.56 preserves its v1.7.3 gameplay source baseline.');
+console.log('PASS: VS AI v6.31 + Tutorial v0.57 regenerated from Source Stack v1.7.5 with shared runtime/data parity.');

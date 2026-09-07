@@ -9,8 +9,7 @@ for(const [name,src] of [['VS AI',app],['Tutorial',tut]]){
   must(src.includes("main_deck must contain exactly 60 cards, found"),name+' exact-60 import guard missing');
   if(name==='VS AI') must(src.includes("normal card max 3 copies"),name+' normal max-3 copy lock missing');
   else must(!src.includes("normal card max 3 copies")&&!src.includes("normal card max 2 copies"),name+' normal copy lock should remain unchanged');
-  if(name==='VS AI') must(src.includes('function beginResponsePayment(state,rw,responseOption)')&&src.includes("type:'response_payment_choice'")&&src.includes('function openCommittedResponseCounterWindow(state,attackWindow,responseOption,incomingFamily)'),name+' committed Response payment framework missing');
-  else must(src.includes("return openResponseExtraDiscardChoice(appState,rw,clone(opt));"),name+' prior Tutorial explicit response extra-discard selector gate missing');
+  must(src.includes('function beginResponsePayment(state,rw,responseOption)')&&src.includes("type:'response_payment_choice'")&&src.includes('function openCommittedResponseCounterWindow(state,attackWindow,responseOption,incomingFamily)'),name+' committed Response payment framework missing');
   must(src.includes("if(explicit.length) return explicit;"),name+' Chain / Responses explicit-event authority fix missing');
   must(src.includes("pending.after_legacy_deferred_pending=clone(state.pending)"),name+' immediate Legacy preemption missing');
   must(src.includes("appState.pending=afterDeferredPending"),name+' deferred pending restore missing');
