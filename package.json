@@ -7,7 +7,7 @@
     "metadata": "node tools/update-release-metadata.cjs",
     "manifest": "node tools/build-file-manifests.cjs",
     "syntax": "node --check js/app.bundle.js && node --check js/static-data.js && node --check js/runtime-authority.js && node --check tutorial/js/app.bundle.js && node --check tutorial/js/tutorial-guide.js && node --check tutorial/js/static-data.js && node --check tutorial/js/runtime-authority.js && find runtime-source/runtime tutorial/runtime-source/runtime -type f \\( -name \"*.js\" -o -name \"*.mjs\" \\) -print0 | sort -z | xargs -0 -r -n1 node --check",
-    "check": "npm run syntax && npm run test:promotion-v014 && node tests/run-v633-current-release.cjs && node tests/run-v633-v059-shard-tutorial.cjs && node tests/run-v625-deck-legality.cjs && node tests/run-runtime-sync-lock.cjs",
+    "check": "npm run syntax && node tests/run-production-asset-topology.cjs && npm run test:promotion-v014 && node tests/run-v633-current-release.cjs && node tests/run-v633-v059-shard-tutorial.cjs && node tests/run-v625-deck-legality.cjs && node tests/run-runtime-sync-lock.cjs",
     "test": "npm run check",
     "test:tutorial": "cd tutorial && npm test",
     "verify": "npm run check && node tests/run-manifest-verification.cjs && npm run test:tutorial",
@@ -15,5 +15,5 @@
     "test:promotion-v014": "node tests/promotion-v014/run-baseline-preservation-v07.cjs && node tests/promotion-v014/run-card-played-audit.cjs && node tests/promotion-v014/run-draw-phase-sequencing-v010.cjs && node tests/promotion-v014/run-layout-authority-v010.cjs && node tests/promotion-v014/run-opening-flow-lab.cjs && node tests/promotion-v014/run-physical-mana-gameplay-smoke-v07.cjs && node tests/promotion-v014/run-playtest-mana-system.cjs && node tests/promotion-v014/run-render-smoke-v010.cjs && node tests/promotion-v014/run-v010-finishing-audit.cjs && node tests/promotion-v014/run-v011-root-fix.cjs && node tests/promotion-v014/run-v012-opening-arbalest.cjs && node tests/promotion-v014/run-v013-update.cjs && node tests/promotion-v014/run-v014-rule-sync.cjs && node tests/promotion-v014/run-v07-payment-racial.cjs",
     "verify:stable": "npm run check"
   },
-  "description": "Grandis Legacy VS AI v6.33 + Tutorial v0.59 — Playtest Lab v0.14 stable authority on Source Stack v1.8.1, Shard Deck/Shard Pool terminology, and expanded interactive Shard teaching in Tutorial."
+  "description": "Grandis Legacy VS AI v6.33 + Tutorial v0.59 \u2014 Playtest Lab v0.14 stable authority on Source Stack v1.8.1, Shard Deck/Shard Pool terminology, and expanded interactive Shard teaching in Tutorial."
 }

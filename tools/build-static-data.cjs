@@ -7,7 +7,7 @@ const ROOT = path.resolve(__dirname, '..');
 const ROOT_HASH = 'ce79e5a97c115507f68734887160b575840899056e1533488e3fddd3a11fec1f';
 const TUTORIAL_HASH = ROOT_HASH;
 const HERO_HASH = '487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9';
-const ASSET_BASE = 'assets/cards';
+const ASSET_BASE = 'https://grandislegacytcg.github.io/shared/season1/v1/cards';
 
 function readJSON(relativePath) {
   return JSON.parse(fs.readFileSync(path.join(ROOT, relativePath), 'utf8'));

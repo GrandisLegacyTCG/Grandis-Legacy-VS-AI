@@ -17,5 +17,5 @@ need(stagedMain>=0&&stagedQueue>stagedMain&&stagedMana>stagedQueue,'animated Dra
 need(src.includes('function queueReservedMainDeckDraw')&&src.includes('commitReservedMainDeckDraw(state,reservation)'),'staged Main Deck reserve/animate/commit pipeline missing');
 need(src.includes('function queueReservedManaDraw')&&src.includes('commitReservedManaDraw(state,reservation)'),'staged Mana reserve/animate/commit pipeline missing');
 need(!src.includes('function drawPhaseManaEvents(')&&!src.includes('function queueManaDrawEvents('),'obsolete pre-commit Draw Phase Mana pipeline still present');
-need(src.includes("back='assets/cards/ui/Back-of-Card-Legacy-Deck.webp'"),'Mana animation does not use hidden Legacy card back');
+need(src.includes("back='https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Back-of-Card-Legacy-Deck.webp'"),'Mana animation does not use hidden Legacy card back');
 console.log('PASS v0.10 Draw Phase sequencing: Main Deck draw commits first, then staged Mana Regen; neither destination mutates before its animation commit.');

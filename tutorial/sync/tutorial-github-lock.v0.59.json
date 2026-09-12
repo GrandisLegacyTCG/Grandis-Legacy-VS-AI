@@ -29,11 +29,11 @@
     "pool": "Shard Pool"
   },
   "scope": "Tutorial v0.59 shares Source Stack v1.8.1 / Playtest Lab v0.14 gameplay with VS AI v6.33 and explicitly teaches Shard Deck, Shard Pool, Mana Shard, Class Shard, Starting Shards, Mana Regen, return cycle, Ultimate-derived Class Shards, and matching-Class-Shard Ultimate Tribute.",
-  "app_bundle_sha256": "00b3b169c6282c9997e4e7eab9e1da4ebd5da85ad2947c808619e589c40b97ee",
+  "app_bundle_sha256": "b6bc546c0fe24807857697e46fbfefd181dd24fde1a917b7260c393af2e87b35",
   "tutorial_guide_sha256": "8854fc807ec64409170ee2ed130d71bc537ebb316626594c27e96d2ab63aea76",
   "tutorial_css_sha256": "0ce3edab512c0f4bd58c4df1b84f8214ba151436c44b5b6aacbed2541d61bad8",
   "runtime_authority_sha256": "294bed265e0f81eda97ea42e8e0b1d900934a9a5f8f5085131f3f4dd5e08c619",
-  "static_data_sha256": "00fbef9d13562f0ca4a21fd34837a10538580ec60c815b2093a5e13c114920b7",
+  "static_data_sha256": "26c0c98c031aebf1e83e9f740ace418f9f2f48309806cd6140f84746263e5363",
   "runtime_source_browser_sha256": "294bed265e0f81eda97ea42e8e0b1d900934a9a5f8f5085131f3f4dd5e08c619",
   "counter_asset_sha256": {
     "1": "0163a05b27ab59f3a94cf379ccd5b61e69e9d0819fb3a56e79fc7e13e31a047a",
