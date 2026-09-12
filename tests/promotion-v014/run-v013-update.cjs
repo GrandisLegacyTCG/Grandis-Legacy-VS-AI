@@ -1,0 +1,28 @@
+'use strict';
+const fs=require('fs'),path=require('path');
+const {loadLocalAI}=require('./vm-local-ai-harness.cjs');
+const root=path.resolve(__dirname,'..','..'),ctx=loadLocalAI(root),b=ctx.GL_LOCAL_AI_BRIDGE;
+function need(v,m){if(!v)throw Error(m)}
+const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
+const labCss=fs.readFileSync(path.join(root,'css/lab-authority.css'),'utf8');
+const appCss=fs.readFileSync(path.join(root,'css/app.css'),'utf8');
+need(/GL_LAB_START_MANA_CARDS=3/.test(app),'Starting Mana is not 3');
+const result=b.testPlaytestManaRules();need(result&&result.ok,'Mana self-test failed: '+JSON.stringify(result));
+need(result.ultimateTargets.length===1,'Ultimate Tribute does not restrict to one bound Hero');
+need(app.includes('if(!ultimateMatchesReceivingHero(c,hero)) return false;'),'Ultimate owner legality gate missing');
+need(app.includes('isUltimateCard(c) && !hasMatchingClassShard'),'Ultimate matching Class Shard legality gate missing');
+need(app.includes('Only ')&&app.includes('may play this Ultimate or receive it as Tribute')&&app.includes('Ultimate Tribute cost:'),'Ultimate preview does not explain both Tribute requirements');
+for(let n=1;n<=6;n++)need(fs.existsSync(path.join(root,'assets/counters/Counter-'+n+'.png')),'approved Counter.png face missing: '+n);
+need(fs.existsSync(path.join(root,'assets/battle/Blade.png')),'new Blade asset missing');
+need(!fs.existsSync(path.join(root,'assets/sword_4490822.png')),'old sword asset still bundled');
+need(app.includes("return 'assets/counters/Counter-'+value+'.png'"),'runtime does not map to approved Counter.png assets');
+need(!/hero-draw-counter/.test(labCss)&&!/<span class="hero-draw-counter/.test(app),'Arbalest battlefield d6 remains');
+need(app.includes("lines.push('Draw This Turn: '+drawn)"),'Arbalest stable Hero Information text missing');
+need(labCss.includes('.hero-stage button{pointer-events:auto!important;}')&&labCss.includes('z-index:15!important'),'Attachment click fix changed or bypassed visual layering');
+need(app.includes("createElementNS('http://www.w3.org/2000/svg','path')")&&app.includes("line.setAttribute('d','M '+pts.x1+' '+pts.y1+' Q '+pts.cx+' '+pts.cy+' '+pts.x2+' '+pts.y2)"),'solid curved attack path missing');
+const attackBlock=appCss.slice(appCss.indexOf('/* Pending Attack Direction Indicator'),appCss.indexOf('/* ========================================================================== */',appCss.indexOf('/* Pending Attack Direction Indicator')));
+need(!attackBlock.includes('stroke-dasharray')&&!attackBlock.includes('stroke-dashoffset'),'attack path still dashed');
+const snap=b.startSharedMatch({});
+const opening=b.completeOpeningFlow('PLAYER',{choice:'HEADS',outcome:'HEADS'}).snapshot.appState;
+need(opening.mana===4&&opening.aiMana===3&&opening.playerManaDeck.length===8&&opening.aiManaDeck.length===9,'3-card Starting Mana + first Regen runtime mismatch');
+console.log('PASS v0.13 update: Starting Mana 3, dual Ultimate Tribute legality, clickable lowered Attachments, stable Arbalest info, approved context-sized counters, and solid curved Blade attack indicator.');

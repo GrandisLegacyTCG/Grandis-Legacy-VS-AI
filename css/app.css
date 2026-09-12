@@ -1186,7 +1186,7 @@ body::before{
 .info-dot,.status-stack{display:none!important}
 
 /* v9.1 — detached Racial Token dock and equal-sized resource zones.
-   Mana Pool, Legacy Deck, Main Deck, and Discard Pile share one footprint.
+   Shard Pool, Legacy Deck, Main Deck, and Discard Pile share one footprint.
    The token dock occupies its own narrow outside column and never widens Mana. */
 .gl-board{
   grid-template-rows:32px 86px 334px 56px 334px 126px 32px;
@@ -3531,7 +3531,7 @@ body::before{display:none!important}
 /* Shared resource visibility lock. */
 .v96-app .zone[data-zone-type="Main Deck"] .zoneCard>img,
 .v96-app .zone[data-zone-type="Legacy Deck"] .zoneCard>img,
-.v96-app .zone[data-zone-type="Mana Pool"] .zoneCard>img{
+.v96-app .zone[data-zone-type="Shard Pool"] .zoneCard>img{
   opacity:.85!important;
 }
 
@@ -3646,7 +3646,7 @@ body::before{display:none!important}
 /* Shared backs/resources are more visible without obscuring their printed logos. */
 .v96-app .zone[data-zone-type="Main Deck"] .zoneCard>img,
 .v96-app .zone[data-zone-type="Legacy Deck"] .zoneCard>img,
-.v96-app .zone[data-zone-type="Mana Pool"] .zoneCard>img{
+.v96-app .zone[data-zone-type="Shard Pool"] .zoneCard>img{
   opacity:.90!important;
 }
 /* HP is a compact overlay over the printed HP corner, not a lane-wide bar. */
@@ -3860,7 +3860,7 @@ body::before{display:none!important}
   line-height:1!important;
   pointer-events:none!important;
 }
-.v96-app .zone[data-zone-type="Mana Pool"] .zoneCard>b{
+.v96-app .zone[data-zone-type="Shard Pool"] .zoneCard>b{
   inset:0!important;
   display:grid!important;
   place-items:center!important;
@@ -4034,7 +4034,7 @@ body::before{display:none!important}
   .v96-app .zone[data-zone-type="Main Deck"] .zoneCard>b,
   .v96-app .zone[data-zone-type="Legacy Deck"] .zoneCard>b,
   .v96-app .zone[data-zone-type="Discard Pile"] .zoneCard>b{bottom:3px!important;font-size:11px!important}
-  .v96-app .zone[data-zone-type="Mana Pool"] .zoneCard>b{font-size:13px!important}
+  .v96-app .zone[data-zone-type="Shard Pool"] .zoneCard>b{font-size:13px!important}
 
   .v96-app .hero-lane{gap:3px!important}
   .v96-app .hero-row--opponent .hero-lane:not(.legacy-slot){grid-template-rows:34px minmax(0,1fr)!important}
@@ -4834,7 +4834,7 @@ body.deck-setup-active{
   .v96-app .zone[data-zone-type="Main Deck"] .zoneCard>b,
   .v96-app .zone[data-zone-type="Legacy Deck"] .zoneCard>b,
   .v96-app .zone[data-zone-type="Discard Pile"] .zoneCard>b{font-size:9px!important}
-  .v96-app .zone[data-zone-type="Mana Pool"] .zoneCard>b{font-size:11px!important}
+  .v96-app .zone[data-zone-type="Shard Pool"] .zoneCard>b{font-size:11px!important}
 
   .v96-app .hero-row--opponent .hero-lane:not(.legacy-slot){grid-template-rows:29px minmax(0,1fr)!important}
   .v96-app .hero-row--player .hero-lane:not(.legacy-slot){grid-template-rows:minmax(0,1fr) 29px!important}
@@ -4989,7 +4989,7 @@ body.deck-setup-active{
   /* The old hand-side Racial Token coins are replaced by a compact counter
      inside each Mana resource container. */
   .v96-app .racial-coins--hand{display:none!important}
-  .v96-app .zone[data-zone-type="Mana Pool"]{position:relative!important}
+  .v96-app .zone[data-zone-type="Shard Pool"]{position:relative!important}
   .v96-app .mobile-racial-resource{
     position:absolute!important;right:4px!important;bottom:4px!important;z-index:8!important;
     display:flex!important;align-items:center!important;gap:1px!important;
@@ -6077,12 +6077,12 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
 .gl-pending-attack-line{stroke:currentColor;stroke-width:2.2;stroke-linecap:round;fill:none;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 3px rgba(0,0,0,.72))}
 .gl-pending-attack-arrow{fill:currentColor}
 .gl-pending-attack-sword{filter:drop-shadow(0 0 2px rgba(0,0,0,.9))}
-.gl-pending-attack-line.is-looping{stroke-dasharray:5 6;animation:glPendingAttackDirectionLoop 1.05s linear infinite}
-.gl-pending-attack-line.is-once{stroke-dasharray:6 7;animation:glPendingAttackDirectionOnce .72s ease-out both}
-@keyframes glPendingAttackDirectionLoop{to{stroke-dashoffset:-22}}
-@keyframes glPendingAttackDirectionOnce{0%{opacity:0;stroke-dashoffset:30}18%{opacity:.92}78%{opacity:.92}100%{opacity:0;stroke-dashoffset:0}}
+.gl-pending-attack-line.is-looping{animation:glPendingAttackDirectionLoop 1.05s ease-in-out infinite}
+.gl-pending-attack-line.is-once{animation:glPendingAttackDirectionOnce .72s ease-out both}
+@keyframes glPendingAttackDirectionLoop{0%,100%{opacity:.72}50%{opacity:1}}
+@keyframes glPendingAttackDirectionOnce{0%{opacity:0}18%{opacity:.95}78%{opacity:.95}100%{opacity:0}}
 @media (max-width:700px){.gl-pending-attack-line{stroke-width:2.6}}
-@media (prefers-reduced-motion:reduce){.gl-pending-attack-line.is-looping,.gl-pending-attack-line.is-once{animation:none;stroke-dasharray:none;opacity:.9}}
+@media (prefers-reduced-motion:reduce){.gl-pending-attack-line.is-looping,.gl-pending-attack-line.is-once{animation:none;opacity:.9}}
 
 /* ========================================================================== */
 /* Mobile gameplay scroll contract — native document scrolling (v6.23/v0.51). */
@@ -6330,5 +6330,3 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
 @media (prefers-reduced-motion:reduce){
   .v96-app .hero-card-physical-stack>.hero-card.hero-main{transition:none!important}
 }
-}
-

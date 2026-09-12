@@ -1,3 +1,5 @@
-# Grandis Legacy Tutorial v0.57
+# Grandis Legacy Tutorial v0.59
 
-Non-scripted Tutorial under `/tutorial/`. Gameplay remains on the prior VS AI v6.24 / Source Stack v1.7.3 baseline. v0.56 keeps the transparent four-slot Tribute EXP rail and makes the EXP rail rotate together with an Exhausted Hero; no gameplay authority changes.
+Tutorial parity release paired with VS AI v6.33. Adds interactive Shard Deck / Shard Pool teaching on top of Playtest Lab v0.14 gameplay authority.
+
+The tutorial preserves its guided phase/action gates while adopting the same Source Stack v1.8.1 gameplay/runtime authority and Playtest v0.14 battlefield/resource presentation as stable VS AI. Public resource terminology is Shard Deck / Shard Pool / Mana Shard / Class Shard.

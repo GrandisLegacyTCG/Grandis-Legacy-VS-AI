@@ -6,7 +6,7 @@
       "schema_version": "GL-DECK-1.0",
       "builder_version": "2.17-classic-split",
       "deck_name": "Starter 1 - ElementalLord/Conqueror/Renegade",
-      "format": "Grandis Legacy Source Authority Stack v1.7.3 + Starter60 v1.4",
+      "format": "Grandis Legacy Source Authority Stack v1.8.1 + Starter60 v1.4",
       "main_deck_count": 60,
       "legacy_package_count": 3,
       "legacy_deck_count": 12,
@@ -458,8 +458,8 @@
         "CENTER": "S1-WAR-H001",
         "RIGHT": "S1-THF-H001"
       },
-      "source_database_version": "Grandis Legacy Source Authority Stack v1.7.3 · OSA v1.7.3 · Runtime Data v0.14.2 · Starter60 v1.4 · registry 5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c",
-      "builder_version_note": "Starter60 v1.4 replacement authority. Starter 1 and Starter 2 overwrite the previous preset compositions; gameplay/card authority remains Source Stack v1.7.3.",
+      "source_database_version": "Grandis Legacy Source Authority Stack v1.8.1 · OSA v1.8.1 · Runtime Data v0.15.0 · Starter60 v1.4 preserved preset · registry ce79e5a97c115507f68734887160b575840899056e1533488e3fddd3a11fec1f",
+      "builder_version_note": "Starter60 v1.4 preset composition preserved; gameplay/card authority is Source Stack v1.8.1 / Runtime Data v0.15.0. Match legality remains 60 Main Deck, max 3 normal, max 1 Ultimate.",
       "display_name": "Starter 1 — Elemental Lord / Conqueror / Renegade",
       "preset_id": "starter_01_elemental_lord_conqueror_renegade",
       "main_deck_expanded": [
@@ -769,7 +769,7 @@
       "schema_version": "GL-DECK-1.0",
       "builder_version": "2.17-classic-split",
       "deck_name": "Starter 2 - Saint/Crusader/GrandRanger",
-      "format": "Grandis Legacy Source Authority Stack v1.7.3 + Starter60 v1.4",
+      "format": "Grandis Legacy Source Authority Stack v1.8.1 + Starter60 v1.4",
       "main_deck_count": 60,
       "legacy_package_count": 3,
       "legacy_deck_count": 12,
@@ -1211,8 +1211,8 @@
         "CENTER": "S1-WAR-H004",
         "RIGHT": "S1-ARC-H001"
       },
-      "source_database_version": "Grandis Legacy Source Authority Stack v1.7.3 · OSA v1.7.3 · Runtime Data v0.14.2 · Starter60 v1.4 · registry 5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c",
-      "builder_version_note": "Starter60 v1.4 replacement authority. Starter 1 and Starter 2 overwrite the previous preset compositions; gameplay/card authority remains Source Stack v1.7.3.",
+      "source_database_version": "Grandis Legacy Source Authority Stack v1.8.1 · OSA v1.8.1 · Runtime Data v0.15.0 · Starter60 v1.4 preserved preset · registry ce79e5a97c115507f68734887160b575840899056e1533488e3fddd3a11fec1f",
+      "builder_version_note": "Starter60 v1.4 preset composition preserved; gameplay/card authority is Source Stack v1.8.1 / Runtime Data v0.15.0. Match legality remains 60 Main Deck, max 3 normal, max 1 Ultimate.",
       "display_name": "Starter 2 — Saint / Crusader / Grand Ranger",
       "preset_id": "starter_02_saint_crusader_grand_ranger",
       "main_deck_expanded": [
@@ -1522,7 +1522,7 @@
       "schema_version": "GL-DECK-1.0",
       "builder_version": "2.1-public-deck-builder",
       "deck_name": "Starter 3 — Renegade / Arcane Duelist / Elemental Lord",
-      "format": "One Source Authority v1.7.3 + Public Deck Builder v1.16",
+      "format": "One Source Authority v1.8.1 + Public Deck Builder v1.16",
       "main_deck_count": 60,
       "legacy_package_count": 3,
       "legacy_deck_count": 12,
@@ -1934,8 +1934,8 @@
         "CENTER": "S1-THF-H004",
         "RIGHT": "S1-MAG-H004"
       },
-      "source_database_version": "One Source Authority v1.7.3 · registry 5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c",
-      "builder_version_note": "Starter60 v1.4 propagation; approved Starter 3–5 composition preserved from the previous current-base preset.",
+      "source_database_version": "Grandis Legacy Source Authority Stack v1.8.1 · OSA v1.8.1 · Runtime Data v0.15.0 · Starter60 v1.4 preserved preset · registry ce79e5a97c115507f68734887160b575840899056e1533488e3fddd3a11fec1f",
+      "builder_version_note": "Starter60 v1.4 preset composition preserved; gameplay/card authority is Source Stack v1.8.1 / Runtime Data v0.15.0. Match legality remains 60 Main Deck, max 3 normal, max 1 Ultimate.",
       "display_name": "Starter 3 — Renegade / Arcane Duelist / Elemental Lord",
       "preset_id": "starter_03_renegade_arcane_duelist_elemental_lord",
       "main_deck_expanded": [
@@ -2245,7 +2245,7 @@
       "schema_version": "GL-DECK-1.0",
       "builder_version": "2.1-public-deck-builder",
       "deck_name": "Starter 4 — Grand Ranger / Conqueror / Grand Arbalest",
-      "format": "One Source Authority v1.7.3 + Public Deck Builder v1.16",
+      "format": "One Source Authority v1.8.1 + Public Deck Builder v1.16",
       "main_deck_count": 60,
       "legacy_package_count": 3,
       "legacy_deck_count": 12,
@@ -2687,8 +2687,8 @@
         "CENTER": "S1-WAR-H001",
         "RIGHT": "S1-ARC-H004"
       },
-      "source_database_version": "One Source Authority v1.7.3 · registry 5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c",
-      "builder_version_note": "Starter60 v1.4 propagation; approved Starter 3–5 composition preserved from the previous current-base preset.",
+      "source_database_version": "Grandis Legacy Source Authority Stack v1.8.1 · OSA v1.8.1 · Runtime Data v0.15.0 · Starter60 v1.4 preserved preset · registry ce79e5a97c115507f68734887160b575840899056e1533488e3fddd3a11fec1f",
+      "builder_version_note": "Starter60 v1.4 preset composition preserved; gameplay/card authority is Source Stack v1.8.1 / Runtime Data v0.15.0. Match legality remains 60 Main Deck, max 3 normal, max 1 Ultimate.",
       "display_name": "Starter 4 — Grand Ranger / Conqueror / Grand Arbalest",
       "preset_id": "starter_04_grand_ranger_conqueror_grand_arbalest",
       "main_deck_expanded": [
@@ -2998,7 +2998,7 @@
       "schema_version": "GL-DECK-1.0",
       "builder_version": "2.1-public-deck-builder",
       "deck_name": "Starter 5 — Elemental Lord / Arcane Duelist / Saint",
-      "format": "One Source Authority v1.7.3 + Public Deck Builder v1.16",
+      "format": "One Source Authority v1.8.1 + Public Deck Builder v1.16",
       "main_deck_count": 60,
       "legacy_package_count": 3,
       "legacy_deck_count": 12,
@@ -3395,8 +3395,8 @@
         "CENTER": "S1-THF-H004",
         "RIGHT": "S1-CLE-H001"
       },
-      "source_database_version": "One Source Authority v1.7.3 · registry 5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c",
-      "builder_version_note": "Starter60 v1.4 propagation; approved Starter 3–5 composition preserved from the previous current-base preset.",
+      "source_database_version": "Grandis Legacy Source Authority Stack v1.8.1 · OSA v1.8.1 · Runtime Data v0.15.0 · Starter60 v1.4 preserved preset · registry ce79e5a97c115507f68734887160b575840899056e1533488e3fddd3a11fec1f",
+      "builder_version_note": "Starter60 v1.4 preset composition preserved; gameplay/card authority is Source Stack v1.8.1 / Runtime Data v0.15.0. Match legality remains 60 Main Deck, max 3 normal, max 1 Ultimate.",
       "display_name": "Starter 5 — Elemental Lord / Arcane Duelist / Saint",
       "preset_id": "starter_05_elemental_lord_arcane_duelist_saint",
       "main_deck_expanded": [

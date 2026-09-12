@@ -12,6 +12,10 @@ const responseEngine = require('../engines/response-engine');
 const { TICK_PHASE, tickAttachment } = require('../engines/attachment-engine');
 const attachmentLifecycle = require('./attachment-lifecycle-policy');
 const conditionalFollowUp = require('../effects/conditional-follow-up');
+const manaPolicy = require('./mana-deck-policy');
+const drawPolicy = require('./draw-policy');
+const legacyDefeatPolicy = require('./legacy-defeat-policy');
+const statusEngine = require('../engines/status-engine');
 
 const MINIMAL_REDUCER_INTENTS = Object.freeze([
   'START_GAME',
@@ -102,15 +106,61 @@ function buildPlayer(playerId, deck) {
     hand: [],
     discard_pile: [],
     legacy_deck: Array.isArray(safeDeck.legacy_deck_card_ids) ? safeDeck.legacy_deck_card_ids.slice() : [],
+    mana_deck: [],
+    mana_pool_cards: [],
     mana_pool: 0,
-    mana_regen: 2,
+    mana_regen: manaPolicy.STARTING_MANA_REGEN,
+    mana_deck_initialized: false,
+    draw_phase_mana_regen_stamp: null,
     attachments: [],
     active_modifiers: [],
     racial_token_pool: 2,
     racial_token_max: 2,
     racial_token_spent_turn: null,
-    turn_stats: { cards_drawn_this_turn: 0 }
+    turn_stats: { actual_draws_this_turn: 0, cards_drawn_this_turn: 0 }
   };
+}
+
+function initializeManaDeckForPlayer(player, safeDeck, cardsById) {
+  if (!player) return;
+  const explicitUltimateIds = Array.isArray(safeDeck && safeDeck.ultimate_card_ids) ? safeDeck.ultimate_card_ids.slice() : [];
+  const ultimateIds = explicitUltimateIds.length ? explicitUltimateIds : manaPolicy.deriveUltimateCardIdsFromDeck(safeDeck && safeDeck.main_deck_card_counts || {}, cardsById || {});
+  player.mana_deck = manaPolicy.shuffle(manaPolicy.buildManaDeck(ultimateIds, player.player_id));
+  player.mana_pool_cards = [];
+  player.mana_pool = 0;
+  player.mana_regen = manaPolicy.STARTING_MANA_REGEN;
+  player.mana_deck_initialized = true;
+  player.mana_deck_ultimate_card_ids = ultimateIds.slice(0, 3);
+}
+function syncManaPoolCount(player) {
+  if (player && Array.isArray(player.mana_pool_cards)) player.mana_pool = player.mana_pool_cards.length;
+  return player && Number(player.mana_pool || 0);
+}
+function physicalManaStateAuthoritative(player) {
+  return Boolean(player && player.mana_deck_initialized && Array.isArray(player.mana_pool_cards) && Number(player.mana_pool || 0) === player.mana_pool_cards.length);
+}
+function gainManaCardsFromOwnDeck(next, playerId, count, events, source) {
+  const player = getPlayer(next, playerId);
+  if (!player) return [];
+  const before = Number(player.mana_pool || 0);
+  const moved = manaPolicy.drawManaFromTop(player, count);
+  syncManaPoolCount(player);
+  if (Array.isArray(events) && moved.length) events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
+    player_id: playerId,
+    payload: { result: 'MANA_DECK_TO_POOL_RESOLVED', requested_amount: Number(count || 0), gained_amount: moved.length, before_mana: before, after_mana: player.mana_pool, source: source || 'gain_mana' }
+  }));
+  return moved;
+}
+function drawOpeningHandWithoutDrawEvents(next, playerId, count, events) {
+  const player = getPlayer(next, playerId); if (!player) return 0;
+  let moved=0;
+  for(let i=0;i<Number(count||0)&&player.main_deck.length;i+=1){const id=player.main_deck.shift();player.hand.push(id);moved+=1;if(Array.isArray(events))events.push(createRuntimeEvent(EVENT_TYPES.CARD_MOVED,next,{player_id:playerId,card_id:id,payload:{from:'Main Deck',to:'Hand',opening_hand:true,actual_draw:false}}));}
+  return moved;
+}
+function setupStartingMana(next, playerId, events) {
+  const player=getPlayer(next,playerId); if(!player)return 0;
+  const moved=gainManaCardsFromOwnDeck(next,playerId,manaPolicy.STARTING_MANA_CARDS,events,'starting_mana');
+  return moved.length;
 }
 
 function createInitialRuntimeState(config) {
@@ -118,11 +168,16 @@ function createInitialRuntimeState(config) {
   const playerId = safeConfig.player_id || 'PLAYER';
   const opponentId = safeConfig.opponent_id || 'AI';
   const players = {};
-  players[playerId] = buildPlayer(playerId, safeConfig.player_deck || safeConfig.decks && safeConfig.decks[0]);
-  players[opponentId] = buildPlayer(opponentId, safeConfig.opponent_deck || safeConfig.decks && safeConfig.decks[1]);
+  const playerDeck = safeConfig.player_deck || safeConfig.decks && safeConfig.decks[0] || {};
+  const opponentDeck = safeConfig.opponent_deck || safeConfig.decks && safeConfig.decks[1] || {};
+  players[playerId] = buildPlayer(playerId, playerDeck);
+  players[opponentId] = buildPlayer(opponentId, opponentDeck);
+  const cardsById = normalizeRuntimeCards(safeConfig.runtime_data || {});
+  initializeManaDeckForPlayer(players[playerId], playerDeck, cardsById);
+  initializeManaDeckForPlayer(players[opponentId], opponentDeck, cardsById);
   return {
     game_id: safeConfig.game_id || `gl-${Date.now()}`,
-    version: 'runtime-reducer-v1.66',
+    version: 'runtime-reducer-v1.67',
     runtime_data: safeConfig.runtime_data || {},
     round: 1,
     active_player_id: playerId,
@@ -155,22 +210,13 @@ function getOpponentId(state, playerId) {
 
 function getPlayer(state, playerId) { return state.players && state.players[playerId]; }
 
-function ensureTurnStats(player) {
-  if (!player.turn_stats) player.turn_stats = {};
-  if (player.turn_stats.cards_drawn_this_turn === undefined) player.turn_stats.cards_drawn_this_turn = 0;
-  return player.turn_stats;
+function ensureTurnStats(player) { return drawPolicy.ensureDrawStats(player); }
+function recordCardsDrawn(state, playerId, count) {
+  const player=getPlayer(state,playerId); const amount=Number(count||0); if(!player||amount<=0)return;
+  drawPolicy.commitActualDraw(player,amount,id=>getCard(state,id));
 }
-
-function recordCardsDrawn(player, count) {
-  const amount = Number(count || 0);
-  if (!player || amount <= 0) return;
-  const stats = ensureTurnStats(player);
-  stats.cards_drawn_this_turn = Number(stats.cards_drawn_this_turn || 0) + amount;
-}
-
 function resetTurnStatsForPlayer(state, playerId) {
-  const player = getPlayer(state, playerId);
-  if (player) player.turn_stats = { cards_drawn_this_turn: 0 };
+  const player=getPlayer(state,playerId); if(player) drawPolicy.resetTurnDrawStats(player);
 }
 
 
@@ -997,14 +1043,13 @@ function drawOneCardForPlayer(state, playerId, options) {
     const nextPlayer = Object.assign({}, current, {
       main_deck: current.main_deck.slice(1),
       hand: current.hand.concat(card),
-      mana_pool: Number(current.mana_pool || 0) + Number(current.mana_regen || 0),
       board: Object.fromEntries(Object.entries(current.board).map(([slot, slotState]) => [slot, slotState.slot_mode === 'HERO' && slotState.hero ? Object.assign({}, slotState, { hero: Object.assign({}, slotState.hero, { exhausted: Boolean(slotState.hero.casting) }) }) : slotState]))
     });
     nextPlayer.turn_stats = Object.assign({}, current.turn_stats || {});
-    recordCardsDrawn(nextPlayer, 1);
     return nextPlayer;
   });
-  const events = [createRuntimeEvent(EVENT_TYPES.CARD_MOVED, next, { player_id: playerId, card_id: drawnCardId, payload: { from: 'Main Deck', to: 'Hand', draw_count: 1, source: drawContext.source || 'draw_phase' } })];
+  const events = [createRuntimeEvent(EVENT_TYPES.CARD_MOVED, next, { player_id: playerId, card_id: drawnCardId, payload: { from: 'Main Deck', to: 'Hand', draw_count: 1, source: drawContext.source || 'draw_phase', top_of_main_deck: true, actual_draw: true } })];
+  recordCardsDrawn(next, playerId, 1);
   incrementDrawCounterCastings(next, playerId, 1, events);
   if (!drawContext.suppress_draw_replacement) {
     if (next.pending_attack_resolution || next.response_window) {
@@ -1023,6 +1068,12 @@ function drawPhaseAutoAdvanceBlocked(state) {
 }
 function autoAdvanceCompletedDrawPhase(state, events) {
   if (drawPhaseAutoAdvanceBlocked(state)) return state;
+  const regenStamp = `${Number(state.round || 1)}:${state.active_player_id}:MANA_REGEN`;
+  const activePlayer = getPlayer(state, state.active_player_id);
+  if (activePlayer && activePlayer.draw_phase_mana_regen_stamp !== regenStamp) {
+    gainManaCardsFromOwnDeck(state, state.active_player_id, Number(activePlayer.mana_regen || 0), events, 'draw_phase_mana_regen');
+    activePlayer.draw_phase_mana_regen_stamp = regenStamp;
+  }
   state.phase = PHASES.DEPLOY;
   const event = createRuntimeEvent(EVENT_TYPES.PHASE_CHANGED, state, { player_id: state.active_player_id, payload: { phase: PHASES.DEPLOY, round: state.round, automatic: true, source: 'DRAW_PHASE_COMPLETE' } });
   state.event_log = (state.event_log || []).concat(event);
@@ -1927,7 +1978,7 @@ function addStatusToHero(next, events, params) {
     class_duration_bonus: Number(durationBonus.amount || 0),
     class_duration_bonus_reason: durationBonus.reason
   };
-  slotState.hero.statuses = (slotState.hero.statuses || []).concat(status);
+  slotState.hero.statuses = statusEngine.mergeStatusList(slotState.hero.statuses || [], status);
   if (String(params.status || '').toLowerCase() === 'stun') {
     const canceled = [];
     targetPlayer.attachments = (targetPlayer.attachments || []).filter(attachment => {
@@ -2615,42 +2666,10 @@ function applyDamageToTargets(next, attackResolution, amount, events, sourceLabe
 }
 
 
-function baseClassFamilyForHeroCard(card) {
-  if (!card) return '';
-  const identity = card.identity || {};
-  const baseSkillClasses = Array.isArray(identity.base_skill_classes) ? identity.base_skill_classes : [];
-  const activeLineage = Array.isArray(identity.active_class_lineage) ? identity.active_class_lineage : [];
-  const cardId = String(card.card_id || '');
-  let inferredPrefixFamily = '';
-  if (/^S1-ARC-H/.test(cardId)) inferredPrefixFamily = 'Archer';
-  else if (/^S1-THF-H/.test(cardId)) inferredPrefixFamily = 'Thief';
-  else if (/^S1-MAG-H/.test(cardId)) inferredPrefixFamily = 'Mage';
-  else if (/^S1-WAR-H/.test(cardId)) inferredPrefixFamily = 'Warrior';
-  else if (/^S1-CLE-H/.test(cardId)) inferredPrefixFamily = 'Cleric';
-  return String(card.class_family || card.foundation_family || baseSkillClasses[0] || inferredPrefixFamily || identity.legacy_base_class_family || identity.rank_i_base_class || identity.base_class_family || activeLineage[0] || card.class_group || card.class || '').trim();
-}
-
+function baseClassFamilyForHeroCard(card) { return legacyDefeatPolicy.baseClassFamilyForHeroCard(card); }
 function legacyCandidateIdsForDefeatedHero(state, playerId, slot, defeatedHero) {
-  const player = getPlayer(state, playerId);
-  const legacyDeck = Array.isArray(player && player.legacy_deck) ? player.legacy_deck : [];
-  const out = [];
-  function add(id) { if (id && legacyDeck.includes(id) && !out.includes(id)) out.push(id); }
-  if (!defeatedHero) return out;
-  add(defeatedHero.assigned_legacy_card_id);
-  const defeatedCard = getCard(state, defeatedHero.card_id);
-  const base = baseClassFamilyForHeroCard(defeatedCard).toLowerCase();
-  for (const id of legacyDeck) {
-    const c = getCard(state, id);
-    if (!c) continue;
-    const family = String(c.card_family || c.card_type || '').toLowerCase();
-    const mode = String(c.identity_mode || '').toLowerCase();
-    if (family !== 'legacy' && !mode.includes('legacy')) continue;
-    const eligibility = c.eligibility || {};
-    const legacyBase = String(eligibility.base_class_family || c.class_group || c.class_family || '').toLowerCase();
-    if (base && legacyBase && legacyBase === base) add(id);
-  }
-  if (!out.length && defeatedHero.assigned_legacy_card_id && getCard(state, defeatedHero.assigned_legacy_card_id)) out.push(defeatedHero.assigned_legacy_card_id);
-  return out;
+  const player=getPlayer(state,playerId); if(!player||!defeatedHero)return[];
+  return legacyDefeatPolicy.legalLegacyCandidates(player.legacy_deck || [], getCard(state,defeatedHero.card_id), id=>getCard(state,id));
 }
 
 function activeHeroSlotCount(player) {
@@ -2908,10 +2927,10 @@ function drawCardsForPlayer(next, playerId, count, events, source, options) {
     events.push(createRuntimeEvent(EVENT_TYPES.CARD_MOVED, next, {
       player_id: playerId,
       card_id: cardId,
-      payload: { from: 'Main Deck', to: 'Hand', source: source || 'card_effect', visibility: visibility.visibility || 'owner_only', opponent_played: visibility.opponent_played === true, pure_draw: true, deck_out_loss: false }
+      payload: { from: 'Main Deck', to: 'Hand', source: source || 'card_effect', visibility: visibility.visibility || 'owner_only', opponent_played: visibility.opponent_played === true, pure_draw: true, top_of_main_deck: true, actual_draw: true, deck_out_loss: false }
     }));
   }
-  recordCardsDrawn(player, drawn);
+  recordCardsDrawn(next, playerId, drawn);
   incrementDrawCounterCastings(next, playerId, drawn, events);
   return drawn;
 }
@@ -4196,75 +4215,41 @@ function applyGenericDrawEffect(next, pending, card, events) {
 }
 
 function applyGenericManaEffect(next, pending, card, events) {
-  const player = next.players && next.players[pending.player_id];
-  if (!player) return false;
-  const gain = parseGainManaAmountForCard(card);
-  const steal = parseManaStealAmountForCard(card);
-  if (!gain && !steal) return false;
-  if (steal) {
-    const opponentId = getOpponentId(next, pending.player_id);
-    const opponent = next.players && next.players[opponentId];
-    const beforeOpponent = Number(opponent && opponent.mana_pool || 0);
-    const taken = Math.min(beforeOpponent, steal);
-    if (opponent) opponent.mana_pool = beforeOpponent - taken;
-    const beforePlayer = Number(player.mana_pool || 0);
-    player.mana_pool = beforePlayer + taken;
-    events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
-      player_id: pending.player_id,
-      card_id: pending.card_id,
-      source_slot: pending.source_slot || undefined,
-      target_player_id: opponentId,
-      target_slot: pending.target_slot || undefined,
-      payload: { result: 'MANA_STEAL_RESOLVED', requested_amount: steal, taken_amount: taken, before_mana: beforePlayer, after_mana: player.mana_pool, opponent_before_mana: beforeOpponent, opponent_after_mana: opponent ? opponent.mana_pool : 0 }
-    }));
+  const player=next.players&&next.players[pending.player_id]; if(!player)return false;
+  const gain=parseGainManaAmountForCard(card),steal=parseManaStealAmountForCard(card); if(!gain&&!steal)return false;
+  if(steal){
+    const opponentId=getOpponentId(next,pending.player_id),opponent=next.players&&next.players[opponentId]; if(!opponent)return true;
+    const beforeOpponent=Number(opponent.mana_pool||0),beforePlayer=Number(player.mana_pool||0);
+    let removed=0,gained=0;
+    if(physicalManaStateAuthoritative(player)&&physicalManaStateAuthoritative(opponent)){
+      const indices=Array.isArray(pending.selected_opponent_mana_indices)?pending.selected_opponent_mana_indices:Array.from({length:Math.min(steal,opponent.mana_pool_cards.length)},(_,i)=>i);
+      const result=manaPolicy.removeAndGainOwnMana(player,opponent,indices);removed=result.removed.length;gained=result.gained.length;syncManaPoolCount(player);syncManaPoolCount(opponent);
+    }else{
+      removed=Math.min(beforeOpponent,steal); opponent.mana_pool=beforeOpponent-removed; player.mana_pool=beforePlayer+removed; gained=removed;
+    }
+    events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED,next,{player_id:pending.player_id,card_id:pending.card_id,source_slot:pending.source_slot||undefined,target_player_id:opponentId,target_slot:pending.target_slot||undefined,payload:{result:'MANA_TAKE_REMOVE_AND_GAIN_OWN_RESOLVED',requested_amount:steal,removed_amount:removed,gained_from_own_deck:gained,before_mana:beforePlayer,after_mana:player.mana_pool,opponent_before_mana:beforeOpponent,opponent_after_mana:opponent.mana_pool,opponent_selection_visibility:'blind_back_of_card',physical_opponent_card_transferred:false}}));
     return true;
   }
-  const before = Number(player.mana_pool || 0);
-  player.mana_pool = before + gain;
-  events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
-    player_id: pending.player_id,
-    card_id: pending.card_id,
-    source_slot: pending.source_slot || undefined,
-    target_slot: pending.target_slot || undefined,
-    payload: { result: 'GAIN_MANA_RESOLVED', gain_amount: gain, before_mana: before, after_mana: player.mana_pool }
-  }));
+  const before=Number(player.mana_pool||0); let gained=0;
+  if(physicalManaStateAuthoritative(player)) gained=gainManaCardsFromOwnDeck(next,pending.player_id,gain,events,pending.card_id).length;
+  else{player.mana_pool=before+gain;gained=gain;}
+  events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED,next,{player_id:pending.player_id,card_id:pending.card_id,source_slot:pending.source_slot||undefined,target_slot:pending.target_slot||undefined,payload:{result:'GAIN_MANA_FROM_OWN_DECK_RESOLVED',gain_amount:gained,before_mana:before,after_mana:player.mana_pool}}));
   return true;
 }
 
 
 function transferManaFromOpponentToController(next, attackingPlayerId, defendingPlayerId, amount, events, sourceCardId, sourceSlot, reason) {
-  const attacker = next.players && next.players[attackingPlayerId];
-  const defender = next.players && next.players[defendingPlayerId];
-  if (!attacker || !defender || Number(amount || 0) <= 0) return 0;
-  const beforeOpponent = Number(defender.mana_pool || 0);
-  const taken = Math.min(beforeOpponent, Number(amount || 0));
-  defender.mana_pool = beforeOpponent - taken;
-  const beforePlayer = Number(attacker.mana_pool || 0);
-  attacker.mana_pool = beforePlayer + taken;
-  events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
-    player_id: attackingPlayerId,
-    card_id: sourceCardId,
-    source_slot: sourceSlot || undefined,
-    target_player_id: defendingPlayerId,
-    payload: { result: 'ON_HIT_MANA_STEAL_RESOLVED', requested_amount: Number(amount || 0), taken_amount: taken, before_mana: beforePlayer, after_mana: attacker.mana_pool, opponent_before_mana: beforeOpponent, opponent_after_mana: defender.mana_pool, reason }
-  }));
-  return taken;
+  const attacker=next.players&&next.players[attackingPlayerId],defender=next.players&&next.players[defendingPlayerId]; if(!attacker||!defender||Number(amount||0)<=0)return 0;
+  const beforeOpponent=Number(defender.mana_pool||0),beforePlayer=Number(attacker.mana_pool||0);let removed=0,gained=0;
+  if(physicalManaStateAuthoritative(attacker)&&physicalManaStateAuthoritative(defender)){
+    const n=Math.min(Number(amount||0),defender.mana_pool_cards.length);const result=manaPolicy.removeAndGainOwnMana(attacker,defender,Array.from({length:n},(_,i)=>i));removed=result.removed.length;gained=result.gained.length;syncManaPoolCount(attacker);syncManaPoolCount(defender);
+  }else{removed=Math.min(beforeOpponent,Number(amount||0));defender.mana_pool=beforeOpponent-removed;attacker.mana_pool=beforePlayer+removed;gained=removed;}
+  events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED,next,{player_id:attackingPlayerId,card_id:sourceCardId,source_slot:sourceSlot||undefined,target_player_id:defendingPlayerId,payload:{result:'ON_HIT_MANA_REMOVE_AND_GAIN_OWN_RESOLVED',requested_amount:Number(amount||0),removed_amount:removed,gained_from_own_deck:gained,before_mana:beforePlayer,after_mana:attacker.mana_pool,opponent_before_mana:beforeOpponent,opponent_after_mana:defender.mana_pool,selection_visibility:'blind_back_of_card',reason}}));return removed;
 }
-
 function removeManaFromOpponent(next, attackingPlayerId, defendingPlayerId, amount, events, sourceCardId, sourceSlot, reason) {
-  const defender = next.players && next.players[defendingPlayerId];
-  if (!defender || Number(amount || 0) <= 0) return 0;
-  const beforeOpponent = Number(defender.mana_pool || 0);
-  const removed = Math.min(beforeOpponent, Number(amount || 0));
-  defender.mana_pool = beforeOpponent - removed;
-  events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
-    player_id: attackingPlayerId,
-    card_id: sourceCardId,
-    source_slot: sourceSlot || undefined,
-    target_player_id: defendingPlayerId,
-    payload: { result: 'ON_HIT_MANA_REMOVAL_RESOLVED', remove_amount: removed, requested_amount: Number(amount || 0), before_mana: beforeOpponent, after_mana: defender.mana_pool, reason }
-  }));
-  return removed;
+  const defender=next.players&&next.players[defendingPlayerId];if(!defender||Number(amount||0)<=0)return 0;const beforeOpponent=Number(defender.mana_pool||0);let removed=0;
+  if(physicalManaStateAuthoritative(defender)){const n=Math.min(Number(amount||0),defender.mana_pool_cards.length);removed=manaPolicy.removeOpponentManaBlind(defender,Array.from({length:n},(_,i)=>i)).length;syncManaPoolCount(defender);}else{removed=Math.min(beforeOpponent,Number(amount||0));defender.mana_pool=beforeOpponent-removed;}
+  events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED,next,{player_id:attackingPlayerId,card_id:sourceCardId,source_slot:sourceSlot||undefined,target_player_id:defendingPlayerId,payload:{result:'ON_HIT_MANA_REMOVAL_RESOLVED',remove_amount:removed,requested_amount:Number(amount||0),before_mana:beforeOpponent,after_mana:defender.mana_pool,selection_visibility:'blind_back_of_card',selected_destination:'bottom_of_original_owner_mana_deck',reason}}));return removed;
 }
 
 function isOpponentRandomDiscardCard(card) {
@@ -5999,8 +5984,8 @@ function useRacialTrait(state, intent) {
     events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: { result: 'HUMAN_AMBITION_DRAW_RESOLVED', cards_drawn: drawn, before_hand: before, after_hand: nextPlayer.hand.length, does_exhaust: false } }));
   } else if (profile.action_key === 'ancestral_focus') {
     const before = Number(nextPlayer.mana_pool || 0);
-    nextPlayer.mana_pool = before + 2;
-    events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: { result: 'ANCESTRAL_FOCUS_MANA_RESOLVED', mana_gained: 2, before_mana: before, after_mana: nextPlayer.mana_pool, does_exhaust: false } }));
+    const gained = gainManaCardsFromOwnDeck(next, playerId, 2, events, 'Ancestral Focus');
+    events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, { player_id: playerId, card_id: heroCard.card_id, source_slot: sourceSlot, payload: { result: 'ANCESTRAL_FOCUS_MANA_RESOLVED', mana_gained: gained.length, before_mana: before, after_mana: nextPlayer.mana_pool, does_exhaust: false } }));
   } else if (profile.action_key === 'primal_strike') {
     next.pending_attack_resolution = {
       type: 'ABILITY_DAMAGE_RESOLUTION',
@@ -6179,10 +6164,13 @@ function submitIntent(state, intent) {
   switch (intent.type) {
     case 'START_GAME': {
       const initialState = createInitialRuntimeState(intent.payload || {});
-      const startEvent = createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, initialState, { player_id: intent.player_id, payload: { action: 'START_GAME' } });
-      const withStartEvent = appendEvents(initialState, startEvent);
-      const draw = drawOneCardForPlayer(withStartEvent, withStartEvent.active_player_id, { suppress_draw_replacement: true, source: 'start_game' });
-      const startEvents = [startEvent].concat(draw.events || []);
+      const setupEvents = [];
+      for (const id of initialState.player_order) drawOpeningHandWithoutDrawEvents(initialState, id, 6, setupEvents);
+      for (const id of initialState.player_order) setupStartingMana(initialState, id, setupEvents);
+      const startEvent = createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, initialState, { player_id: intent.player_id, payload: { action: 'START_GAME', opening_hand: 6, starting_mana: manaPolicy.STARTING_MANA_CARDS, mana_regen: manaPolicy.STARTING_MANA_REGEN, opening_order: 'Opening Hand -> Starting Mana -> Draw Phase' } });
+      let withStartEvent = appendEvents(initialState, setupEvents.concat(startEvent));
+      const draw = drawOneCardForPlayer(withStartEvent, withStartEvent.active_player_id, { suppress_draw_replacement: true, source: 'mandatory_draw_phase' });
+      const startEvents = setupEvents.concat([startEvent], draw.events || []);
       autoAdvanceCompletedDrawPhase(draw.state, startEvents);
       result = { state: draw.state, events: startEvents, errors: draw.errors || [] };
       break;

@@ -20,8 +20,13 @@ function createAttackResolution(card, source, targetOrTargets) {
 
 function determineAffectedTargets(card, board, source) {
   if (card.attackLayer !== ATTACK_LAYER.AREA) return [];
+  const classification = classifyAttack(card);
   const opponentHeroes = (board && board.opponentHeroes) || [];
-  return opponentHeroes.filter(hero => hero && !hero.defeated && hero.inAreaOfAttack !== false);
+  return opponentHeroes.filter(hero => {
+    if (!hero || hero.defeated || hero.legacy === true || hero.slot_mode === 'LEGACY') return false;
+    if (classification.usesGlobalRange) return true;
+    return hero.inAreaOfAttack !== false;
+  });
 }
 
 function finalizeAttackResolution(resolution) {

@@ -18,7 +18,7 @@ function listFiles(base, prefix = '') {
     if (entry.isDirectory()) out.push(...listFiles(abs, rel));
     else if (entry.isFile() && rel !== 'FILE_MANIFEST_SHA256.csv') out.push(rel);
   }
-  return out;
+  return out.sort((a, b) => a.localeCompare(b));
 }
 
 function writeManifest(base) {

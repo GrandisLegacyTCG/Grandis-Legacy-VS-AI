@@ -1,0 +1,20 @@
+'use strict';
+const path=require('path');const {loadLocalAI}=require('./vm-local-ai-harness.cjs');
+const root=path.resolve(__dirname,'..','..'),ctx=loadLocalAI(root);function need(v,m){if(!v)throw Error(m)}
+const b=ctx.GL_LOCAL_AI_BRIDGE;need(b,'bridge unavailable');const starters=b.getStarterDeckOptions(),keys=Object.keys(starters);need(keys.length>=2,'starter decks unavailable');
+b.setRenderSuppressed(true);b.setDeckSelections(keys[0],keys[1]);b.startSharedMatch({playerDeckKey:keys[0],player2DeckKey:keys[1]});b.completeOpeningFlow('PLAYER',{choice:'HEADS',outcome:'HEADS'});b.setRenderSuppressed(false);
+need(ctx.GL_V400_QA&&typeof ctx.GL_V400_QA.render==='function','render QA bridge unavailable');ctx.GL_V400_QA.render();
+const html=String(ctx.document.getElementById('app').innerHTML||'');
+need(html.includes('class="gl-lab-authority '),'clean Lab root not rendered');
+need((html.match(/class="hero-lane hero-panel/g)||[]).length>=6,'six Hero/Legacy positions missing');
+need((html.match(/class="gl-lab-side /g)||[]).length===2,'two mirrored field sides missing');
+need(html.indexOf('gl-lab-hand--opponent')<html.indexOf('gl-lab-side--opponent'),'opponent Hand does not precede opponent field');
+need(html.indexOf('gl-lab-side--player')<html.indexOf('gl-lab-hand--player'),'player Hand does not follow player field');
+need((html.match(/gl-lab-mana-pool/g)||[]).length>=2,'dual Mana Pools missing');
+need((html.match(/class="cardTile hand-card/g)||[]).length>=7,'player Hand cards missing');
+need((html.match(/opponent-hand-slot/g)||[]).length>=6,'opponent hidden Hand backs missing');
+need(html.includes('Back-of-Card-Legacy-Deck.webp'),'hidden Shard Deck card back missing');
+need(html.includes('hero-health-overlay'),'HP overlays missing');
+need((html.match(/gl-lab-mana-regen/g)||[]).length>=2,'Mana Regen d6 controls missing');
+const qa=ctx.GL_LAB_V010_FINISH_QA_SELF_TEST();need(qa&&qa.ok,'v0.10 finishing QA self-test failed: '+JSON.stringify(qa));
+console.log('PASS v0.10 render smoke: six positions, mirrored 60% Hands/Mana Pools, hidden Shard Deck, HP composition, stable counters, and six-action Card Played contract.');

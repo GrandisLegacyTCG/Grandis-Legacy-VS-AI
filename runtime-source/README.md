@@ -1,12 +1,14 @@
-# Grandis Legacy VS AI v5.52 Runtime Source
+# Grandis Legacy Stable Runtime Source
 
-- Runtime Foundation: v1.80
-- Runtime Core: v0.48
-- Runtime Data: v0.12.6
-- Effect Recipe: v0.11.6
-- Effect Checkpoint: v0.11.5
-- Shared Runtime Manual: v1.36
-- UI Design Lock: v2.43
-- Application Runtime Sync: v2.39
+- Source Authority Stack: v1.8.1
+- Runtime Foundation: v1.93
+- Runtime Core: v0.61
+- Runtime Data: v0.15.0
+- Effect Recipe / Checkpoint: v0.14.0
+- Legality Map: v1.5.0
+- Shared Runtime Manual: v1.49
+- Starter60: v1.5
+- UI Design Lock: v2.51
+- Application Runtime Sync: v2.56
 
-Runtime owns gameplay. The VS AI UI and local AI submit intents and render runtime results. This package consumes the latest shared source rather than only referencing it.
+Runtime owns gameplay. Public resource terminology is Shard Deck / Mana Shard / Class Shard / Mana Pool. Machine compatibility keys may retain legacy internal names.

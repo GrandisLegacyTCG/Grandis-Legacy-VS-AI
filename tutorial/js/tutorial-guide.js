@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.43 mobile visual hotfix 7 — mobile anatomy geometry is independent from desktop; Draw Phase Mana Pool highlight survives field rerenders. VS AI v6.15 runtime unchanged. */
+/* Grandis Legacy Tutorial Guide v0.59 — VS AI v6.33 / Source Stack v1.8.1 / Playtest Lab v0.14 parity. Mobile anatomy geometry remains independent from desktop; Draw Phase Shard Pool highlight survives field rerenders. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;
@@ -167,7 +167,7 @@
       r={left:left,top:top,right:right,bottom:bottom,width:right-left,height:bottom-top};
     }else{
       // Runtime UI can rerender the battlefield while an Arvon message is open. Rebind a
-      // selector-backed target before measuring it so highlights (especially Mana Pool during
+      // selector-backed target before measuring it so highlights (especially Shard Pool during
       // Draw Phase) do not disappear with a stale DOM node.
       if((!entry.el||!document.documentElement.contains(entry.el))&&entry.liveSelector){
         var liveMatches=qa(entry.liveSelector);entry.el=liveMatches[entry.liveIndex||0]||liveMatches[0]||null;
@@ -533,7 +533,7 @@
   }
 
   function openingHandMessage(){
-    enqueue({id:'opening_hand',title:'Opening Hand',expression:'calm',compact:true,dock:'top-right',lockDock:true,highlight:'.gl-opening-start-button',interactionTarget:'.gl-opening-start-button',requireInteraction:true,html:'<p>Both players draw <b>6 cards</b> before the first turn. Select <b>Start Game</b> after the opening draw.</p>'});
+    enqueue({id:'opening_hand',title:'Opening Hand + Starting Shards',expression:'calm',compact:true,dock:'top-right',lockDock:true,highlight:'.gl-opening-start-button',interactionTarget:'.gl-opening-start-button',requireInteraction:true,html:'<p>Both players first draw a <b>6-card Opening Hand</b>. Then each player draws <b>3 Starting Shards</b> from their <b>Shard Deck</b> into their <b>Shard Pool</b>.</p><p>The Shard Deck always contains <b>12 Shards</b>. Select <b>Start Game</b> after the opening sequence.</p>',onClose:function(){enqueue({id:'opening_shard_types',title:'Mana Shard and Class Shard',expression:'advise',compact:true,dock:'top-right',html:'<p>A <b>Mana Shard</b> is worth <b>1 Mana</b>.</p><p>A <b>matching Class Shard</b> is worth <b>2 Mana</b> when paying for a Skill of that Class. Otherwise, a Class Shard is worth <b>1 Mana</b>.</p><p>Your selected Ultimate Classes determine which Class Shards are placed in your 12-card Shard Deck: maximum <b>1 per Class</b> and <b>3 Class Shards total</b>; the remaining slots are Mana Shards.</p>'});}});
   }
 
   function queueEndPhaseInformation(){
@@ -573,7 +573,7 @@
   function phaseMessage(state){
     if(!state||state.turn!=='PLAYER'||state.preGame)return;
     if(state.phase==='Draw'&&!seen.phase_draw){
-      enqueue({id:'phase_draw',title:'Draw Phase',expression:'calm',compact:true,highlight:'.zone[data-zone-side="PLAYER"][data-zone-type="Mana Pool"]',html:'<p>You begin with <b>0 Mana</b> and <b>2 Mana Regen</b>. During your first Draw Phase, draw 1 card and gain 2 Mana. Later Draw Phases gain Mana equal to your current Mana Regen, and normally Ready your Exhausted Heroes.</p><p>A Hero that is still Casting remains Exhausted.</p>',onClose:function(){queuePhaseAdvance('Draw');}});
+      enqueue({id:'phase_draw',title:'Draw Phase — Shard Regen',expression:'calm',compact:true,highlight:['.gl-lab-mana-pool--player','.zone[data-zone-side="PLAYER"][data-zone-type="Shard Deck"]'],html:'<p>You already have <b>3 Starting Shards</b> in your Shard Pool. <b>Mana Regen starts at 1</b>.</p><p>During Draw Phase, after the Main Deck draw and any draw replacement finishes, move Shards from the <b>top of your Shard Deck</b> into your <b>Shard Pool</b> equal to Mana Regen, up to the normal Shard Pool maximum of 12.</p><p>Used Shards do not go to Discard: they return to the <b>bottom of their owner’s Shard Deck</b>. A Hero still Casting remains Exhausted.</p>',onClose:function(){queuePhaseAdvance('Draw');}});
     }
     if(state.phase==='Deploy'&&!seen.phase_deploy){
       enqueue({id:'phase_deploy',title:'Deploy Phase',expression:'advise',compact:true,html:'<p>Deploy Phase is used for preparation. <b>Tactical</b> Skills, <b>Events</b>, <b>Items</b>, available Racial Traits, and Class Abilities may be used when their rules allow it.</p><p>We will review the cards in your Hand before continuing.</p>',onClose:function(){startInitialAnatomy();}});
@@ -590,7 +590,7 @@
       enqueue({id:'phase_battle',title:'Battle Phase — No Attack on Turn 1',expression:'serious',compact:true,highlight:turnOneAttackSelectors,html:'<p>Battle Phase is where <b>Attack</b> Skills are normally used.</p><p>Because you took the first turn, <b>you cannot attack during Round 1</b>. Even if an Attack card visibly shows Play, do not use it; the Tutorial blocks that click.</p>'+extra+'<p>The complete Attack flow will appear during a later Battle Phase when attacking is legal.</p>',onClose:function(){queuePhaseAdvance('Battle');}});
     }
     if(state.phase==='Reform'&&!seen.phase_reform){
-      enqueue({id:'phase_reform',title:'Reform Phase',expression:'advise',compact:true,highlight:{groupSelector:'.hand-area--player .hand-card'},html:'<p>Reform Phase is used for recovery and Hero development. <b>Support</b>, Legacy Abilities, Reposition, and <b>Tribute</b> may be available.</p><p>You may Tribute <b>1 Skill Card per Reform Phase</b>. A normal Skill gives 100 EXP. An Ultimate gives 200 EXP but remains bound to its named Hero.</p><p>During Round 1, this tutorial requires you to complete one Tribute so the full flow can be learned.</p>',onClose:startReformGuide});
+      enqueue({id:'phase_reform',title:'Reform Phase',expression:'advise',compact:true,highlight:{groupSelector:'.hand-area--player .hand-card'},html:'<p>Reform Phase is used for recovery and Hero development. <b>Support</b>, Legacy Abilities, Reposition, and <b>Tribute</b> may be available.</p><p>You may Tribute <b>1 Skill Card per Reform Phase</b>. A normal Skill gives 100 EXP. An Ultimate gives 200 EXP, remains bound to its named Hero, and requires <b>1 matching Class Shard</b> from the Shard Pool.</p><p>During Round 1, this tutorial requires you to complete one Tribute so the full flow can be learned.</p>',onClose:startReformGuide});
     }
     if(state.phase==='End'&&!seen.phase_end)queueEndPhaseInformation();
   }
@@ -1027,7 +1027,7 @@
     var c=cardInfo(after.card_id),id='rank_up_'+after.card_id;if(seen[id])return;
     beginPackage('rank_up');
     var identity=c.identity||{},rank=identity.rank||'a higher Rank',draw=/II/.test(rank)?2:3;
-    enqueue({id:id,package:'rank_up',priority:true,title:'Rank Up — '+rank,expression:'calm',highlight:'.hero-panel[data-side="PLAYER"][data-lane="'+lane+'"]',html:'<p><b>'+esc(heroName(after.card_id))+'</b> reached '+esc(rank)+'. EXP Cards beneath the Hero move to the Discard Pile.</p><p>You draw '+draw+' cards and gain +1 Mana Regen. The Mana Pool itself does not increase from Rank Up.</p><p>Complete this Rank Up explanation before reviewing any cards drawn by its reward.</p>',onClose:function(){explainClassAfterRankUp(lane,after.card_id,'rank_up');}});
+    enqueue({id:id,package:'rank_up',priority:true,title:'Rank Up — '+rank,expression:'calm',highlight:'.hero-panel[data-side="PLAYER"][data-lane="'+lane+'"]',html:'<p><b>'+esc(heroName(after.card_id))+'</b> reached '+esc(rank)+'. EXP Cards beneath the Hero move to the Discard Pile.</p><p>You draw '+draw+' cards and gain +1 Mana Regen. The Shard Pool itself does not increase from Rank Up.</p><p>Complete this Rank Up explanation before reviewing any cards drawn by its reward.</p>',onClose:function(){explainClassAfterRankUp(lane,after.card_id,'rank_up');}});
   }
   function classAbilityFromCard(c){
     c=c||{};if(c.class_ability&&c.class_ability.name)return c.class_ability;
@@ -1399,7 +1399,7 @@
     gameResult(state);
     refreshActiveInteractionTargets();
     // Keep selector-backed highlights attached to the current runtime DOM. Battlefield render()
-    // replaces resource-zone nodes, including Mana Pool, during phase/resource updates.
+    // replaces resource-zone nodes, including Shard Pool, during phase/resource updates.
     if(active&&highlightEntries.length)updateHighlightLayer();
     syncGuideHold();previous=state;
   }

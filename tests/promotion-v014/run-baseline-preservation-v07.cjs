@@ -1,0 +1,25 @@
+'use strict';
+const fs=require('fs'),path=require('path');
+const root=path.resolve(__dirname,'..','..');
+const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
+const css=fs.readFileSync(path.join(root,'css/lab-authority.css'),'utf8');
+function need(v,m){if(!v)throw Error(m)}
+const q=app.indexOf('function queueBattleFeedback(evt)');
+const audio=app.indexOf('playBattleFeedbackAudioNow(evt);',q);
+const push=app.indexOf('GL_BATTLE_FEEDBACK_QUEUE.push(evt)',q);
+need(q>=0&&audio>q&&push>audio,'immediate battle SFX ordering regressed');
+need(app.includes('manualRepositionUsedThisTurn'),'manual Reposition used-state helper missing');
+need(app.includes('manualRepositionAvailable'),'manual Reposition availability helper missing');
+need(app.includes('Manual Reposition can be used at most once during your active turn. Deploy and Reform share this limit.'),'manual Reposition guard missing');
+need(app.includes("response_payment_choice"),'generic committed Response payment flow missing');
+need(app.includes('committed_response_counter:true'),'counter-Response committed marker missing');
+need(app.includes("recordLocalPlayerAction(appState,'REACTION'")&&app.includes("recordOpponentAction(appState,'REACTION'"),'committed counter-response Card Played recording missing');
+need(app.includes('if(explicit.length) return explicit;'),'explicit committed counter chain preference missing');
+need(app.includes('hero-card-physical-stack'),'Hero/EXP physical composition missing');
+need(css.includes('flex-direction:column-reverse!important'),'exhausted EXP bottom-to-top orientation missing');
+need(css.includes("Stack 100-200EXP.png"),'shared EXP sprite missing');
+need(app.includes("appState&&appState.gameOver?'BACK TO LOBBY':'SURRENDER'"),'Game Over Back to Lobby control missing');
+need(app.includes("if(hc==='Grand Arbalest') return {abilityId:'rapid_chamber'"),'Rapid Chamber ability mapping missing');
+need(app.includes("passiveAttackDamageBonus(card('S1-ARC-018'),s.playerHeroes.LEFT)!==10")&&app.includes("passiveAttackDamageBonus(card('S1-ARC-019'),s.playerHeroes.LEFT)!==0"),'Grand Arbalest Physical-only +10 regression guard missing');
+need(app.includes("cardsDrawnThisTurn"),'Draw This Turn authority missing');
+console.log('PASS inherited production locks: immediate SFX, manual Reposition limit, committed Response/payment chain, Card Played counter recording, EXP orientation, Back to Lobby, and Grand Arbalest/Rapid Chamber markers.');

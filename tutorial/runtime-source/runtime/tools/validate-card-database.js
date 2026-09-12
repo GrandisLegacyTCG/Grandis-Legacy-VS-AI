@@ -156,7 +156,7 @@ function validateCards(cards, opts = {}) {
     });
   });
 
-  if (canonicalMode && cards.length !== 198) errors.push(`expected 198 cards, found ${cards.length}`);
+  if (canonicalMode && cards.length !== 200) errors.push(`expected 200 cards, found ${cards.length}`);
   return { ok: errors.length === 0, errors, warnings, counts };
 }
 

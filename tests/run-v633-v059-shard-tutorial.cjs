@@ -1,0 +1,10 @@
+'use strict';
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'..');
+const read=rel=>fs.readFileSync(path.join(root,rel),'utf8');
+const guide=read('tutorial/js/tutorial-guide.js');
+for(const term of ['Opening Hand + Starting Shards','3 Starting Shards','Shard Deck always contains <b>12 Shards</b>','Mana Shard and Class Shard','matching Class Shard','Mana Regen starts at 1','bottom of their owner’s Shard Deck']) assert.ok(guide.includes(term),`tutorial missing: ${term}`);
+assert.ok(guide.includes('maximum <b>1 per Class</b>')&&guide.includes('<b>3 Class Shards total</b>'),'Class Shard composition teaching missing');
+for(const rel of ['index.html','js/app.bundle.js','js/static-data.js','tutorial/index.html','tutorial/js/app.bundle.js','tutorial/js/static-data.js','tutorial/js/tutorial-guide.js']) assert.ok(!read(rel).includes('Mana Pool'),`${rel}: obsolete Mana Pool terminology remains`);
+assert.equal(require('../package.json').version,'6.33.0');
+console.log('PASS VS AI v6.33 / Tutorial v0.59 Shard teaching and terminology');

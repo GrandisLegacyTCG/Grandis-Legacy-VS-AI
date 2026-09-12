@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const EXPECTED_CARD_COUNT = 198;
+const EXPECTED_CARD_COUNT = 200;
 
 function readJson(filePath, label) {
   if (!filePath) throw new Error(`${label} path is required.`);

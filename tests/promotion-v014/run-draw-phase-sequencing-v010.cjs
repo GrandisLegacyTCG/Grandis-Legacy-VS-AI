@@ -1,0 +1,21 @@
+'use strict';
+const fs=require('fs'),path=require('path');
+const {loadLocalAI}=require('./vm-local-ai-harness.cjs');
+const root=path.resolve(__dirname,'..','..'),ctx=loadLocalAI(root),b=ctx.GL_LOCAL_AI_BRIDGE;
+function need(v,m){if(!v)throw Error(m)}
+need(b,'bridge unavailable');b.setRenderSuppressed(true);
+const qa=ctx.GL_LAB_V010_DRAW_SEQUENCE_QA_SELF_TEST();need(qa&&qa.ok,'staged reservation QA failed: '+JSON.stringify(qa));
+const keys=Object.keys(b.getStarterDeckOptions());b.setDeckSelections(keys[0],keys[1]);b.startSharedMatch({playerDeckKey:keys[0],player2DeckKey:keys[1]});
+let r=b.completeOpeningFlow('PLAYER',{choice:'HEADS',outcome:'HEADS'}),s=r.snapshot.appState;
+need(s.mana===4&&s.playerHand.length===7,'first Draw Phase state mismatch after opening: '+JSON.stringify({mana:s.mana,hand:s.playerHand.length}));
+const src=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
+const start=src.indexOf('function resolveDrawPhase(state,side,opts)'),end=src.indexOf('function autoAdvancePlayerDrawWhenReady',start),body=src.slice(start,end);
+need(start>=0&&end>start,'resolveDrawPhase missing');
+const immediateMain=body.indexOf('drawOne(state,side,true'),immediateMana=body.indexOf('continueDrawPhaseWithMana(state,side,{deferAnimation:true}'),stagedMain=body.indexOf('reserveMainDeckDraw(state,side,true'),stagedQueue=body.indexOf('queueReservedMainDeckDraw(reservation,state'),stagedMana=body.lastIndexOf('continueDrawPhaseWithMana(state,side,{})');
+need(immediateMain>=0&&immediateMana>immediateMain,'deferred Draw Phase authority is not Main Deck first then Mana');
+need(stagedMain>=0&&stagedQueue>stagedMain&&stagedMana>stagedQueue,'animated Draw Phase authority is not Main Deck reserve/commit first then Mana');
+need(src.includes('function queueReservedMainDeckDraw')&&src.includes('commitReservedMainDeckDraw(state,reservation)'),'staged Main Deck reserve/animate/commit pipeline missing');
+need(src.includes('function queueReservedManaDraw')&&src.includes('commitReservedManaDraw(state,reservation)'),'staged Mana reserve/animate/commit pipeline missing');
+need(!src.includes('function drawPhaseManaEvents(')&&!src.includes('function queueManaDrawEvents('),'obsolete pre-commit Draw Phase Mana pipeline still present');
+need(src.includes("back='assets/cards/ui/Back-of-Card-Legacy-Deck.webp'"),'Mana animation does not use hidden Legacy card back');
+console.log('PASS v0.10 Draw Phase sequencing: Main Deck draw commits first, then staged Mana Regen; neither destination mutates before its animation commit.');

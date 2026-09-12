@@ -1,0 +1,67 @@
+{
+  "schema": "GL-TUTORIAL-GITHUB-LOCK-0.59",
+  "version": "v0.59",
+  "tutorial": "v0.59",
+  "delivery": "GitHub Pages",
+  "base_vs_ai": "v6.33",
+  "date": "2026-09-13",
+  "canonical_registry_hash": "ce79e5a97c115507f68734887160b575840899056e1533488e3fddd3a11fec1f",
+  "hero_component_registry_hash": "487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9",
+  "source_stack_bundle": "v1.8.1",
+  "one_source_authority": "v1.8.1",
+  "runtime_foundation": "v1.93",
+  "runtime_core": "v0.61",
+  "runtime_data": "v0.15.0",
+  "effect_recipe": "v0.14.0",
+  "effect_checkpoint": "v0.14.0",
+  "legality_map": "v1.5.0",
+  "hero_component_authority": "v1.0.0",
+  "shared_runtime_manual": "v1.49",
+  "application_runtime_sync": "v2.56",
+  "starter60": "v1.5",
+  "ui_design_lock": "v2.51",
+  "responseCommitPaymentFramework": "1.0",
+  "manualRepositionLimit": "1.0",
+  "publicResourceTerminology": {
+    "deck": "Shard Deck",
+    "standardShard": "Mana Shard",
+    "classShard": "Class Shard",
+    "pool": "Shard Pool"
+  },
+  "scope": "Tutorial v0.59 shares Source Stack v1.8.1 / Playtest Lab v0.14 gameplay with VS AI v6.33 and explicitly teaches Shard Deck, Shard Pool, Mana Shard, Class Shard, Starting Shards, Mana Regen, return cycle, Ultimate-derived Class Shards, and matching-Class-Shard Ultimate Tribute.",
+  "app_bundle_sha256": "00b3b169c6282c9997e4e7eab9e1da4ebd5da85ad2947c808619e589c40b97ee",
+  "tutorial_guide_sha256": "8854fc807ec64409170ee2ed130d71bc537ebb316626594c27e96d2ab63aea76",
+  "tutorial_css_sha256": "0ce3edab512c0f4bd58c4df1b84f8214ba151436c44b5b6aacbed2541d61bad8",
+  "runtime_authority_sha256": "294bed265e0f81eda97ea42e8e0b1d900934a9a5f8f5085131f3f4dd5e08c619",
+  "static_data_sha256": "00fbef9d13562f0ca4a21fd34837a10538580ec60c815b2093a5e13c114920b7",
+  "runtime_source_browser_sha256": "294bed265e0f81eda97ea42e8e0b1d900934a9a5f8f5085131f3f4dd5e08c619",
+  "counter_asset_sha256": {
+    "1": "0163a05b27ab59f3a94cf379ccd5b61e69e9d0819fb3a56e79fc7e13e31a047a",
+    "2": "ad7f17e7ffe9290df4ed06810b6bd80417133e56a14eaa9a14cf8db3310d6bb4",
+    "3": "eef0182e7fe1824d0265d9e9419f2ea81ae594a374ba8ed3de56e9c1e90c21e3",
+    "4": "0b3169cb24c2b0e50aa72c2883c0dd970467915d5b48d2a74c2bc65a9e450c6a",
+    "5": "85f314ae9c68b8e05b27c08f89a9e208b12969e6cb113ef45acd2967928266de",
+    "6": "9b45066100db47a512cea48d91f277899eff1a1b03a97524a634a7b7a438a4ae"
+  },
+  "blade_asset_sha256": "babb68059849ea7cb9aedbe0b30cb0bdf0198ae54bebe7fef582c065578b8849",
+  "audio_assets": {
+    "coin_flip": {
+      "path": "assets/audio/Coin Flip.mp3",
+      "sha256": "b4842f9a3f2d25004223313f5473bef74afd79915b6af9bdb35c70f6df8c2b50"
+    },
+    "card_sound": {
+      "path": "assets/audio/Card Sound.mp3",
+      "sha256": "1c04e41918b392a643c22d6c02ef34eeab0341c70d46b7d517078725b79d8ee4"
+    }
+  },
+  "exp_stack_assets": {
+    "master": {
+      "path": "assets/exp/Stack 100-200EXP.png",
+      "sha256": "cadec62c02c8427f13e07490068b31de1f59643a220a5fa0540fd01a16e2250b",
+      "sprite_halves": {
+        "left": 100,
+        "right": 200
+      }
+    }
+  }
+}

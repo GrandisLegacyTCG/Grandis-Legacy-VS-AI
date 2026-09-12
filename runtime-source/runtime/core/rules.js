@@ -15,12 +15,16 @@ function classifyAttack(card) {
   const damageProfile = card.damageProfile || DAMAGE_PROFILE.NONE;
 
   if (attackLayer === ATTACK_LAYER.AREA) {
+    const hasRangeReach = card.rangeAttack === true || card.range_attack === true || card.effectiveRange === true;
     return {
       primaryBadge: ATTACK_LAYER.AREA,
       attackLayer,
       damageProfile,
-      usesRangeOfAttack: true,
-      requiresManualTarget: false
+      usesRangeOfAttack: hasRangeReach,
+      usesGlobalRange: hasRangeReach,
+      requiresManualTarget: false,
+      rangeDeterminesReach: true,
+      areaDeterminesTargetingMode: true
     };
   }
 
@@ -70,11 +74,19 @@ function applySharpshooter(hero, card) {
   if (!hasSharpshooter) return card;
   if (card.cardType !== CARD_TYPES.SKILL) return card;
   if (card.card_id === 'S1-ARC-001' || card.id === 'S1-ARC-001') return card; // Bow Bash printed exclusion.
-  const isNormalPhysicalAttack = (card.attackLayer || ATTACK_LAYER.NONE) === ATTACK_LAYER.NONE &&
-    card.damageProfile === DAMAGE_PROFILE.PHYSICAL;
-  if (!isNormalPhysicalAttack) return card;
+  const isPhysicalAttack = card.damageProfile === DAMAGE_PROFILE.PHYSICAL;
+  if (!isPhysicalAttack) return card;
+  const currentLayer = card.attackLayer || ATTACK_LAYER.NONE;
+  if (currentLayer === ATTACK_LAYER.AREA) {
+    return Object.assign({}, card, {
+      rangeAttack: true,
+      runtimeNotes: [].concat(card.runtimeNotes || [], 'Sharpshooter: Physical Attack Skill gains Range reach; Area targeting mode is preserved')
+    });
+  }
+  if (currentLayer !== ATTACK_LAYER.NONE && currentLayer !== ATTACK_LAYER.RANGE) return card;
   return Object.assign({}, card, {
     attackLayer: ATTACK_LAYER.RANGE,
+    rangeAttack: true,
     runtimeNotes: [].concat(card.runtimeNotes || [], 'Sharpshooter: Physical Attack Skill gains Range Attack')
   });
 }

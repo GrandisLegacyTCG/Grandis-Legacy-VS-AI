@@ -1,27 +1,10 @@
 'use strict';
-
-const SLOT_ORDER = Object.freeze(['Left', 'Center', 'Right']);
-const AREA_OF_ATTACK = Object.freeze({
-  Left: Object.freeze(['Left', 'Center']),
-  Center: Object.freeze(['Left', 'Center', 'Right']),
-  Right: Object.freeze(['Center', 'Right'])
-});
-
-function normalizeSlotKey(value) {
-  const text = String(value || '').trim().toLowerCase();
-  if (text === 'left') return 'Left';
-  if (text === 'center' || text === 'centre') return 'Center';
-  if (text === 'right') return 'Right';
-  return String(value || '').trim();
-}
-
-function legalAttackTargetSlots(sourceSlot) {
-  const key = normalizeSlotKey(sourceSlot);
-  return AREA_OF_ATTACK[key] ? AREA_OF_ATTACK[key].slice() : [];
-}
-
-function isTargetInAreaOfAttack(sourceSlot, targetSlot) {
-  return legalAttackTargetSlots(sourceSlot).includes(normalizeSlotKey(targetSlot));
-}
-
-module.exports = { SLOT_ORDER, AREA_OF_ATTACK, normalizeSlotKey, legalAttackTargetSlots, isTargetInAreaOfAttack };
+const SLOT_ORDER=Object.freeze(['Left','Center','Right']);
+const AREA_OF_ATTACK=Object.freeze({Left:Object.freeze(['Left','Center']),Center:Object.freeze(['Left','Center','Right']),Right:Object.freeze(['Center','Right'])});
+function normalizeSlotKey(value){const text=String(value||'').trim().toLowerCase();if(text==='left')return'Left';if(text==='center'||text==='centre')return'Center';if(text==='right')return'Right';return String(value||'').trim();}
+function legalAttackTargetSlots(sourceSlot){const key=normalizeSlotKey(sourceSlot);return AREA_OF_ATTACK[key]?AREA_OF_ATTACK[key].slice():[];}
+function isTargetInAreaOfAttack(sourceSlot,targetSlot){return legalAttackTargetSlots(sourceSlot).includes(normalizeSlotKey(targetSlot));}
+function activeHeroSlots(player){return SLOT_ORDER.filter(slot=>{const s=player&&player.board&&player.board[slot];return s&&s.slot_mode==='HERO'&&s.hero&&!s.hero.defeated&&Number(s.hero.hp||0)>0;});}
+function moveOnlyHeroToCenter(player){const slots=activeHeroSlots(player);if(slots.length!==1||slots[0]==='Center')return{moved:false,from:slots[0]||null,to:slots[0]||null};const from=slots[0],center=player.board.Center;const source=player.board[from];if(center&&center.slot_mode==='HERO'&&center.hero&&!center.hero.defeated)return{moved:false,from,to:null};player.board.Center=source;player.board.Center.slot='Center';player.board[from]=center||{slot:from,slot_mode:'EMPTY',hero:null};player.board[from].slot=from;return{moved:true,from,to:'Center',exhaust:false};}
+function autoCenterOneVsOne(playerA,playerB){if(activeHeroSlots(playerA).length!==1||activeHeroSlots(playerB).length!==1)return{applied:false,moves:[]};const a=moveOnlyHeroToCenter(playerA),b=moveOnlyHeroToCenter(playerB);return{applied:a.moved||b.moved,moves:[a,b].filter(x=>x.from),exhaust:false,manual_reposition_limit_consumed:false};}
+module.exports={SLOT_ORDER,AREA_OF_ATTACK,normalizeSlotKey,legalAttackTargetSlots,isTargetInAreaOfAttack,activeHeroSlots,moveOnlyHeroToCenter,autoCenterOneVsOne};

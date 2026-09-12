@@ -21,7 +21,7 @@ function listFiles(dir, prefix = '') {
     if (entry.isDirectory()) out.push(...listFiles(abs, rel));
     else if (entry.isFile() && rel !== 'FILE_MANIFEST_SHA256.csv') out.push(rel);
   }
-  return out;
+  return out.sort((a, b) => a.localeCompare(b));
 }
 
 if (!fs.existsSync(MANIFEST)) throw new Error('FILE_MANIFEST_SHA256.csv is missing');

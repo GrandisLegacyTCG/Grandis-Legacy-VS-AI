@@ -1,5 +1,5 @@
 {
   "type": "commonjs",
-  "version": "1.91.0",
-  "description": "Grandis Legacy Runtime Core v0.59 packaged with Runtime Foundation v1.91; manual Reposition once-per-active-turn authority."
+  "version": "1.93.0",
+  "description": "Grandis Legacy Runtime Foundation v1.93 / Runtime Core v0.61 \u2014 promoted Mana Deck, Actual Draw, Legacy Base Class, Range+Area, status stacking, and Playtest v0.14 authority."
 }
