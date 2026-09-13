@@ -6369,3 +6369,10 @@ body:has(.v96-app.mobile-restored-layout) #glMobileAppMenu{display:none!importan
   .v96-app.mobile-restored-layout .attachment-row>.slot{position:relative!important;overflow:visible!important;}
   .v96-app.mobile-restored-layout .attachment-row>.slot .gl-attachment-die{position:absolute!important;z-index:40!important;right:-2px!important;top:-2px!important;width:13px!important;height:13px!important;min-width:13px!important;min-height:13px!important;margin:0!important;pointer-events:none!important;filter:drop-shadow(0 1px 2px rgba(0,0,0,.75))!important;}
 }
+
+/* VS AI v6.41 / Tutorial v0.67 — mobile battlefield correction.
+   Keep the vertical Hero staging intact; only compensate half the reserved
+   28px EXP rail so each Hero is centered left-to-right in its lane. */
+@media (max-width:760px){
+  .v96-app.mobile-restored-layout .hero-card-composition{transform:translateX(14px)!important;}
+}

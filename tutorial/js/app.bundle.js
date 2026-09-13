@@ -1,4 +1,4 @@
-/* Grandis Legacy shared gameplay application v3.2 — Tutorial v0.66 / VS AI v6.40.
+/* Grandis Legacy shared gameplay application v3.2 — Tutorial v0.67 / VS AI v6.41.
    One Source Authority v1.8.2 + Runtime Foundation v1.93 / Runtime Core v0.61 / Runtime Data v0.15.0.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
@@ -6,7 +6,7 @@
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
   var IS_TUTORIAL_APP=GL_APP_MODE==='TUTORIAL';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.41 · VS AI v6.40 Battlefield · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.66 GitHub Pages · VS AI v6.40 Base · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61':'Grandis Legacy VS AI v6.40 · Shared Gameplay Bundle v3.2 · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61');
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.41 · VS AI v6.41 Battlefield · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.67 GitHub Pages · VS AI v6.41 Base · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61':'Grandis Legacy VS AI v6.41 · Shared Gameplay Bundle v3.2 · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61');
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
@@ -631,22 +631,40 @@
   function viewportShortSide(){if(typeof window==='undefined')return 9999;var w=Number(window.innerWidth||0),h=Number(window.innerHeight||0);return Math.min(w||9999,h||9999);}
   function deviceScreenShortSide(){if(typeof window==='undefined')return viewportShortSide();var s=window.screen||{},w=Number(s.width||0),h=Number(s.height||0);return Math.min(w||9999,h||9999);}
   function isTouchFirstViewport(){return typeof window!=='undefined'&&((window.matchMedia&&window.matchMedia('(hover: none), (pointer: coarse)').matches)||Number((window.navigator&&window.navigator.maxTouchPoints)||0)>0);}
-  function responsiveDeviceFamily(){
+  function physicalResponsiveDeviceFamily(){
     if(typeof window==='undefined')return'desktop';
-    if(window.__GL_RESPONSIVE_DEVICE_FAMILY)return window.__GL_RESPONSIVE_DEVICE_FAMILY;
-    if(!isTouchFirstViewport())return(window.__GL_RESPONSIVE_DEVICE_FAMILY='desktop');
+    if(window.__GL_PHYSICAL_DEVICE_FAMILY)return window.__GL_PHYSICAL_DEVICE_FAMILY;
+    if(!isTouchFirstViewport())return(window.__GL_PHYSICAL_DEVICE_FAMILY='desktop');
     var ua=String((window.navigator&&window.navigator.userAgent)||'');
-    var tabletUa=/iPad|Tablet|PlayBook|Silk/i.test(ua)||(/Android/i.test(ua)&&!/Mobile/i.test(ua));
+    var tabletUa=/iPad|Tablet|PlayBook|Silk/i.test(ua)||(/Android/i.test(ua)&&!/Mobile/i.test(ua))||(/Macintosh/i.test(ua)&&Number((window.navigator&&window.navigator.maxTouchPoints)||0)>1);
     var phoneUa=/iPhone|iPod|Windows Phone|IEMobile|Opera Mini|Mobi/i.test(ua)||(/Android/i.test(ua)&&/Mobile/i.test(ua));
-    var family=tabletUa?'tablet':(phoneUa?'mobile':(deviceScreenShortSide()>=600?'tablet':'mobile'));
-    window.__GL_RESPONSIVE_DEVICE_FAMILY=family;
+    var largeTouchScreen=deviceScreenShortSide()>=600;var family=(tabletUa||largeTouchScreen)?'tablet':(phoneUa?'mobile':'mobile');
+    window.__GL_PHYSICAL_DEVICE_FAMILY=family;
     return family;
   }
+  function isPortraitViewport(){if(typeof window==='undefined')return false;if(window.matchMedia)try{return window.matchMedia('(orientation: portrait)').matches;}catch(e){}return Number(window.innerHeight||0)>=Number(window.innerWidth||0);}
+  function responsiveDeviceFamily(){var physical=physicalResponsiveDeviceFamily();if(physical==='tablet')return isPortraitViewport()?'mobile':'tablet';return physical;}
   function isMobileViewport(){return responsiveDeviceFamily()==='mobile';}
-  function isTouchTabletViewport(){return responsiveDeviceFamily()==='tablet';}
-  function syncResponsiveInputMode(){if(typeof document==='undefined')return'desktop';var mode=responsiveDeviceFamily();[document.documentElement,document.body].forEach(function(el){if(!el||!el.classList)return;el.classList.toggle('gl-ui-mobile',mode==='mobile');el.classList.toggle('gl-ui-tablet',mode==='tablet');el.classList.toggle('gl-ui-desktop',mode==='desktop');});return mode;}
-  function clearTouchHandSelection(keep){if(typeof document==='undefined')return;Array.prototype.forEach.call(document.querySelectorAll('.hand-card.touch-selected,.hand-card.hand-hover-active'),function(cardEl){if(cardEl===keep)return;cardEl.classList.remove('touch-selected','hand-hover-active');cardEl.removeAttribute('aria-selected');});if(!keep)v94HoverZoomHide();}
-  function selectTouchHandCard(cardEl){if(!cardEl||!isTouchTabletViewport())return false;clearTouchHandSelection(cardEl);v94HoverZoomHide();cardEl.classList.add('touch-selected');cardEl.setAttribute('aria-selected','true');var art=cardEl.querySelector('.hand-art[data-preview]'),cardId=(art&&art.getAttribute('data-preview'))||cardEl.getAttribute('data-card-id');if(art&&art.blur)art.blur();if(cardId)v59HandHoverZoomShow(cardId,cardEl);return true;}
+  function isTouchTabletViewport(){return physicalResponsiveDeviceFamily()==='tablet'&&responsiveDeviceFamily()==='tablet';}
+  function syncTabletViewportContract(){
+    if(typeof document==='undefined'||typeof window==='undefined')return false;
+    var meta=document.querySelector('meta[name="viewport"]');if(!meta||physicalResponsiveDeviceFamily()!=='tablet')return false;
+    var mobilePortrait=isPortraitViewport();
+    var next=mobilePortrait?'width=760, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover':'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover';
+    if(meta.getAttribute('content')!==next)meta.setAttribute('content',next);
+    return mobilePortrait;
+  }
+  function syncResponsiveInputMode(){if(typeof document==='undefined')return'desktop';syncTabletViewportContract();var mode=responsiveDeviceFamily(),physical=physicalResponsiveDeviceFamily();[document.documentElement,document.body].forEach(function(el){if(!el||!el.classList)return;el.classList.toggle('gl-ui-mobile',mode==='mobile');el.classList.toggle('gl-ui-tablet',mode==='tablet');el.classList.toggle('gl-ui-desktop',mode==='desktop');el.classList.toggle('gl-device-tablet',physical==='tablet');el.classList.toggle('gl-tablet-portrait-mobile',physical==='tablet'&&mode==='mobile');el.classList.toggle('gl-tablet-landscape-desktop',physical==='tablet'&&mode==='tablet');});return mode;}
+  function tabletHandActionPortal(){
+    if(typeof document==='undefined')return null;var portal=document.getElementById('glTabletHandActions');if(portal)return portal;portal=document.createElement('div');portal.id='glTabletHandActions';portal.className='gl-tablet-hand-actions';portal.hidden=true;portal.setAttribute('aria-label','Selected Hand card actions');document.body.appendChild(portal);return portal;
+  }
+  function hideTabletHandActionPortal(){var portal=typeof document!=='undefined'&&document.getElementById('glTabletHandActions');if(portal){portal.hidden=true;portal.innerHTML='';portal.removeAttribute('style');}}
+  function syncTabletHandActionPortal(cardEl){
+    if(!isTouchTabletViewport()||!cardEl){hideTabletHandActionPortal();return false;}var source=cardEl.querySelector('.hand-actions'),portal=tabletHandActionPortal(),box=document.getElementById('hoverCardZoom');if(!source||!portal||!box||box.hidden){hideTabletHandActionPortal();return false;}
+    var buttons=Array.prototype.map.call(source.querySelectorAll('.mini-action'),function(btn){return btn.outerHTML;}).join('');if(!buttons){hideTabletHandActionPortal();return false;}portal.innerHTML=buttons;portal.hidden=false;var r=box.getBoundingClientRect(),w=Math.max(1,Number(r.width||250)),top=Math.min(window.innerHeight-78,Math.max(6,Number(r.bottom||0)+5));portal.style.left=Math.round(r.left)+'px';portal.style.top=Math.round(top)+'px';portal.style.width=Math.round(w)+'px';return true;
+  }
+  function clearTouchHandSelection(keep){if(typeof document==='undefined')return;Array.prototype.forEach.call(document.querySelectorAll('.hand-card.touch-selected,.hand-card.hand-hover-active'),function(cardEl){if(cardEl===keep)return;cardEl.classList.remove('touch-selected','hand-hover-active');cardEl.removeAttribute('aria-selected');});if(!keep){hideTabletHandActionPortal();v94HoverZoomHide();}}
+  function selectTouchHandCard(cardEl){if(!cardEl||!isTouchTabletViewport())return false;clearTouchHandSelection(cardEl);v94HoverZoomHide();cardEl.classList.add('touch-selected');cardEl.setAttribute('aria-selected','true');var art=cardEl.querySelector('.hand-art[data-preview]'),cardId=(art&&art.getAttribute('data-preview'))||cardEl.getAttribute('data-card-id');if(art&&art.blur)art.blur();var shown=cardId&&v59HandHoverZoomShow(cardId,cardEl);if(shown)syncTabletHandActionPortal(cardEl);return !!shown;}
   var GL_MOBILE_GAME_SCROLL_TOP=0;
   function mobileGameplayScroller(){if(typeof document==='undefined')return null;return document.scrollingElement||document.documentElement||document.body||null;}
   function setMobileGameplayScrollMode(active){if(typeof document==='undefined')return false;var enabled=!!active&&isMobileViewport();if(document.documentElement&&document.documentElement.classList&&typeof document.documentElement.classList.toggle==='function'){document.documentElement.classList.toggle('gl-mobile-game-scroll-active',enabled);if(enabled)document.documentElement.classList.remove('gl-animation-scroll-locked');}if(document.body&&document.body.classList&&typeof document.body.classList.toggle==='function'){document.body.classList.toggle('gl-mobile-game-scroll-active',enabled);if(enabled)document.body.classList.remove('gl-animation-scroll-locked');}if(document.documentElement&&document.documentElement.style&&typeof document.documentElement.style.removeProperty==='function')document.documentElement.style.removeProperty('--gl-mobile-viewport-height');return enabled;}
@@ -6606,7 +6624,7 @@ function getActivatedHeroAbilities(state, side, lane){
     box.style.transform='translate3d('+Math.round(x)+'px,'+Math.round(y)+'px,0)';
   }
 
-  function v94HoverZoomHide(){var box=$('hoverCardZoom');if(!box)return;box.classList.remove('is-visible','is-modal-zoom','is-click-zoom','is-hand-hover','is-card-played-hover');box.hidden=true;box._glAnchor=null;box.style.transform='translate3d(-9999px,-9999px,0)';box.setAttribute('aria-hidden','true');}
+  function v94HoverZoomHide(){var box=$('hoverCardZoom');if(!box)return;box.classList.remove('is-visible','is-modal-zoom','is-click-zoom','is-hand-hover','is-card-played-hover');box.hidden=true;box._glAnchor=null;box.style.transform='translate3d(-9999px,-9999px,0)';if(box.style&&typeof box.style.removeProperty==='function'){box.style.removeProperty('--gl-tablet-hand-hover-w');box.style.removeProperty('--gl-tablet-hand-hover-h');}box.setAttribute('aria-hidden','true');}
   function v59HandHoverZoomShow(cardId,anchor){
     /* Hand hover order is fixed: raise the physical Hand card, keep Play/Tribute above it,
        then place the large review above that action strip. The review is positioned before
@@ -6618,11 +6636,12 @@ function getActivatedHeroAbilities(state, side, lane){
     cardEl.classList.add('hand-hover-active');
     /* Force the raised-card transform into layout before measuring its final anchor. */
     if(cardEl.getBoundingClientRect)cardEl.getBoundingClientRect();
-    var rect=art.getBoundingClientRect();
-    var w=250,h=350,upperEdge=rect.top;
-    var x=rect.left+(rect.width-w)/2,y=upperEdge-h-14;
-    x=Math.max(8,Math.min(x,window.innerWidth-w-8));y=Math.max(8,Math.min(y,window.innerHeight-h-8));
+    var rect=art.getBoundingClientRect(),tablet=isTouchTabletViewport();
+    var h=tablet?Math.min(350,Math.max(252,Number(window.innerHeight||500)-102)):350,w=tablet?Math.round(h*5/7):250,upperEdge=rect.top;
+    var x=rect.left+(rect.width-w)/2,y=tablet?6:(upperEdge-h-14);
+    x=Math.max(6,Math.min(x,window.innerWidth-w-6));y=Math.max(6,Math.min(y,window.innerHeight-h-(tablet?86:8)));
     img.src=fullFor(cardId);img.alt=cardName(card(cardId))+' hand preview';
+    if(tablet&&box.style&&typeof box.style.setProperty==='function'){box.style.setProperty('--gl-tablet-hand-hover-w',w+'px');box.style.setProperty('--gl-tablet-hand-hover-h',h+'px');}
     box.classList.remove('is-click-zoom','is-modal-zoom');box.classList.add('is-hand-hover');
     box.style.transform='translate3d('+Math.round(x)+'px,'+Math.round(y)+'px,0)';
     box._glAnchor=cardEl;box.setAttribute('aria-hidden','false');box.hidden=false;box.classList.add('is-visible');
@@ -6755,7 +6774,7 @@ function getActivatedHeroAbilities(state, side, lane){
   }
   function resourceZone(side,type,count,clickable,extraClass,regen,topCardId,racialCount){
     var isMana=type==='Shard Pool',isShardDeck=type==='Shard Deck',isMain=type==='Main Deck',isLegacy=type==='Legacy Deck',isDiscard=type==='Discard Pile';
-    var icon=(isMana||isShardDeck)?'https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Mana-Shard-Thumb.webp':(isLegacy?'https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Back-of-Card-Legacy-Deck.webp':(isDiscard?(topCardId?thumbFor(topCardId):''):'https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Back-of-Card-Main-Deck.webp'));
+    var icon=isMana?'https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Mana-Shard-Thumb.webp':(isShardDeck?'https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Back-of-Card-Legacy-Deck.webp':(isLegacy?'https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Back-of-Card-Legacy-Deck.webp':(isDiscard?(topCardId?thumbFor(topCardId):''):'https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Back-of-Card-Main-Deck.webp')));
     var emptyDiscard=isDiscard&&!topCardId;
     var cls='zone '+(isMana?'zone--mana':isShardDeck?'zone--shard-deck':isLegacy?'zone--legacy':isDiscard?'zone--discard':'zone--card')+' '+(emptyDiscard?'zone--empty-discard ':'')+(extraClass||'');
     var attrs=' data-zone-side="'+esc(side)+'" data-zone-type="'+esc(type)+'"';
@@ -7003,7 +7022,7 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
     if(localPendingOwner&&state.pending&&state.pending.type==='response_payment_choice')renderResponsePaymentChoice();
     if(appState&&appState.gameOver&&!appState.gameResultShown)setTimeout(function(){if(appState&&appState.gameOver&&!appState.gameResultShown)showResult();},0);
   }
-  function handCard(id,idx,state,fanIndex,fanCount,hidden){var style=fanStyle(fanIndex,fanCount,'PLAYER');if(hidden)return'<article class="cardTile hand-card hand-slot-placeholder" data-hand-index="'+idx+'" data-hand-slot-index="'+idx+'" data-hand-side="PLAYER" style="'+style+'" aria-hidden="true"></article>';var c=card(id),lp=state?legalPlayState(state,id):{can:false,reasons:['match not started']},tp=state?legalTributeState(state,id):{can:false,reasons:['match not started']},actions=isTouchTabletViewport()?'<button class="mini-action preview-card-action touch-tablet-preview" type="button" data-preview="'+esc(id)+'">Preview</button>':'',drawBusy=(GL_HIDDEN_DRAW_TOKENS.PLAYER||[]).length>0,selected=!drawBusy&&!!(state&&state.pending&&state.pending.card_id===id&&Number(state.pending.hand_index)===Number(idx));if(!drawBusy&&(!state||!state.pending)){if(lp.can)actions+='<button class="mini-action play-card-action" type="button" data-play-index="'+idx+'">Play</button>';if(tp.can)actions+='<button class="mini-action tribute-card-action" type="button" data-tribute-index="'+idx+'">Tribute</button>';}return'<article class="cardTile hand-card '+(selected?'is-selected ':'')+((!drawBusy&&(lp.can||tp.can))?'legal playable':'unavailable')+'" data-hand-index="'+idx+'" data-hand-slot-index="'+idx+'" data-card-id="'+esc(id)+'" data-hand-side="PLAYER" style="'+style+'"><button class="hand-art" type="button" data-preview="'+esc(id)+'" aria-label="Preview '+esc(cardName(c))+'"><img src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(c))+'"></button><div class="hand-actions">'+actions+'</div></article>'; }
+  function handCard(id,idx,state,fanIndex,fanCount,hidden){var style=fanStyle(fanIndex,fanCount,'PLAYER');if(hidden)return'<article class="cardTile hand-card hand-slot-placeholder" data-hand-index="'+idx+'" data-hand-slot-index="'+idx+'" data-hand-side="PLAYER" style="'+style+'" aria-hidden="true"></article>';var c=card(id),lp=state?legalPlayState(state,id):{can:false,reasons:['match not started']},tp=state?legalTributeState(state,id):{can:false,reasons:['match not started']},actions=isTouchTabletViewport()?'<button class="mini-action preview-card-action touch-tablet-preview" type="button" data-preview="'+esc(id)+'">Preview</button>':'',touchHints='<div class="touch-tablet-legality" aria-hidden="true">'+(lp.can?'<span class="touch-tablet-legal touch-tablet-legal--play">PLAY</span>':'')+(tp.can?'<span class="touch-tablet-legal touch-tablet-legal--tribute">TRIBUTE</span>':'')+'</div>',drawBusy=(GL_HIDDEN_DRAW_TOKENS.PLAYER||[]).length>0,selected=!drawBusy&&!!(state&&state.pending&&state.pending.card_id===id&&Number(state.pending.hand_index)===Number(idx));if(!drawBusy&&(!state||!state.pending)){if(lp.can)actions+='<button class="mini-action play-card-action" type="button" data-play-index="'+idx+'">Play</button>';if(tp.can)actions+='<button class="mini-action tribute-card-action" type="button" data-tribute-index="'+idx+'">Tribute</button>';}return'<article class="cardTile hand-card '+(selected?'is-selected ':'')+((!drawBusy&&(lp.can||tp.can))?'legal playable ':'unavailable ')+(lp.can?'can-play ':'')+(tp.can?'can-tribute ':'')+'" data-hand-index="'+idx+'" data-hand-slot-index="'+idx+'" data-card-id="'+esc(id)+'" data-can-play="'+(lp.can?'1':'0')+'" data-can-tribute="'+(tp.can?'1':'0')+'" data-hand-side="PLAYER" style="'+style+'"><button class="hand-art" type="button" data-preview="'+esc(id)+'" aria-label="Preview '+esc(cardName(c))+'"><img src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(c))+'"></button>'+touchHints+'<div class="hand-actions">'+actions+'</div></article>'; }
   function opponentPlayedDetail(a,state){ return opponentEventDetail(a); }
 
   function opponentPlayedVisibleEvents(state){
@@ -7635,13 +7654,13 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
     document.addEventListener('contextmenu',function(ev){if(ev.target&&ev.target.closest&&ev.target.closest('.hand-card'))ev.preventDefault();});
     document.addEventListener('dragstart',function(ev){if(ev.target&&ev.target.closest&&ev.target.closest('.hand-card'))ev.preventDefault();});
     document.body.addEventListener('click', function(ev){
-      if(isTouchTabletViewport()&&!ev.target.closest('.hand-card'))clearTouchHandSelection(null);
+      if(isTouchTabletViewport()&&!ev.target.closest('.hand-card,#glTabletHandActions'))clearTouchHandSelection(null);
       var safeDuringLock=ev.target.closest('#soundToggleButton,#mobileSoundToggleButton,#mobileMatchMenuButton,#mobileMatchMenuClose,#mobileMatchMenuOverlay,#mobileDeckSetupButton,#mobileSurrenderButton,#pvpRoomMobileButton,[data-preview],#previewClose,#infoClose,#choiceClose');
       if(gameplayInputLocked()&&!safeDuringLock){ev.preventDefault();ev.stopPropagation();return;}
       if(ev.target.id==='mobileMatchMenuOverlay'){ closeMobileMatchMenu(); return; }
       if(ev.target.closest('#hoverCardZoom.is-click-zoom')){ v55ClickZoomHide(); return; }
-      var play=ev.target.closest('[data-play-index]'); if(play){ beginPlayFromHand(Number(play.getAttribute('data-play-index'))); return; }
-      var tribute=ev.target.closest('[data-tribute-index]'); if(tribute){ beginTributeFromHand(Number(tribute.getAttribute('data-tribute-index'))); return; }
+      var play=ev.target.closest('[data-play-index]'); if(play){ var playIndex=Number(play.getAttribute('data-play-index')); if(isTouchTabletViewport())clearTouchHandSelection(null); beginPlayFromHand(playIndex); return; }
+      var tribute=ev.target.closest('[data-tribute-index]'); if(tribute){ var tributeIndex=Number(tribute.getAttribute('data-tribute-index')); if(isTouchTabletViewport())clearTouchHandSelection(null); beginTributeFromHand(tributeIndex); return; }
       var heroPick=ev.target.closest('.hero-panel'); if(heroPick && appState && appState.pending && (appState.pending.type==='source_selection'||appState.pending.type==='target_selection'||appState.pending.type==='exact_two_target_selection'||appState.pending.type==='scouting_target_selection'||appState.pending.type==='tribute_target'||appState.pending.type==='racial_target_selection'||appState.pending.type==='hero_ability_target_selection'||appState.pending.type==='legacy_hero_target_selection'||appState.pending.type==='double_casting_target_selection')){ chooseHeroFromBoard(heroPick.getAttribute('data-side'), heroPick.getAttribute('data-lane')); return; }
       var manaSpend=ev.target.closest('[data-mana-spend]'); if(manaSpend){ setArrowBarrageSpend(Number(manaSpend.getAttribute('data-mana-spend'))); return; }
       var drawChoice=ev.target.closest('[data-draw-replacement-choice]'); if(drawChoice){ commitDrawReplacementChoice(drawChoice.getAttribute('data-draw-replacement-choice')==='redraw'); return; }
@@ -7685,7 +7704,7 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
       var sideArchive=ev.target.closest('[data-side-archive-id]'); if(sideArchive){v55ZoomPlayedCard(sideArchive.getAttribute('data-side-archive'),sideArchive.getAttribute('data-side-archive-id'));return;}
       var legacyDeck=ev.target.closest('[data-legacy-side]'); if(legacyDeck){showLegacyDeck(legacyDeck.getAttribute('data-legacy-side'));return;}
       var disc=ev.target.closest('[data-discard-side]'); if(disc){ showDiscard(disc.getAttribute('data-discard-side')); return; }
-      var zoomCard=ev.target.closest('[data-preview]'); if(zoomCard){ showPreview(zoomCard.getAttribute('data-preview')); return; }
+      var zoomCard=ev.target.closest('[data-preview]'); if(zoomCard){ if(isTouchTabletViewport()&&zoomCard.closest('#glTabletHandActions'))clearTouchHandSelection(null); showPreview(zoomCard.getAttribute('data-preview')); return; }
     });
     $('previewClose').addEventListener('click', function(){ $('previewOverlay').classList.remove('open'); }); $('previewOverlay').addEventListener('click', function(ev){ if(ev.target.id==='previewOverlay') $('previewOverlay').classList.remove('open'); });
     $('infoClose').addEventListener('click', closeInfo); $('infoOverlay').addEventListener('click', function(ev){ if(ev.target.id==='infoOverlay') closeInfo(); });

@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.66 — VS AI v6.40 / Source Stack v1.8.2. Shard lessons wait for runtime presentation completion; Next Phase guidance only completes after a real phase transition. */
+/* Grandis Legacy Tutorial Guide v0.67 — VS AI v6.41 / Source Stack v1.8.2. Shard lessons wait for runtime presentation completion; Next Phase guidance only completes after a real phase transition. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;
@@ -574,7 +574,7 @@
     if(!picks.length){reformGuide.stage='done';document.body.classList.remove('gl-tutorial-round-one-tribute-lock');queuePhaseAdvance('Reform');return;}
     reformGuide.stage='await_tribute_card';reformGuide.cardId=null;reformGuide.handIndex=null;
     var selectors=picks.map(function(p){return '.tribute-card-action[data-tribute-index="'+p.handIndex+'"]';});
-    enqueue({id:'reform_tribute_pick',title:'Let’s Try Tribute',expression:'advise',compact:true,highlight:selectors,interactionTarget:selectors,requireInteraction:true,html:'<p>When a Skill Card shows <b>Tribute</b>, it can be used during this <b>Reform Phase</b> to become EXP beneath one of your Heroes.</p><p>For this first round, choose <b>any card</b> showing Tribute. Its printed Mana cost is not paid. A normal Skill gives <b>100 EXP</b>; an Ultimate gives <b>200 EXP</b> and may only be Tributed to its named Bound Hero.</p>'});
+    enqueue({id:'reform_tribute_pick',title:'Let’s Try Tribute',expression:'advise',compact:true,highlight:selectors,interactionTarget:selectors,requireInteraction:true,html:'<p>When a Skill Card shows <b>Tribute</b>, it can be used during this <b>Reform Phase</b> to become EXP beneath one of your Heroes.</p><p>For this first round, choose <b>any card</b> showing Tribute. Its printed Mana cost is not paid. A normal Skill gives <b>100 EXP</b>. An Ultimate gives <b>200 EXP</b>, may only be Tributed to its named Bound Hero, and also requires <b>1 matching Class Shard</b> in your <b>Shard Pool</b>.</p>'});
   }
   function startReformGuide(){
     reformGuide={stage:'await_reposition',cardId:null,handIndex:null};
@@ -653,7 +653,8 @@
     if(fam==='UltimateSkill')return[
       {title:'Ultimate Skill — What Stays the Same',selector:'#previewBody .readable-card-art',compact:true,micro:true,html:'<p>An Ultimate is still a <b>Skill Card</b>. Its printed timing, source, target, Mana, Exhaust, and Response flow work like other Skills.</p><p>The next steps cover only the rules that are different.</p>'},
       {title:'Bound Hero and Deck Limit',selector:'#previewBody .readable-card-ultimate-rules',printedRegion:'ultimate_rules',compact:true,micro:true,html:'<p>Only the specifically named <b>Bound Hero</b> may play this Ultimate or receive it as Tribute.</p><p>Each Ultimate is limited to <b>1 copy per deck</b>.</p>'},
-      {title:'Ultimate EXP',selector:null,printedRegion:'exp',compact:true,micro:true,html:'<p>An Ultimate provides <b>200 EXP</b> when Tributed instead of the normal 100 EXP.</p><p>Ultimate Tribute remains restricted to its named Bound Hero.</p>'}
+      {title:'Ultimate Tribute Requirement',selector:null,printedRegion:'exp',compact:true,micro:true,html:'<p>Tributing an Ultimate has one extra resource requirement: you must have <b>1 matching Class Shard</b> in your <b>Shard Pool</b>.</p><p>The Ultimate still has to go to its named <b>Bound Hero</b>.</p>'},
+      {title:'Ultimate EXP',selector:null,printedRegion:'exp',compact:true,micro:true,html:'<p>An Ultimate provides <b>200 EXP</b> when Tributed instead of the normal 100 EXP.</p>'}
     ];
     var color=lineageColorInfo(c),colorHtml='<span class="gl-lineage-key gl-lineage-key--white">White — Cleric</span><span class="gl-lineage-key gl-lineage-key--red">Red — Warrior</span><span class="gl-lineage-key gl-lineage-key--green">Green — Archer</span>';
     var base=[
@@ -667,7 +668,7 @@
     base.push({title:'Card Text',selector:'#previewBody .readable-card-text',printedRegion:'text',compact:true,micro:true,html:'<p>Read the printed effect and follow the timing, target, and resolution rules written on the card.</p>'});
     if(fam==='Skill'||fam==='UltimateSkill'){
       base.push({title:'EXP Value',selector:null,printedRegion:'exp',compact:true,micro:true,html:'<p>This '+(isUltimate?'Ultimate ':'')+'Skill provides <b>'+exp+' EXP</b> when Tributed during Reform Phase.</p>'});
-      if(isUltimate)base.push({title:'Ultimate Rules',selector:'#previewBody .readable-card-ultimate-rules',compact:true,micro:true,html:'<p><b>Bound Hero</b> states the only named Hero who may play this Ultimate or use it as Tribute.</p><p>An Ultimate provides <b>200 EXP</b> when Tributed.</p>'});
+      if(isUltimate)base.push({title:'Ultimate Rules',selector:'#previewBody .readable-card-ultimate-rules',compact:true,micro:true,html:'<p><b>Bound Hero</b> states the only named Hero who may play this Ultimate or use it as Tribute.</p><p>An Ultimate provides <b>200 EXP</b> when Tributed and requires <b>1 matching Class Shard</b> in your <b>Shard Pool</b>.</p>'});
       base.push({title:'Hero Source and Exhaust',selector:null,compact:true,micro:true,html:'<p>A Skill must use a Hero who meets its requirements. Playing it normally Exhausts that Hero.</p>'});
     }else if(fam==='Event'){
       base.push({title:'Event Source',selector:null,compact:true,micro:true,html:'<p>Events use Mana and normally Exhaust the selected source, but they are not tied to a Hero Class or Lineage.</p>'});
