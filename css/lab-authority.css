@@ -209,11 +209,11 @@ body:has(.gl-lab-authority) .hover-card-zoom.is-card-played-hover img{width:100%
 
 /* Mobile deliberately stays on the known-good production mobile battlefield for this desktop-layout experiment. */
 @media(max-width:760px){
-  body:has(.gl-lab-authority){overflow:auto!important;}
-  .gl-lab-authority{position:static;min-height:100vh;overflow:visible;}
-  .gl-lab-shell{display:block;height:auto;padding:0;}
-  .gl-lab-battlefield{display:block;height:auto;overflow:visible;}
-  .gl-lab-sidebar{height:auto;display:block;overflow:visible;}
+  html.gl-ui-mobile body:has(.gl-lab-authority){overflow:auto!important;}
+  html.gl-ui-mobile .gl-lab-authority{position:static;min-height:100vh;overflow:visible;}
+  html.gl-ui-mobile .gl-lab-shell{display:block;height:auto;padding:0;}
+  html.gl-ui-mobile .gl-lab-battlefield{display:block;height:auto;overflow:visible;}
+  html.gl-ui-mobile .gl-lab-sidebar{height:auto;display:block;overflow:visible;}
 }
 
 /* v0.14 UI revision — Mana Regen reads horizontally as REGEN [Counter].
@@ -241,7 +241,7 @@ body:has(.gl-lab-authority) #choiceConfirm.mana-confirm-waiting{border-color:#7d
 
 .gl-lab-hand .touch-tablet-preview{display:none!important;}
 
-/* VS AI v6.39 / Tutorial v0.65 — three explicit interaction modes.
+/* VS AI v6.40 / Tutorial v0.66 — three explicit interaction modes.
    Mobile uses the old scrollable mobile battlefield and never receives this button.
    Tablet keeps desktop geometry but one tap reproduces desktop hover persistently:
    card rises, enlarged hover review appears above it, and actions become tappable.

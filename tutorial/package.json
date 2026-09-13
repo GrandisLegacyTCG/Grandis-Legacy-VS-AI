@@ -1,14 +1,14 @@
 {
   "name": "grandis-legacy-tutorial",
-  "version": "0.65.0",
+  "version": "0.66.0",
   "private": true,
-  "description": "Grandis Legacy Tutorial v0.65 \u2014 VS AI v6.39 parity with gated Shard/Draw teaching and clean mobile/tablet interaction separation.",
+  "description": "Grandis Legacy Tutorial v0.66 \u2014 VS AI v6.40 parity with automatic Draw-to-Deploy flow after the Draw lesson and stable tablet/phone UI separation.",
   "scripts": {
     "build:data": "node ../tools/build-static-data.cjs",
     "metadata": "node ../tools/update-release-metadata.cjs",
     "syntax": "node --check js/app.bundle.js && node --check js/tutorial-guide.js && node --check js/static-data.js && node --check js/runtime-authority.js && find runtime-source/runtime -type f \\( -name '*.js' -o -name '*.mjs' \\) -print0 | sort -z | xargs -0 -r -n1 node --check",
-    "test:base": "npm --prefix .. run test:promotion-v014 && node ../tests/run-v639-v065-shard-tutorial.cjs && node ../tests/run-runtime-sync-lock.cjs",
-    "test:tutorial": "node tests/run-tutorial-v065.cjs",
+    "test:base": "npm --prefix .. run test:promotion-v014 && node ../tests/run-v640-v066-shard-tutorial.cjs && node ../tests/run-runtime-sync-lock.cjs",
+    "test:tutorial": "node tests/run-tutorial-v066.cjs",
     "test": "npm run syntax && npm run test:base && npm run test:tutorial",
     "verify": "npm test && node tests/run-manifest-verification.cjs"
   }

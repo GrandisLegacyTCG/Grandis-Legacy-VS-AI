@@ -1,11 +1,11 @@
-/* Grandis Legacy shared gameplay application v3.2 — VS AI v6.39.
+/* Grandis Legacy shared gameplay application v3.2 — VS AI v6.40.
    One Source Authority v1.8.2 + Runtime Foundation v1.93 / Runtime Core v0.61 / Runtime Data v0.15.0.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
   'use strict';
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.41 · VS AI v6.39 Battlefield · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61':'Grandis Legacy VS AI v6.39 · Shared Gameplay Bundle v3.2 · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61';
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.41 · VS AI v6.40 Battlefield · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61':'Grandis Legacy VS AI v6.40 · Shared Gameplay Bundle v3.2 · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61';
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
@@ -583,10 +583,22 @@
     return captureVisualRect('[data-hand-side="'+side+'"][data-hand-slot-index="'+Number(index)+'"]')||(side==='PLAYER'?captureVisualRect('.handPanel'):captureVisualRect('.strip .backs'));
   }
   function viewportShortSide(){if(typeof window==='undefined')return 9999;var w=Number(window.innerWidth||0),h=Number(window.innerHeight||0);return Math.min(w||9999,h||9999);}
-  function isTouchFirstViewport(){return typeof window!=='undefined'&&window.matchMedia&&window.matchMedia('(hover: none), (pointer: coarse)').matches;}
-  function isMobileViewport(){if(typeof window==='undefined'||!window.matchMedia)return false;if(window.matchMedia('(max-width: 760px)').matches)return true;return isTouchFirstViewport()&&viewportShortSide()<600;}
-  function isTouchTabletViewport(){return isTouchFirstViewport()&&!isMobileViewport()&&viewportShortSide()>=600;}
-  function syncResponsiveInputMode(){if(typeof document==='undefined')return'desktop';var mode=isMobileViewport()?'mobile':(isTouchTabletViewport()?'tablet':'desktop');[document.documentElement,document.body].forEach(function(el){if(!el||!el.classList)return;el.classList.toggle('gl-ui-mobile',mode==='mobile');el.classList.toggle('gl-ui-tablet',mode==='tablet');el.classList.toggle('gl-ui-desktop',mode==='desktop');});return mode;}
+  function deviceScreenShortSide(){if(typeof window==='undefined')return viewportShortSide();var s=window.screen||{},w=Number(s.width||0),h=Number(s.height||0);return Math.min(w||9999,h||9999);}
+  function isTouchFirstViewport(){return typeof window!=='undefined'&&((window.matchMedia&&window.matchMedia('(hover: none), (pointer: coarse)').matches)||Number((window.navigator&&window.navigator.maxTouchPoints)||0)>0);}
+  function responsiveDeviceFamily(){
+    if(typeof window==='undefined')return'desktop';
+    if(window.__GL_RESPONSIVE_DEVICE_FAMILY)return window.__GL_RESPONSIVE_DEVICE_FAMILY;
+    if(!isTouchFirstViewport())return(window.__GL_RESPONSIVE_DEVICE_FAMILY='desktop');
+    var ua=String((window.navigator&&window.navigator.userAgent)||'');
+    var tabletUa=/iPad|Tablet|PlayBook|Silk/i.test(ua)||(/Android/i.test(ua)&&!/Mobile/i.test(ua));
+    var phoneUa=/iPhone|iPod|Windows Phone|IEMobile|Opera Mini|Mobi/i.test(ua)||(/Android/i.test(ua)&&/Mobile/i.test(ua));
+    var family=tabletUa?'tablet':(phoneUa?'mobile':(deviceScreenShortSide()>=600?'tablet':'mobile'));
+    window.__GL_RESPONSIVE_DEVICE_FAMILY=family;
+    return family;
+  }
+  function isMobileViewport(){return responsiveDeviceFamily()==='mobile';}
+  function isTouchTabletViewport(){return responsiveDeviceFamily()==='tablet';}
+  function syncResponsiveInputMode(){if(typeof document==='undefined')return'desktop';var mode=responsiveDeviceFamily();[document.documentElement,document.body].forEach(function(el){if(!el||!el.classList)return;el.classList.toggle('gl-ui-mobile',mode==='mobile');el.classList.toggle('gl-ui-tablet',mode==='tablet');el.classList.toggle('gl-ui-desktop',mode==='desktop');});return mode;}
   function clearTouchHandSelection(keep){if(typeof document==='undefined')return;Array.prototype.forEach.call(document.querySelectorAll('.hand-card.touch-selected,.hand-card.hand-hover-active'),function(cardEl){if(cardEl===keep)return;cardEl.classList.remove('touch-selected','hand-hover-active');cardEl.removeAttribute('aria-selected');});if(!keep)v94HoverZoomHide();}
   function selectTouchHandCard(cardEl){if(!cardEl||!isTouchTabletViewport())return false;clearTouchHandSelection(cardEl);v94HoverZoomHide();cardEl.classList.add('touch-selected');cardEl.setAttribute('aria-selected','true');var art=cardEl.querySelector('.hand-art[data-preview]'),cardId=(art&&art.getAttribute('data-preview'))||cardEl.getAttribute('data-card-id');if(art&&art.blur)art.blur();if(cardId)v59HandHoverZoomShow(cardId,cardEl);return true;}
   var GL_MOBILE_GAME_SCROLL_TOP=0;

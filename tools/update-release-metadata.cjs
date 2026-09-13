@@ -19,20 +19,20 @@ const rootLock={
   canonicalRegistryHash:H,runtimeSourceTreeHash:'3e6a451fb5b2a3c1d5b294329bd557894d5c07581aa637d98996576d179e0e77',heroComponentRegistryHash:HH,
   requiredSourceStack:{sourceAuthorityStack:'1.8.2',oneSourceAuthority:'1.8.2',runtimeData:'0.15.0',effectCheckpoint:'0.14.0',effectRecipe:'0.14.0',legalityMap:'1.5.0',runtimeCore:'0.61',runtimeFoundation:'1.93',heroComponentAuthority:'1.0.0',uiLock:'2.51',sharedManual:'1.49',starter60:'1.5',applicationRuntimeSync:'2.57'},
   gameplayAuthority:'Source Stack v1.8.2 / Shard payment-batch correction',authorityVerified:true,
-  authorityStatement:'Source Stack v1.8.2 corrects Shard return ordering per payment batch and preserves Playtest v0.14 gameplay promotion. VS AI v6.39 and Tutorial v0.65 preserve the gameplay corrections and add clean phone/tablet interaction separation and Tutorial presentation gating.',
-  stableApplications:{vsAI:'v6.39',tutorial:'v0.65'},publicResourceTerminology:terminology,
-  ...shared,local_ai:'v6.39',tutorial:'v0.65',pvp_reference:'v3.42',
+  authorityStatement:'Source Stack v1.8.2 gameplay authority is unchanged. VS AI v6.40 and Tutorial v0.66 add stable phone/tablet/desktop device-family separation, mobile battlefield cleanup, and Tutorial Draw teaching that auto-advances to Deploy after the lesson.',
+  stableApplications:{vsAI:'v6.40',tutorial:'v0.66'},publicResourceTerminology:terminology,
+  ...shared,local_ai:'v6.40',tutorial:'v0.66',pvp_reference:'v3.42',
   shared_gameplay_sha256:sha('js/app.bundle.js'),runtime_authority_sha256:sha('js/runtime-authority.js'),runtime_source_browser_sha256:sha('runtime-source/runtime/browser/runtime-authority.browser.js'),
   static_data_sha256:sha('js/static-data.js'),shared_ui_css_sha256:sha('css/app.css'),lab_authority_css_sha256:sha('css/lab-authority.css'),mobile_app_nav_sha256:sha('js/mobile-app-nav.js'),
   counter_asset_sha256:counters,blade_asset_sha256:sha('assets/battle/Blade.png'),
-  consumerAdoptionStatus:{currentApplicationsRebuiltInThisDelivery:true,currentAI:'VS AI v6.39',currentTutorial:'Tutorial v0.65',sourceStack:'v1.8.2',playtestV014Promotion:'ADOPTED',publicResourceTerminology:'ADOPTED'},
+  consumerAdoptionStatus:{currentApplicationsRebuiltInThisDelivery:true,currentAI:'VS AI v6.40',currentTutorial:'Tutorial v0.66',sourceStack:'v1.8.2',playtestV014Promotion:'ADOPTED',publicResourceTerminology:'ADOPTED'},
   exp_stack_assets:{master:{path:'assets/exp/Stack 100-200EXP.png',sha256:sha('assets/exp/Stack 100-200EXP.png'),sprite_halves:{left:100,right:200}}}
 };
 for(const f of fs.readdirSync(path.join(ROOT,'sync')))if(/^runtime-sync-lock\.v/.test(f))fs.unlinkSync(path.join(ROOT,'sync',f));
 write('sync/runtime-sync-lock.v2.57.json',rootLock);
 const tutorialLock={
-  schema:'GL-TUTORIAL-GITHUB-LOCK-0.65',version:'v0.65',tutorial:'v0.65',delivery:'GitHub Pages',base_vs_ai:'v6.39',date:'2026-09-13',
-  ...shared,scope:'Tutorial v0.65 shares Source Stack v1.8.2 gameplay with VS AI v6.39 and explicitly teaches Shard Deck, Shard Pool, Mana Shard, Class Shard, Starting Shards, Mana Regen, payment-batch return ordering, Ultimate-derived Class Shards, and matching-Class-Shard Ultimate Tribute.',
+  schema:'GL-TUTORIAL-GITHUB-LOCK-0.66',version:'v0.66',tutorial:'v0.66',delivery:'GitHub Pages',base_vs_ai:'v6.40',date:'2026-09-13',
+  ...shared,scope:'Tutorial v0.66 shares Source Stack v1.8.2 gameplay with VS AI v6.40, teaches the Shard system, auto-advances Draw to Deploy only after the Draw lesson, and keeps tablet desktop layout separate from the scrollable phone layout.',
   app_bundle_sha256:sha('tutorial/js/app.bundle.js'),tutorial_guide_sha256:sha('tutorial/js/tutorial-guide.js'),tutorial_css_sha256:sha('tutorial/css/tutorial-guide.css'),
   runtime_authority_sha256:sha('tutorial/js/runtime-authority.js'),static_data_sha256:sha('tutorial/js/static-data.js'),runtime_source_browser_sha256:sha('tutorial/runtime-source/runtime/browser/runtime-authority.browser.js'),
   counter_asset_sha256:Object.fromEntries(Array.from({length:6},(_,i)=>[String(i+1),sha(`tutorial/assets/counters/Counter-${i+1}.png`)])),blade_asset_sha256:sha('tutorial/assets/battle/Blade.png'),
@@ -40,5 +40,5 @@ const tutorialLock={
   exp_stack_assets:{master:{path:'assets/exp/Stack 100-200EXP.png',sha256:sha('tutorial/assets/exp/Stack 100-200EXP.png'),sprite_halves:{left:100,right:200}}}
 };
 const tsync=path.join(ROOT,'tutorial','sync');fs.mkdirSync(tsync,{recursive:true});for(const f of fs.readdirSync(tsync))if(/^tutorial-github-lock\.v/.test(f))fs.unlinkSync(path.join(tsync,f));
-write('tutorial/sync/tutorial-github-lock.v0.65.json',tutorialLock);
-console.log('PASS: VS AI v6.39 / Tutorial v0.65 release locks updated for Source Stack v1.8.2 and Shard terminology.');
+write('tutorial/sync/tutorial-github-lock.v0.66.json',tutorialLock);
+console.log('PASS: VS AI v6.40 / Tutorial v0.66 release locks updated for Source Stack v1.8.2 and responsive/Tutorial flow corrections.');

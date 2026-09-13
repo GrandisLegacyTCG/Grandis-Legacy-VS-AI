@@ -6361,3 +6361,18 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
   .v96-app.mobile-restored-layout .mobile-shard-racial>div{display:flex!important;gap:2px!important;}
   .v96-app.mobile-restored-layout .mobile-shard-racial img{width:17px!important;height:17px!important;object-fit:contain!important;border-radius:50%!important;}
 }
+
+
+/* VS AI v6.40 / Tutorial v0.66 — mobile cleanup after tablet split.
+   Mobile keeps the old scrollable board. Opponent Shard Pool belongs above the opponent Hero row.
+   Match-time app navigation stays hidden, and Attachment counters remain compact on their Attachment card. */
+body:has(.v96-app.mobile-restored-layout) #glMobileAppMenuButton,
+body:has(.v96-app.mobile-restored-layout) #glMobileAppMenu{display:none!important;}
+@media(max-width:760px){
+  .v96-app.mobile-restored-layout .mobile-shard-field.field--opponent{grid-template-rows:54px 48px 218px!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field.field--opponent .zone{grid-row:1!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field.field--opponent .mobile-shard-pool{grid-row:2!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field.field--opponent .hero-row{grid-row:3!important;}
+  .v96-app.mobile-restored-layout .attachment-row>.slot{position:relative!important;overflow:visible!important;}
+  .v96-app.mobile-restored-layout .attachment-row>.slot .gl-attachment-die{position:absolute!important;z-index:40!important;right:-2px!important;top:-2px!important;width:13px!important;height:13px!important;min-width:13px!important;min-height:13px!important;margin:0!important;pointer-events:none!important;filter:drop-shadow(0 1px 2px rgba(0,0,0,.75))!important;}
+}

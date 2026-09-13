@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.65 — VS AI v6.39 / Source Stack v1.8.2. Shard lessons wait for runtime presentation completion; Next Phase guidance only completes after a real phase transition. */
+/* Grandis Legacy Tutorial Guide v0.66 — VS AI v6.40 / Source Stack v1.8.2. Shard lessons wait for runtime presentation completion; Next Phase guidance only completes after a real phase transition. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;
@@ -41,7 +41,7 @@
     return !!(active||queue.length||packageLock||anatomy.initialSequence||anatomy.activeFamily||anatomy.waitingFamily||document.body.classList.contains('gl-tutorial-card-pick-lock'));
   }
   function syncGuideHold(){if(bridge&&typeof bridge.setGuideHold==='function')bridge.setGuideHold(guideHasBlockingWork());}
-  function isMobileTutorialViewport(){return window.innerWidth<=760||(window.innerHeight<=610&&window.innerWidth<=980);}
+  function isMobileTutorialViewport(){return !!(document.documentElement&&document.documentElement.classList&&document.documentElement.classList.contains('gl-ui-mobile'));}
   function firstHighlightElement(){
     for(var i=0;i<highlightEntries.length;i++){
       var entry=highlightEntries[i];
@@ -584,7 +584,7 @@
     if(!state||state.turn!=='PLAYER'||state.preGame)return;
     if(state.phase==='Draw'&&!seen.phase_draw){
       if(openingShardTypesPending||queued.opening_shard_types||(active&&active.id==='opening_shard_types')||!seen.opening_shard_types||runtimePresentationBusy(state))return;
-      enqueue({id:'phase_draw',title:'Draw Phase — Shard Regen',expression:'calm',compact:true,highlight:['.gl-lab-mana-pool--player','.zone[data-zone-side="PLAYER"][data-zone-type="Shard Deck"]'],html:'<p>You already have <b>3 Starting Shards</b> in your Shard Pool. <b>Mana Regen starts at 1</b>.</p><p>During Draw Phase, after the Main Deck draw and any draw replacement finishes, move Shards from the <b>top of your Shard Deck</b> into your <b>Shard Pool</b> equal to Mana Regen, up to the normal Shard Pool maximum of 12.</p><p>Used Shards do not go to Discard: each payment returns as one <b>batch</b> to the bottom of its owner’s Shard Deck. In a Skill payment batch, <b>Mana Shards return first, nonmatching Class Shards next, and the matching Class Shard returns last/deepest</b>. A later payment batch goes below the entire earlier batch. A Hero still Casting remains Exhausted.</p>',onClose:function(){queuePhaseAdvance('Draw');}});
+      enqueue({id:'phase_draw',title:'Draw Phase — Shard Regen',expression:'calm',compact:true,highlight:['.gl-lab-mana-pool--player','.zone[data-zone-side="PLAYER"][data-zone-type="Shard Deck"]'],html:'<p>You already have <b>3 Starting Shards</b> in your Shard Pool. <b>Mana Regen starts at 1</b>.</p><p>During Draw Phase, after the Main Deck draw and any draw replacement finishes, move Shards from the <b>top of your Shard Deck</b> into your <b>Shard Pool</b> equal to Mana Regen, up to the normal Shard Pool maximum of 12.</p><p>Used Shards do not go to Discard: each payment returns as one <b>batch</b> to the bottom of its owner’s Shard Deck. In a Skill payment batch, <b>Mana Shards return first, nonmatching Class Shards next, and the matching Class Shard returns last/deepest</b>. A later payment batch goes below the entire earlier batch. A Hero still Casting remains Exhausted.</p>',onClose:function(){if(bridge&&typeof bridge.releaseInitialDrawLesson==='function')bridge.releaseInitialDrawLesson();}});
     }
     if(state.phase==='Deploy'&&!seen.phase_deploy){
       enqueue({id:'phase_deploy',title:'Deploy Phase',expression:'advise',compact:true,html:'<p>Deploy Phase is used for preparation. <b>Tactical</b> Skills, <b>Events</b>, <b>Items</b>, available Racial Traits, and Class Abilities may be used when their rules allow it.</p><p>We will review the cards in your Hand before continuing.</p>',onClose:function(){startInitialAnatomy();}});

@@ -1,4 +1,4 @@
-/* Grandis Legacy shared gameplay application v3.2 — Tutorial v0.65 / VS AI v6.39.
+/* Grandis Legacy shared gameplay application v3.2 — Tutorial v0.66 / VS AI v6.40.
    One Source Authority v1.8.2 + Runtime Foundation v1.93 / Runtime Core v0.61 / Runtime Data v0.15.0.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
@@ -6,7 +6,7 @@
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
   var IS_TUTORIAL_APP=GL_APP_MODE==='TUTORIAL';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.41 · VS AI v6.39 Battlefield · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.65 GitHub Pages · VS AI v6.39 Base · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61':'Grandis Legacy VS AI v6.39 · Shared Gameplay Bundle v3.2 · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61');
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.41 · VS AI v6.40 Battlefield · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.66 GitHub Pages · VS AI v6.40 Base · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61':'Grandis Legacy VS AI v6.40 · Shared Gameplay Bundle v3.2 · One Source v1.8.2 · Runtime Data v0.15.0 · Foundation v1.93 · Core v0.61');
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
@@ -143,6 +143,7 @@
   var GL_TUTORIAL_AI_ACTION_GATED=Object.create(null);
   var GL_TUTORIAL_CASTING_STAGE_GATED={STARTED:false,RESOLVED:false};
   var GL_TUTORIAL_GUIDE_HOLD=false;
+  var GL_TUTORIAL_DRAW_LESSON_HOLD=false;
   function tutorialGuideHoldActive(){return !!(IS_TUTORIAL_APP&&GL_TUTORIAL_GUIDE_HOLD);}
   function setTutorialGuideHold(hold){var before=GL_TUTORIAL_GUIDE_HOLD;GL_TUTORIAL_GUIDE_HOLD=!!hold;if(before&&!GL_TUTORIAL_GUIDE_HOLD&&appState&&appState.autoEndTurnPending)setTimeout(function(){continueAutomaticPlayerEndTurn(appState);},0);return GL_TUTORIAL_GUIDE_HOLD;}
   function clearTutorialAIPhaseGate(){GL_TUTORIAL_AI_PHASE_GATE.waiting=false;GL_TUTORIAL_AI_PHASE_GATE.phase=null;GL_TUTORIAL_AI_PHASE_GATE.resume=null;GL_TUTORIAL_AI_PHASE_GATE.sequence++;}
@@ -628,10 +629,22 @@
     return captureVisualRect('[data-hand-side="'+side+'"][data-hand-slot-index="'+Number(index)+'"]')||(side==='PLAYER'?captureVisualRect('.handPanel'):captureVisualRect('.strip .backs'));
   }
   function viewportShortSide(){if(typeof window==='undefined')return 9999;var w=Number(window.innerWidth||0),h=Number(window.innerHeight||0);return Math.min(w||9999,h||9999);}
-  function isTouchFirstViewport(){return typeof window!=='undefined'&&window.matchMedia&&window.matchMedia('(hover: none), (pointer: coarse)').matches;}
-  function isMobileViewport(){if(typeof window==='undefined'||!window.matchMedia)return false;if(window.matchMedia('(max-width: 760px)').matches)return true;return isTouchFirstViewport()&&viewportShortSide()<600;}
-  function isTouchTabletViewport(){return isTouchFirstViewport()&&!isMobileViewport()&&viewportShortSide()>=600;}
-  function syncResponsiveInputMode(){if(typeof document==='undefined')return'desktop';var mode=isMobileViewport()?'mobile':(isTouchTabletViewport()?'tablet':'desktop');[document.documentElement,document.body].forEach(function(el){if(!el||!el.classList)return;el.classList.toggle('gl-ui-mobile',mode==='mobile');el.classList.toggle('gl-ui-tablet',mode==='tablet');el.classList.toggle('gl-ui-desktop',mode==='desktop');});return mode;}
+  function deviceScreenShortSide(){if(typeof window==='undefined')return viewportShortSide();var s=window.screen||{},w=Number(s.width||0),h=Number(s.height||0);return Math.min(w||9999,h||9999);}
+  function isTouchFirstViewport(){return typeof window!=='undefined'&&((window.matchMedia&&window.matchMedia('(hover: none), (pointer: coarse)').matches)||Number((window.navigator&&window.navigator.maxTouchPoints)||0)>0);}
+  function responsiveDeviceFamily(){
+    if(typeof window==='undefined')return'desktop';
+    if(window.__GL_RESPONSIVE_DEVICE_FAMILY)return window.__GL_RESPONSIVE_DEVICE_FAMILY;
+    if(!isTouchFirstViewport())return(window.__GL_RESPONSIVE_DEVICE_FAMILY='desktop');
+    var ua=String((window.navigator&&window.navigator.userAgent)||'');
+    var tabletUa=/iPad|Tablet|PlayBook|Silk/i.test(ua)||(/Android/i.test(ua)&&!/Mobile/i.test(ua));
+    var phoneUa=/iPhone|iPod|Windows Phone|IEMobile|Opera Mini|Mobi/i.test(ua)||(/Android/i.test(ua)&&/Mobile/i.test(ua));
+    var family=tabletUa?'tablet':(phoneUa?'mobile':(deviceScreenShortSide()>=600?'tablet':'mobile'));
+    window.__GL_RESPONSIVE_DEVICE_FAMILY=family;
+    return family;
+  }
+  function isMobileViewport(){return responsiveDeviceFamily()==='mobile';}
+  function isTouchTabletViewport(){return responsiveDeviceFamily()==='tablet';}
+  function syncResponsiveInputMode(){if(typeof document==='undefined')return'desktop';var mode=responsiveDeviceFamily();[document.documentElement,document.body].forEach(function(el){if(!el||!el.classList)return;el.classList.toggle('gl-ui-mobile',mode==='mobile');el.classList.toggle('gl-ui-tablet',mode==='tablet');el.classList.toggle('gl-ui-desktop',mode==='desktop');});return mode;}
   function clearTouchHandSelection(keep){if(typeof document==='undefined')return;Array.prototype.forEach.call(document.querySelectorAll('.hand-card.touch-selected,.hand-card.hand-hover-active'),function(cardEl){if(cardEl===keep)return;cardEl.classList.remove('touch-selected','hand-hover-active');cardEl.removeAttribute('aria-selected');});if(!keep)v94HoverZoomHide();}
   function selectTouchHandCard(cardEl){if(!cardEl||!isTouchTabletViewport())return false;clearTouchHandSelection(cardEl);v94HoverZoomHide();cardEl.classList.add('touch-selected');cardEl.setAttribute('aria-selected','true');var art=cardEl.querySelector('.hand-art[data-preview]'),cardId=(art&&art.getAttribute('data-preview'))||cardEl.getAttribute('data-card-id');if(art&&art.blur)art.blur();if(cardId)v59HandHoverZoomShow(cardId,cardEl);return true;}
   var GL_MOBILE_GAME_SCROLL_TOP=0;
@@ -6014,7 +6027,7 @@ function getActivatedHeroAbilities(state, side, lane){
     openAttackResponseWindow(state,action,post);if(state.responseWindow&&pc.target_side==='AI'&&!state.pvpHumanVsHuman)autoResolveCurrentAIResponseWindow(state);return true;
   }
   function finishDrawPhasePresentation(state,side){
-    if(!state)return;state.drawPresentationPending=false;state.drawPhaseResolvedFor=side;syncCounts(state);if(!SUPPRESS_RENDER)render();if(side==='PLAYER'&&!IS_TUTORIAL_APP)autoAdvancePlayerDrawWhenReady(state);
+    if(!state)return;state.drawPresentationPending=false;state.drawPhaseResolvedFor=side;syncCounts(state);if(!SUPPRESS_RENDER)render();if(side==='PLAYER')autoAdvancePlayerDrawWhenReady(state);
   }
   function continueDrawPhaseWithMana(state,side,opts){
     opts=opts||{};if(!state||state.gameOver)return false;if(state.pending&&state.pending.type==='draw_replacement_choice'){state.drawPhaseContinuation={side:side,step:'MANA_REGEN'};return false;}
@@ -6045,7 +6058,7 @@ function getActivatedHeroAbilities(state, side, lane){
       if(!state){return;}
       if(state.gameOver||state.turn!=='PLAYER'||state.phase!=='Draw'||state.drawPhaseResolvedFor!=='PLAYER'){state.autoDrawAdvanceScheduled=false;return;}
       if(state.pending||state.responseWindow||state.drawPresentationPending){state.autoDrawAdvanceScheduled=false;return;}
-      if(animationBusy()||battleFeedbackBusy()){setTimeout(finish,55);return;}
+      if(animationBusy()||battleFeedbackBusy()||(IS_TUTORIAL_APP&&GL_TUTORIAL_DRAW_LESSON_HOLD)){setTimeout(finish,55);return;}
       state.autoDrawAdvanceScheduled=false;
       state.phase='Deploy';state.drawPhaseResolvedFor=null;
       pushLog(state,'PLAYER completes Draw Phase and enters Deploy Phase automatically.');
@@ -7166,13 +7179,14 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
     if(button){button.disabled=true;button.textContent='Starting...';}
     var flip=clone(appState.openingCoinFlip),first=flip.firstPlayer==='AI'?'AI':'PLAYER';
     closeLocalCoinModal();
+    if(IS_TUTORIAL_APP)GL_TUTORIAL_DRAW_LESSON_HOLD=true;
     completeOpeningFlow(appState,first,flip,{});
     if(!SUPPRESS_RENDER)render();
     focusMobilePlayerHand();
     return true;
   }
 
-  function startMatch(){var pv=validateDeck(decks.PLAYER,'PLAYER'),av=validateDeck(decks.AI,'AI');if(!pv.ok||!av.ok){setupError=(pv.errors[0]||av.errors[0]||'Deck validation failed.');refreshDeckSetupView();return false;}decks.PLAYER=pv.deck;decks.AI=av.deck;cancelAITurnDirector();clearTransientUiState();appState=buildInitialMatchState();matchStarted=true;setupError='';render();showLocalCoinModal();return true;}
+  function startMatch(){if(IS_TUTORIAL_APP)GL_TUTORIAL_DRAW_LESSON_HOLD=false;var pv=validateDeck(decks.PLAYER,'PLAYER'),av=validateDeck(decks.AI,'AI');if(!pv.ok||!av.ok){setupError=(pv.errors[0]||av.errors[0]||'Deck validation failed.');refreshDeckSetupView();return false;}decks.PLAYER=pv.deck;decks.AI=av.deck;cancelAITurnDirector();clearTransientUiState();appState=buildInitialMatchState();matchStarted=true;setupError='';render();showLocalCoinModal();return true;}
   var GL_CANONICAL_PREVIEW_BY_ID=null;
   function canonicalPreviewRecord(cardId){if(!GL_CANONICAL_PREVIEW_BY_ID){GL_CANONICAL_PREVIEW_BY_ID={};((window.GRANDIS_LEGACY_CARD_PREVIEW||{}).cards||[]).forEach(function(x){GL_CANONICAL_PREVIEW_BY_ID[x.card_id]=x;});}return GL_CANONICAL_PREVIEW_BY_ID[cardId]||null;}
 
@@ -7318,7 +7332,7 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
   function finishDrawReplacementChoice(state, side){
     syncCounts(state);if(!SUPPRESS_RENDER)render();if(state&&state.gameOver){showResult();return;}
     if(state&&state.phase==='Draw'&&state.drawPhaseContinuation&&state.drawPhaseContinuation.step==='MANA_REGEN'){continueDrawPhaseWithMana(state,side,{deferAnimation:!!SUPPRESS_RENDER});return;}
-    if(side==='PLAYER'&&!IS_TUTORIAL_APP)autoAdvancePlayerDrawWhenReady(state);
+    if(side==='PLAYER')autoAdvancePlayerDrawWhenReady(state);
   }
   function commitDrawReplacementChoice(useRedraw){
     if(!appState || !appState.pending || appState.pending.type!=='draw_replacement_choice') return false;
@@ -11787,6 +11801,8 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     resumeAIAction:function(){return resumeTutorialAIAction();},
     setGuideHold:function(hold){return setTutorialGuideHold(hold);},
     isGuideHold:function(){return tutorialGuideHoldActive();},
+    releaseInitialDrawLesson:function(){GL_TUTORIAL_DRAW_LESSON_HOLD=false;if(appState&&appState.turn==='PLAYER'&&appState.phase==='Draw')autoAdvancePlayerDrawWhenReady(appState);return true;},
+    isInitialDrawLessonHeld:function(){return !!GL_TUTORIAL_DRAW_LESSON_HOLD;},
     isRuntimePresentationBusy:function(){return !!(animationBusy()||battleFeedbackBusy()||(appState&&appState.drawPresentationPending)||(GL_HIDDEN_DRAW_TOKENS.PLAYER||[]).length||(GL_PENDING_DRAW_RESERVATIONS.PLAYER||[]).length);},
     resetTutorialMatch:function(){return resetMatch();}
   };
