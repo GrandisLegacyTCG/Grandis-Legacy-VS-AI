@@ -58,7 +58,7 @@
   "runtime_authority_sha256": "294bed265e0f81eda97ea42e8e0b1d900934a9a5f8f5085131f3f4dd5e08c619",
   "runtime_source_browser_sha256": "294bed265e0f81eda97ea42e8e0b1d900934a9a5f8f5085131f3f4dd5e08c619",
   "static_data_sha256": "3f0ba7144e1d63391004f19429cd55db2e6e5dbe712a0e69579d349c6eb26dbd",
-  "shared_ui_css_sha256": "89c0ee575cb2bf0d4a89de676b79ad70573d443efb07c278ed9831edb1290e73",
+  "shared_ui_css_sha256": "be8e511e0e02e0e71455a9a535ab905c6b0d8e4d631a83c606c57d84cf22f563",
   "lab_authority_css_sha256": "7ff2784584acc03dccdf3ff045a6b712c551138bf4440658e94f48a97e33d8c8",
   "mobile_app_nav_sha256": "5be991d8083c56f744f4499eb0f86031968d178dc55f5aacf8bcfcea3f6586d6",
   "counter_asset_sha256": {

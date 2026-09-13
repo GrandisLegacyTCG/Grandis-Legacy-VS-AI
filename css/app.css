@@ -6385,3 +6385,76 @@ body:has(.v96-app.mobile-restored-layout) #glMobileAppMenu{display:none!importan
 @media (max-width:760px){
   .v96-app.mobile-restored-layout .hero-card-composition{transform:translateX(14px)!important;}
 }
+
+/* VS AI v6.41 post-playtest mobile correction — keep Shard Deck count and
+   Regen readable inside the compact 54px mobile resource cell. Desktop keeps
+   its existing bottom presentation. Legacy name text is reduced only on mobile. */
+@media(max-width:760px){
+  .v96-app.mobile-restored-layout .zone[data-zone-type="Shard Deck"]{
+    position:relative!important;
+    overflow:visible!important;
+    padding:2px 1px 1px!important;
+  }
+  .v96-app.mobile-restored-layout .zone[data-zone-type="Shard Deck"] .zoneCard{
+    position:relative!important;
+    width:38px!important;
+    height:32px!important;
+    min-height:32px!important;
+    max-height:32px!important;
+    margin:0!important;
+    overflow:visible!important;
+  }
+  .v96-app.mobile-restored-layout .zone[data-zone-type="Shard Deck"] .zoneCard img{
+    position:relative!important;
+    z-index:1!important;
+    width:100%!important;
+    height:100%!important;
+    max-width:38px!important;
+    max-height:32px!important;
+    object-fit:contain!important;
+  }
+  .v96-app.mobile-restored-layout .zone[data-zone-type="Shard Deck"] .zoneCard>b{
+    position:absolute!important;
+    z-index:8!important;
+    right:-2px!important;
+    bottom:1px!important;
+    left:auto!important;
+    width:auto!important;
+    min-width:12px!important;
+    padding:1px 3px!important;
+    border-radius:5px!important;
+    background:rgba(3,10,16,.84)!important;
+    color:#f4ca52!important;
+    font-size:9px!important;
+    line-height:9px!important;
+    text-align:center!important;
+    text-shadow:0 1px 2px #000!important;
+    white-space:nowrap!important;
+  }
+  .v96-app.mobile-restored-layout .zone[data-zone-type="Shard Deck"]>em{
+    position:absolute!important;
+    z-index:8!important;
+    left:3px!important;
+    right:auto!important;
+    bottom:1px!important;
+    display:block!important;
+    width:auto!important;
+    max-width:calc(100% - 6px)!important;
+    margin:0!important;
+    padding:1px 3px!important;
+    border-radius:5px!important;
+    background:rgba(3,10,16,.84)!important;
+    color:#f4f8ff!important;
+    font-size:5.5px!important;
+    font-weight:900!important;
+    line-height:7px!important;
+    text-shadow:0 1px 2px #000!important;
+    white-space:nowrap!important;
+    overflow:visible!important;
+  }
+  .v96-app.mobile-restored-layout .legacy-name-bar small{
+    font-size:7px!important;
+    line-height:9px!important;
+    letter-spacing:.035em!important;
+  }
+}
