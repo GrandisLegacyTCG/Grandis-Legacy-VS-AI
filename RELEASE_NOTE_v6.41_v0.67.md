@@ -23,8 +23,3 @@ Release date: 2026-09-14
 ## Authority
 - Source Stack remains v1.8.2; this release does not change gameplay rules.
 - PvP reference remains v3.42.
-
-## Post-playtest mobile correction — 2026-09-14
-- Mobile Shard Deck count is rendered above the card-back layer so the remaining-card number stays readable.
-- Mobile Shard Deck Regen is kept visible inside the compact resource cell instead of being clipped below it.
-- Mobile active Legacy name text is reduced to prevent the name bar from dominating the Hero slot.
