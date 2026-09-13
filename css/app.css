@@ -6330,3 +6330,34 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
 @media (prefers-reduced-motion:reduce){
   .v96-app .hero-card-physical-stack>.hero-card.hero-main{transition:none!important}
 }
+
+
+/* VS AI v6.36 / Tutorial v0.62 — mobile restore + dedicated Shard Pool rail.
+   Mobile returns to the proven pre-Lab battlefield geometry. Desktop remains unchanged. */
+@media(max-width:760px){
+  .v96-app.mobile-restored-layout .mobile-shard-field{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:4px!important;height:auto!important;overflow:visible!important;padding:0!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field.field--opponent{grid-template-rows:54px 218px 48px!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field.field--player{grid-template-rows:218px 48px 54px!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field .resource-rail{display:contents!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field.field--opponent .zone{grid-row:1!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field.field--player .zone{grid-row:3!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field .hero-row{grid-column:1/-1!important;width:100%!important;height:218px!important;min-height:218px!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field.field--opponent .hero-row{grid-row:2!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field.field--player .hero-row{grid-row:1!important;}
+  .v96-app.mobile-restored-layout .zone[data-zone-type="Shard Deck"]{position:relative!important;background:rgba(5,24,39,.46)!important;}
+  .v96-app.mobile-restored-layout .zone[data-zone-type="Shard Deck"] .zoneCard>b{font-size:9px!important;}
+  .v96-app.mobile-restored-layout .zone[data-zone-type="Shard Deck"] em{font-size:5.5px!important;color:#f0d76f!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-pool{grid-column:1/-1!important;position:relative!important;height:48px!important;min-height:48px!important;display:flex!important;align-items:center!important;border-top:1px solid rgba(215,184,95,.16)!important;border-bottom:1px solid rgba(215,184,95,.16)!important;background:rgba(3,12,20,.78)!important;overflow:hidden!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field.field--opponent .mobile-shard-pool{grid-row:3!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field.field--player .mobile-shard-pool{grid-row:2!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-pool>strong{position:absolute!important;left:4px!important;top:2px!important;z-index:4!important;font-size:5.8px!important;line-height:8px!important;letter-spacing:.08em!important;color:#e2c867!important;text-shadow:0 1px 2px #000!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-scroll{width:100%!important;height:100%!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:2px!important;overflow-x:auto!important;overflow-y:hidden!important;padding:8px 52px 2px 44px!important;scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-x pan-y!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-scroll::-webkit-scrollbar{display:none!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-card{position:relative!important;width:24px!important;height:34px!important;min-width:24px!important;flex:0 0 24px!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;border-radius:3px!important;overflow:hidden!important;box-shadow:0 1px 3px rgba(0,0,0,.65)!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-card img{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-card.is-opening-draw-hidden,.v96-app.mobile-restored-layout .mobile-shard-card.is-pending-draw{visibility:hidden!important;pointer-events:none!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-racial{position:absolute!important;right:3px!important;top:2px!important;bottom:2px!important;z-index:5!important;width:46px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:1px!important;border-left:1px solid rgba(215,184,95,.16)!important;background:linear-gradient(90deg,rgba(3,12,20,.15),rgba(3,12,20,.96) 30%)!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-racial small{font-size:5px!important;line-height:6px!important;color:#e2c867!important;font-weight:900!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-racial>div{display:flex!important;gap:2px!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-racial img{width:17px!important;height:17px!important;object-fit:contain!important;border-radius:50%!important;}
+}

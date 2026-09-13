@@ -7,5 +7,5 @@ for(const term of ['Opening Hand + Starting Shards','3 Starting Shards','Shard D
 assert.ok(guide.includes('maximum <b>1 per Class</b>')&&guide.includes('<b>3 Class Shards total</b>'),'Class Shard composition teaching missing');
 assert.ok(guide.includes('matching Class Shard returns last/deepest')&&guide.includes('later payment batch goes below the entire earlier batch'),'Shard return-batch teaching missing');
 for(const rel of ['index.html','js/app.bundle.js','js/static-data.js','tutorial/index.html','tutorial/js/app.bundle.js','tutorial/js/static-data.js','tutorial/js/tutorial-guide.js']) assert.ok(!read(rel).includes('Mana Pool'),`${rel}: obsolete Mana Pool terminology remains`);
-assert.equal(require('../package.json').version,'6.33.0');
-console.log('PASS VS AI v6.33 / Tutorial v0.59 Shard teaching and terminology');
+assert.equal(require('../package.json').version,'6.34.0');
+console.log('PASS VS AI v6.34 / Tutorial v0.60 Shard teaching and terminology');

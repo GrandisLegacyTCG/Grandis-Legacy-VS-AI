@@ -237,3 +237,29 @@ body:has(.gl-lab-authority) #choiceConfirm.mana-confirm-waiting{border-color:#7d
 
 /* v0.10 — draw sequencing + compact action polish. */
 .gl-lab-hand .hand-card .mini-action{box-shadow:0 0 0 1px rgba(255,255,255,.08),0 3px 9px rgba(0,0,0,.66)!important;}
+
+
+.gl-lab-hand .touch-tablet-preview{display:none!important;}
+
+/* VS AI v6.37 / Tutorial v0.63 — touch-first tablet Hand interaction.
+   Touch devices select a Hand card with one tap; Play/Tribute appears on the selected card.
+   A second tap on the artwork keeps the existing card-preview behavior. */
+@media (pointer:coarse) and (min-width:761px){
+  .gl-lab-hand .hand-card,
+  .gl-lab-hand .hand-card:hover,
+  .gl-lab-hand .hand-card:focus-within,
+  .gl-lab-hand .hand-card.hand-hover-active{transform:translateY(40%) rotate(var(--fan-angle,0deg))!important;z-index:var(--fan-z,1)!important;filter:none!important;}
+  .gl-lab-hand .hand-card .hand-actions,
+  .gl-lab-hand .hand-card:hover .hand-actions,
+  .gl-lab-hand .hand-card:focus-within .hand-actions,
+  .gl-lab-hand .hand-card.hand-hover-active .hand-actions{top:-20px!important;bottom:auto!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;}
+  .gl-lab-hand .hand-card.touch-selected,
+  .gl-lab-hand .hand-card.is-selected{transform:translateY(0) rotate(0deg)!important;z-index:650!important;filter:brightness(1.06)!important;}
+  .gl-lab-hand .hand-card.touch-selected .hand-actions,
+  .gl-lab-hand .hand-card.is-selected .hand-actions{top:-64px!important;bottom:auto!important;height:auto!important;min-height:18px!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:3px!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;}
+  .gl-lab-hand .hand-card.touch-selected .touch-tablet-preview,
+  .gl-lab-hand .hand-card.is-selected .touch-tablet-preview{display:block!important;order:-10!important;}
+  .gl-lab-hand .hand-card.touch-selected .hand-actions .mini-action,
+  .gl-lab-hand .hand-card.is-selected .hand-actions .mini-action{width:56px!important;min-width:56px!important;height:18px!important;min-height:18px!important;}
+  body:has(.gl-lab-authority) .hover-card-zoom.is-hand-hover{display:none!important;}
+}

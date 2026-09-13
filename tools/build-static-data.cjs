@@ -133,16 +133,16 @@ function buildFor(targetRoot) {
     runtimeData: 'cards.runtime.v0.15.0.json',
     recipes: 'effect-recipes.runtime.v0.14.0.json',
     hash: ROOT_HASH,
-    sourceStack: 'v1.8.1', oneSource: 'v1.8.1', runtimeFoundation: 'v1.93', runtimeCore: 'v0.61',
-    runtimeDataVersion: 'v0.15.0', recipeVersion: 'v0.14.0', checkpointVersion: 'v0.14.0', legalityVersion: 'v1.5.0', sharedManual: 'v1.49', appSync: 'v2.56',
-    localAI: 'v6.33', deckBuilder: 'v1.30 (external; permissive save/export, match legality enforced by consumers)', date: '2026-09-13'
+    sourceStack: 'v1.8.2', oneSource: 'v1.8.2', runtimeFoundation: 'v1.93', runtimeCore: 'v0.61',
+    runtimeDataVersion: 'v0.15.0', recipeVersion: 'v0.14.0', checkpointVersion: 'v0.14.0', legalityVersion: 'v1.5.0', sharedManual: 'v1.49', appSync: 'v2.57',
+    localAI: 'v6.35', deckBuilder: 'v1.30 (external; permissive save/export, match legality enforced by consumers)', date: '2026-09-13'
   } : {
     runtimeData: 'cards.runtime.v0.15.0.json',
     recipes: 'effect-recipes.runtime.v0.14.0.json',
     hash: TUTORIAL_HASH,
-    sourceStack: 'v1.8.1', oneSource: 'v1.8.1', runtimeFoundation: 'v1.93', runtimeCore: 'v0.61',
-    runtimeDataVersion: 'v0.15.0', recipeVersion: 'v0.14.0', checkpointVersion: 'v0.14.0', legalityVersion: 'v1.5.0', sharedManual: 'v1.49', appSync: 'v2.56',
-    localAI: 'v6.33', deckBuilder: 'v1.30 (external; permissive save/export, match legality enforced by consumers)', date: '2026-09-13'
+    sourceStack: 'v1.8.2', oneSource: 'v1.8.2', runtimeFoundation: 'v1.93', runtimeCore: 'v0.61',
+    runtimeDataVersion: 'v0.15.0', recipeVersion: 'v0.14.0', checkpointVersion: 'v0.14.0', legalityVersion: 'v1.5.0', sharedManual: 'v1.49', appSync: 'v2.57',
+    localAI: 'v6.35', deckBuilder: 'v1.30 (external; permissive save/export, match legality enforced by consumers)', date: '2026-09-13'
   };
   const dataPrefix = targetRoot === '.' ? 'data/season1' : `${targetRoot}/data/season1`;
   const runtimeData = readJSON(`${dataPrefix}/${profile.runtimeData}`);
@@ -167,8 +167,8 @@ function buildFor(targetRoot) {
     runtime_core: profile.runtimeCore,
     shared_manual: profile.sharedManual,
     local_ai: profile.localAI,
-    tutorial: 'v0.59',
-    pvp_railway: 'v3.40',
+    tutorial: 'v0.61',
+    pvp_railway: 'v3.41',
     deck_builder: profile.deckBuilder,
     starter60: 'v1.5',
     ui_lock: 'v2.51',
@@ -244,4 +244,4 @@ function buildFor(targetRoot) {
 assertAuthorityMirrors();
 buildFor('.');
 buildFor('tutorial');
-console.log('PASS: VS AI v6.33 + Tutorial v0.59 regenerated from Source Stack v1.8.1 / Playtest Lab v0.14 with Shard Deck + Shard Pool terminology and shared runtime/data parity.');
+console.log('PASS: VS AI v6.34 + Tutorial v0.60 regenerated from Source Stack v1.8.1 / Playtest Lab v0.14 with Shard Deck + Shard Pool terminology and shared runtime/data parity.');

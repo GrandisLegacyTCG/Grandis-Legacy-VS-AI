@@ -46294,7 +46294,7 @@
             "count": 1,
             "class_name": "Archer",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -46634,7 +46634,7 @@
             "count": 1,
             "class_name": "Archer",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -46927,7 +46927,7 @@
               "count": 1,
               "class_name": "Archer",
               "match_source": "Ultimate card code class prefix",
-              "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+              "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
             },
             "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
           },
@@ -49319,7 +49319,7 @@
             "count": 1,
             "class_name": "Archer",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -49571,7 +49571,7 @@
             "count": 1,
             "class_name": "Archer",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -49753,7 +49753,7 @@
               "count": 1,
               "class_name": "Archer",
               "match_source": "Ultimate card code class prefix",
-              "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+              "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
             },
             "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
           },
@@ -59917,7 +59917,7 @@
             "count": 1,
             "class_name": "Cleric",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -60269,7 +60269,7 @@
             "count": 1,
             "class_name": "Cleric",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -60563,7 +60563,7 @@
               "count": 1,
               "class_name": "Cleric",
               "match_source": "Ultimate card code class prefix",
-              "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+              "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
             },
             "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
           },
@@ -60797,7 +60797,7 @@
             "count": 1,
             "class_name": "Cleric",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -61114,7 +61114,7 @@
             "count": 1,
             "class_name": "Cleric",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -61356,7 +61356,7 @@
               "count": 1,
               "class_name": "Cleric",
               "match_source": "Ultimate card code class prefix",
-              "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+              "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
             },
             "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
           },
@@ -64700,7 +64700,7 @@
             "count": 1,
             "class_name": "Cleric",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -65080,7 +65080,7 @@
             "count": 1,
             "class_name": "Cleric",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -65386,7 +65386,7 @@
               "count": 1,
               "class_name": "Cleric",
               "match_source": "Ultimate card code class prefix",
-              "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+              "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
             },
             "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
           },
@@ -75629,7 +75629,7 @@
             "count": 1,
             "class_name": "Mage",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -75983,7 +75983,7 @@
             "count": 1,
             "class_name": "Mage",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -76269,7 +76269,7 @@
               "count": 1,
               "class_name": "Mage",
               "match_source": "Ultimate card code class prefix",
-              "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+              "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
             },
             "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
           },
@@ -76531,7 +76531,7 @@
             "count": 1,
             "class_name": "Mage",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -76854,7 +76854,7 @@
             "count": 1,
             "class_name": "Mage",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -77134,7 +77134,7 @@
               "count": 1,
               "class_name": "Mage",
               "match_source": "Ultimate card code class prefix",
-              "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+              "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
             },
             "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
           },
@@ -80257,7 +80257,7 @@
             "count": 1,
             "class_name": "Mage",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -80506,7 +80506,7 @@
             "count": 1,
             "class_name": "Mage",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -80677,7 +80677,7 @@
               "count": 1,
               "class_name": "Mage",
               "match_source": "Ultimate card code class prefix",
-              "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+              "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
             },
             "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
           },
@@ -91837,7 +91837,7 @@
             "count": 1,
             "class_name": "Thief",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -92206,7 +92206,7 @@
             "count": 1,
             "class_name": "Thief",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -92539,7 +92539,7 @@
               "count": 1,
               "class_name": "Thief",
               "match_source": "Ultimate card code class prefix",
-              "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+              "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
             },
             "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
           },
@@ -108656,7 +108656,7 @@
             "count": 1,
             "class_name": "Warrior",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -108976,7 +108976,7 @@
             "count": 1,
             "class_name": "Warrior",
             "match_source": "Ultimate card code class prefix",
-            "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+            "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
           },
           "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
         },
@@ -109241,7 +109241,7 @@
               "count": 1,
               "class_name": "Warrior",
               "match_source": "Ultimate card code class prefix",
-              "destination_after_use": "bottom_of_owner_mana_deck_deepest_class_shard_segment"
+              "destination_after_use": "bottom_of_owner_shard_deck_payment_batch_matching_class_last"
             },
             "legality_precheck": "Both owner-lineage target and matching Class Shard payment must be legal/payable before Tribute is available."
           },

@@ -1,14 +1,14 @@
 {
   "name": "grandis-legacy-tutorial",
-  "version": "0.59.0",
+  "version": "0.63.0",
   "private": true,
-  "description": "Grandis Legacy Tutorial v0.59 — VS AI v6.33 shared-runtime parity on Source Stack v1.8.1 / Playtest Lab v0.14 with Shard Deck/Shard Pool terminology and interactive Shard-system teaching.",
+  "description": "Grandis Legacy Tutorial v0.63 \u2014 VS AI v6.37 shared-runtime parity with stable mobile layout and touch-tablet Preview/Play/Tribute card actions.",
   "scripts": {
     "build:data": "node ../tools/build-static-data.cjs",
     "metadata": "node ../tools/update-release-metadata.cjs",
     "syntax": "node --check js/app.bundle.js && node --check js/tutorial-guide.js && node --check js/static-data.js && node --check js/runtime-authority.js && find runtime-source/runtime -type f \\( -name '*.js' -o -name '*.mjs' \\) -print0 | sort -z | xargs -0 -r -n1 node --check",
-    "test:base": "npm --prefix .. run test:promotion-v014 && node ../tests/run-v633-v059-shard-tutorial.cjs && node ../tests/run-runtime-sync-lock.cjs",
-    "test:tutorial": "node tests/run-tutorial-v059.cjs",
+    "test:base": "npm --prefix .. run test:promotion-v014 && node ../tests/run-v637-v063-shard-tutorial.cjs && node ../tests/run-runtime-sync-lock.cjs",
+    "test:tutorial": "node tests/run-tutorial-v063.cjs",
     "test": "npm run syntax && npm run test:base && npm run test:tutorial",
     "verify": "npm test && node tests/run-manifest-verification.cjs"
   }

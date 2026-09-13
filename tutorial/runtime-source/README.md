@@ -1,4 +1,4 @@
-# Grandis Legacy Tutorial v0.59 Runtime Source
+# Grandis Legacy Tutorial v0.60 Runtime Source
 
 - Source Authority Stack: v1.8.1
 - Runtime Foundation: v1.93

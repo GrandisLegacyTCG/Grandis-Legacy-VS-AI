@@ -10,7 +10,7 @@ let snap=b.getSnapshot(),s=snap.appState;
 // Deterministic Deploy action using the new physical Mana Pool, not the legacy scalar-only fixture.
 s.turn='PLAYER';s.phase='Deploy';s.pending=null;s.responseWindow=null;s.playerHand=['S1-EVT-002'];
 s.playerManaPoolCards=[0,1,2,3].map(i=>({uid:'TEST:GENERIC:'+i,kind:'GENERIC',class_name:'',owner_side:'PLAYER',bottom_locked:false}));s.mana=4;
-s.playerDeck=['S1-EVT-001','S1-EVT-001','S1-EVT-001','S1-EVT-001'];s.playerDeckCount=4;s.playerDiscard=[];
+s.playerDeck=['S1-EVT-001','S1-EVT-001','S1-EVT-001','S1-EVT-001'];s.playerDeckCount=4;s.playerDiscard=[];s.aiHand=[];s.aiDiscard=[];
 for(const lane of ['LEFT','CENTER','RIGHT']){if(s.playerHeroes[lane])s.playerHeroes[lane].exhausted=false;}
 need(b.importSnapshot(snap,{silent:true})!==false,'snapshot import failed');
 let r=b.applyServerIntent('beginPlayFromHand',[0]);need(r.ok,'Market Bargain begin failed: '+r.error);need(r.snapshot.appState.pending&&r.snapshot.appState.pending.type==='source_selection','Market Bargain source validation did not open');

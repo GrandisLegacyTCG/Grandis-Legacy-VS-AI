@@ -1,11 +1,11 @@
-GRANDIS LEGACY VS AI v6.33 + TUTORIAL v0.59
+GRANDIS LEGACY VS AI v6.36 + TUTORIAL v0.61
 
 1. Replace the repository contents with this package (keep .git).
 2. Commit and push.
 3. Run: npm run verify:stable
-4. Suggested commit: Release VS AI v6.33 / Tutorial v0.59 with Playtest v0.14 authority and Shard teaching
+4. Suggested commit: Release VS AI v6.36 / Tutorial v0.62 with Playtest v0.14 authority and Shard teaching
 
-Source Authority Stack: v1.8.1
+Source Authority Stack: v1.8.2
 Season 1: 200 cards
 Public resource terminology: Shard Deck / Shard Pool / Mana Shard / Class Shard
 Canonical registry SHA-256: ce79e5a97c115507f68734887160b575840899056e1533488e3fddd3a11fec1f

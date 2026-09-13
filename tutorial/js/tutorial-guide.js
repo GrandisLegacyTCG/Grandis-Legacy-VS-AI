@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.59 — VS AI v6.33 / Source Stack v1.8.1 / Playtest Lab v0.14 parity. Mobile anatomy geometry remains independent from desktop; Draw Phase Shard Pool highlight survives field rerenders. */
+/* Grandis Legacy Tutorial Guide v0.63 — VS AI v6.37 / Source Stack v1.8.2 / Playtest Lab v0.14 parity. Mobile anatomy geometry remains independent from desktop; Draw Phase Shard Pool highlight survives field rerenders. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;
@@ -573,7 +573,7 @@
   function phaseMessage(state){
     if(!state||state.turn!=='PLAYER'||state.preGame)return;
     if(state.phase==='Draw'&&!seen.phase_draw){
-      enqueue({id:'phase_draw',title:'Draw Phase — Shard Regen',expression:'calm',compact:true,highlight:['.gl-lab-mana-pool--player','.zone[data-zone-side="PLAYER"][data-zone-type="Shard Deck"]'],html:'<p>You already have <b>3 Starting Shards</b> in your Shard Pool. <b>Mana Regen starts at 1</b>.</p><p>During Draw Phase, after the Main Deck draw and any draw replacement finishes, move Shards from the <b>top of your Shard Deck</b> into your <b>Shard Pool</b> equal to Mana Regen, up to the normal Shard Pool maximum of 12.</p><p>Used Shards do not go to Discard: they return to the <b>bottom of their owner’s Shard Deck</b>. A Hero still Casting remains Exhausted.</p>',onClose:function(){queuePhaseAdvance('Draw');}});
+      enqueue({id:'phase_draw',title:'Draw Phase — Shard Regen',expression:'calm',compact:true,highlight:['.gl-lab-mana-pool--player','.zone[data-zone-side="PLAYER"][data-zone-type="Shard Deck"]'],html:'<p>You already have <b>3 Starting Shards</b> in your Shard Pool. <b>Mana Regen starts at 1</b>.</p><p>During Draw Phase, after the Main Deck draw and any draw replacement finishes, move Shards from the <b>top of your Shard Deck</b> into your <b>Shard Pool</b> equal to Mana Regen, up to the normal Shard Pool maximum of 12.</p><p>Used Shards do not go to Discard: each payment returns as one <b>batch</b> to the bottom of its owner’s Shard Deck. In a Skill payment batch, <b>Mana Shards return first, nonmatching Class Shards next, and the matching Class Shard returns last/deepest</b>. A later payment batch goes below the entire earlier batch. A Hero still Casting remains Exhausted.</p>',onClose:function(){queuePhaseAdvance('Draw');}});
     }
     if(state.phase==='Deploy'&&!seen.phase_deploy){
       enqueue({id:'phase_deploy',title:'Deploy Phase',expression:'advise',compact:true,html:'<p>Deploy Phase is used for preparation. <b>Tactical</b> Skills, <b>Events</b>, <b>Items</b>, available Racial Traits, and Class Abilities may be used when their rules allow it.</p><p>We will review the cards in your Hand before continuing.</p>',onClose:function(){startInitialAnatomy();}});
