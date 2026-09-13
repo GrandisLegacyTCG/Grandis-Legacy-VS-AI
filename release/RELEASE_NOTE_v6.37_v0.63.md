@@ -1,4 +1,4 @@
-# Grandis Legacy VS AI v6.37 / Tutorial v0.63
+# Grandis Legacy VS AI v6.39 / Tutorial v0.65
 
 - Mobile keeps the restored stable battlefield layout with the dedicated Shard Pool rail below Heroes.
 - Touch tablets no longer depend on hover: tap a Hand card to select it.

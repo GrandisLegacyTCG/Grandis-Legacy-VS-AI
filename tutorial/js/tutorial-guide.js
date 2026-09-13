@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.63 — VS AI v6.37 / Source Stack v1.8.2 / Playtest Lab v0.14 parity. Mobile anatomy geometry remains independent from desktop; Draw Phase Shard Pool highlight survives field rerenders. */
+/* Grandis Legacy Tutorial Guide v0.65 — VS AI v6.39 / Source Stack v1.8.2. Shard lessons wait for runtime presentation completion; Next Phase guidance only completes after a real phase transition. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;
@@ -11,7 +11,7 @@
   var highlightEntries=[],highlightFrame=0,guideDockFrame=0,lastGuideDock='top-right';
   var reformGuide={stage:null,cardId:null,handIndex:null};
   var playGuide={stage:null,cardId:null,handIndex:null,family:null,requiresSource:false,requiresTarget:false,directCommit:false};
-  var deployAdvancePending=false,deployNoPlayTicks=0,packageLock=null,activeAutoCloseTimer=0;
+  var deployAdvancePending=false,deployNoPlayTicks=0,packageLock=null,activeAutoCloseTimer=0,openingShardTypesPending=false;
 
   var ARVON_ASSET='assets/tutorial/general-arvon-halfbody.webp';
 
@@ -95,7 +95,7 @@
     if(activeAutoCloseTimer){clearTimeout(activeAutoCloseTimer);activeAutoCloseTimer=0;}
     seen=Object.create(null);queued=Object.create(null);queue=[];active=null;previous=null;
     anatomy={waitingFamily:null,waitingCardId:null,waitingHandIndex:null,waitingSelector:null,activeFamily:null,cardId:null,step:0,steps:[],pendingFamilies:[],previewWasOpen:false,initialSequence:false};
-    lastOpponentEventSignature='';lastPlayerActionCount=0;promptedOpponentEvents=Object.create(null);lastAIGateSequence=0;lastAIActionGateSequence=0;lastReviveEventId='';lastGuideDock='top-right';reformGuide={stage:null,cardId:null,handIndex:null};playGuide={stage:null,cardId:null,handIndex:null,family:null,requiresSource:false,requiresTarget:false,directCommit:false};deployAdvancePending=false;deployNoPlayTicks=0;packageLock=null;
+    lastOpponentEventSignature='';lastPlayerActionCount=0;promptedOpponentEvents=Object.create(null);lastAIGateSequence=0;lastAIActionGateSequence=0;lastReviveEventId='';lastGuideDock='top-right';reformGuide={stage:null,cardId:null,handIndex:null};playGuide={stage:null,cardId:null,handIndex:null,family:null,requiresSource:false,requiresTarget:false,directCommit:false};deployAdvancePending=false;deployNoPlayTicks=0;packageLock=null;openingShardTypesPending=false;
     var bubble=q('#glTutorialBubble');if(bubble){bubble.classList.remove('is-open');bubble.hidden=true;}
     var wrap=q('#glTutorialGuide');if(wrap)wrap.className='gl-tutorial-guide dock-'+(lastGuideDock==='mobile-top'||lastGuideDock==='mobile-bottom'?'top-right':lastGuideDock);if(guideDockFrame){cancelAnimationFrame(guideDockFrame);guideDockFrame=0;}
     var scrim=q('#glTutorialScrim');if(scrim){scrim.hidden=true;scrim.classList.remove('is-pick-lock');}
@@ -533,7 +533,17 @@
   }
 
   function openingHandMessage(){
-    enqueue({id:'opening_hand',title:'Opening Hand + Starting Shards',expression:'calm',compact:true,dock:'top-right',lockDock:true,highlight:'.gl-opening-start-button',interactionTarget:'.gl-opening-start-button',requireInteraction:true,html:'<p>Both players first draw a <b>6-card Opening Hand</b>. Then each player draws <b>3 Starting Shards</b> from their <b>Shard Deck</b> into their <b>Shard Pool</b>.</p><p>The Shard Deck always contains <b>12 Shards</b>. Select <b>Start Game</b> after the opening sequence.</p>',onClose:function(){enqueue({id:'opening_shard_types',title:'Mana Shard and Class Shard',expression:'advise',compact:true,dock:'top-right',html:'<p>A <b>Mana Shard</b> is worth <b>1 Mana</b>.</p><p>A <b>matching Class Shard</b> is worth <b>2 Mana</b> when paying for a Skill of that Class. Otherwise, a Class Shard is worth <b>1 Mana</b>.</p><p>Your selected Ultimate Classes determine which Class Shards are placed in your 12-card Shard Deck: maximum <b>1 per Class</b> and <b>3 Class Shards total</b>; the remaining slots are Mana Shards.</p>'});}});
+    enqueue({id:'opening_hand',title:'Opening Hand + Starting Shards',expression:'calm',compact:true,dock:'top-right',lockDock:true,highlight:'.gl-opening-start-button',interactionTarget:'.gl-opening-start-button',requireInteraction:true,html:'<p>Both players first draw a <b>6-card Opening Hand</b>. Then each player draws <b>3 Starting Shards</b> from their <b>Shard Deck</b> into their <b>Shard Pool</b>.</p><p>The Shard Deck always contains <b>12 Shards</b>. Select <b>Start Game</b> after the opening sequence.</p>',onClose:function(){openingShardTypesPending=true;}});
+  }
+  function runtimePresentationBusy(state){
+    if(!state||state.preGame||state.drawPresentationPending)return true;
+    try{return !!(bridge.isRuntimePresentationBusy&&bridge.isRuntimePresentationBusy());}catch(e){return false;}
+  }
+  function maybeQueueOpeningShardTypes(state){
+    if(!openingShardTypesPending||seen.opening_shard_types||queued.opening_shard_types||(active&&active.id==='opening_shard_types'))return false;
+    if(runtimePresentationBusy(state))return false;
+    openingShardTypesPending=false;
+    return enqueue({id:'opening_shard_types',title:'Mana Shard and Class Shard',expression:'advise',compact:true,dock:'top-right',html:'<p>A <b>Mana Shard</b> is worth <b>1 Mana</b>.</p><p>A <b>matching Class Shard</b> is worth <b>2 Mana</b> when paying for a Skill of that Class. Otherwise, a Class Shard is worth <b>1 Mana</b>.</p><p>Your selected Ultimate Classes determine which Class Shards are placed in your 12-card Shard Deck: maximum <b>1 per Class</b> and <b>3 Class Shards total</b>; the remaining slots are Mana Shards.</p>'});
   }
 
   function queueEndPhaseInformation(){
@@ -542,7 +552,7 @@
   }
   function queuePhaseAdvance(phase){
     var key='next_phase_'+text(phase).toLowerCase();if(seen[key])return;
-    enqueue({id:key,title:phase==='End'?'End Your Turn':'Continue to the Next Phase',expression:'calm',compact:true,dock:'top-left',highlight:'#nextPhaseButton',interactionTarget:'#nextPhaseButton',requireInteraction:true,html:'<p>Select <b>'+(phase==='End'?'End Turn':'Next Phase')+'</b> to continue.</p>',onClose:phase==='Reform'?function(){queueEndPhaseInformation();}:null});
+    enqueue({id:key,title:phase==='End'?'End Your Turn':'Continue to the Next Phase',expression:'calm',compact:true,dock:'top-left',highlight:'#nextPhaseButton',interactionTarget:'#nextPhaseButton',requireInteraction:true,interactionStateCheck:function(){var current=bridge.getState();return !!current&&(current.turn!=='PLAYER'||current.phase!==phase);},html:'<p>Select <b>'+(phase==='End'?'End Turn':'Next Phase')+'</b> to continue.</p>',onClose:phase==='Reform'?function(){queueEndPhaseInformation();}:null});
   }
   function guidedTributeCards(state){
     state=state||bridge.getState();var hand=sideHand(state,'PLAYER'),candidates=[];
@@ -573,6 +583,7 @@
   function phaseMessage(state){
     if(!state||state.turn!=='PLAYER'||state.preGame)return;
     if(state.phase==='Draw'&&!seen.phase_draw){
+      if(openingShardTypesPending||queued.opening_shard_types||(active&&active.id==='opening_shard_types')||!seen.opening_shard_types||runtimePresentationBusy(state))return;
       enqueue({id:'phase_draw',title:'Draw Phase — Shard Regen',expression:'calm',compact:true,highlight:['.gl-lab-mana-pool--player','.zone[data-zone-side="PLAYER"][data-zone-type="Shard Deck"]'],html:'<p>You already have <b>3 Starting Shards</b> in your Shard Pool. <b>Mana Regen starts at 1</b>.</p><p>During Draw Phase, after the Main Deck draw and any draw replacement finishes, move Shards from the <b>top of your Shard Deck</b> into your <b>Shard Pool</b> equal to Mana Regen, up to the normal Shard Pool maximum of 12.</p><p>Used Shards do not go to Discard: each payment returns as one <b>batch</b> to the bottom of its owner’s Shard Deck. In a Skill payment batch, <b>Mana Shards return first, nonmatching Class Shards next, and the matching Class Shard returns last/deepest</b>. A later payment batch goes below the entire earlier batch. A Hero still Casting remains Exhausted.</p>',onClose:function(){queuePhaseAdvance('Draw');}});
     }
     if(state.phase==='Deploy'&&!seen.phase_deploy){
@@ -1370,6 +1381,7 @@
     pendingDefeat(state);
     explainOpponentActionGate(state);
     explainOpponentPhaseGate(state);
+    maybeQueueOpeningShardTypes(state);
     phaseMessage(state);
     syncReformGuide(state);
     syncPlayableCardGuide(state);
@@ -1427,7 +1439,7 @@
   document.addEventListener('DOMContentLoaded',function(){buildShell();queueLobbyIntro();pollTimer=setInterval(tick,250);});
   if(document.readyState!=='loading'){buildShell();queueLobbyIntro();pollTimer=setInterval(tick,250);}
   window.GL_TUTORIAL_GUIDE_QA={
-    version:'0.31',
+    version:'0.33',
     getSeen:function(){return Object.keys(seen).sort();},
     getActive:function(){return active&&active.id||null;},
     getQueue:function(){return queue.map(function(x){return x.id;});},

@@ -14,14 +14,14 @@ const guideCss=read('css/tutorial-guide.css');
 const appCss=read('css/app.css');
 const staticData=read('js/static-data.js');
 
-must(pkg.version==='0.63.0','Tutorial package must be v0.63.0');
-must(index.includes('gl-tutorial-0.63'),'Tutorial v0.63 cache marker missing');
+must(pkg.version==='0.65.0','Tutorial package must be v0.65.0');
+must(index.includes('gl-tutorial-0.65'),'Tutorial v0.65 cache marker missing');
 must(index.includes('Non-Scripted Tutorial Gameplay'),'Tutorial page title missing');
-must(app.includes('Grandis Legacy Tutorial v0.63 GitHub Pages'),'Tutorial app marker missing');
-must(app.includes('VS AI v6.37 Base'),'VS AI v6.37 shared base marker missing');
+must(app.includes('Grandis Legacy Tutorial v0.65 GitHub Pages'),'Tutorial app marker missing');
+must(app.includes('VS AI v6.39 Base'),'VS AI v6.39 shared base marker missing');
 must(app.includes('One Source v1.8.2')&&app.includes('Runtime Data v0.15.0'),'current source/runtime markers missing');
-must(guide.startsWith('/* Grandis Legacy Tutorial Guide v0.63'), 'Tutorial guide v0.63 marker missing');
-must(guideCss.includes('Grandis Legacy Tutorial Guide v0.63'),'Tutorial CSS v0.63 marker missing');
+must(guide.startsWith('/* Grandis Legacy Tutorial Guide v0.65'), 'Tutorial guide v0.65 marker missing');
+must(guideCss.includes('Grandis Legacy Tutorial Guide v0.65'),'Tutorial CSS v0.65 marker missing');
 
 for(const term of [
   'Opening Hand + Starting Shards','3 Starting Shards','Shard Deck always contains <b>12 Shards</b>',
@@ -39,7 +39,7 @@ for(const rel of ['index.html','js/app.bundle.js','js/static-data.js','js/tutori
   must(!text.includes('Generic Mana Shard'),rel+': obsolete Generic Mana Shard terminology remains');
 }
 must(appCss.includes('data-zone-type="Shard Pool"'),'Shard Pool CSS selector missing');
-must(staticData.includes('"local_ai":"v6.37"')&&staticData.includes('"tutorial":"v0.63"')&&staticData.includes('"pvp_railway":"v3.42"'),'release metadata in static data is stale');
+must(staticData.includes('"local_ai":"v6.39"')&&staticData.includes('"tutorial":"v0.65"')&&staticData.includes('"pvp_railway":"v3.42"'),'release metadata in static data is stale');
 must(staticData.includes('"deck_builder":"v1.30'), 'Deck Builder v1.30 cross-release metadata missing');
 must(staticData.includes('"pool":"Shard Pool"'),'Shard Pool source-stack terminology missing');
 
@@ -64,11 +64,15 @@ must(qa.practiceCategory('S1-MAG-006')==='Tactical','Tutorial Tactical category 
 must(qa.practiceCategory('S1-EVT-002')==='Event','Tutorial Event category bridge regressed');
 must(qa.practiceCategory('S1-ITM-001')==='Item','Tutorial Item category bridge regressed');
 
-const lockPath='sync/tutorial-github-lock.v0.63.json';
-must(fs.existsSync(path.join(root,lockPath)),'Tutorial v0.63 release lock missing');
+const lockPath='sync/tutorial-github-lock.v0.65.json';
+must(fs.existsSync(path.join(root,lockPath)),'Tutorial v0.65 release lock missing');
 const lock=JSON.parse(read(lockPath));
-must(lock.tutorial==='v0.63'&&lock.base_vs_ai==='v6.37'&&lock.source_stack_bundle==='v1.8.2','Tutorial v0.63 lock metadata mismatch');
+must(lock.tutorial==='v0.65'&&lock.base_vs_ai==='v6.39'&&lock.source_stack_bundle==='v1.8.2','Tutorial v0.65 lock metadata mismatch');
 must(lock.publicResourceTerminology&&lock.publicResourceTerminology.deck==='Shard Deck'&&lock.publicResourceTerminology.pool==='Shard Pool','Tutorial lock terminology mismatch');
 for(const [rel,key] of [['js/app.bundle.js','app_bundle_sha256'],['js/tutorial-guide.js','tutorial_guide_sha256'],['css/tutorial-guide.css','tutorial_css_sha256'],['js/runtime-authority.js','runtime_authority_sha256'],['js/static-data.js','static_data_sha256']]) must(sha(rel)===lock[key],rel+' release-lock hash mismatch');
 
-console.log('PASS Grandis Legacy Tutorial v0.63: VS AI v6.37 / Playtest Lab v0.14 parity, interactive Shard teaching, current terminology, and release lock verified.');
+must(app.includes('isRuntimePresentationBusy:function()'),'Tutorial bridge must expose actual runtime presentation busy state');
+must(guide.includes('openingShardTypesPending=true'),'Shard type explanation must defer after Start Game');
+must(guide.includes('runtimePresentationBusy(state)'),'Draw lesson must wait for runtime presentation completion');
+must(guide.includes('interactionStateCheck:function()'),'Next Phase tutorial step must verify actual phase transition');
+console.log('PASS Grandis Legacy Tutorial v0.65: VS AI v6.39 / Playtest Lab v0.14 parity, interactive Shard teaching, current terminology, and release lock verified.');

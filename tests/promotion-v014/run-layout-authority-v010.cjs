@@ -4,7 +4,7 @@ const root=path.resolve(__dirname,'..','..');
 const css=fs.readFileSync(path.join(root,'css/lab-authority.css'),'utf8'),appCss=fs.readFileSync(path.join(root,'css/app.css'),'utf8'),app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8'),html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 function need(v,m){if(!v)throw Error(m)}
 need((css.match(/{/g)||[]).length===(css.match(/}/g)||[]).length,'Lab authority CSS braces unbalanced');
-need(html.includes('css/lab-authority.css?v=gl-vs-ai-6.37'),'stable index does not use promoted Lab UI authority stylesheet');
+need(html.includes('css/lab-authority.css?v=gl-vs-ai-6.39'),'stable index does not use promoted Lab UI authority stylesheet');
 need(!html.includes('playtest-lab.css'),'obsolete patch stylesheet still referenced');
 need(app.includes('class="gl-lab-authority '),'clean Lab shell missing');
 need(css.includes('--lab-hand-visible:.60'),'60% hand authority missing');

@@ -6,21 +6,24 @@ const must=(v,m)=>{if(!v)throw new Error(m)};
 const read=rel=>fs.readFileSync(path.join(root,rel),'utf8');
 const sha=rel=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,rel))).digest('hex');
 const pkg=require('../package.json'),tutPkg=require('../tutorial/package.json');
-must(pkg.version==='6.37.0','VS AI package must be v6.37.0');
-must(tutPkg.version==='0.63.0','Tutorial package must be v0.63.0');
+must(pkg.version==='6.39.0','VS AI package must be v6.39.0');
+must(tutPkg.version==='0.65.0','Tutorial package must be v0.65.0');
 const app=read('js/app.bundle.js'),css=read('css/app.css'),labCss=read('css/lab-authority.css'),staticData=read('js/static-data.js'),index=read('index.html');
-must(app.includes('Grandis Legacy VS AI v6.37'),'VS AI v6.37 marker missing');
+must(app.includes('Grandis Legacy VS AI v6.39'),'VS AI v6.39 marker missing');
 must(app.includes('One Source v1.8.2')&&app.includes('Runtime Data v0.15.0'),'current authority marker missing');
-must(index.includes('gl-vs-ai-6.37'),'VS AI v6.37 cache marker missing');
+must(index.includes('gl-vs-ai-6.39'),'VS AI v6.39 cache marker missing');
 for(const [rel,text] of [['index.html',index],['js/app.bundle.js',app],['js/static-data.js',staticData],['css/app.css',css],['css/lab-authority.css',labCss]]){
   for(const old of ['Mana Pool','Mana Deck','Generic Mana Shard','Mana Card']) must(!text.includes(old),rel+': obsolete resource terminology remains: '+old);
 }
 must(!app.includes('Player hand is empty.'),'empty Hand placeholder returned');
 
 must(app.includes('mobile-restored-layout')&&app.includes("root.innerHTML=isMobileViewport()?mobileMarkup:desktopMarkup"),'responsive mobile render branch missing');
+must(app.includes('viewportShortSide()')&&app.includes("gl-ui-tablet")&&app.includes("gl-ui-mobile"),'explicit phone/tablet/desktop input mode split missing');
+must(app.includes("actions=isTouchTabletViewport()?'<button class=\"mini-action preview-card-action touch-tablet-preview\""),'Preview button must be generated only for tablet');
+must(app.includes('if(cardId)v59HandHoverZoomShow(cardId,cardEl)'),'tablet tap must reproduce desktop enlarged hover preview');
+must(labCss.includes('.gl-ui-tablet .gl-lab-hand .hand-card.touch-selected')&&labCss.includes('.gl-ui-mobile .touch-tablet-preview'),'tablet-only card selection CSS / mobile Preview lock missing');
 must(app.includes('function mobileShardPoolRow')&&css.includes('mobile-shard-pool'),'mobile Shard Pool rail missing');
-must(app.includes('function isTouchTabletViewport')&&app.includes("cardEl.classList.contains('touch-selected')")&&labCss.includes('.hand-card.touch-selected'),'touch-first tablet Hand selection missing');
-must(app.includes('touch-tablet-preview')&&labCss.includes('.touch-tablet-preview')&&labCss.includes('top:-64px'),'tablet Preview action stack missing');
+must(app.includes('touch-tablet-preview')&&labCss.includes('.touch-tablet-preview'),'tablet Preview action missing');
 must(app.includes("GL_LAB_MANA_DECK_SIZE=12, GL_LAB_START_MANA_CARDS=3"),'12-card Shard Deck / 3 Starting Shards constants missing');
 must(app.includes('manaRegen:1')&&app.includes('aiManaRegen:1'),'Mana Regen 1 initialization missing');
 must(app.includes('response_payment_choice')&&app.includes('committed_response_counter:true'),'committed Response/payment framework missing');
@@ -42,7 +45,7 @@ must(data.cards.length===200,'Season 1 runtime must contain 200 cards');
 for(const id of ['S1-ITM-019','S1-ITM-020'])must(data.cards.some(c=>c.card_id===id),id+' missing');
 const sourceCtx={window:{}};vm.createContext(sourceCtx);vm.runInContext(staticData,sourceCtx);
 const stack=sourceCtx.window.GL_SOURCE_STACK||{};
-must(stack.local_ai==='v6.37'&&stack.tutorial==='v0.63'&&stack.pvp_railway==='v3.42','cross-release metadata stale');
+must(stack.local_ai==='v6.39'&&stack.tutorial==='v0.65'&&stack.pvp_railway==='v3.42','cross-release metadata stale');
 must(String(stack.deck_builder||'').startsWith('v1.30'),'Deck Builder v1.30 metadata missing');
 must(stack.resource_terminology&&stack.resource_terminology.deck==='Shard Deck'&&stack.resource_terminology.pool==='Shard Pool','Shard terminology metadata mismatch');
 const ctx=loadLocalAI(root);
@@ -57,4 +60,4 @@ must(!app.includes('Class Shards are the deepest bottom segment'),'obsolete perm
 const manaQA=ctx.GL_LOCAL_AI_BRIDGE&&ctx.GL_LOCAL_AI_BRIDGE.testPlaytestManaRules&&ctx.GL_LOCAL_AI_BRIDGE.testPlaytestManaRules();
 must(manaQA&&manaQA.ok&&manaQA.paymentBatchOrder&&manaQA.laterBatchBelowEarlier&&manaQA.matchingClassLast,'Shard payment-batch QA failed: '+JSON.stringify(manaQA));
 
-console.log('PASS VS AI v6.37 current release: Source Stack v1.8.2, corrected Shard payment batches, Triple Shot pre-play validation, 200 cards, current assets and gameplay locks.');
+console.log('PASS VS AI v6.39 current release: Source Stack v1.8.2, corrected Shard payment batches, Triple Shot pre-play validation, 200 cards, current assets and gameplay locks.');
