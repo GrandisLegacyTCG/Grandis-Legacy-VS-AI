@@ -34,6 +34,7 @@ function policyForCard(cardOrId,sourceClassName,explicitRecord){
   const policy=attachmentPolicy(card);
   if(policy&&policy.persistent){
     if(id==='S1-CLE-009'&&sourceClassName!=null&&!['priest','saint'].includes(normalizeClass(sourceClassName)))return null;
+    if(id==='S1-ARC-013') return {tick_phase:null,remaining_count:null,counter_mode:'presence',role:policy.role||'modifier',host:policy.host||'source_hero',exact_once_zone_movement:true,duration_rule:'active_while_attachment_remains_in_slot'};
     let count=policy.remaining_count;
     if(count==='dynamic'){
       if(id==='S1-CLE-018')count=normalizeClass(sourceClassName)==='priest'?2:1;

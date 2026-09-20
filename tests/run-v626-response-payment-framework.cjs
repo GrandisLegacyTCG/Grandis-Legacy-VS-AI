@@ -2,8 +2,8 @@
 'use strict';
 const assert=require('assert'),fs=require('fs'),path=require('path');
 const root=path.resolve(__dirname,'..');
-const runtimeData=require(path.join(root,'data/season1/cards.runtime.v0.14.3.json'));
-const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.13.3.json'));
+const runtimeData=require(path.join(root,'data/season1/cards.runtime.v0.16.0.json'));
+const recipes=require(path.join(root,'data/season1/effect-recipes.runtime.v0.15.0.json'));
 const {createInitialRuntimeState,submitIntent,getLegalActions}=require(path.join(root,'runtime-source/runtime/core/reducer.js'));
 const cardsById=Object.fromEntries(runtimeData.cards.map(c=>[c.card_id,c]));
 function deck(ids=['S1-WAR-H001']){return{starting_hero_ids:['Left','Center','Right'].map((slot,i)=>({slot,card_id:ids[i]||ids[0]})),main_deck_card_counts:{'S1-EVT-001':12,'S1-WAR-001':2},legacy_deck_card_ids:[]}}

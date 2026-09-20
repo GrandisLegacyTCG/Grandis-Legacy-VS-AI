@@ -1,3 +1,10 @@
-# Current release
+# Release Records
 
-See `RELEASE_NOTE_v6.34_v0.60.md` and `VERIFICATION_v6.34_v0.60.md`. Historical release material remains for audit history.
+Current release: **Grandis Legacy VS AI v6.42 + Tutorial v0.68**.
+
+Current records live directly in this directory:
+
+- `RELEASE_NOTE_v6.42_v0.68.md`
+- `VERIFICATION_v6.42_v0.68.md`
+
+Historical release notes, verifications, and old locks are preserved unchanged under `release/history/` and must not be treated as current authority.

@@ -1,0 +1,73 @@
+{
+  "schema_version": "GL-ACTIVE-STARTERS-1.2",
+  "active_starter_count": 5,
+  "application_release": "VS AI v6.42 / Tutorial v0.68",
+  "source_authority": "v1.9.2",
+  "starter_authority_version": "v1.6.1",
+  "application_runtime_sync": "v2.60",
+  "composition_authority": "OSA v1.9.2 Starter Deck Authority v1.6.1",
+  "canonical_registry_hash": "85d25ebda9bb2bc260983a566e6d430dde97bfc7a32e8042ec2fddfeaff1b42f",
+  "osa_active_starters_authority_sha256": "d818646d13bf41414d81aedeb14495e8308b2882c7f9bd2e50215be5e615dd10",
+  "osa_generated_master_sha256": "c3314691accc56089e04bb95bd2f9987f2c90aec48907ff6104c04d6d0d0fc28",
+  "notes": [
+    "These five exact generated Starter60 v1.6.1 files are the current application Starter source snapshot from OSA v1.9.2.",
+    "Only Starter 1 gameplay composition changed in OSA v1.9.2; Starters 2-5 are semantically unchanged.",
+    "The retired 15-preset Starter60 v1.5 library remains historical/non-active only and is never a fallback source.",
+    "Shared Runtime v1.94.0 and Shared Battlefield UI v2.52 gameplay/presentation semantics are unchanged by this starter-only propagation."
+  ],
+  "starters": [
+    {
+      "slot": 1,
+      "id": "starter_01_elemental_lord_conqueror_renegade",
+      "label": "Starter 1 — ElementalLord / Conqueror / Renegade",
+      "source_file": "starter_01_elemental_lord_conqueror_renegade_GL_DECK_1_0.json",
+      "source_path": "data/starter-decks/active/starter_01_elemental_lord_conqueror_renegade_GL_DECK_1_0.json",
+      "source_sha256": "7dd79899df1e392f6e20dcea9c37ec5cc0fd4bc4f1518e24189dc47834900906",
+      "canonical_source": "Authority/Game/Starter-Decks/Active/starter_01_elemental_lord_conqueror_renegade.json",
+      "canonical_source_sha256": "15788ed47922f3a517992e58da7c3e887bc9618c91421a365f90459155a0a795",
+      "direct_user_source_filename": "Starter_1_ElementalLord_Conqueror_Renegade.json",
+      "direct_user_source_sha256": "f63e14a9cc43729fe2e27d77a6d1606a067bc399a5230fa2489eded3ad066353",
+      "direct_user_source_semantic_match": true
+    },
+    {
+      "slot": 2,
+      "id": "starter_02_saint_crusader_grand_ranger",
+      "label": "Starter 2 — Saint / Crusader / GrandRanger",
+      "source_file": "starter_02_saint_crusader_grand_ranger_GL_DECK_1_0.json",
+      "source_path": "data/starter-decks/active/starter_02_saint_crusader_grand_ranger_GL_DECK_1_0.json",
+      "source_sha256": "6a8cf81226a2c6eceedb0e787d997500785516c2e39dfadce1c4aa7e5f2a7016",
+      "canonical_source": "Authority/Game/Starter-Decks/Active/starter_02_saint_crusader_grand_ranger.json",
+      "canonical_source_sha256": "d1e36758a72a452123f1b72ac5b8d06aebf98692e1cd5cc4a193662080e50de3"
+    },
+    {
+      "slot": 3,
+      "id": "starter_03_arcane_duelist_elemental_lord_saint",
+      "label": "Starter 3 — ArcaneDuelist / ElementalLord / Saint",
+      "source_file": "starter_03_arcane_duelist_elemental_lord_saint_GL_DECK_1_0.json",
+      "source_path": "data/starter-decks/active/starter_03_arcane_duelist_elemental_lord_saint_GL_DECK_1_0.json",
+      "source_sha256": "654235085752ca52cf42dc5df94bfa5551c2edb068e6b54c0b61c1d99bea3481",
+      "canonical_source": "Authority/Game/Starter-Decks/Active/starter_03_arcane_duelist_elemental_lord_saint.json",
+      "canonical_source_sha256": "dbc7ea2c42da2db8eac7e3594fbef8286a2d5717b9a5e8b4e015c60a74e057a5"
+    },
+    {
+      "slot": 4,
+      "id": "starter_04_grand_ranger_grand_arbalest_renegade",
+      "label": "Starter 4 — GrandRanger / GrandArbalest / Renegade",
+      "source_file": "starter_04_grand_ranger_grand_arbalest_renegade_GL_DECK_1_0.json",
+      "source_path": "data/starter-decks/active/starter_04_grand_ranger_grand_arbalest_renegade_GL_DECK_1_0.json",
+      "source_sha256": "a92148153a57ef1fdc96f6582424c47251fb8b39fa235c5660323a6bde0fbdda",
+      "canonical_source": "Authority/Game/Starter-Decks/Active/starter_04_grand_ranger_grand_arbalest_renegade.json",
+      "canonical_source_sha256": "ea077eb002c51376ba3ae891ce01175becb86c285a4511a3ea914b1e91b1e4c7"
+    },
+    {
+      "slot": 5,
+      "id": "starter_05_renegade_arcane_duelist_elemental_lord",
+      "label": "Starter 5 — Renegade / ArcaneDuelist / ElementalLord",
+      "source_file": "starter_05_renegade_arcane_duelist_elemental_lord_GL_DECK_1_0.json",
+      "source_path": "data/starter-decks/active/starter_05_renegade_arcane_duelist_elemental_lord_GL_DECK_1_0.json",
+      "source_sha256": "2367b595bd74c546ee83ecdfe39b16d594deaada89afa08d0232ad19b9640324",
+      "canonical_source": "Authority/Game/Starter-Decks/Active/starter_05_renegade_arcane_duelist_elemental_lord.json",
+      "canonical_source_sha256": "2bd572f6c8cb08e8d10b905b6c0c02e4af59cd17f0671622afa8d196e7e414a7"
+    }
+  ]
+}

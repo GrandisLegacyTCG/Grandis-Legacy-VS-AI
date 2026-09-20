@@ -55,17 +55,23 @@ function ensurePhysicalManaState(player) {
   if(!Number.isFinite(Number(player.mana_regen))) player.mana_regen=STARTING_MANA_REGEN;
   return player;
 }
-function insertReturnedGeneric(deck, card) {
-  let i=deck.length;
-  while(i>0 && deck[i-1] && deck[i-1].kind==='CLASS') i-=1;
-  deck.splice(i,0,card);
+function orderReturnedPaymentBatch(cards, skillClass) {
+  const generic=[],nonmatching=[],matching=[];
+  for(const c of cards || []) {
+    if(!c) continue;
+    if(c.kind!=='CLASS') generic.push(c);
+    else if(skillClass && String(c.class_name||'').toLowerCase()===String(skillClass||'').toLowerCase()) matching.push(c);
+    else nonmatching.push(c);
+  }
+  return generic.concat(nonmatching,matching);
 }
-function returnManaToBottom(player, cards) {
+function returnManaToBottom(player, cards, options) {
   ensurePhysicalManaState(player);
-  const generic=[],classes=[];
-  for(const c of cards || []) (c && c.kind==='CLASS' ? classes : generic).push(c);
-  for(const c of generic) insertReturnedGeneric(player.mana_deck,c);
-  for(const c of classes) player.mana_deck.push(c);
+  const opts=options||{};
+  const batch=orderReturnedPaymentBatch(cards,opts.skill_class||opts.skillClass||null);
+  // Each payment is an independent return batch. Append this entire batch below
+  // everything already in the Shard Deck; never re-sort older returned batches.
+  for(const c of batch) player.mana_deck.push(c);
   player.mana_pool=player.mana_pool_cards.length;
   return player;
 }
@@ -95,11 +101,7 @@ function choosePayment(player, manaCost, options) {
 function spendMana(player, manaCost, options) {
   const choice=choosePayment(player,manaCost,options); if(!choice.ok) return choice;
   const ids=new Set(choice.cards.map(c=>c.mana_id)); player.mana_pool_cards=player.mana_pool_cards.filter(c=>!ids.has(c.mana_id));
-  returnManaToBottom(player,choice.cards); return choice;
-}
-function blindOpponentManaCandidates(opponent) {
-  ensurePhysicalManaState(opponent);
-  return opponent.mana_pool_cards.map((c,index)=>({selection_index:index,card_back:true,hidden_identity:true}));
+  returnManaToBottom(player,choice.cards,options); return choice;
 }
 function removeOpponentManaBlind(opponent, selectedIndices) {
   ensurePhysicalManaState(opponent); const indices=[...new Set((selectedIndices||[]).map(Number).filter(Number.isInteger))].sort((a,b)=>b-a); const removed=[];
@@ -116,4 +118,4 @@ function payUltimateTributeClassShard(player, ultimateCardId) {
   const shard=matchingClassShardForUltimate(player,ultimateCardId); if(!shard) return {ok:false,reason:'Matching Class Shard is required.'};
   player.mana_pool_cards=player.mana_pool_cards.filter(c=>c.mana_id!==shard.mana_id); returnManaToBottom(player,[shard]); return {ok:true,card:shard,class_name:shard.class_name};
 }
-module.exports={MANA_DECK_SIZE,STARTING_MANA_CARDS,STARTING_MANA_REGEN,MAX_MANA_REGEN,NORMAL_MANA_POOL_MAX,MAX_CLASS_SHARDS,PREFIX_CLASS,classFromCardCode,deriveUltimateClassNames,deriveUltimateCardIdsFromDeck,buildManaDeck,shuffle,ensurePhysicalManaState,returnManaToBottom,drawManaFromTop,matchingValue,choosePayment,spendMana,blindOpponentManaCandidates,removeOpponentManaBlind,removeAndGainOwnMana,matchingClassShardForUltimate,payUltimateTributeClassShard};
+module.exports={MANA_DECK_SIZE,STARTING_MANA_CARDS,STARTING_MANA_REGEN,MAX_MANA_REGEN,NORMAL_MANA_POOL_MAX,MAX_CLASS_SHARDS,PREFIX_CLASS,classFromCardCode,deriveUltimateClassNames,deriveUltimateCardIdsFromDeck,buildManaDeck,shuffle,ensurePhysicalManaState,orderReturnedPaymentBatch,returnManaToBottom,drawManaFromTop,matchingValue,choosePayment,spendMana,removeOpponentManaBlind,removeAndGainOwnMana,matchingClassShardForUltimate,payUltimateTributeClassShard};

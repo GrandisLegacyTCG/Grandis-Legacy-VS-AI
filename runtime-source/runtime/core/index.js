@@ -18,6 +18,7 @@ module.exports = {
   drawPolicy: require('./draw-policy'),
   legacyDefeatPolicy: require('./legacy-defeat-policy'),
   tripleShotPolicy: require('./triple-shot-policy'),
+  attackDamageClassificationPolicy: require('./attack-damage-classification-policy'),
   tributePolicy: require('./tribute-policy'),
   exhaustPolicy: require('./exhaust-policy')
 };

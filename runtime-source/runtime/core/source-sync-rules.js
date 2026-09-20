@@ -3,7 +3,7 @@
 /**
  * Grandis Legacy source-sync gameplay locks for Local AI and PvP Railway.
  * These helpers encode shared cross-build policy only; card values come from
- * Season1 Runtime Data v0.14.2 / Effect Recipe v0.13.2.
+ * Season1 Runtime Data v0.16.0 / Effect Recipe v0.15.0 generated from Source Authority v1.9.0.
  */
 
 const BASE_CLASSES = Object.freeze(['Warrior', 'Mage', 'Cleric', 'Thief', 'Archer']);
@@ -272,9 +272,9 @@ function heroAttackBuffPolicy(heroOrClass, card) {
   if (!profile) return { applies: false, amount: 0, reason: 'not_attack_profile' };
   if (['Area Attack', 'Casting Attack'].includes(profile)) return { applies: false, amount: 0, reason: 'excluded_area_or_casting' };
   if (heroClass === 'grand arbalest') return { applies: profile === 'Physical Attack', amount: profile === 'Physical Attack' ? 10 : 0, reason: 'rapid_chamber_physical_only' };
-  if (heroClass === 'grand ranger') return { applies: isSingleTargetAttackSkill(card) && cardId !== 'S1-ARC-001', amount: isSingleTargetAttackSkill(card) && cardId !== 'S1-ARC-001' ? 10 : 0, reason: 'dead_eye_single_target_excluding_bow_bash' };
+  if (heroClass === 'grand ranger') return { applies: profile === 'Physical Attack' && cardId !== 'S1-ARC-001', amount: profile === 'Physical Attack' && cardId !== 'S1-ARC-001' ? 10 : 0, reason: 'dead_eye_physical_attack_label_excluding_bow_bash' };
   if (heroClass === 'elemental lord') return { applies: profile === 'Magical Attack', amount: profile === 'Magical Attack' ? 10 : 0, reason: 'elemental_sovereignty_magical_only' };
-  if (['conqueror', 'renegade'].includes(heroClass)) return { applies: NORMAL_ATTACK_PROFILES.includes(profile), amount: NORMAL_ATTACK_PROFILES.includes(profile) ? 10 : 0, reason: 'attack_damage_profile_gate' };
+  if (['conqueror', 'renegade'].includes(heroClass)) return { applies: profile === 'Physical Attack', amount: profile === 'Physical Attack' ? 10 : 0, reason: 'physical_attack_label_gate' };
   return { applies: false, amount: 0, reason: 'no_matching_hero_attack_buff' };
 }
 
@@ -430,21 +430,21 @@ function handManipulationPolicyForCard(card) {
   const id = normalizeText(card && (card.card_id || card.id)).toUpperCase();
   if (id === 'S1-ARC-004') return {
     card_id: id,
-    selection_model: 'opponent_hand_back_of_card_index',
+    selection_model: 'fresh_randomized_opaque_mapping_before_selection',
     move_selected_to: 'opponent_main_deck',
     shuffle_deck_after_insert: true,
-    shuffle_remaining_hand_after_resolution: true,
-    shuffle_before_selection: false,
-    magic_scope_combo: 'reveal may happen before selection; shuffle happens after movement'
+    shuffle_remaining_hand_after_resolution: false,
+    randomize_mapping_before_selection: true,
+    magic_scope_combo: 'fresh opaque mapping per blind-selection event; canonical Hand order is not mutated merely to hide positional identity'
   };
   if (id === 'S1-THF-028') return {
     card_id: id,
-    selection_model: 'opponent_hand_back_of_card_index',
+    selection_model: 'fresh_randomized_opaque_mapping_before_selection',
     move_selected_to: 'opponent_discard_pile',
     shuffle_deck_after_insert: false,
-    shuffle_remaining_hand_after_resolution: true,
-    shuffle_before_selection: false,
-    magic_scope_combo: 'reveal may happen before selection; shuffle happens after movement'
+    shuffle_remaining_hand_after_resolution: false,
+    randomize_mapping_before_selection: true,
+    magic_scope_combo: 'fresh opaque mapping per blind-selection event; canonical Hand order is not mutated merely to hide positional identity'
   };
   return null;
 }

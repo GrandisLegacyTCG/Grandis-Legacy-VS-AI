@@ -1,0 +1,12 @@
+{
+  "runtime_tree_before": "5d679eaddd38a654cf91dfd1baf84e78212eb2b3263dfffab534c405560ee305",
+  "runtime_tree_after": "5d679eaddd38a654cf91dfd1baf84e78212eb2b3263dfffab534c405560ee305",
+  "tutorial_runtime_tree_before": "5d679eaddd38a654cf91dfd1baf84e78212eb2b3263dfffab534c405560ee305",
+  "tutorial_runtime_tree_after": "5d679eaddd38a654cf91dfd1baf84e78212eb2b3263dfffab534c405560ee305",
+  "shared_ui_before": "f9c04742dcc2a60454152c1928141c96da77e173b152ebf6cc6115c12d083913",
+  "shared_ui_after": "f9c04742dcc2a60454152c1928141c96da77e173b152ebf6cc6115c12d083913",
+  "shared_css_before": "f18b08e9bf098bd0af237efc23f4e582772b43eac8e1bae5b44422ce72f550ad",
+  "shared_css_after": "f18b08e9bf098bd0af237efc23f4e582772b43eac8e1bae5b44422ce72f550ad",
+  "starter_2_5_semantics_unchanged": true,
+  "starter1_user_sha": "f63e14a9cc43729fe2e27d77a6d1606a067bc399a5230fa2489eded3ad066353"
+}

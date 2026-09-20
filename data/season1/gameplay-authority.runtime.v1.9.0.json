@@ -1,0 +1,291 @@
+{
+  "schema": "GL-GAMEPLAY-AUTHORITY-1.0",
+  "authority_id": "Grandis Legacy Gameplay Authority v1.9.0",
+  "inherits": "Grandis Legacy Source Authority v1.9.0",
+  "scope": "Grandis Legacy Source Authority v1.9.0 / all future consumers",
+  "production_override": true,
+  "rules": {
+    "mana_deck_size": 12,
+    "class_shard_generation": {
+      "source": "Unique Classes encoded by the selected deck's three Ultimate card codes",
+      "max_per_class": 1,
+      "max_class_shards": 3,
+      "fill_remainder": "Mana Shard",
+      "prefix_map": {
+        "WAR": "Warrior",
+        "MAG": "Mage",
+        "ARC": "Archer",
+        "CLE": "Cleric",
+        "THF": "Thief"
+      }
+    },
+    "opening_mana": {
+      "cards_drawn_per_side": 3,
+      "timing": "After the 6-card Opening Hand sequence; Main Deck/Hand always resolves before Shard Deck/Shard Pool at match setup and during Draw Phase",
+      "presentation": "Opening Hand resolves first. Starting Shards then draw visibly from hidden Shard Deck to Shard Pool; Shards remain hidden until draw arrival/reveal."
+    },
+    "mana_regen": {
+      "starting": 1,
+      "rank_up_bonus": 1,
+      "maximum": 6
+    },
+    "class_shard_payment": {
+      "matching_skill_card_code_value": 2,
+      "nonmatching_value": 1,
+      "player_choice_before_spend": "Only for Skill-card Mana payments when one or more Class Shards are in Shard Pool",
+      "destination_after_any_use": "Return in the current payment batch to the bottom of owner Shard Deck; matching Class Shard is last/deepest only within that Skill payment batch.",
+      "non_skill_payment": "Item/Event and other non-Skill cards do not open Class Shard selection. Mana Shards are paid first; Class Shards are auto-used only if Mana Shards are insufficient, at 1 Mana each.",
+      "payment_button_display": "After selecting Class Shard(s), Pay Mana displays only the remaining Mana required. Matching Shard reduces this by 2; nonmatching Shard reduces it by 1."
+    },
+    "generic_mana_after_use": "Return in the current payment batch to the bottom of owner Shard Deck. Later payment batches append below the entire earlier batch.",
+    "ultimate_tribute": {
+      "exp": 200,
+      "printed_mana_cost_paid": false,
+      "hero_owner_restriction": true,
+      "legal_target": "Only the specific living Hero owner encoded by the Ultimate card's owner_lineage_card_ids, if otherwise legal",
+      "additional_cost": "1 Class Shard matching the Ultimate card code Class",
+      "class_shard_destination": "Bottom of owner Shard Deck as its own single-Shard payment/use batch",
+      "requirements": [
+        "Ultimate may only be Tributed to its bound Hero owner",
+        "Spend 1 Class Shard matching the Ultimate card code Class"
+      ]
+    },
+    "mana_return_order": {
+      "scope": "Each payment/use creates one return batch.",
+      "all_used_shards": "Append the entire payment batch to the bottom of the owner Shard Deck.",
+      "skill_payment_order": [
+        "Mana Shards first",
+        "nonmatching Class Shards next",
+        "matching Class Shard(s) last/deepest within that batch"
+      ],
+      "later_payment": "A later payment batch appends below the entire earlier batch. Class Shards are not permanently pinned to the absolute deck bottom."
+    },
+    "draw_phase_order": [
+      "Ready Heroes",
+      "Reserve mandatory Main Deck card without adding it to Hand",
+      "Animate Main Deck card to Hand",
+      "Commit the actual draw and its draw-trigger effects only after arrival",
+      "Complete any Quick Reload / Rapid Chamber draw-review replacement before Mana Regen",
+      "For each Mana Regen card: reserve Shard Deck top card without adding it to Shard Pool",
+      "Animate hidden Shard from Shard Deck to Shard Pool",
+      "Commit and reveal that Shard only after arrival",
+      "Enter Deploy after all Mana Regen draws finish"
+    ],
+    "response_payment_popup_policy": {
+      "zero_mana_item_response": "No Mana/Class Shard payment popup",
+      "skill_response_with_class_shard": "Show Class Shard choice when Mana cost > 0",
+      "additional_card_cost": "Mandatory committed payment step remains for Responses such as Spectral Grappling Hook / Escape Arrow even if Mana cost is 0"
+    },
+    "draw_phase_presentation_authority": "Single staged reserve -> animate -> commit pipeline. Main Deck/Hand resolves before Shard Deck/Shard Pool; neither destination mutates before its flying-card animation completes.",
+    "actual_draw_authority": {
+      "definition": "Every successful top-of-Main-Deck -> Hand Draw commits through one generic actual-draw checkpoint.",
+      "counts": "Every successful top-of-Main-Deck -> Hand Draw emits the generic actual-draw event. Alden Draw This Turn increments once per actual card only while an active Arbalest / Grand Arbalest exists.",
+      "exclusions": [
+        "Opening Hand",
+        "Search/choose/add specific card to Hand",
+        "Return card from Discard to Hand"
+      ],
+      "arbalest_draw_this_turn_cap": 6,
+      "presentation_sync": "Draw This Turn and draw-trigger counters update at the same actual-draw commit; UI render/animation never owns the counter.",
+      "arbalest_activation": "Archer does not accumulate Draw This Turn. On Archer -> Arbalest Rank Up, reset/start the Hero-owned counter at 0 before the Rank II reward draw; the 2 reward cards therefore produce counter 2. Arbalest -> Grand Arbalest keeps the current turn count and adds the Rank III reward draws.",
+      "draw_trigger_independence": "Generic draw-trigger effects such as Aura Infusion Bolt still receive actual Draw events even when no Arbalest counter is active."
+    },
+    "opening_sequence": [
+      "Opening Coin Flip",
+      "Draw 6-card Opening Hand from Main Deck",
+      "Draw 3 Starting Shards from Shard Deck",
+      "Begin first player Draw Phase"
+    ],
+    "legacy_defeat_selection": {
+      "rule": "When a Hero is defeated, the player may choose any available/legal Legacy Card whose Base Class matches the defeated Hero's Base Class.",
+      "package_binding": false,
+      "note": "Legacy legality is Base-Class matching, not a fixed Hero-package binding."
+    },
+    "opponent_mana_selection": {
+      "selection_visibility": "Blind. Any effect that selects Mana from the opponent's Shard Pool presents those Shards face-down/back-of-card and does not reveal Generic/Class identity before choice.",
+      "remove_only": "Return the selected opponent Shard(s) to the bottom of that opponent's Shard Deck. The acting player gains no Mana.",
+      "take_or_absorb": "Return the selected opponent Shard(s) to the bottom of the opponent's Shard Deck, then move the same number of top Shards from the acting player's own Shard Deck to their Mana Pool.",
+      "stolen_physical_state": false,
+      "forced_next_payment": false,
+      "class_identity_transfer": false
+    },
+    "range_area_combination": {
+      "principle": "Range determines reach; Area Attack determines targeting mode.",
+      "range_plus_area": "An Attack that has both Range Attack and Area Attack does not choose an individual target and reaches all opposing lanes/positions.",
+      "invalid_occupants": "Defeated/empty positions and Legacy are skipped unless the effect explicitly allows them.",
+      "response": "Each affected Hero receives its own Response opportunity."
+    },
+    "triple_shot": {
+      "card_id": "S1-ARC-013",
+      "play_validation": "Legal only if the player Hand contains at least one Poison Arrow (S1-ARC-002) or Burning Arrow (S1-ARC-007).",
+      "binding": false,
+      "choice_on_play": false,
+      "attachment_lifecycle": "Triple Shot remains an Attachment under normal Attachment rules. Its effect remains active exactly while the card remains in the Attachment Slot.",
+      "qualifying_attacks": "Each Poison Arrow or Burning Arrow used by that attached Hero becomes Area Attack while Triple Shot remains attached.",
+      "one_use_consumption": false,
+      "fixed_end_phase_expiry": false,
+      "future_duration_extension": "If another mechanic extends Attachment presence, Triple Shot continues for that duration."
+    },
+    "hero_base_class_identity_corrections": {
+      "scope": "Production Source Authority v1.9.0 approved correction.",
+      "corrections": {
+        "S1-THF-H005": "Spell Blade Rank II preserves Rank I Base Class Thief for Legacy eligibility",
+        "S1-ARC-H005": "Arbalest Rank II preserves Rank I Base Class Archer for Legacy eligibility",
+        "S1-ARC-H006": "Grand Arbalest Rank III preserves Rank I Base Class Archer for Legacy eligibility"
+      },
+      "required_fields": [
+        "identity.rank_i_base_class",
+        "identity.base_class_family",
+        "base_class_family"
+      ],
+      "defeat_queue": "Multi-target/simultaneous lethal Heroes each enter the mandatory Legacy replacement queue independently."
+    },
+    "status_stacking": {
+      "Poison": "reapply adds duration",
+      "Burn": "reapply adds duration",
+      "Freeze": "reapply adds duration",
+      "Stun": "reapply adds duration",
+      "Bleed": "reapply keeps the higher/current maximum duration rather than summing"
+    },
+    "auto_center_one_vs_one": {
+      "condition": "Each player has exactly one active non-Legacy Hero remaining.",
+      "effect": "Move both remaining Heroes to Center automatically.",
+      "exhaust": false,
+      "manual_reposition_limit_consumed": false
+    },
+    "general_exhaust": {
+      "normal_own_turn_skill": "Successful normal own-turn Skill use Exhausts the source Hero unless canonical card authority says otherwise.",
+      "item": "Items do not Exhaust a Hero by default.",
+      "racial_trait": "Racial Traits do not Exhaust a Hero by default and are not blocked by current Exhaust unless stated.",
+      "defense_response": "Defense/Response use is not blocked by source Exhaust and does not create Exhaust unless stated.",
+      "camouflage": "S1-THF-027 is explicitly usable while Exhausted and does not Exhaust the source."
+    },
+    "defeat_exp_cleanup": {
+      "on_confirmed_defeat": "All contributed EXP Cards move to Discard; Status and Attachments clear according to defeat rules.",
+      "rank_retained": true,
+      "inherent_rank_exp": {
+        "Rank I": 0,
+        "Rank II": 300,
+        "Rank III": 700
+      }
+    },
+    "tribute_overflow": {
+      "normal_skill_special_overflow_prohibition": false,
+      "note": "No separate normal-Skill overflow ban exists. Current thresholds and 100-EXP normal Tribute increments naturally reach the next threshold exactly.",
+      "rank_threshold_cap": "When a Tribute reaches the next Rank threshold, Rank Up occurs and contributed EXP Cards are cleared according to Rank Up rules."
+    },
+    "branding": {
+      "product_category": "RPG-Style TCG",
+      "three_vs_three_is_brand_identity": false,
+      "standard_rulebook_format": "3 Heroes per player; alternate formats such as 2v2 may be defined separately."
+    },
+    "attack_label_vs_damage_type": {
+      "principle": "ATTACK LABEL / ATTACK TYPE and DAMAGE TYPE are independent semantic dimensions.",
+      "physical_attack_condition": "TRUE only when effective attack_label is exactly Physical Attack.",
+      "magical_attack_condition": "TRUE only when effective attack_label is exactly Magical Attack.",
+      "physical_damage_condition": "TRUE when damage_type is Physical, regardless of attack label.",
+      "magical_damage_condition": "TRUE when damage_type is Magical, regardless of attack label.",
+      "forbidden_inference": [
+        "Physical damage => Physical Attack",
+        "Magical damage => Magical Attack"
+      ],
+      "examples": [
+        {
+          "attack_label": "Physical Attack",
+          "damage_type": "Physical",
+          "physical_attack": true,
+          "physical_damage": true
+        },
+        {
+          "attack_label": "Area Attack",
+          "damage_type": "Physical",
+          "physical_attack": false,
+          "physical_damage": true
+        },
+        {
+          "attack_label": "Range Attack",
+          "damage_type": "Physical",
+          "physical_attack": false,
+          "physical_damage": true
+        },
+        {
+          "attack_label": "Magical Attack",
+          "damage_type": "Magical",
+          "magical_attack": true,
+          "magical_damage": true
+        },
+        {
+          "attack_label": "Area Attack",
+          "damage_type": "Magical",
+          "magical_attack": false,
+          "magical_damage": true
+        },
+        {
+          "attack_label": "Range Attack",
+          "damage_type": "Magical",
+          "magical_attack": false,
+          "magical_damage": true
+        }
+      ],
+      "whirlwind_regression": "Conqueror + Whirlwind resolves Whirlwind base damage 50 before unrelated modifiers; Arena Dominator does not add +10."
+    },
+    "opponent_blind_selection_digital_contract": {
+      "scope": "Digital implementation only; not Player Rulebook authority.",
+      "applies_when": "Selecting blindly from opponent-owned hidden candidates such as Hand or Shard Pool.",
+      "does_not_apply_when": "Selecting the player’s own Hand, Shard Pool, or own resources.",
+      "flow": [
+        "Build eligible opponent candidate set",
+        "Create fresh randomized permutation/mapping for this selection event",
+        "Present opaque/card-back choices only",
+        "Commit selection without identity knowledge",
+        "Resolve mapped real entity after commit"
+      ],
+      "multi_select": "One selection event uses one mapping for all selections in that event.",
+      "new_event": "A new blind-selection event creates a new permutation.",
+      "state_safety": "Do not reorder canonical hidden-zone state. Shard Pool randomization never shuffles the Shard Deck.",
+      "pvp_future": "Authoritative layer keeps the true mapping; selecting client receives opaque choices only.",
+      "seed_authority": "Production blind-selection seed/entropy is internal to the authoritative runtime/server layer. Selecting player/client intent cannot supply or override the production seed.",
+      "non_identity_requirement": "When candidate count is greater than 1, the opaque mapping must not be the complete identity permutation; at least one position must change.",
+      "viewer_safe_boundary": "Authoritative mapping, hidden candidate IDs, and seed material remain server/authority-only. Viewer/client serialization exposes only opaque handles/card backs until commitment."
+    },
+    "counter_gameplay_mechanics": {
+      "authority_boundary": "Game/Runtime authority defines counter value, duration, maximum, trigger, increment/decrement/reset timing, and effect rules. Visual presentation belongs only to Authority/UI.",
+      "accumulation_cap": 6,
+      "arbalest_draw_this_turn_cap": 6,
+      "attachment_counter_timing": "Runtime authority decides increment/decrement/reset timing per effect; UI never decrements globally.",
+      "aura_infusion_bolt": "Accumulation counter increases according to its existing runtime trigger.",
+      "casting_and_duration": "Countdown counter decreases only at each effect's existing authoritative phase/timing."
+    },
+    "freeze_status": {
+      "status": "Freeze",
+      "representation": "generic Hero Status",
+      "while_active": {
+        "normal_manual_reposition": "blocked when the Frozen Hero would change position",
+        "skill_effect_position_change": "blocked when a Skill effect would change the Frozen Hero position",
+        "dodge": "blocked at runtime legality before commitment",
+        "other_defense_responses": "not blocked by Freeze alone",
+        "item_effect_position_change": "not blocked by Freeze solely because it is movement",
+        "automatic_center_1v1": "not blocked; this is system movement"
+      },
+      "duration": "decreases during the owner Hero End Phase and expires at 0",
+      "stacking": "reapplication adds the new Freeze duration to remaining duration",
+      "implementation": "generic status producer/consumer architecture; Freeze Bomb is one producer and does not own Freeze legality rules"
+    }
+  },
+  "promoted_from": "Source Authority Stack v1.8.2 plus explicitly approved v1.9.0 task decisions; application repositories remain read-only.",
+  "generated_only": true,
+  "do_not_edit": true,
+  "generated_at": "2026-09-20",
+  "generator": "Authority/Runtime/Validators/generate-v1.9.0.cjs",
+  "generator_version": "1.9.0-generator.1",
+  "canonical_sources": [
+    "Authority/Game/Cards/cards.canonical.v1.6.0.json",
+    "Authority/Game/Heroes/hero-components.canonical.v1.1.0.json",
+    "Authority/Game/Mechanics/gameplay-authority.v1.9.0.json"
+  ],
+  "source_hashes": {
+    "Authority/Game/Cards/cards.canonical.v1.6.0.json": "05ea406f24593d543f8e2f6f5d6f70af4161a634390d905c61c2015e352b911f",
+    "Authority/Game/Heroes/hero-components.canonical.v1.1.0.json": "112632e5bb821b415a63554c287fc056977939d2efa66e9e5b50b36a328769b5",
+    "Authority/Game/Mechanics/gameplay-authority.v1.9.0.json": "27a41bc848cc43e4126c72398cb58457f3be3faba7ad996d1df1f0345b2af33c"
+  }
+}

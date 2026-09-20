@@ -74,7 +74,8 @@ function applySharpshooter(hero, card) {
   if (!hasSharpshooter) return card;
   if (card.cardType !== CARD_TYPES.SKILL) return card;
   if (card.card_id === 'S1-ARC-001' || card.id === 'S1-ARC-001') return card; // Bow Bash printed exclusion.
-  const isPhysicalAttack = card.damageProfile === DAMAGE_PROFILE.PHYSICAL;
+  const explicitAttackLabel = String(card.attack_label || card.actionProfile || card.classification || '');
+  const isPhysicalAttack = explicitAttackLabel === 'Physical Attack';
   if (!isPhysicalAttack) return card;
   const currentLayer = card.attackLayer || ATTACK_LAYER.NONE;
   if (currentLayer === ATTACK_LAYER.AREA) {

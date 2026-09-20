@@ -36,7 +36,7 @@ function loadLocalAI(root,mode){
   ctx.localStorage={getItem(){return null},setItem(){},removeItem(){}};
   ctx.Audio=function(){return{currentTime:0,volume:1,play(){return Promise.resolve()},pause(){}}};
   vm.createContext(ctx);
-  for(const file of ['js/static-data.js','js/runtime-authority.js','js/app.bundle.js']){
+  for(const file of ['js/static-data.js','js/runtime-authority.js','../shared-app/active-starters.js','js/app.bundle.js']){
     vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx,{filename:file});
   }
   return ctx;

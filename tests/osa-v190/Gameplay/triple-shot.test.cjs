@@ -1,0 +1,12 @@
+'use strict';
+const {read,assert}=require('../_helpers.cjs');
+const p=require('../../Authority/Runtime/Shared/core/triple-shot-policy.js');
+assert(!p.canPlayTripleShot([]).can,'neither should be illegal');
+assert(p.canPlayTripleShot(['S1-ARC-002']).can,'Poison legal');assert(p.canPlayTripleShot(['S1-ARC-007']).can,'Burning legal');assert(p.canPlayTripleShot(['S1-ARC-002','S1-ARC-007']).can,'both legal');
+assert(!('createBinding' in p)&&!('applyBindingToAttack' in p),'binding exports present');
+const attach={card_id:p.TRIPLE_SHOT_ID,source_slot:'CENTER',source_hero_card_id:'H1'};const poison={card_id:'S1-ARC-002',classification:'Physical Attack'};
+assert(p.appliesToAttack(poison,attach,{source_slot:'CENTER',source_hero_card_id:'H1'}),'first attack');assert(p.appliesToAttack(poison,attach,{source_slot:'CENTER',source_hero_card_id:'H1'}),'second attack must still apply');
+assert(p.applyAttachmentToAttack(poison,attach,{source_slot:'CENTER'}).attack_label==='Area Attack','conversion');
+assert(!p.appliesToAttack(poison,{...attach,attachment_state:'REMOVED'},{source_slot:'CENTER'}),'removal ends effect');
+const c=read('Authority/Game/Cards/cards.canonical.v1.6.0.json').cards.find(x=>x.card_id==='S1-ARC-013');const s=JSON.stringify(c.rules);for(const forbidden of ['mandatory_choice_on_play','legal_bind_card_ids','choice_required','bound_card_id'])assert(!s.includes(forbidden),`forbidden ${forbidden}`);assert(c.rules.execution.attachment_policy.consumed_on_qualifying_attack===false,'must not consume');assert(c.rules.execution.attachment_policy.hardcoded_end_phase_expiry===false,'must not hardcode End Phase');
+console.log('PASS Triple Shot no-binding lifecycle');

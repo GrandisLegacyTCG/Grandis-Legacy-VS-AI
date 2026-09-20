@@ -1,8 +1,55 @@
 'use strict';
-const TRIPLE_SHOT_ID='S1-ARC-013';
-const BIND_IDS=Object.freeze(['S1-ARC-002','S1-ARC-007']);
-function legalBindChoices(hand, cardResolver, sourceHero, legalityFn){const out=[];for(const id of BIND_IDS){if(!(hand||[]).includes(id))continue;const card=cardResolver?cardResolver(id):null;if(!card)continue;if(legalityFn && legalityFn(card,sourceHero)===false)continue;out.push(id);}return out;}
-function canPlayTripleShot(hand, cardResolver, sourceHero, legalityFn){const choices=legalBindChoices(hand,cardResolver,sourceHero,legalityFn);return{can:choices.length>0,choices,reason:choices.length?'':'Triple Shot requires a legal Poison Arrow or Burning Arrow in Hand.'};}
-function createBinding(chosenCardId){if(!BIND_IDS.includes(chosenCardId))throw new Error('Triple Shot requires Poison Arrow or Burning Arrow bind choice.');return{source_card_id:TRIPLE_SHOT_ID,bound_card_id:chosenCardId,area_attack:true,expires:'END_PHASE',no_target_picker:true};}
-function applyBindingToAttack(card,binding){if(!card||!binding||card.card_id!==binding.bound_card_id)return card;return{...card,attackLayer:'Area Attack',areaAttack:true,requiresManualTarget:false,target_required:false,triple_shot_area:true};}
-module.exports={TRIPLE_SHOT_ID,BIND_IDS,legalBindChoices,canPlayTripleShot,createBinding,applyBindingToAttack};
+
+const TRIPLE_SHOT_ID = 'S1-ARC-013';
+const QUALIFYING_CARD_IDS = Object.freeze(['S1-ARC-002', 'S1-ARC-007']);
+
+function handHasQualifyingArrow(hand) {
+  const ids = Array.isArray(hand) ? hand : [];
+  return QUALIFYING_CARD_IDS.some(id => ids.includes(id));
+}
+
+function canPlayTripleShot(hand) {
+  const can = handHasQualifyingArrow(hand);
+  return {
+    can,
+    reason: can ? '' : 'Triple Shot requires Poison Arrow or Burning Arrow in Hand.'
+  };
+}
+
+function attachmentIsActive(attachment) {
+  return Boolean(attachment && attachment.card_id === TRIPLE_SHOT_ID && attachment.attachment_state !== 'REMOVED');
+}
+
+function qualifies(card) {
+  return Boolean(card && QUALIFYING_CARD_IDS.includes(card.card_id));
+}
+
+function appliesToAttack(card, attachment, context = {}) {
+  if (!attachmentIsActive(attachment) || !qualifies(card)) return false;
+  if (context.source_slot && attachment.source_slot && context.source_slot !== attachment.source_slot) return false;
+  if (context.source_hero_card_id && attachment.source_hero_card_id && context.source_hero_card_id !== attachment.source_hero_card_id) return false;
+  return true;
+}
+
+function applyAttachmentToAttack(card, attachment, context = {}) {
+  if (!appliesToAttack(card, attachment, context)) return card;
+  const next = { ...card };
+  next.attackLayer = 'Area Attack';
+  next.attack_label = 'Area Attack';
+  next.areaAttack = true;
+  next.requiresManualTarget = false;
+  next.target_required = false;
+  next.triple_shot_area = true;
+  return next;
+}
+
+module.exports = {
+  TRIPLE_SHOT_ID,
+  QUALIFYING_CARD_IDS,
+  handHasQualifyingArrow,
+  canPlayTripleShot,
+  attachmentIsActive,
+  qualifies,
+  appliesToAttack,
+  applyAttachmentToAttack
+};

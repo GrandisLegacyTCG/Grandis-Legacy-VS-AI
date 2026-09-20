@@ -1,0 +1,800 @@
+{
+  "schema_version": "GL-DECK-1.0",
+  "builder_version": "Starter60 v1.5 Source Stack v1.8.0",
+  "deck_name": "Starter 09 — Arcane Duelist / Crusader / Renegade",
+  "display_name": "Starter 09 — Arcane Duelist / Crusader / Renegade",
+  "preset_id": "starter_09_arcane_duelist_crusader_renegade",
+  "format": "Grandis Legacy Season 1 / Starter60 v1.5 / 60-card Main Deck / max 3 normal / max 1 Ultimate",
+  "main_deck_count": 60,
+  "skill_count": 48,
+  "event_count": 6,
+  "item_count": 6,
+  "legacy_package_count": 3,
+  "legacy_deck_count": 12,
+  "legacy_deck_label": "Legacy Deck",
+  "legacy_deck_package_slots": [
+    {
+      "slot": "LEFT",
+      "progression": "S1-THF-H004",
+      "legacy": "S1-THF-L002",
+      "lineage": "LUCIEN",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "slot": "CENTER",
+      "progression": "S1-WAR-H004",
+      "legacy": "S1-WAR-L002",
+      "lineage": "AUREX",
+      "package_name": "Dragonborn Warrior — AUREX + Statue of the Lightbringer"
+    },
+    {
+      "slot": "RIGHT",
+      "progression": "S1-THF-H001",
+      "legacy": "S1-THF-L001",
+      "lineage": "FINNIAN",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    }
+  ],
+  "legacy_deck_expanded": [
+    {
+      "card_id": "S1-THF-H004",
+      "card_name": "Elf Thief",
+      "card_type": "Hero",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-THF-H005",
+      "card_name": "Elf Spell Blade",
+      "card_type": "Hero",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-THF-H006",
+      "card_name": "Elf Arcane Duelist",
+      "card_type": "Hero",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-THF-L002",
+      "card_name": "Hidden Archives",
+      "card_type": "Legacy",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-WAR-H004",
+      "card_name": "Dragonborn Warrior",
+      "card_type": "Hero",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Dragonborn Warrior — AUREX + Statue of the Lightbringer"
+    },
+    {
+      "card_id": "S1-WAR-H005",
+      "card_name": "Dragonborn Paladin",
+      "card_type": "Hero",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Dragonborn Warrior — AUREX + Statue of the Lightbringer"
+    },
+    {
+      "card_id": "S1-WAR-H006",
+      "card_name": "Dragonborn Crusader",
+      "card_type": "Hero",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Dragonborn Warrior — AUREX + Statue of the Lightbringer"
+    },
+    {
+      "card_id": "S1-WAR-L002",
+      "card_name": "Statue of the Lightbringer",
+      "card_type": "Legacy",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Dragonborn Warrior — AUREX + Statue of the Lightbringer"
+    },
+    {
+      "card_id": "S1-THF-H001",
+      "card_name": "Halfling Thief",
+      "card_type": "Hero",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-H002",
+      "card_name": "Halfling Rogue",
+      "card_type": "Hero",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-H003",
+      "card_name": "Halfling Renegade",
+      "card_type": "Hero",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-L001",
+      "card_name": "Hidden Stash",
+      "card_type": "Legacy",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    }
+  ],
+  "side_package_count": 3,
+  "side_deck_count": 12,
+  "side_deck_package_slots": [
+    {
+      "slot": "LEFT",
+      "progression": "S1-THF-H004",
+      "legacy": "S1-THF-L002",
+      "lineage": "LUCIEN",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "slot": "CENTER",
+      "progression": "S1-WAR-H004",
+      "legacy": "S1-WAR-L002",
+      "lineage": "AUREX",
+      "package_name": "Dragonborn Warrior — AUREX + Statue of the Lightbringer"
+    },
+    {
+      "slot": "RIGHT",
+      "progression": "S1-THF-H001",
+      "legacy": "S1-THF-L001",
+      "lineage": "FINNIAN",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    }
+  ],
+  "side_deck_expanded": [
+    {
+      "card_id": "S1-THF-H004",
+      "card_name": "Elf Thief",
+      "card_type": "Hero",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-THF-H005",
+      "card_name": "Elf Spell Blade",
+      "card_type": "Hero",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-THF-H006",
+      "card_name": "Elf Arcane Duelist",
+      "card_type": "Hero",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-THF-L002",
+      "card_name": "Hidden Archives",
+      "card_type": "Legacy",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Thief — LUCIEN + Hidden Archives"
+    },
+    {
+      "card_id": "S1-WAR-H004",
+      "card_name": "Dragonborn Warrior",
+      "card_type": "Hero",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Dragonborn Warrior — AUREX + Statue of the Lightbringer"
+    },
+    {
+      "card_id": "S1-WAR-H005",
+      "card_name": "Dragonborn Paladin",
+      "card_type": "Hero",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Dragonborn Warrior — AUREX + Statue of the Lightbringer"
+    },
+    {
+      "card_id": "S1-WAR-H006",
+      "card_name": "Dragonborn Crusader",
+      "card_type": "Hero",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Dragonborn Warrior — AUREX + Statue of the Lightbringer"
+    },
+    {
+      "card_id": "S1-WAR-L002",
+      "card_name": "Statue of the Lightbringer",
+      "card_type": "Legacy",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Dragonborn Warrior — AUREX + Statue of the Lightbringer"
+    },
+    {
+      "card_id": "S1-THF-H001",
+      "card_name": "Halfling Thief",
+      "card_type": "Hero",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-H002",
+      "card_name": "Halfling Rogue",
+      "card_type": "Hero",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-H003",
+      "card_name": "Halfling Renegade",
+      "card_type": "Hero",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    },
+    {
+      "card_id": "S1-THF-L001",
+      "card_name": "Hidden Stash",
+      "card_type": "Legacy",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Halfling Thief — FINNIAN + Hidden Stash"
+    }
+  ],
+  "is_valid": true,
+  "validation_issues": [],
+  "validation_warnings": [],
+  "main_deck": [
+    {
+      "card_id": "S1-THF-023",
+      "card_name": "Flash Slash",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-019",
+      "card_name": "Dash Slash",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-021",
+      "card_name": "Deflection",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-022",
+      "card_name": "Step In",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-024",
+      "card_name": "Sword Combo",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-004",
+      "card_name": "Mana Shield",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-020",
+      "card_name": "Aether Ball",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-023",
+      "card_name": "Aether Slash",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-022",
+      "card_name": "Aether Infusion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-024",
+      "card_name": "Aether Sweep",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-025",
+      "card_name": "Mana Void",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-004",
+      "card_name": "Cover Up",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-024",
+      "card_name": "Heroic Charge",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-020",
+      "card_name": "Shield Bash",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-021",
+      "card_name": "Sacred Stormblade",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-022",
+      "card_name": "Unbroken Stand",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-020",
+      "card_name": "Holy Slash",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-CLE-022",
+      "card_name": "Sacred Bulwark",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-CLE-023",
+      "card_name": "Holy Light",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-024",
+      "card_name": "Divine Judgement",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-025",
+      "card_name": "Blessing of Divinity",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-005",
+      "card_name": "Steal",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-004",
+      "card_name": "Smoke Screen",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-002",
+      "card_name": "Jump Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-017",
+      "card_name": "Venom Binding",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-009",
+      "card_name": "X Cross Slash",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-013",
+      "card_name": "Venom Strike",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-010",
+      "card_name": "Back Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-011",
+      "card_name": "Elusive Escape",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-012",
+      "card_name": "Poison Mist",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-THF-014",
+      "card_name": "Viper s Fang",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-015",
+      "card_name": "Venom Sovereign",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-018",
+      "card_name": "Venom Detonation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-003",
+      "card_name": "Scouting",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-004",
+      "card_name": "Relentless Leveling",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-002",
+      "card_name": "Market Bargain",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-008",
+      "card_name": "Forged Alliance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-009",
+      "card_name": "Tactical Adaptation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-010",
+      "card_name": "Déjà vu",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-001",
+      "card_name": "Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-008",
+      "card_name": "Phoenix Feather",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-005",
+      "card_name": "Mana Catalyst",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-016",
+      "card_name": "Chain Mail",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-012",
+      "card_name": "Spectral Grappling Hook",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-018",
+      "card_name": "Magic Compass",
+      "quantity": 1
+    }
+  ],
+  "main_deck_expanded": [
+    {
+      "card_id": "S1-THF-023",
+      "card_name": "Flash Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-023",
+      "card_name": "Flash Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-019",
+      "card_name": "Dash Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-019",
+      "card_name": "Dash Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-021",
+      "card_name": "Deflection",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-021",
+      "card_name": "Deflection",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-022",
+      "card_name": "Step In",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-024",
+      "card_name": "Sword Combo",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-024",
+      "card_name": "Sword Combo",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-004",
+      "card_name": "Mana Shield",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-020",
+      "card_name": "Aether Ball",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-023",
+      "card_name": "Aether Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-023",
+      "card_name": "Aether Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-022",
+      "card_name": "Aether Infusion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-024",
+      "card_name": "Aether Sweep",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-025",
+      "card_name": "Mana Void",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-004",
+      "card_name": "Cover Up",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-004",
+      "card_name": "Cover Up",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-024",
+      "card_name": "Heroic Charge",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-024",
+      "card_name": "Heroic Charge",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-020",
+      "card_name": "Shield Bash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-020",
+      "card_name": "Shield Bash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-021",
+      "card_name": "Sacred Stormblade",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-021",
+      "card_name": "Sacred Stormblade",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-022",
+      "card_name": "Unbroken Stand",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-020",
+      "card_name": "Holy Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-020",
+      "card_name": "Holy Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-022",
+      "card_name": "Sacred Bulwark",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-022",
+      "card_name": "Sacred Bulwark",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-023",
+      "card_name": "Holy Light",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-024",
+      "card_name": "Divine Judgement",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-025",
+      "card_name": "Blessing of Divinity",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-005",
+      "card_name": "Steal",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-004",
+      "card_name": "Smoke Screen",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-002",
+      "card_name": "Jump Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-017",
+      "card_name": "Venom Binding",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-009",
+      "card_name": "X Cross Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-009",
+      "card_name": "X Cross Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-013",
+      "card_name": "Venom Strike",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-013",
+      "card_name": "Venom Strike",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-010",
+      "card_name": "Back Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-011",
+      "card_name": "Elusive Escape",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-011",
+      "card_name": "Elusive Escape",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-012",
+      "card_name": "Poison Mist",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-012",
+      "card_name": "Poison Mist",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-014",
+      "card_name": "Viper s Fang",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-015",
+      "card_name": "Venom Sovereign",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-THF-018",
+      "card_name": "Venom Detonation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-003",
+      "card_name": "Scouting",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-004",
+      "card_name": "Relentless Leveling",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-002",
+      "card_name": "Market Bargain",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-008",
+      "card_name": "Forged Alliance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-009",
+      "card_name": "Tactical Adaptation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-010",
+      "card_name": "Déjà vu",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-001",
+      "card_name": "Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-008",
+      "card_name": "Phoenix Feather",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-005",
+      "card_name": "Mana Catalyst",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-016",
+      "card_name": "Chain Mail",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-012",
+      "card_name": "Spectral Grappling Hook",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-018",
+      "card_name": "Magic Compass",
+      "quantity": 1
+    }
+  ],
+  "default_formation": {
+    "LEFT": "S1-THF-H004",
+    "CENTER": "S1-WAR-H004",
+    "RIGHT": "S1-THF-H001"
+  },
+  "source_database_version": "Source Stack v1.8.0 / Runtime Data v0.15.0",
+  "starter_pack_version": "Starter60 v1.5",
+  "notes": [
+    "Hybrid coverage deck. Center Warrior lock: PASS.",
+    "Starter60 v0.9: team Events Coordination Attack / Defensive Formation require 3 different base classes; affected starters use Forged Alliance instead. Renegade module includes Elusive Escape x2 and Poison Mist x2.",
+    "Starter60 v1.3: every Skill has at least one legal user in the full three-Hero progression packages, including dual-class base access.",
+    "Starter60 v1.5: normal cards max 3 copies; Ultimate max 1. Shard Deck = 12; Class Shards derive from unique Ultimate Classes; Starting Mana 3 / Regen 1."
+  ],
+  "mana_deck": {
+    "size": 12,
+    "class_shards": [
+      "Mage",
+      "Cleric",
+      "Thief"
+    ],
+    "class_shard_count": 3,
+    "generic_mana_shard_count": 9,
+    "starting_mana_cards": 3,
+    "starting_mana_regen": 1,
+    "maximum_mana_regen": 6,
+    "derived_from_ultimate_card_ids": [
+      "S1-MAG-025",
+      "S1-CLE-025",
+      "S1-THF-018"
+    ]
+  },
+  "normal_copy_limit": 3,
+  "ultimate_copy_limit": 1
+}

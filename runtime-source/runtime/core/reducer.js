@@ -16,6 +16,9 @@ const manaPolicy = require('./mana-deck-policy');
 const drawPolicy = require('./draw-policy');
 const legacyDefeatPolicy = require('./legacy-defeat-policy');
 const statusEngine = require('../engines/status-engine');
+const attackSemantics = require('./attack-damage-classification-policy');
+const tripleShotPolicy = require('./triple-shot-policy');
+const blindChoice = require('../digital/opponent-blind-selection.js');
 
 const MINIMAL_REDUCER_INTENTS = Object.freeze([
   'START_GAME',
@@ -25,6 +28,7 @@ const MINIMAL_REDUCER_INTENTS = Object.freeze([
   'SELECT_STATUS_TO_REMOVE',
   'SELECT_SCOUTING_EXP_CARD',
   'SELECT_OPPONENT_HAND_CARD',
+  'SELECT_OPPONENT_SHARD',
   'SELECT_RESPONSE_COST_CARD',
   'CONFIRM_ACTION',
   'DECLARE_RESPONSE',
@@ -51,6 +55,7 @@ const MINIMAL_REDUCER_INTENTS = Object.freeze([
 
 const PHASE_ORDER = Object.freeze([PHASES.DRAW, PHASES.DEPLOY, PHASES.BATTLE, PHASES.REFORM, PHASES.END]);
 const SLOT_ORDER = Object.freeze(['Left', 'Center', 'Right']);
+const WARP_SCROLL_ID = 'S1-ITM-019';
 
 function deepClone(value) { return JSON.parse(JSON.stringify(value)); }
 
@@ -429,10 +434,11 @@ const V119_TARGETLESS_EXECUTABLE_CARDS = new Set([
 
 function cardTargetRequired(card) {
   if (!card) return false;
+  if (card.card_id === WARP_SCROLL_ID) return false; // resolver-owned two-Hero choice, not a top-level target
   if (selectedTargetIsItemUserAndHost(card)) return true;
   if (['S1-ITM-003','S1-ITM-010','S1-ITM-011','S1-ITM-013','S1-ITM-014'].includes(card.card_id)) return true;
   if (V119_TARGETLESS_EXECUTABLE_CARDS.has(card.card_id)) return false;
-  if (card.card_id === 'S1-THF-027' || card.card_id === 'S1-THF-028') return false;
+  if (card.card_id === 'S1-THF-005' || card.card_id === 'S1-THF-027' || card.card_id === 'S1-THF-028') return false;
   if (card.card_id === 'S1-ARC-017') return true;
   const subtype = String(card.card_subtype || card.classification || card.action_category || '').toLowerCase();
   if (/area attack|area damage/.test(subtype)) return false;
@@ -546,7 +552,7 @@ function heroLegalClassNames(state, heroCardId) {
 
 function cardActionProfile(card) {
   const attack = card && card.attack || canonicalExecution(card).attack || {};
-  const structured = [attack.attack_type, card && card.action_category, card && card.card_subtype, card && card.classification, card && card.runtime_tags]
+  const structured = [card && card.attack_label, card && card.attackLayer, attack.attack_label, attack.attack_type, card && card.action_category, card && card.card_subtype, card && card.classification, card && card.runtime_tags]
     .map(value => String(value || '')).join(' ');
   const raw = `${structured} ${legacyRuleText(card)}`;
   if (/Casting Attack|Casting Spell|Casting time/i.test(raw)) return 'Casting Attack';
@@ -583,16 +589,23 @@ function attackDamageBuffForSourceHero(state, pending, card, context) {
   const heroCard = sourceHeroCardForPending(state, pending);
   if (!heroCard) return { amount: 0, reasons: [] };
   const cls = String(heroCard.display_class || heroCard.class || (heroCard.identity && (heroCard.identity.display_class || heroCard.identity.class)) || '').toLowerCase();
-  const damageType = String(context && context.damage_type || damageTypeForCard(card) || '').toLowerCase();
   const reasons = [];
   let amount = 0;
-  const isPhysicalAttackDamage = damageType === 'physical';
-  const isMagicalAttackDamage = damageType === 'magical';
-  if (cls === 'grand arbalest' && isPhysicalAttackDamage) { amount += 10; reasons.push('Rapid Chamber: +10 Physical Attack damage'); }
-  if (cls === 'grand ranger' && isPhysicalAttackDamage) { amount += 10; reasons.push('Dead Eye: +10 Physical Attack damage'); }
-  if (cls === 'elemental lord' && isMagicalAttackDamage) { amount += 10; reasons.push('Elemental Sovereignty: +10 Magical Attack damage'); }
-  if (cls === 'renegade' && isPhysicalAttackDamage) { amount += 10; reasons.push('Nightshade Venom: +10 Physical Attack damage'); }
-  if (cls === 'conqueror' && isPhysicalAttackDamage) { amount += 10; reasons.push('Arena Dominator: +10 Physical Attack damage'); }
+  // v1.9.0 systemic rule: modifiers that explicitly name Physical Attack or
+  // Magical Attack match the effective ATTACK LABEL only. Damage type is a
+  // separate dimension and can never promote Area/Range/Casting into those labels.
+  const isPhysicalAttack = attackSemantics.matchesAttackLabel('Physical Attack', card, context || {});
+  const isMagicalAttack = attackSemantics.matchesAttackLabel('Magical Attack', card, context || {});
+  const preHeroProfile = String(context && context.attack_label_before_hero_profile_conversion || '');
+  const deadEyePhysicalAttack = preHeroProfile === 'Physical Attack';
+  if (cls === 'grand arbalest' && isPhysicalAttack) { amount += 10; reasons.push('Rapid Chamber: +10 Physical Attack damage'); }
+  // Dead Eye itself converts a qualifying Physical Attack card to Range Attack.
+  // Its +10 therefore gates on the explicit Attack Label immediately before
+  // Dead Eye's own profile conversion, never on Physical damage type.
+  if (cls === 'grand ranger' && deadEyePhysicalAttack) { amount += 10; reasons.push('Dead Eye: +10 Physical Attack damage'); }
+  if (cls === 'elemental lord' && isMagicalAttack) { amount += 10; reasons.push('Elemental Sovereignty: +10 Magical Attack damage'); }
+  if (cls === 'renegade' && isPhysicalAttack) { amount += 10; reasons.push('Nightshade Venom: +10 Physical Attack damage'); }
+  if (cls === 'conqueror' && isPhysicalAttack) { amount += 10; reasons.push('Arena Dominator: +10 Physical Attack damage'); }
   return { amount, reasons };
 }
 
@@ -715,7 +728,7 @@ function activeRestrictionAttachments(state) {
 function isAreaAttackCard(card) {
   const tags = cardTags(card);
   const attack = card && card.attack || canonicalExecution(card).attack || {};
-  const descriptor = `${card && card.classification || ''} ${card && card.action_category || ''} ${attack.attack_type || ''}`;
+  const descriptor = `${card && card.attack_label || ''} ${card && card.attackLayer || ''} ${attack.attack_label || ''} ${card && card.classification || ''} ${card && card.action_category || ''} ${attack.attack_type || ''}`;
   return tags.has('AREA') || tags.has('AREA_ATTACK')
     || /\bArea Attack\b|\bArea Magical\b|\bArea Physical\b/i.test(descriptor)
     || /\bArea Attack\b|\bArea Magical\b|\bArea Physical\b/i.test(legacyRuleText(card));
@@ -793,12 +806,25 @@ function activeTargetRestrictionErrors(state, actingPlayerId, card, targetPlayer
   return errors;
 }
 
+
+function structuredTargetOwnership(card) {
+  const execution = canonicalExecution(card) || {};
+  const validator = execution.resolver && execution.resolver.target_validator || card && card.resolver && card.resolver.target_validator || {};
+  const descriptor = `${validator.valid_target || ''} ${(execution.effects || []).map(effect => effect && effect.target_scope || '').join(' ')}`.toLowerCase();
+  if (/opponent|enemy/.test(descriptor)) return 'opponent';
+  if (/allied|own hero|your hero|self/.test(descriptor)) return 'own';
+  return null;
+}
+
 function targetMatchesCard(state, card, targetPlayerId, targetSlot, actingPlayerId) {
   if (!cardTargetRequired(card)) return { ok: true, errors: [] };
   const ownerId = targetPlayerId;
   const player = getPlayer(state, ownerId);
   const slot = normalizeSlotKey(targetSlot);
   const slotState = player && player.board && player.board[slot];
+  const ownership = structuredTargetOwnership(card);
+  if (ownership === 'opponent' && actingPlayerId && targetPlayerId === actingPlayerId) return { ok: false, errors: [`${card.name || card.card_id || 'This card'} must target an opponent Hero.`] };
+  if (ownership === 'own' && actingPlayerId && targetPlayerId !== actingPlayerId) return { ok: false, errors: [`${card.name || card.card_id || 'This card'} must target your own Hero.`] };
   if (isReviveCard(card)) {
     if (!slotState || !(slotState.slot_mode === 'LEGACY' || slotState.hero && slotState.hero.defeated)) {
       return { ok: false, errors: ['Revive target must be a defeated Hero / Legacy slot.'] };
@@ -877,6 +903,17 @@ function canStartPlayCard(state, playerId, cardId) {
         return slotState && slotState.slot_mode === 'HERO' && slotState.hero && !slotState.hero.defeated && heroHasStatus(slotState, 'Poison');
       });
       if (!poisoned) errors.push('Venom Detonation requires at least one opponent Hero with Poison.');
+    }
+    if (card.card_id === tripleShotPolicy.TRIPLE_SHOT_ID && player) {
+      const tripleShotCheck = tripleShotPolicy.canPlayTripleShot(player.hand || []);
+      if (!tripleShotCheck.can) errors.push(tripleShotCheck.reason);
+    }
+    if (card.card_id === WARP_SCROLL_ID && player) {
+      const activeAlliedHeroes = SLOT_ORDER.filter(slot => {
+        const slotState = player.board && player.board[slot];
+        return slotState && slotState.slot_mode === 'HERO' && slotState.hero && !slotState.hero.defeated;
+      });
+      if (activeAlliedHeroes.length < 2) errors.push('Warp Scroll requires at least 2 active allied Heroes.');
     }
     errors.push(...activeAreaAttackRestrictionErrors(state, playerId, card));
   }
@@ -1307,6 +1344,40 @@ function removeOneFromHand(player, cardId) {
   return player.hand.slice(0, index).concat(player.hand.slice(index + 1));
 }
 
+let testBlindSelectionSeedProvider = null;
+
+function setBlindSelectionSeedProviderForTests(provider) {
+  testBlindSelectionSeedProvider = typeof provider === 'function' ? provider : null;
+}
+
+function blindSelectionSeed(state, zone) {
+  // Production seed authority is internal to the runtime/server layer. Player
+  // intents are intentionally not consulted, so a selecting client cannot
+  // choose or bias the hidden permutation. Deterministic seeds are available
+  // only through the internal test hook above.
+  if (testBlindSelectionSeedProvider) return String(testBlindSelectionSeedProvider(state, zone));
+  return `${state.game_id || 'game'}:${(state.event_log || []).length}:${zone}:${Date.now()}:${Math.random()}`;
+}
+
+function createBlindIndexMapping(length, seed) {
+  return blindChoice.shuffledIndexes(Math.max(0, Number(length || 0)), seed);
+}
+
+function activeTripleShotAttachment(state, playerId, sourceSlot, sourceHeroCardId) {
+  const player = getPlayer(state, playerId);
+  const normalized = normalizeSlotKey(sourceSlot);
+  return player && (player.attachments || []).find(attachment => tripleShotPolicy.attachmentIsActive(attachment)
+    && (!normalized || normalizeSlotKey(attachment.host_slot || attachment.source_slot) === normalized)
+    && (!sourceHeroCardId || !attachment.source_hero_card_id || attachment.source_hero_card_id === sourceHeroCardId)) || null;
+}
+
+function effectiveAttackCardForPending(state, pending, card) {
+  if (!card || !pending || !tripleShotPolicy.qualifies(card)) return card;
+  const hero = sourceHeroCardForPending(state, pending);
+  const attachment = activeTripleShotAttachment(state, pending.player_id, pending.source_slot, hero && hero.card_id);
+  return attachment ? tripleShotPolicy.applyAttachmentToAttack(card, attachment, { source_slot: normalizeSlotKey(pending.source_slot), source_hero_card_id: hero && hero.card_id }) : card;
+}
+
 function startPendingAction(state, intent) {
   const cardId = intent.card_id || intent.payload && intent.payload.card_id;
   if (!cardId) return { state, events: [], errors: ['PLAY_CARD requires card_id.'] };
@@ -1315,6 +1386,13 @@ function startPendingAction(state, intent) {
   const card = legal.card;
   const targetOwnerId = cardTargetRequired(card) ? determineTargetOwnerId(state, card, intent.player_id) : null;
   const next = updatePlayer(state, intent.player_id, player => Object.assign({}, player, { hand: removeOneFromHand(player, cardId) }));
+  const opponentId = getOpponentId(state, intent.player_id);
+  const opponent = getPlayer(state, opponentId);
+  const opponentHand = opponent && Array.isArray(opponent.hand) ? opponent.hand : [];
+  const opponentShardPool = opponent && Array.isArray(opponent.mana_pool_cards) ? opponent.mana_pool_cards : [];
+  const requiresOpponentHandChoice = isOpponentHandBackSelectionCard(card) && opponentHand.length > 0;
+  const stealAmount = Math.max(0, Number(parseManaStealAmountForCard(card) || 0));
+  const requiresOpponentShardChoice = stealAmount > 0 && opponentShardPool.length > 0;
   next.pending = {
     type: 'PLAY_CARD',
     player_id: intent.player_id,
@@ -1324,8 +1402,17 @@ function startPendingAction(state, intent) {
     target_owner_id: targetOwnerId,
     source_slot: null,
     target_slot: null,
-    requires_opponent_hand_choice: isOpponentHandBackSelectionCard(card),
+    requires_opponent_hand_choice: requiresOpponentHandChoice,
     selected_opponent_hand_index: null,
+    selected_opponent_hand_opaque_index: null,
+    opponent_hand_blind_mapping: requiresOpponentHandChoice ? createBlindIndexMapping(opponentHand.length, blindSelectionSeed(state, 'opponent-hand')) : null,
+    requires_opponent_mana_choice: requiresOpponentShardChoice,
+    opponent_mana_required_count: requiresOpponentShardChoice ? Math.min(stealAmount, opponentShardPool.length) : 0,
+    selected_opponent_mana_indices: [],
+    selected_opponent_mana_opaque_indices: [],
+    opponent_mana_blind_mapping: requiresOpponentShardChoice ? createBlindIndexMapping(opponentShardPool.length, blindSelectionSeed(state, 'opponent-shard-pool')) : null,
+    requires_warp_scroll_choice: cardId === WARP_SCROLL_ID,
+    selected_warp_scroll_slots: cardId === WARP_SCROLL_ID ? [] : null,
     confirmed: false
   };
   const events = [
@@ -1345,7 +1432,16 @@ function selectSource(state, intent) {
   const card = getCard(state, state.pending.card_id);
   const sourceCheck = sourceMatchesCard(state, card, slotState);
   if (!sourceCheck.ok) return { state, events: [], errors: sourceCheck.errors };
-  const next = Object.assign({}, state, { pending: Object.assign({}, state.pending, { source_slot: slot }) });
+  const selectedPending = Object.assign({}, state.pending, { source_slot: slot });
+  const effectiveCard = effectiveAttackCardForPending(state, selectedPending, card);
+  if (effectiveCard && effectiveCard.triple_shot_area === true) {
+    selectedPending.target_required = false;
+    selectedPending.target_slot = null;
+    selectedPending.target_player_id = getOpponentId(state, intent.player_id);
+    selectedPending.target_owner_id = selectedPending.target_player_id;
+    selectedPending.triple_shot_area = true;
+  }
+  const next = Object.assign({}, state, { pending: selectedPending });
   const events = [
     createRuntimeEvent(EVENT_TYPES.SOURCE_SELECTED, next, { player_id: intent.player_id, card_id: state.pending.card_id, source_slot: slot }),
     createRuntimeEvent(EVENT_TYPES.CLASS_COMPATIBILITY_CHECKED, next, { player_id: intent.player_id, card_id: state.pending.card_id, source_slot: slot, payload: { result: 'OK' } })
@@ -1356,6 +1452,21 @@ function selectSource(state, intent) {
 function selectTargetSlot(state, intent) {
   if (!state.pending) return { state, events: [], errors: ['No pending action to receive target slot.'] };
   if (state.pending.player_id !== intent.player_id) return { state, events: [], errors: ['Only pending action owner may select target.'] };
+  if (state.pending.card_id === WARP_SCROLL_ID && state.pending.requires_warp_scroll_choice) {
+    const slot = normalizeSlotKey(intent.target_slot || intent.payload && intent.payload.target_slot);
+    if (!SLOT_ORDER.includes(slot)) return { state, events: [], errors: [`Invalid Warp Scroll Hero slot ${slot}.`] };
+    const requestedOwner = intent.target_player_id || intent.payload && intent.payload.target_player_id || intent.player_id;
+    if (requestedOwner !== intent.player_id) return { state, events: [], errors: ['Warp Scroll may only choose your own Heroes.'] };
+    const slotState = selectBoardSlot(state, intent.player_id, slot);
+    if (!slotState || slotState.slot_mode !== 'HERO' || !slotState.hero || slotState.hero.defeated) return { state, events: [], errors: ['Warp Scroll choices must be active allied Heroes; Legacy and empty slots are not legal.'] };
+    const selected = Array.isArray(state.pending.selected_warp_scroll_slots) ? state.pending.selected_warp_scroll_slots.map(normalizeSlotKey) : [];
+    if (selected.includes(slot)) return { state, events: [], errors: ['Warp Scroll must choose 2 distinct allied Heroes.'] };
+    if (selected.length >= 2) return { state, events: [], errors: ['Warp Scroll already has 2 selected allied Heroes.'] };
+    const selectedSlots = selected.concat(slot);
+    const next = Object.assign({}, state, { pending: Object.assign({}, state.pending, { selected_warp_scroll_slots: selectedSlots, target_slots: selectedSlots.slice() }) });
+    const event = createRuntimeEvent(EVENT_TYPES.TARGET_SLOT_SELECTED, next, { player_id: intent.player_id, card_id: state.pending.card_id, target_slot: slot, target_player_id: intent.player_id, payload: { resolver_choice: 'WARP_SCROLL_ALLIED_HERO', selected_target_slots: selectedSlots, required_target_count: 2, hero_only: true, allow_non_adjacent: true } });
+    return { state: appendEvents(next, event), events: [event], errors: [] };
+  }
   if (!state.pending.target_required) return { state, events: [], errors: ['Pending card does not require a target.'] };
   const slot = normalizeSlotKey(intent.target_slot || intent.payload && intent.payload.target_slot);
   if (!SLOT_ORDER.includes(slot)) return { state, events: [], errors: [`Invalid target slot ${slot}.`] };
@@ -1385,13 +1496,16 @@ function selectTargetSlot(state, intent) {
 function pendingRequirementsSatisfied(pending) {
   const dualArrowReady = pending && pending.card_id === 'S1-ARC-017' ? normalizeMultiTargetSlots(pending.target_slots).length === 2 : true;
   const targetReady = !pending.target_required || (pending.card_id === 'S1-ARC-017' ? dualArrowReady : !!pending.target_slot);
+  const warpScrollReady = !pending.requires_warp_scroll_choice || (Array.isArray(pending.selected_warp_scroll_slots) && new Set(pending.selected_warp_scroll_slots.map(normalizeSlotKey)).size === 2);
   const statusReady = !pending.requires_status_choice || ((pending.selected_status_index !== null && pending.selected_status_index !== undefined) || !!pending.selected_status_name);
   const expReady = !pending.requires_exp_choice || (Number.isInteger(pending.selected_exp_index) && !!pending.selected_exp_card_id);
   return (!pending.source_required || !!pending.source_slot)
     && targetReady
+    && warpScrollReady
     && statusReady
     && expReady
-    && (!pending.requires_opponent_hand_choice || Number.isInteger(pending.selected_opponent_hand_index));
+    && (!pending.requires_opponent_hand_choice || Number.isInteger(pending.selected_opponent_hand_index))
+    && (!pending.requires_opponent_mana_choice || (Array.isArray(pending.selected_opponent_mana_indices) && pending.selected_opponent_mana_indices.length === Number(pending.opponent_mana_required_count || 0)));
 }
 
 function expCardId(expCard) {
@@ -1468,15 +1582,40 @@ function selectOpponentHandCard(state, intent) {
   if (state.pending.player_id !== intent.player_id) return { state, events: [], errors: ['Only pending action owner may choose opponent hand card.'] };
   const card = getCard(state, state.pending.card_id);
   const policy = handManipulationPolicyForCard(card);
-  if (!policy) return { state, events: [], errors: ['Pending card does not use opponent hand back-of-card selection.'] };
+  if (!policy) return { state, events: [], errors: ['Pending card does not use opponent hand blind selection.'] };
   if (state.pending.source_required && !state.pending.source_slot) return { state, events: [], errors: ['Select source before choosing opponent hand card.'] };
   const opponentId = getOpponentId(state, intent.player_id);
   const opponent = getPlayer(state, opponentId);
   const hand = opponent && Array.isArray(opponent.hand) ? opponent.hand : [];
-  const index = Number(intent.hand_index !== undefined ? intent.hand_index : intent.payload && intent.payload.hand_index);
-  if (!Number.isInteger(index) || index < 0 || index >= hand.length) return { state, events: [], errors: ['Invalid opponent hand back-of-card index.'] };
-  const next = Object.assign({}, state, { pending: Object.assign({}, state.pending, { selected_opponent_hand_index: index, target_player_id: opponentId }) });
-  const event = createRuntimeEvent(EVENT_TYPES.TARGET_SELECTED, next, { player_id: intent.player_id, card_id: state.pending.card_id, target_player_id: opponentId, payload: { target_type: 'opponent_hand_back', selected_hand_index: index, card_back: true, identity_masked: true, shuffle_after_resolution: true } });
+  const opaqueIndex = Number(intent.hand_index !== undefined ? intent.hand_index : intent.payload && intent.payload.hand_index);
+  const mapping = Array.isArray(state.pending.opponent_hand_blind_mapping) ? state.pending.opponent_hand_blind_mapping : [];
+  if (!Number.isInteger(opaqueIndex) || opaqueIndex < 0 || opaqueIndex >= mapping.length) return { state, events: [], errors: ['Invalid opaque opponent-hand choice.'] };
+  const realIndex = Number(mapping[opaqueIndex]);
+  if (!Number.isInteger(realIndex) || realIndex < 0 || realIndex >= hand.length) return { state, events: [], errors: ['Blind opponent-hand mapping is stale.'] };
+  const next = Object.assign({}, state, { pending: Object.assign({}, state.pending, { selected_opponent_hand_index: realIndex, selected_opponent_hand_opaque_index: opaqueIndex, target_player_id: opponentId }) });
+  const event = createRuntimeEvent(EVENT_TYPES.TARGET_SELECTED, next, { player_id: intent.player_id, card_id: state.pending.card_id, target_player_id: opponentId, payload: { target_type: 'opponent_hidden_hand', opaque_choice_index: opaqueIndex, card_back: true, identity_masked_before_commit: true, mapping_randomized_before_selection: true, canonical_hand_order_mutated: false } });
+  return { state: appendEvents(next, event), events: [event], errors: [] };
+}
+
+function selectOpponentShard(state, intent) {
+  if (!state.pending || !state.pending.requires_opponent_mana_choice) return { state, events: [], errors: ['No pending opponent Shard Pool blind selection.'] };
+  if (state.pending.player_id !== intent.player_id) return { state, events: [], errors: ['Only pending action owner may choose opponent Shards.'] };
+  if (state.pending.source_required && !state.pending.source_slot) return { state, events: [], errors: ['Select source before choosing opponent Shard.'] };
+  const opponentId = getOpponentId(state, intent.player_id);
+  const opponent = getPlayer(state, opponentId);
+  const pool = opponent && Array.isArray(opponent.mana_pool_cards) ? opponent.mana_pool_cards : [];
+  const mapping = Array.isArray(state.pending.opponent_mana_blind_mapping) ? state.pending.opponent_mana_blind_mapping : [];
+  const opaqueIndex = Number(intent.shard_index !== undefined ? intent.shard_index : (intent.choice_index !== undefined ? intent.choice_index : intent.payload && (intent.payload.shard_index ?? intent.payload.choice_index)));
+  if (!Number.isInteger(opaqueIndex) || opaqueIndex < 0 || opaqueIndex >= mapping.length) return { state, events: [], errors: ['Invalid opaque opponent Shard choice.'] };
+  const realIndex = Number(mapping[opaqueIndex]);
+  if (!Number.isInteger(realIndex) || realIndex < 0 || realIndex >= pool.length) return { state, events: [], errors: ['Blind opponent Shard mapping is stale.'] };
+  const next = deepClone(state);
+  const opaque = Array.isArray(next.pending.selected_opponent_mana_opaque_indices) ? next.pending.selected_opponent_mana_opaque_indices : [];
+  const real = Array.isArray(next.pending.selected_opponent_mana_indices) ? next.pending.selected_opponent_mana_indices : [];
+  if (!opaque.includes(opaqueIndex) && opaque.length < Number(next.pending.opponent_mana_required_count || 0)) { opaque.push(opaqueIndex); real.push(realIndex); }
+  next.pending.selected_opponent_mana_opaque_indices = opaque;
+  next.pending.selected_opponent_mana_indices = real;
+  const event = createRuntimeEvent(EVENT_TYPES.TARGET_SELECTED, next, { player_id: intent.player_id, card_id: state.pending.card_id, target_player_id: opponentId, payload: { target_type: 'opponent_hidden_shard_pool', opaque_choice_index: opaqueIndex, selected_count: opaque.length, required_count: Number(next.pending.opponent_mana_required_count || 0), card_back: true, identity_masked_before_commit: true, mapping_randomized_before_selection: true, canonical_shard_pool_order_mutated: false, shard_deck_mutated: false } });
   return { state: appendEvents(next, event), events: [event], errors: [] };
 }
 
@@ -1609,7 +1748,7 @@ function applyCoverUpBoardSwap(next, response, events) {
   if (!player || !player.board) return false;
   const firstSlot = normalizeSlotKey(response.cover_up_swap.first_slot);
   const secondSlot = normalizeSlotKey(response.cover_up_swap.second_slot);
-  const moved = swapBoardSlotsWithoutExhaust(player.board, firstSlot, secondSlot, { hero_only: true });
+  const moved = swapBoardSlotsWithoutExhaust(player.board, firstSlot, secondSlot, { hero_only: true, movement_source: 'skill_effect' });
   if (!moved.ok) {
     events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
       player_id: response.player_id,
@@ -1643,7 +1782,7 @@ function applyStepInDodgeThenSwap(next, response, responseCard, events) {
   const sourceSlot = normalizeSlotKey(response.source_slot || inferResponseSourceSlot(next, response));
   const frontSlot = normalizeSlotKey(attack.source_slot);
   if (!SLOT_ORDER.includes(sourceSlot) || !SLOT_ORDER.includes(frontSlot) || sourceSlot === frontSlot) return false;
-  const moved = swapBoardSlotsWithoutExhaust(defender.board, sourceSlot, frontSlot, { hero_only: true });
+  const moved = swapBoardSlotsWithoutExhaust(defender.board, sourceSlot, frontSlot, { hero_only: true, movement_source: 'skill_effect' });
   if (!moved.ok) {
     events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
       player_id: response.player_id,
@@ -1869,7 +2008,7 @@ function isCastingAttackResolution(card) {
 function isAreaDamageCard(card) {
   const tags = cardTags(card);
   const attack = card && card.attack || canonicalExecution(card).attack || {};
-  const descriptor = `${card && card.classification || ''} ${card && card.action_category || ''} ${attack.attack_type || ''}`;
+  const descriptor = `${card && card.attack_label || ''} ${card && card.attackLayer || ''} ${attack.attack_label || ''} ${card && card.classification || ''} ${card && card.action_category || ''} ${attack.attack_type || ''}`;
   return tags.has('AREA') || /\bArea\b/i.test(descriptor) || /\bArea\b/i.test(legacyRuleText(card));
 }
 
@@ -2007,7 +2146,7 @@ function addStatusToHero(next, events, params) {
 }
 
 function consumePoisonVialModifierIfNeeded(next, attackResolution, damagedTargets, events) {
-  if (!damagedTargets.length || String(attackResolution.damage_type).toLowerCase() !== 'physical') return;
+  if (!damagedTargets.length || String(attackResolution.action_profile || '') !== 'Physical Attack') return;
   const attacker = next.players && next.players[attackResolution.attacking_player_id];
   if (!attacker || !Array.isArray(attacker.attachments)) return;
   const modifierIndex = attacker.attachments.findIndex(modifier => modifier && modifier.modifier_type === 'POISON_VIAL' && !modifier.consumed && (!modifier.host_slot || modifier.host_slot === attackResolution.source_slot));
@@ -2454,14 +2593,14 @@ function attachmentDamageModifierApplies(attachment, attackResolution) {
   const cardId = attachment && attachment.card_id;
   if (!['S1-CLE-006', 'S1-CLE-007', 'S1-ITM-010', 'S1-ITM-014', 'S1-EVT-011'].includes(cardId)) return false;
   if (!attackResolution) return false;
-  const damageType = String(attackResolution.damage_type || '').toLowerCase();
-  if (!['physical', 'magical'].includes(damageType)) return false;
+  const attackLabel = String(attackResolution.action_profile || attackResolution.attack_label || '');
+  if (!['Physical Attack', 'Magical Attack'].includes(attackLabel)) return false;
   if (cardId !== 'S1-EVT-011' && normalizeSlotKey(attachment.target_slot || attachment.host_slot || attachment.source_slot) !== normalizeSlotKey(attackResolution.source_slot)) return false;
-  if (cardId === 'S1-CLE-006') return damageType === 'physical';
-  if (cardId === 'S1-CLE-007') return damageType === 'magical';
-  if (cardId === 'S1-ITM-010') return damageType === 'magical';
-  if (cardId === 'S1-ITM-014') return damageType === 'physical' || damageType === 'magical';
-  if (cardId === 'S1-EVT-011') return damageType === 'physical' || damageType === 'magical';
+  if (cardId === 'S1-CLE-006') return attackLabel === 'Physical Attack';
+  if (cardId === 'S1-CLE-007') return attackLabel === 'Magical Attack';
+  if (cardId === 'S1-ITM-010') return attackLabel === 'Magical Attack';
+  if (cardId === 'S1-ITM-014') return attackLabel === 'Physical Attack' || attackLabel === 'Magical Attack';
+  if (cardId === 'S1-EVT-011') return attackLabel === 'Physical Attack' || attackLabel === 'Magical Attack';
   return false;
 }
 
@@ -3046,6 +3185,8 @@ function swapBoardSlotsWithoutExhaust(board, firstSlotRaw, secondSlotRaw, option
   const first = board && board[firstSlot];
   const second = board && board[secondSlot];
   if (!first || !second) return { ok: false, errors: ['Both card-effect reposition slots must exist.'] };
+  const freezeCheck = statusEngine.movementBlockedByFreeze(board, firstSlot, secondSlot, options.movement_source || 'other');
+  if (freezeCheck.blocked) return { ok: false, code: freezeCheck.code, errors: freezeCheck.errors, frozen_slots: freezeCheck.frozen_slots };
   const firstHero = first.slot_mode === 'HERO' && first.hero && !first.hero.defeated;
   const secondHero = second.slot_mode === 'HERO' && second.hero && !second.hero.defeated;
   if (heroOnly && (!firstHero || !secondHero)) return { ok: false, errors: ['Card text says Hero; both card-effect swap slots must be active HERO slots.'] };
@@ -3112,7 +3253,7 @@ function applyPostHitRepositionEffect(next, attackResolution, damagedTargets, ev
     const sourceSlot = normalizeSlotKey(attackResolution.source_slot);
     const swapWithSlot = normalizeSlotKey(options.swap_with_slot || options.allied_slot || attackResolution.target_slot);
     const allowLegacyPartner = true;
-    const moved = swapBoardSlotsWithoutExhaust(attacker.board, sourceSlot, swapWithSlot, { hero_only: !allowLegacyPartner });
+    const moved = swapBoardSlotsWithoutExhaust(attacker.board, sourceSlot, swapWithSlot, { hero_only: !allowLegacyPartner, movement_source: 'skill_effect' });
     if (!moved.ok) {
       events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
         player_id: attackResolution.attacking_player_id,
@@ -3157,7 +3298,7 @@ function applyPostHitRepositionEffect(next, attackResolution, damagedTargets, ev
       return false;
     }
     const defender = next.players && next.players[attackResolution.defending_player_id];
-    const moved = defender && swapBoardSlotsWithoutExhaust(defender.board, targetSlot, opponentSlot, { hero_only: true });
+    const moved = defender && swapBoardSlotsWithoutExhaust(defender.board, targetSlot, opponentSlot, { hero_only: true, movement_source: 'skill_effect' });
     if (!moved || !moved.ok) return false;
     if (!moved.no_op) { defender.board = moved.board; remapHeroHostedAttachmentsForSlotSwap(defender, moved.first_slot, moved.second_slot, events, next, attackResolution.defending_player_id); }
     events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
@@ -3183,7 +3324,7 @@ function applyPostHitRepositionEffect(next, attackResolution, damagedTargets, ev
     if (!requested || !SLOT_ORDER.includes(swapWithSlot)) return false;
     const attacker = next.players && next.players[attackResolution.attacking_player_id];
     const sourceSlot = normalizeSlotKey(attackResolution.source_slot);
-    const moved = attacker && swapBoardSlotsWithoutExhaust(attacker.board, sourceSlot, swapWithSlot, { hero_only: true });
+    const moved = attacker && swapBoardSlotsWithoutExhaust(attacker.board, sourceSlot, swapWithSlot, { hero_only: true, movement_source: 'skill_effect' });
     if (!moved || !moved.ok) return false;
     if (!moved.no_op) { attacker.board = moved.board; remapHeroHostedAttachmentsForSlotSwap(attacker, moved.first_slot, moved.second_slot, events, next, attackResolution.attacking_player_id); }
     events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
@@ -3294,7 +3435,11 @@ function legalPostAttackRepositionChoices(next, attackResolution, damagedTargets
       }
     }
   }
-  return choices.map((choice, index) => Object.assign({}, choice, { choice_index: index }));
+  return choices.filter(choice => {
+    const boardPlayer = next.players && next.players[choice.target_player_id];
+    const freezeCheck = boardPlayer && statusEngine.movementBlockedByFreeze(boardPlayer.board, normalizeSlotKey(choice.first_slot), normalizeSlotKey(choice.second_slot), 'skill_effect');
+    return !(freezeCheck && freezeCheck.blocked);
+  }).map((choice, index) => Object.assign({}, choice, { choice_index: index }));
 }
 
 function secondaryRepositionTriggerSatisfied(attackResolution, damagedTargets) {
@@ -3392,7 +3537,7 @@ function selectPostAttackRepositionTarget(state, intent) {
   }
   if (!choice) return { state, events: [], errors: ['Invalid post-attack reposition choice.'] };
   const boardPlayer = next.players && next.players[choice.target_player_id];
-  const moved = boardPlayer && swapBoardSlotsWithoutExhaust(boardPlayer.board, choice.first_slot, choice.second_slot, { hero_only: false });
+  const moved = boardPlayer && swapBoardSlotsWithoutExhaust(boardPlayer.board, choice.first_slot, choice.second_slot, { hero_only: false, movement_source: 'skill_effect' });
   if (!moved || !moved.ok) return { state, events: [], errors: moved && moved.errors || ['Post-attack reposition swap failed.'] };
   const events = [];
   boardPlayer.board = moved.board;
@@ -3424,17 +3569,19 @@ function skipPostAttackReposition(state, intent) {
 }
 
 function buildPendingAttackResolution(state, pending, card) {
+  const effectiveCard = effectiveAttackCardForPending(state, pending, card);
   let amount = directDamageAmountForCard(state, pending, card);
   if (!(isAttackSkillCard(card) || isCastingDamageCard(card)) || !cardHasDirectDamage(card) || !amount) return null;
   const targetPlayerId = pending.target_player_id || pending.target_owner_id || getOpponentId(state, pending.player_id);
-  const targets = damageTargetSlots(state, pending, card);
+  const targets = damageTargetSlots(state, pending, effectiveCard);
   const sourceHeroCard = sourceHeroCardForPending(state, pending);
-  const originalProfile = cardActionProfile(card);
+  const originalProfile = cardActionProfile(effectiveCard);
   const infusion = activeAetherInfusionForSource(state, pending.player_id, pending.source_slot, card);
   const damageType = infusion ? 'Magical' : damageTypeForCard(card);
-  const rangeConvertedByHero = !infusion && sourceCanTargetAnyOpponentHeroByAbility(state, pending.player_id, pending.source_slot, card);
-  const resolvedProfile = infusion ? 'Magical Attack' : (rangeConvertedByHero ? 'Range Attack' : originalProfile);
-  const classBuff = attackDamageBuffForSourceHero(state, pending, card, { damage_type: damageType, action_profile: resolvedProfile });
+  const profileBeforeHeroConversion = infusion ? 'Magical Attack' : originalProfile;
+  const rangeConvertedByHero = !infusion && !effectiveCard.triple_shot_area && sourceCanTargetAnyOpponentHeroByAbility(state, pending.player_id, pending.source_slot, card);
+  const resolvedProfile = rangeConvertedByHero ? 'Range Attack' : profileBeforeHeroConversion;
+  const classBuff = attackDamageBuffForSourceHero(state, pending, card, { damage_type: damageType, action_profile: resolvedProfile, attack_label_before_hero_profile_conversion: profileBeforeHeroConversion });
   const surgeBonus = Number(pending && pending.surge_damage_bonus || 0);
   amount += Number(classBuff.amount || 0) + surgeBonus;
   return {
@@ -3462,7 +3609,8 @@ function buildPendingAttackResolution(state, pending, card) {
       ...((classBuff.reasons || []).map(reason => ({ source_type: 'Hero Ability', source_card_id: sourceHeroCard && sourceHeroCard.card_id || null, source_name: sourceHeroCard && sourceHeroCard.name || 'Hero Ability', amount: Number(classBuff.amount || 0), reason }))),
       ...(surgeBonus ? [{ source_type: 'Hero Ability Optional Spend', source_card_id: sourceHeroCard && sourceHeroCard.card_id || null, source_name: pending && pending.surge_reason || 'Mana/Arcane Surge', amount: surgeBonus, reason: pending && pending.surge_reason || `Optional surge: +${surgeBonus}` }] : [])
     ],
-    area: isAreaDamageCard(card),
+    area: isAreaDamageCard(effectiveCard),
+    triple_shot_area: effectiveCard.triple_shot_area === true,
     status_effects: attackStatusEffectsForCard(state, pending, card),
     source_hero_card_id: sourceHeroCard && sourceHeroCard.card_id,
     source_hero_class: String(sourceHeroCard && (sourceHeroCard.display_class || sourceHeroCard.class || (sourceHeroCard.identity && (sourceHeroCard.identity.display_class || sourceHeroCard.identity.class))) || ''),
@@ -4222,7 +4370,7 @@ function applyGenericManaEffect(next, pending, card, events) {
     const beforeOpponent=Number(opponent.mana_pool||0),beforePlayer=Number(player.mana_pool||0);
     let removed=0,gained=0;
     if(physicalManaStateAuthoritative(player)&&physicalManaStateAuthoritative(opponent)){
-      const indices=Array.isArray(pending.selected_opponent_mana_indices)?pending.selected_opponent_mana_indices:Array.from({length:Math.min(steal,opponent.mana_pool_cards.length)},(_,i)=>i);
+      const indices=Array.isArray(pending.selected_opponent_mana_indices)&&pending.selected_opponent_mana_indices.length?pending.selected_opponent_mana_indices:blindChoice.shuffledIndexes(opponent.mana_pool_cards.length, `${next.game_id}:implicit-mana:${(next.event_log||[]).length}`).slice(0,Math.min(steal,opponent.mana_pool_cards.length));
       const result=manaPolicy.removeAndGainOwnMana(player,opponent,indices);removed=result.removed.length;gained=result.gained.length;syncManaPoolCount(player);syncManaPoolCount(opponent);
     }else{
       removed=Math.min(beforeOpponent,steal); opponent.mana_pool=beforeOpponent-removed; player.mana_pool=beforePlayer+removed; gained=removed;
@@ -4242,13 +4390,13 @@ function transferManaFromOpponentToController(next, attackingPlayerId, defending
   const attacker=next.players&&next.players[attackingPlayerId],defender=next.players&&next.players[defendingPlayerId]; if(!attacker||!defender||Number(amount||0)<=0)return 0;
   const beforeOpponent=Number(defender.mana_pool||0),beforePlayer=Number(attacker.mana_pool||0);let removed=0,gained=0;
   if(physicalManaStateAuthoritative(attacker)&&physicalManaStateAuthoritative(defender)){
-    const n=Math.min(Number(amount||0),defender.mana_pool_cards.length);const result=manaPolicy.removeAndGainOwnMana(attacker,defender,Array.from({length:n},(_,i)=>i));removed=result.removed.length;gained=result.gained.length;syncManaPoolCount(attacker);syncManaPoolCount(defender);
+    const n=Math.min(Number(amount||0),defender.mana_pool_cards.length);const blindIndices=blindChoice.shuffledIndexes(defender.mana_pool_cards.length,`${next.game_id}:implicit-transfer:${(next.event_log||[]).length}:${sourceCardId||''}`).slice(0,n);const result=manaPolicy.removeAndGainOwnMana(attacker,defender,blindIndices);removed=result.removed.length;gained=result.gained.length;syncManaPoolCount(attacker);syncManaPoolCount(defender);
   }else{removed=Math.min(beforeOpponent,Number(amount||0));defender.mana_pool=beforeOpponent-removed;attacker.mana_pool=beforePlayer+removed;gained=removed;}
   events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED,next,{player_id:attackingPlayerId,card_id:sourceCardId,source_slot:sourceSlot||undefined,target_player_id:defendingPlayerId,payload:{result:'ON_HIT_MANA_REMOVE_AND_GAIN_OWN_RESOLVED',requested_amount:Number(amount||0),removed_amount:removed,gained_from_own_deck:gained,before_mana:beforePlayer,after_mana:attacker.mana_pool,opponent_before_mana:beforeOpponent,opponent_after_mana:defender.mana_pool,selection_visibility:'blind_back_of_card',reason}}));return removed;
 }
 function removeManaFromOpponent(next, attackingPlayerId, defendingPlayerId, amount, events, sourceCardId, sourceSlot, reason) {
   const defender=next.players&&next.players[defendingPlayerId];if(!defender||Number(amount||0)<=0)return 0;const beforeOpponent=Number(defender.mana_pool||0);let removed=0;
-  if(physicalManaStateAuthoritative(defender)){const n=Math.min(Number(amount||0),defender.mana_pool_cards.length);removed=manaPolicy.removeOpponentManaBlind(defender,Array.from({length:n},(_,i)=>i)).length;syncManaPoolCount(defender);}else{removed=Math.min(beforeOpponent,Number(amount||0));defender.mana_pool=beforeOpponent-removed;}
+  if(physicalManaStateAuthoritative(defender)){const n=Math.min(Number(amount||0),defender.mana_pool_cards.length);const blindIndices=blindChoice.shuffledIndexes(defender.mana_pool_cards.length,`${next.game_id}:implicit-remove:${(next.event_log||[]).length}:${sourceCardId||''}`).slice(0,n);removed=manaPolicy.removeOpponentManaBlind(defender,blindIndices).length;syncManaPoolCount(defender);}else{removed=Math.min(beforeOpponent,Number(amount||0));defender.mana_pool=beforeOpponent-removed;}
   events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED,next,{player_id:attackingPlayerId,card_id:sourceCardId,source_slot:sourceSlot||undefined,target_player_id:defendingPlayerId,payload:{result:'ON_HIT_MANA_REMOVAL_RESOLVED',remove_amount:removed,requested_amount:Number(amount||0),before_mana:beforeOpponent,after_mana:defender.mana_pool,selection_visibility:'blind_back_of_card',selected_destination:'bottom_of_original_owner_mana_deck',reason}}));return removed;
 }
 
@@ -4277,18 +4425,17 @@ function applyGenericDiscardEffect(next, pending, card, events) {
   const discarded = idx >= 0 ? opponent.hand.splice(idx, 1)[0] : null;
   if (!discarded) return false;
   opponent.discard_pile.push(discarded);
-  shuffleOpponentHandAfterEffect(opponent);
   events.push(createRuntimeEvent(EVENT_TYPES.CARD_MOVED, next, {
     player_id: opponentId,
     card_id: discarded,
-    payload: { from: 'Hand', to: 'Discard Pile', source: pending.card_id, selected_back_index: idx, identity_masked_during_selection: true, shuffle_remaining_hand_after_resolution: true }
+    payload: { from: 'Hand', to: 'Discard Pile', source: pending.card_id, selected_back_index: idx, identity_masked_during_selection: true, shuffle_remaining_hand_after_resolution: false }
   }));
   events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
     player_id: pending.player_id,
     card_id: pending.card_id,
     target_player_id: opponentId,
     target_slot: pending.target_slot || undefined,
-    payload: { result: 'OPPONENT_HAND_BACK_CARD_DISCARDED', discarded_card_id: discarded, selected_back_index: idx, shuffle_after_not_before: true }
+    payload: { result: 'OPPONENT_HAND_BACK_CARD_DISCARDED', discarded_card_id: discarded, selected_back_index: idx, mapping_randomized_before_selection: true }
   }));
   return true;
 }
@@ -4581,6 +4728,40 @@ function applyTargetedStatusOnlyEffect(next, pending, card, events) {
   return true;
 }
 
+
+function applyGenericTargetedStatusEffect(next, pending, card, events, dispatch) {
+  if (!card || isAttackSkillCard(card) || !pending || !pending.target_slot) return false;
+  const effects = structuredEffects(card).filter(effect => effect && effect.kind === 'inflict_status' && effect.status);
+  if (!effects.length) return false;
+  const targetPlayerId = pending.target_player_id || pending.target_owner_id || determineTargetOwnerId(next, card, pending.player_id);
+  let appliedAny = false;
+  for (const effect of effects) {
+    const scope = String(effect.target_scope || '').toLowerCase();
+    if (scope && !/one_|single|target|opponent|hero/.test(scope)) continue;
+    const applied = addStatusToHero(next, events, {
+      source_player_id: pending.player_id,
+      source_slot: pending.source_slot,
+      card_id: pending.card_id,
+      target_player_id: targetPlayerId,
+      target_slot: pending.target_slot,
+      status: effect.status,
+      duration_turns: Number(effect.duration_turns || 1),
+      source: dispatch && dispatch.handler ? `dispatcher:${dispatch.handler}` : 'generic_targeted_status_effect'
+    });
+    appliedAny = appliedAny || applied;
+  }
+  if (!appliedAny) return false;
+  events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
+    player_id: pending.player_id,
+    card_id: pending.card_id,
+    source_slot: pending.source_slot || undefined,
+    target_player_id: targetPlayerId,
+    target_slot: pending.target_slot,
+    payload: { result: 'GENERIC_TARGETED_STATUS_RESOLVED', dispatcher_handler: dispatch && dispatch.handler || null, effects: effects.map(effect => ({ status: effect.status, duration_turns: Number(effect.duration_turns || 1) })) }
+  }));
+  return true;
+}
+
 function shuffleOpponentHandAfterEffect(opponent) {
   if (opponent && Array.isArray(opponent.hand) && opponent.hand.length > 1) shuffleInPlace(opponent.hand);
 }
@@ -4599,18 +4780,17 @@ function applyOpponentHandShuffleEffect(next, pending, card, events) {
   const idx = selectedOpponentHandIndex(pending, opponent);
   const moved = idx >= 0 ? opponent.hand.splice(idx, 1)[0] : null;
   if (moved) { opponent.main_deck.push(moved); shuffleInPlace(opponent.main_deck); }
-  shuffleOpponentHandAfterEffect(opponent);
   if (moved) events.push(createRuntimeEvent(EVENT_TYPES.CARD_MOVED, next, {
     player_id: opponentId,
     card_id: moved,
-    payload: { from: 'Hand', to: 'Main Deck', source: pending.card_id, selected_back_index: idx, identity_masked_during_selection: true, shuffle_deck_after_insert: true, shuffle_remaining_hand_after_resolution: true }
+    payload: { from: 'Hand', to: 'Main Deck', source: pending.card_id, selected_back_index: idx, identity_masked_during_selection: true, shuffle_deck_after_insert: true, shuffle_remaining_hand_after_resolution: false }
   }));
   events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
     player_id: pending.player_id,
     card_id: pending.card_id,
     source_slot: pending.source_slot || undefined,
     target_player_id: opponentId,
-    payload: { result: 'OPPONENT_HAND_BACK_CARD_SHUFFLED_INTO_DECK', moved_card_id: moved, selected_back_index: idx, shuffle_after_not_before: true }
+    payload: { result: 'OPPONENT_HAND_BACK_CARD_SHUFFLED_INTO_DECK', moved_card_id: moved, selected_back_index: idx, mapping_randomized_before_selection: true }
   }));
   return true;
 }
@@ -4738,7 +4918,29 @@ function applyV119ModifierEffect(next, pending, card, events) {
   if (card.card_id === 'S1-CLE-006') attachment = buildSimpleModifierAttachment(pending, card, 'PHYSICAL_ATTACK_DAMAGE_PLUS', 20, 1);
   if (card.card_id === 'S1-CLE-007') attachment = buildSimpleModifierAttachment(pending, card, 'MAGICAL_ATTACK_DAMAGE_PLUS', 20, 1);
   if (card.card_id === 'S1-WAR-013') attachment = buildSimpleModifierAttachment(pending, card, 'ATTACK_DAMAGE_PLUS_NEXT_BATTLE', 20, 2);
-  if (card.card_id === 'S1-ARC-013') attachment = buildSimpleModifierAttachment(pending, card, 'POISON_OR_BURNING_ARROW_BECOMES_AREA_THIS_TURN', 0, 1);
+  if (card.card_id === 'S1-ARC-013') {
+    const sourceHero = sourceHeroCardForPending(next, pending);
+    attachment = {
+      attachment_id: `${pending.card_id}:triple-shot:${Date.now()}`,
+      card_id: pending.card_id,
+      owner_id: pending.player_id,
+      source_slot: normalizeSlotKey(pending.source_slot),
+      host_slot: normalizeSlotKey(pending.source_slot),
+      target_slot: normalizeSlotKey(pending.source_slot),
+      source_hero_card_id: sourceHero && sourceHero.card_id || null,
+      attachment_state: 'ONGOING_EFFECT',
+      restriction_type: 'ATTACHMENT_MODIFIER',
+      modifier_type: 'TRIPLE_SHOT_AREA_CONVERSION',
+      qualifying_card_ids: tripleShotPolicy.QUALIFYING_CARD_IDS.slice(),
+      lifecycle_mode: 'while_present_in_attachment_slot',
+      remaining_count: null,
+      turns_remaining: null,
+      tick_phase: null,
+      counter_mode: 'presence',
+      duration: 'while_attachment_remains_in_slot',
+      effect_result: { attack_label_override: 'Area Attack', active_while_attached: true, consumed_on_qualifying_attack: false }
+    };
+  }
   addAttachmentWithCapacity(next, pending.player_id, attachment, pending.target_slot || pending.source_slot, events);
   events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
     player_id: pending.player_id,
@@ -4928,9 +5130,11 @@ function normalizeAttachmentLifecycleRecord(attachment, phaseHint, ownerId, host
   next.source_slot=next.source_slot||hostSlot||null;
   next.host_slot=next.host_slot||next.source_slot||next.target_slot||null;
   const policy=attachmentLifecycle.policyForCard(next.card_id,next.source_class||next.source_hero_class||next.active_class);
-  if(next.remaining_count===undefined||next.remaining_count===null) next.remaining_count=Number(policy&&policy.remaining_count!==undefined?policy.remaining_count:(next.turns_remaining ?? next.counters_required ?? next.counters ?? 1));
-  if(policy){next.tick_phase=policy.tick_phase;next.counter_mode=policy.counter_mode;if(policy.required_count!==undefined)next.required_count=Number(policy.required_count);if(policy.current_count!==undefined&&next.current_count===undefined)next.current_count=Number(next.counters??policy.current_count);if(policy.active_from)next.active_from=policy.active_from;}
-  else if(!next.tick_phase) {
+  const presenceLifecycle = next.lifecycle_mode === 'while_present_in_attachment_slot' || (policy && policy.counter_mode === 'presence');
+  if(!presenceLifecycle && (next.remaining_count===undefined||next.remaining_count===null)) next.remaining_count=Number(policy&&policy.remaining_count!==undefined&&policy.remaining_count!==null?policy.remaining_count:(next.turns_remaining ?? next.counters_required ?? next.counters ?? 1));
+  if(presenceLifecycle) next.remaining_count=null;
+  if(policy){next.tick_phase=policy.tick_phase ?? null;next.counter_mode=policy.counter_mode;if(policy.required_count!==undefined)next.required_count=Number(policy.required_count);if(policy.current_count!==undefined&&next.current_count===undefined)next.current_count=Number(next.counters??policy.current_count);if(policy.active_from)next.active_from=policy.active_from;}
+  else if(!next.tick_phase && !presenceLifecycle) {
     if(next.attachment_state==='CASTING' && String(next.casting_type||'').toUpperCase()==='DRAW_COUNTER_CASTING') next.tick_phase=TICK_PHASE.DRAW_EVENT;
     else if(next.attachment_state==='CASTING') next.tick_phase=TICK_PHASE.BATTLE_PHASE_START;
     else if(next.expire_timing==='START_OF_OWNER_TURN') next.tick_phase=TICK_PHASE.DRAW_PHASE_START;
@@ -4938,7 +5142,7 @@ function normalizeAttachmentLifecycleRecord(attachment, phaseHint, ownerId, host
   }
   next.created_checkpoint_id=next.created_checkpoint_id||`${state.round}:${state.active_player_id}:${state.phase}`;
   next.skip_creation_checkpoint=next.skip_creation_checkpoint!==false;
-  next.turns_remaining=next.remaining_count;
+  next.turns_remaining=presenceLifecycle ? null : next.remaining_count;
   return next;
 }
 
@@ -5022,6 +5226,21 @@ function confirmAction(state, intent) {
   if (dualArrowSlots) pending.dual_arrow_slots = dualArrowSlots;
   const targetSlots = intent.target_slots || intent.payload && intent.payload.target_slots || null;
   if (targetSlots && pending.card_id !== 'S1-ARC-017') pending.target_slots = targetSlots;
+  if (pending.card_id === WARP_SCROLL_ID && targetSlots) pending.selected_warp_scroll_slots = normalizeMultiTargetSlots(targetSlots);
+  if (pending.card_id === WARP_SCROLL_ID) {
+    const selectedWarpSlots = Array.isArray(pending.selected_warp_scroll_slots) ? pending.selected_warp_scroll_slots.map(normalizeSlotKey) : [];
+    const distinctWarpSlots = [...new Set(selectedWarpSlots)].filter(slot => SLOT_ORDER.includes(slot));
+    if (distinctWarpSlots.length === 2) {
+      const warpPlayer = getPlayer(state, pending.player_id);
+      const invalid = distinctWarpSlots.find(slot => {
+        const slotState = warpPlayer && warpPlayer.board && warpPlayer.board[slot];
+        return !(slotState && slotState.slot_mode === 'HERO' && slotState.hero && !slotState.hero.defeated);
+      });
+      if (invalid) return { state, events: [], errors: [`Warp Scroll choice ${invalid} is not an active allied Hero.`] };
+      pending.selected_warp_scroll_slots = distinctWarpSlots;
+      pending.target_slots = distinctWarpSlots.slice();
+    }
+  }
   if (pending.card_id === 'S1-ARC-017') {
     const selectedDualTargets = normalizeMultiTargetSlots(pending.target_slots);
     const uniqueDualTargets = [...new Set(selectedDualTargets.map(normalizeSlotKey))].filter(slot => SLOT_ORDER.includes(slot));
@@ -5098,6 +5317,7 @@ function confirmAction(state, intent) {
         host_slot: pending.target_slot || pending.source_slot,
         target_slot: pending.target_slot,
         target_player_id: pending.target_player_id,
+        selected_slots: pending.card_id === WARP_SCROLL_ID ? (pending.selected_warp_scroll_slots || pending.target_slots || []) : (pending.target_slots || []),
         source_rank: intent.source_rank || intent.payload && intent.payload.source_rank,
         final_damage: intent.final_damage || intent.payload && intent.payload.final_damage,
         connect_result: intent.connect_result || intent.payload && intent.payload.connect_result,
@@ -5107,7 +5327,31 @@ function confirmAction(state, intent) {
       }
     });
     let directDamage = { applied: false, events: [] };
-    if (applyScoutingEffect(next, pending, card, events)) {
+    if (pending.card_id === WARP_SCROLL_ID) {
+      if (!dispatch.dispatched || !dispatch.result || dispatch.result.legal !== true || !dispatch.result.board) {
+        const reason = dispatch && dispatch.result && dispatch.result.reason || 'Warp Scroll runtime resolver did not produce a legal two-Hero swap.';
+        return { state, events: [], errors: [reason] };
+      }
+      const warpPlayer = next.players[pending.player_id];
+      const firstSlot = normalizeSlotKey(dispatch.result.first_slot);
+      const secondSlot = normalizeSlotKey(dispatch.result.second_slot);
+      warpPlayer.board = dispatch.result.board;
+      remapHeroHostedAttachmentsForSlotSwap(warpPlayer, firstSlot, secondSlot, events, next, pending.player_id);
+      warpPlayer.discard_pile.push(pending.card_id);
+      events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED, next, {
+        player_id: pending.player_id,
+        card_id: pending.card_id,
+        payload: {
+          result: 'WARP_SCROLL_SWAP_RESOLVED',
+          first_slot: firstSlot,
+          second_slot: secondSlot,
+          effect_reposition: true,
+          allow_non_adjacent_swap: true,
+          exhaust_from_reposition: false,
+          manual_reposition_limit_exempt: true
+        }
+      }));
+    } else if (applyScoutingEffect(next, pending, card, events)) {
       next.players[pending.player_id].discard_pile.push(pending.card_id);
     } else if (applyVenomDetonationEffect(next, pending, card, events)) {
       movedTo = 'Pending Attack Resolution';
@@ -5133,6 +5377,8 @@ function confirmAction(state, intent) {
       next.players[pending.player_id].discard_pile.push(pending.card_id);
     } else if (isPurifyCard(card) && pending.target_slot) {
       applyPurifyEffect(next, pending, card, events);
+      next.players[pending.player_id].discard_pile.push(pending.card_id);
+    } else if (applyGenericTargetedStatusEffect(next, pending, card, events, dispatch)) {
       next.players[pending.player_id].discard_pile.push(pending.card_id);
     } else if (applyV119CertifiedGenericEffect(next, pending, card, events)) {
       if (attachmentLifecycle.isPersistentAttachmentCard(pending.card_id, primarySourceClassName(next, pending))) movedTo = 'Attachment Slot';
@@ -5355,6 +5601,11 @@ function responseCardLegal(state, playerId, cardId, options) {
     const sourceSlot = responseSourceSlotForValidation(state, playerId, card, options && options.intent || {});
     const responseTargetSlot = normalizeSlotKey(state.response_window && state.response_window.target_slot);
     const hostHeroCard = responseHostHeroCardForValidation(state, playerId, sourceSlot);
+    const responseKind = responseKindForCard(card);
+    const sourcePlayer = getPlayer(state, playerId);
+    const freezeHostSlot = SLOT_ORDER.includes(sourceSlot) ? sourceSlot : responseTargetSlot;
+    const freezeHost = sourcePlayer && sourcePlayer.board && sourcePlayer.board[freezeHostSlot];
+    if (responseKind === 'DODGE' && statusEngine.dodgeBlockedByFreeze(freezeHost)) errors.push('Frozen Hero cannot use Dodge.');
     if (SLOT_ORDER.includes(sourceSlot) && SLOT_ORDER.includes(responseTargetSlot) && sourceSlot !== responseTargetSlot && cardId !== 'S1-WAR-004' && !alliedProtectionResponseMayUseDifferentSource(card)) errors.push(`${cardId} must use the affected Hero as its response source.`);
     if (cardId === 'S1-WAR-004') {
       const redirectCheck = responseRedirectTargetForCard(state, playerId, card, options && options.intent || {});
@@ -5562,6 +5813,8 @@ function repositionAction(state, intent) {
   const player = getPlayer(state, intent.player_id);
   if (!player) return { state, events: [], errors: [`Unknown player ${intent.player_id}`] };
   if (manualRepositionUsedThisTurn(state, intent.player_id)) return { state, events: [], errors: ['Manual Reposition can be used at most once during one active turn. Deploy and Reform share this limit.'] };
+  const freezeCheck = statusEngine.movementBlockedByFreeze(player.board, normalizeSlotKey(firstSlot), normalizeSlotKey(secondSlot), 'manual');
+  if (freezeCheck.blocked) return { state, events: [], errors: freezeCheck.errors, error_code: freezeCheck.code };
   const moved = repositionSlots(player.board, firstSlot, secondSlot);
   if (!moved.ok) return { state, events: [], errors: moved.errors };
   const turnKey = manualRepositionTurnKey(state, intent.player_id);
@@ -6181,6 +6434,7 @@ function submitIntent(state, intent) {
     case 'SELECT_STATUS_TO_REMOVE': result = selectStatusToRemove(state, intent); break;
     case 'SELECT_SCOUTING_EXP_CARD': result = selectScoutingExpCard(state, intent); break;
     case 'SELECT_OPPONENT_HAND_CARD': result = selectOpponentHandCard(state, intent); break;
+    case 'SELECT_OPPONENT_SHARD': result = selectOpponentShard(state, intent); break;
     case 'SELECT_RESPONSE_COST_CARD': result = selectResponseCostCard(state, intent); break;
     case 'CONFIRM_ACTION': result = confirmAction(state, intent); break;
     case 'DECLARE_RESPONSE': result = declareResponse(state, intent); break;
@@ -6273,14 +6527,26 @@ function getLegalActions(state, playerId) {
       return actions;
     }
     if (state.pending.source_required && !state.pending.source_slot) actions.push(...legalSourceActions(state, playerId, state.pending));
+    if (state.pending.card_id === WARP_SCROLL_ID && state.pending.requires_warp_scroll_choice && (state.pending.selected_warp_scroll_slots || []).length < 2) {
+      const selected = new Set((state.pending.selected_warp_scroll_slots || []).map(normalizeSlotKey));
+      const player = getPlayer(state, playerId);
+      for (const slot of SLOT_ORDER) {
+        const slotState = player && player.board && player.board[slot];
+        if (!selected.has(slot) && slotState && slotState.slot_mode === 'HERO' && slotState.hero && !slotState.hero.defeated) actions.push({ type: 'SELECT_TARGET_SLOT', player_id: playerId, target_player_id: playerId, target_slot: slot, resolver_choice: 'WARP_SCROLL_ALLIED_HERO', hero_only: true, card_name: 'Warp Scroll' });
+      }
+    }
     if (state.pending.target_required && (state.pending.card_id === 'S1-ARC-017' ? normalizeMultiTargetSlots(state.pending.target_slots).length < 2 : !state.pending.target_slot)) actions.push(...legalTargetActions(state, playerId, state.pending).filter(a => state.pending.card_id !== 'S1-ARC-017' || !normalizeMultiTargetSlots(state.pending.target_slots).includes(a.target_slot)));
     if ((!state.pending.source_required || state.pending.source_slot) && (!state.pending.target_required || state.pending.target_slot) && state.pending.requires_status_choice && (state.pending.selected_status_index === null || state.pending.selected_status_index === undefined) && !state.pending.selected_status_name) {
       for (const choice of state.pending.status_choices || []) actions.push({ type: 'SELECT_STATUS_TO_REMOVE', player_id: playerId, status_index: choice.index, status_name: choice.name });
     }
     if ((!state.pending.source_required || state.pending.source_slot) && state.pending.requires_opponent_hand_choice && !Number.isInteger(state.pending.selected_opponent_hand_index)) {
-      const opponent = getPlayer(state, getOpponentId(state, playerId));
-      const handLength = opponent && Array.isArray(opponent.hand) ? opponent.hand.length : 0;
-      for (let index = 0; index < handLength; index += 1) actions.push({ type: 'SELECT_OPPONENT_HAND_CARD', player_id: playerId, hand_index: index, card_back: true, identity_masked: true });
+      const mapping = Array.isArray(state.pending.opponent_hand_blind_mapping) ? state.pending.opponent_hand_blind_mapping : [];
+      for (let index = 0; index < mapping.length; index += 1) actions.push({ type: 'SELECT_OPPONENT_HAND_CARD', player_id: playerId, hand_index: index, choice_id: `opaque-${index + 1}`, card_back: true, identity_masked: true, randomized_before_selection: true });
+    }
+    if ((!state.pending.source_required || state.pending.source_slot) && state.pending.requires_opponent_mana_choice && (state.pending.selected_opponent_mana_indices || []).length < Number(state.pending.opponent_mana_required_count || 0)) {
+      const mapping = Array.isArray(state.pending.opponent_mana_blind_mapping) ? state.pending.opponent_mana_blind_mapping : [];
+      const selected = new Set(state.pending.selected_opponent_mana_opaque_indices || []);
+      for (let index = 0; index < mapping.length; index += 1) if (!selected.has(index)) actions.push({ type: 'SELECT_OPPONENT_SHARD', player_id: playerId, shard_index: index, choice_id: `opaque-${index + 1}`, card_back: true, identity_masked: true, randomized_before_selection: true });
     }
     if ((!state.pending.source_required || state.pending.source_slot) && state.pending.target_slot && state.pending.requires_exp_choice && !Number.isInteger(state.pending.selected_exp_index)) {
       for (const choice of scoutingExpChoicesForTarget(state, state.pending.target_player_id, state.pending.target_slot)) actions.push({ type: 'SELECT_SCOUTING_EXP_CARD', player_id: playerId, exp_index: choice.index, exp_card_id: choice.card_id });
@@ -6299,7 +6565,7 @@ function getLegalActions(state, playerId) {
         const damageType = String(state.pending_attack_resolution && state.pending_attack_resolution.damage_type || state.response_window.damage_type || '').toLowerCase();
         const tokens = Number(player.racial_token_pool || 0);
         if (profile.action_key === 'dragon_scale' && tokens > 0 && racialTokenSpendAvailable(state, playerId) && ['physical','magical'].includes(damageType) && incomingDamageIncludesHeroSlot(state, playerId, slot)) actions.push({ type: 'USE_RACIAL_TRAIT', player_id: playerId, source_slot: slot, racial_trait: 'Dragon Scale', block_amount: racialEffectValue(heroCard, 'block_damage', 50) });
-        if (profile.action_key === 'second_chance' && tokens > 0 && racialTokenSpendAvailable(state, playerId) && ['physical','magical'].includes(damageType) && !(state.pending_attack_resolution && state.pending_attack_resolution.cannot_be_dodged) && incomingDamageIncludesHeroSlot(state, playerId, slot)) actions.push({ type: 'USE_RACIAL_TRAIT', player_id: playerId, source_slot: slot, racial_trait: 'Second Chance', response_kind: 'DODGE' });
+        if (profile.action_key === 'second_chance' && tokens > 0 && racialTokenSpendAvailable(state, playerId) && ['physical','magical'].includes(damageType) && !(state.pending_attack_resolution && state.pending_attack_resolution.cannot_be_dodged) && incomingDamageIncludesHeroSlot(state, playerId, slot) && !statusEngine.dodgeBlockedByFreeze(slotState)) actions.push({ type: 'USE_RACIAL_TRAIT', player_id: playerId, source_slot: slot, racial_trait: 'Second Chance', response_kind: 'DODGE' });
       }
     }
     for (const [handIndex, cardId] of (player ? player.hand : []).entries()) {
@@ -6400,6 +6666,8 @@ module.exports = {
     sourceCanTargetAnyOpponentHeroByAbility,
     attackDamageBuffForSourceHero,
     attachmentDamageModifierApplies,
+    effectiveAttackCardForPending,
+    activeTripleShotAttachment,
     activeAttackDamageModifierAmount,
     activeAttackDamageMultiplier,
     buildPendingAttackResolution,
@@ -6415,6 +6683,8 @@ module.exports = {
     clearConfirmedDefeatExp,
     applyReviveEffect,
     remapHeroHostedAttachmentsForSlotSwap,
-    reopenCurrentHeroResponseWindowAfterRedirect
+    reopenCurrentHeroResponseWindowAfterRedirect,
+    setBlindSelectionSeedProviderForTests,
+    createBlindIndexMapping
   }
 };

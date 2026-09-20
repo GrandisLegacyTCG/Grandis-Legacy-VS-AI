@@ -13,10 +13,10 @@ function createRuntimeContract() {
     getLegalActions: 'getLegalActions(state, actorSide) -> LegalAction[]',
     submitIntent: 'submitIntent(state, intent) -> RuntimeResult',
     resolvePending: 'resolvePending(state, choice) -> RuntimeResult',
-    getPublicState: 'getPublicState(state, viewerSide) -> PublicState',
-    getPrivateState: 'getPrivateState(state, viewerSide) -> PrivateState',
-    serializeState: 'serializeState(state) -> string/object',
-    importState: 'importState(snapshot) -> state',
+    getViewerState: 'getViewerState(state, viewerContext) -> viewer-safe state',
+    serializeState: 'serializeState(state, viewerContext) -> viewer-safe string/object; spectator-safe when viewer omitted',
+    serializeAuthoritativeState: 'serializeAuthoritativeState(state) -> server-only authoritative snapshot',
+    importState: 'importState(snapshot) -> server-only state restore',
     validateCardDatabase: 'validateCardDatabase(database) -> ValidationReport',
     validateDeck: 'validateDeck(deck, database) -> ValidationReport'
   });

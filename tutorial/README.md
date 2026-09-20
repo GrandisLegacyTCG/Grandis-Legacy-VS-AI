@@ -1,7 +1,18 @@
-# Grandis Legacy Tutorial v0.60
+# Grandis Legacy Tutorial v0.68
 
-Tutorial parity release paired with VS AI v6.34. Adds interactive Shard Deck / Shard Pool teaching on top of Playtest Lab v0.14 gameplay authority.
+Tutorial v0.68 is paired with **VS AI v6.42** and consumes the same current **OSA v1.9.2 / Starter Deck Authority v1.6.1 / Shared Runtime v1.94.0 / UI Contract v2.52** baseline.
 
-The tutorial preserves its guided phase/action gates while adopting the same Source Stack v1.8.1 gameplay/runtime authority and Playtest v0.14 battlefield/resource presentation as stable VS AI. Public resource terminology is Shard Deck / Shard Pool / Mana Shard / Class Shard.
+The Tutorial keeps its guided lesson gates, messages, and tutorial controller/overlay while consuming the same one-source application/battlefield implementation as VS AI (`../shared-app/app.bundle.js` and `../shared-app/app.css`). It does not maintain an independent battlefield fork.
 
-Tutorial v0.60 also shares the upgraded local AI active-ability planner from VS AI v6.34, including Aurex Class Ability decisions and the current active/defensive Racial Trait priorities.
+Current data/runtime references:
+
+- Runtime Data v0.16.0
+- Effect Recipe / Checkpoint v0.15.0 / v0.15.0
+- Hero Components v1.1.0
+- Starter Deck Authority v1.6.1 — exactly 5 active Starter Decks
+- Application Runtime Sync v2.60
+- Canonical cards: 200
+
+The retired Starter60 v1.5 15-preset library is historical/non-active only. Tutorial may keep its fixed/guided teaching deck flow; it does not expose a stale 15-option active selector. Established teaching for Starting Shards, the 12-card Shard Deck, Mana Regen, payment batches, Ultimate Tribute 200 EXP, Bound Hero/matching Class Shard requirements, and Draw sequencing remains preserved.
+
+`tutorial/runtime-source/runtime/` is a generated/synchronized mirror of the root editable Shared Runtime. Root/Tutorial `js/app.bundle.js` and `css/app.css` are generated compatibility/deployment mirrors from `shared-app/` and are parity-checked. The current Tutorial release lock is `sync/tutorial-github-lock.v0.68.json`.

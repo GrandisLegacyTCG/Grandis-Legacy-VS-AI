@@ -223,6 +223,56 @@ function repositionSlots(board, firstSlotRaw, secondSlotRaw) {
   return { ok: true, board: nextBoard, reposition_type: modes, exhausted_hero_slots: [firstSlot, secondSlot].filter(slot => nextBoard[slot].slot_mode === 'HERO') };
 }
 
+function resolve_warp_scroll_swap(context) {
+  const board = context && context.board || {};
+  const selected = Array.isArray(context && context.selected_slots) ? context.selected_slots.map(normalizeSlotKey) : [];
+  const unique = [...new Set(selected)].filter(slot => VALID_SLOTS.includes(slot));
+  if (unique.length !== 2) {
+    return { legal: false, reason: 'Warp Scroll requires exactly 2 distinct allied Hero choices.', selected_slots: unique };
+  }
+  const [firstSlot, secondSlot] = unique;
+  const first = board[firstSlot];
+  const second = board[secondSlot];
+  const firstHero = first && first.slot_mode === 'HERO' && first.hero && !first.hero.defeated;
+  const secondHero = second && second.slot_mode === 'HERO' && second.hero && !second.hero.defeated;
+  if (!firstHero || !secondHero) {
+    return { legal: false, reason: 'Warp Scroll can only swap 2 active allied Heroes; Legacy and empty slots are invalid.', selected_slots: unique };
+  }
+  const nextBoard = deepClone(board);
+  nextBoard[firstSlot] = Object.assign({}, second, { slot: firstSlot });
+  nextBoard[secondSlot] = Object.assign({}, first, { slot: secondSlot });
+  return {
+    legal: true,
+    board: nextBoard,
+    first_slot: firstSlot,
+    second_slot: secondSlot,
+    selected_slots: unique,
+    effect_reposition: true,
+    allow_non_adjacent_swap: true,
+    exhaust_from_reposition: false,
+    manual_reposition_limit_exempt: true,
+    legacy_invalid: true
+  };
+}
+
+
+function resolve_freeze_bomb(context) {
+  const targetSlot = normalizeSlotKey(context && context.target_slot);
+  const targetPlayerId = context && context.target_player_id || null;
+  if (!VALID_SLOTS.includes(targetSlot)) return { legal: false, reason: 'Freeze Bomb requires one active opponent Hero target.' };
+  return {
+    legal: true,
+    effect: 'inflict_status',
+    status: 'Freeze',
+    duration_turns: 1,
+    target_scope: 'one_opponent_hero',
+    target_player_id: targetPlayerId,
+    target_slot: targetSlot,
+    attachment: false,
+    destination: 'Discard Pile'
+  };
+}
+
 function sourceCanUseCard(context) {
   const exhausted = Boolean(context && context.source_exhausted);
   const usableWhileExhausted = Boolean(context && context.usable_while_exhausted);
@@ -251,5 +301,7 @@ module.exports = {
   resolveDefensiveFormation,
   resolveStepInAreaResponse,
   repositionSlots,
+  resolve_warp_scroll_swap,
+  resolve_freeze_bomb,
   sourceCanUseCard
 };

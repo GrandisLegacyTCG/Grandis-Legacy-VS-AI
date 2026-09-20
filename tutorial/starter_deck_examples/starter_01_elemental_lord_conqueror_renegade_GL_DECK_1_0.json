@@ -1,8 +1,8 @@
 {
   "schema_version": "GL-DECK-1.0",
-  "builder_version": "2.17-classic-split",
+  "builder_version": "2.27-classic-split",
   "deck_name": "Starter 1 - ElementalLord/Conqueror/Renegade",
-  "format": "Grandis Legacy Source Authority Stack v1.7.3 + Starter60 v1.4",
+  "format": "Grandis Legacy Source Authority v1.9.2 / Starter Deck Authority v1.6.1 / 60-card Main Deck",
   "main_deck_count": 60,
   "legacy_package_count": 3,
   "legacy_deck_count": 12,
@@ -216,7 +216,7 @@
     {
       "card_id": "S1-MAG-002",
       "card_name": "Ice Lance",
-      "quantity": 1
+      "quantity": 2
     },
     {
       "card_id": "S1-MAG-004",
@@ -241,21 +241,16 @@
     {
       "card_id": "S1-MAG-008",
       "card_name": "Frostbite",
-      "quantity": 2
+      "quantity": 3
     },
     {
-      "card_id": "S1-MAG-009",
-      "card_name": "Fire Blast",
-      "quantity": 2
-    },
-    {
-      "card_id": "S1-MAG-012",
-      "card_name": "Fire Wall",
+      "card_id": "S1-MAG-011",
+      "card_name": "Ice Block",
       "quantity": 1
     },
     {
-      "card_id": "S1-MAG-014",
-      "card_name": "Lightning Strike",
+      "card_id": "S1-MAG-015",
+      "card_name": "Permafrost",
       "quantity": 1
     },
     {
@@ -286,7 +281,7 @@
     {
       "card_id": "S1-THF-010",
       "card_name": "Back Slash",
-      "quantity": 2
+      "quantity": 3
     },
     {
       "card_id": "S1-THF-011",
@@ -301,27 +296,17 @@
     {
       "card_id": "S1-THF-013",
       "card_name": "Venom Strike",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-014",
-      "card_name": "Viper’s Fang",
       "quantity": 2
     },
     {
       "card_id": "S1-THF-015",
       "card_name": "Venom Sovereign",
-      "quantity": 1
+      "quantity": 2
     },
     {
       "card_id": "S1-THF-016",
       "card_name": "Finishing Strike",
       "quantity": 2
-    },
-    {
-      "card_id": "S1-THF-017",
-      "card_name": "Venom Binding",
-      "quantity": 1
     },
     {
       "card_id": "S1-THF-018",
@@ -342,11 +327,6 @@
       "card_id": "S1-WAR-007",
       "card_name": "Upward Thrust",
       "quantity": 2
-    },
-    {
-      "card_id": "S1-WAR-008",
-      "card_name": "Wild Swing",
-      "quantity": 1
     },
     {
       "card_id": "S1-WAR-009",
@@ -447,6 +427,11 @@
       "card_id": "S1-ITM-018",
       "card_name": "Magic Compass",
       "quantity": 2
+    },
+    {
+      "card_id": "S1-ITM-020",
+      "card_name": "Freeze Bomb",
+      "quantity": 1
     }
   ],
   "default_formation": {
@@ -454,310 +439,27 @@
     "CENTER": "S1-WAR-H001",
     "RIGHT": "S1-THF-H001"
   },
-  "source_database_version": "Grandis Legacy Source Authority Stack v1.7.3 · OSA v1.7.3 · Runtime Data v0.14.2 · Starter60 v1.4 · registry 5d362f3c1dd785af82f12297d6ab1ecea4f6c43508a7b0f48319e846dd61139c",
-  "builder_version_note": "Starter60 v1.4 replacement authority. Starter 1 and Starter 2 overwrite the previous preset compositions; gameplay/card authority remains Source Stack v1.7.3.",
-  "display_name": "Starter 1 — Elemental Lord / Conqueror / Renegade",
-  "preset_id": "starter_01_elemental_lord_conqueror_renegade",
-  "main_deck_expanded": [
-    {
-      "card_id": "S1-MAG-002",
-      "card_name": "Ice Lance",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-004",
-      "card_name": "Mana Shield",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-005",
-      "card_name": "Mirror Image",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-005",
-      "card_name": "Mirror Image",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-006",
-      "card_name": "Meditation",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-007",
-      "card_name": "Tornado",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-008",
-      "card_name": "Frostbite",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-008",
-      "card_name": "Frostbite",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-009",
-      "card_name": "Fire Blast",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-009",
-      "card_name": "Fire Blast",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-012",
-      "card_name": "Fire Wall",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-014",
-      "card_name": "Lightning Strike",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-016",
-      "card_name": "Nova Strike",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-017",
-      "card_name": "Frostfire Nova",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-017",
-      "card_name": "Frostfire Nova",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-MAG-018",
-      "card_name": "Double Casting",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-003",
-      "card_name": "Evasion",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-005",
-      "card_name": "Steal",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-010",
-      "card_name": "Back Slash",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-010",
-      "card_name": "Back Slash",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-011",
-      "card_name": "Elusive Escape",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-011",
-      "card_name": "Elusive Escape",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-012",
-      "card_name": "Poison Mist",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-012",
-      "card_name": "Poison Mist",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-013",
-      "card_name": "Venom Strike",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-014",
-      "card_name": "Viper’s Fang",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-014",
-      "card_name": "Viper’s Fang",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-015",
-      "card_name": "Venom Sovereign",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-016",
-      "card_name": "Finishing Strike",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-016",
-      "card_name": "Finishing Strike",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-017",
-      "card_name": "Venom Binding",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-THF-018",
-      "card_name": "Venom Detonation",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-002",
-      "card_name": "Power Slash",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-004",
-      "card_name": "Cover Up",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-007",
-      "card_name": "Upward Thrust",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-007",
-      "card_name": "Upward Thrust",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-008",
-      "card_name": "Wild Swing",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-009",
-      "card_name": "Rage Swing",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-009",
-      "card_name": "Rage Swing",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-010",
-      "card_name": "Rage Blast",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-011",
-      "card_name": "Side Step",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-012",
-      "card_name": "Deflect",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-012",
-      "card_name": "Deflect",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-014",
-      "card_name": "Final Grit",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-015",
-      "card_name": "Charge Attack",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-016",
-      "card_name": "Whirlwind",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-017",
-      "card_name": "Fiery Thrust",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-WAR-018",
-      "card_name": "Execute",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-EVT-002",
-      "card_name": "Market Bargain",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-EVT-003",
-      "card_name": "Scouting",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-EVT-004",
-      "card_name": "Relentless Leveling",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-EVT-007",
-      "card_name": "Intercept",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-EVT-009",
-      "card_name": "Tactical Adaptation",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-EVT-010",
-      "card_name": "Déjà vu",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-ITM-001",
-      "card_name": "Health Potion",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-ITM-002",
-      "card_name": "Greater Health Potion",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-ITM-008",
-      "card_name": "Phoenix Feather",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-ITM-016",
-      "card_name": "Chain Mail",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-ITM-018",
-      "card_name": "Magic Compass",
-      "quantity": 1
-    },
-    {
-      "card_id": "S1-ITM-018",
-      "card_name": "Magic Compass",
-      "quantity": 1
-    }
-  ]
+  "source_database_version": "Grandis Legacy Source Authority v1.9.2 · Starter Deck Authority v1.6.1 · canonical registry 85d25ebda9bb2bc260983a566e6d430dde97bfc7a32e8042ec2fddfeaff1b42f",
+  "builder_version_note": "Style 2 v2.27 / Deck Builder v1.31 allows export at any Main Deck count within the existing 80-card cutting workspace. Normal cards remain maximum 3 copies and Ultimate remains maximum 1 copy. Official match legality is validated by VS AI and PvP.",
+  "active_starter_id": "starter_01_elemental_lord_conqueror_renegade",
+  "active_starter_slot": 1,
+  "starter_authority_version": "v1.6.1",
+  "authority_status": "ACTIVE_CANONICAL",
+  "authority_provenance": {
+    "source_type": "NEW_USER_UPLOAD_PATCH",
+    "source_filename": "Starter_1_ElementalLord_Conqueror_Renegade.json",
+    "source_sha256": "f63e14a9cc43729fe2e27d77a6d1606a067bc399a5230fa2489eded3ad066353",
+    "previous_authority_source_sha256": "e1c918811f031cd23aca00f17d29e95351b5b75d257ada85b0cda950e8451c1d",
+    "adopted_in_osa": "v1.9.2",
+    "gameplay_semantics_preserved_from_input": true
+  },
+  "generated_only": true,
+  "do_not_edit": true,
+  "canonical_source": "Authority/Game/Starter-Decks/Active/starter_01_elemental_lord_conqueror_renegade.json",
+  "canonical_source_sha256": "15788ed47922f3a517992e58da7c3e887bc9618c91421a365f90459155a0a795",
+  "generation": {
+    "generator": "Authority/Runtime/Validators/generate-v1.9.2.cjs",
+    "generator_version": "1.9.2-starter1-generator.1",
+    "generated_at": "2026-09-21"
+  }
 }

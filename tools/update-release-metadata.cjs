@@ -1,44 +1,37 @@
 'use strict';
 const crypto=require('crypto'),fs=require('fs'),path=require('path');
 const ROOT=path.resolve(__dirname,'..');
-const H='ce79e5a97c115507f68734887160b575840899056e1533488e3fddd3a11fec1f';
-const HH='487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9';
+const H='85d25ebda9bb2bc260983a566e6d430dde97bfc7a32e8042ec2fddfeaff1b42f';
+const HH='f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be';
+const OSA_RUNTIME_TREE_HASH='b3a1cce980e382539eecccce3fd467ad55af8375a4a07393292270779e07a314';
 const sha=rel=>crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT,rel))).digest('hex');
 const write=(rel,v)=>{fs.mkdirSync(path.dirname(path.join(ROOT,rel)),{recursive:true});fs.writeFileSync(path.join(ROOT,rel),JSON.stringify(v,null,2)+'\n')};
 const terminology={deck:'Shard Deck',standardShard:'Mana Shard',classShard:'Class Shard',pool:'Shard Pool'};
 const shared={
-  canonical_registry_hash:H,hero_component_registry_hash:HH,
-  source_stack_bundle:'v1.8.2',one_source_authority:'v1.8.2',runtime_foundation:'v1.93',runtime_core:'v0.61',
-  runtime_data:'v0.15.0',effect_recipe:'v0.14.0',effect_checkpoint:'v0.14.0',legality_map:'v1.5.0',
-  hero_component_authority:'v1.0.0',shared_runtime_manual:'v1.49',application_runtime_sync:'v2.57',starter60:'v1.5',ui_design_lock:'v2.51',
-  responseCommitPaymentFramework:'1.0',manualRepositionLimit:'1.0',publicResourceTerminology:terminology
+  source_authority:'v1.9.2',canonical_card_authority:'v1.6.0',shared_runtime:'v1.94.0',runtime_data:'v0.16.0',effect_recipe:'v0.15.0',effect_checkpoint:'v0.15.0',hero_component_authority:'v1.1.0',starter60:'v1.6.1',starter_deck_authority:'v1.6.1',ui_contract:'v2.52',application_runtime_sync:'v2.60',canonical_registry_hash:H,hero_component_registry_hash:HH,publicResourceTerminology:terminology
 };
+function moveIfExists(rel,destRel){const src=path.join(ROOT,rel);if(!fs.existsSync(src))return;const dest=path.join(ROOT,destRel);fs.mkdirSync(path.dirname(dest),{recursive:true});if(!fs.existsSync(dest))fs.renameSync(src,dest);else fs.rmSync(src,{force:true});}
+moveIfExists('sync/runtime-sync-lock.v2.57.json','sync/history/runtime-sync-lock.v2.57.json');
+moveIfExists('sync/runtime-sync-lock.v2.58.json','sync/history/runtime-sync-lock.v2.58.json');
+moveIfExists('tutorial/sync/tutorial-github-lock.v0.67.json','tutorial/sync/history/tutorial-github-lock.v0.67.json');
 const counters={};for(let i=1;i<=6;i++)counters[String(i)]=sha(`assets/counters/Counter-${i}.png`);
 const rootLock={
-  schema:'GL-APPLICATION-RUNTIME-SYNC-2.57',version:'v2.57',policy:'RUNTIME_FIRST_FAIL_CLOSED_SYNC',date:'2026-09-14',
-  canonicalRegistryHash:H,runtimeSourceTreeHash:'3e6a451fb5b2a3c1d5b294329bd557894d5c07581aa637d98996576d179e0e77',heroComponentRegistryHash:HH,
-  requiredSourceStack:{sourceAuthorityStack:'1.8.2',oneSourceAuthority:'1.8.2',runtimeData:'0.15.0',effectCheckpoint:'0.14.0',effectRecipe:'0.14.0',legalityMap:'1.5.0',runtimeCore:'0.61',runtimeFoundation:'1.93',heroComponentAuthority:'1.0.0',uiLock:'2.51',sharedManual:'1.49',starter60:'1.5',applicationRuntimeSync:'2.57'},
-  gameplayAuthority:'Source Stack v1.8.2 / Shard payment-batch correction',authorityVerified:true,
-  authorityStatement:'Source Stack v1.8.2 gameplay authority is unchanged. VS AI v6.41 and Tutorial v0.67 correct mobile Shard/Hero presentation, split tablets into portrait-mobile and landscape-desktop interaction, add touch Hand legality/action controls, and teach the Ultimate Tribute Class Shard requirement.',
-  stableApplications:{vsAI:'v6.41',tutorial:'v0.67'},publicResourceTerminology:terminology,
-  ...shared,local_ai:'v6.41',tutorial:'v0.67',pvp_reference:'v3.42',
-  shared_gameplay_sha256:sha('js/app.bundle.js'),runtime_authority_sha256:sha('js/runtime-authority.js'),runtime_source_browser_sha256:sha('runtime-source/runtime/browser/runtime-authority.browser.js'),
-  static_data_sha256:sha('js/static-data.js'),shared_ui_css_sha256:sha('css/app.css'),lab_authority_css_sha256:sha('css/lab-authority.css'),mobile_app_nav_sha256:sha('js/mobile-app-nav.js'),
-  counter_asset_sha256:counters,blade_asset_sha256:sha('assets/battle/Blade.png'),
-  consumerAdoptionStatus:{currentApplicationsRebuiltInThisDelivery:true,currentAI:'VS AI v6.41',currentTutorial:'Tutorial v0.67',sourceStack:'v1.8.2',playtestV014Promotion:'ADOPTED',publicResourceTerminology:'ADOPTED'},
-  exp_stack_assets:{master:{path:'assets/exp/Stack 100-200EXP.png',sha256:sha('assets/exp/Stack 100-200EXP.png'),sprite_halves:{left:100,right:200}}}
+  schema:'GL-APPLICATION-RUNTIME-SYNC-2.60-CONSUMER',version:'v2.60',date:'2026-09-21',policy:'REFERENCE_OSA_CANONICAL_AUTHORITY_DO_NOT_REDEFINE',
+  ...shared,
+  applications:{vs_ai:'v6.42',tutorial:'v0.68',deck_builder:'v1.31',pvp_reference:'v3.42',website_reference:'v1.31'},
+  visual_battlefield_baseline:'VS AI v6.42',runtime_source_tree:{osa_expected_hash:OSA_RUNTIME_TREE_HASH,files:67},
+  shared_gameplay_sha256:sha('shared-app/app.bundle.js'),shared_gameplay_deployment_sha256:sha('js/app.bundle.js'),active_starters_sha256:sha('data/starter-decks/active-starters.v1.json'),active_starter_count:5,active_starter_reference:'OSA v1.9.2 Starter Deck Authority v1.6.1',runtime_authority_sha256:sha('js/runtime-authority.js'),runtime_source_browser_sha256:sha('runtime-source/runtime/browser/runtime-authority.browser.js'),
+  static_data_sha256:sha('js/static-data.js'),shared_battlefield_ui_js_sha256:sha('shared-ui/battlefield-ui.js'),shared_battlefield_ui_css_sha256:sha('shared-ui/battlefield-ui.css'),mobile_app_nav_sha256:sha('js/mobile-app-nav.js'),counter_asset_sha256:counters,
+  current_authority_status:'OSA v1.9.2 / Starter Deck Authority v1.6.1 / Shared Runtime v1.94.0 / UI Contract v2.52',playtest_lab_v014:'HISTORICAL_ONLY_NOT_ACTIVE_AUTHORITY'
 };
-for(const f of fs.readdirSync(path.join(ROOT,'sync')))if(/^runtime-sync-lock\.v/.test(f))fs.unlinkSync(path.join(ROOT,'sync',f));
-write('sync/runtime-sync-lock.v2.57.json',rootLock);
+moveIfExists('sync/runtime-sync-lock.v2.59.json','sync/history/runtime-sync-lock.v2.59.json');
+write('sync/runtime-sync-lock.v2.60.json',rootLock);
+const tutorialCounters={};for(let i=1;i<=6;i++)tutorialCounters[String(i)]=sha(`tutorial/assets/counters/Counter-${i}.png`);
 const tutorialLock={
-  schema:'GL-TUTORIAL-GITHUB-LOCK-0.67',version:'v0.67',tutorial:'v0.67',delivery:'GitHub Pages',base_vs_ai:'v6.41',date:'2026-09-14',
-  ...shared,scope:'Tutorial v0.67 shares Source Stack v1.8.2 gameplay with VS AI v6.41, keeps Draw teaching/runtime sequencing, adds explicit Ultimate Tribute Class Shard teaching, and uses portrait-mobile / landscape-desktop tablet presentation.',
-  app_bundle_sha256:sha('tutorial/js/app.bundle.js'),tutorial_guide_sha256:sha('tutorial/js/tutorial-guide.js'),tutorial_css_sha256:sha('tutorial/css/tutorial-guide.css'),
-  runtime_authority_sha256:sha('tutorial/js/runtime-authority.js'),static_data_sha256:sha('tutorial/js/static-data.js'),runtime_source_browser_sha256:sha('tutorial/runtime-source/runtime/browser/runtime-authority.browser.js'),
-  counter_asset_sha256:Object.fromEntries(Array.from({length:6},(_,i)=>[String(i+1),sha(`tutorial/assets/counters/Counter-${i+1}.png`)])),blade_asset_sha256:sha('tutorial/assets/battle/Blade.png'),
-  audio_assets:{coin_flip:{path:'assets/audio/Coin Flip.mp3',sha256:sha('tutorial/assets/audio/Coin Flip.mp3')},card_sound:{path:'assets/audio/Card Sound.mp3',sha256:sha('tutorial/assets/audio/Card Sound.mp3')}},
-  exp_stack_assets:{master:{path:'assets/exp/Stack 100-200EXP.png',sha256:sha('tutorial/assets/exp/Stack 100-200EXP.png'),sprite_halves:{left:100,right:200}}}
+  schema:'GL-TUTORIAL-GITHUB-LOCK-0.68',version:'v0.68',tutorial:'v0.68',base_vs_ai:'v6.42',delivery:'GitHub Pages',date:'2026-09-21',...shared,
+  visual_battlefield_baseline:'VS AI v6.42 / Shared Battlefield UI v2.52',runtime_source_role:'GENERATED_MIRROR_OF_ROOT_RUNTIME_SOURCE',
+  shared_app_bundle_sha256:sha('shared-app/app.bundle.js'),app_bundle_sha256:sha('tutorial/js/app.bundle.js'),active_starters_sha256:sha('data/starter-decks/active-starters.v1.json'),active_starter_count:5,tutorial_guide_sha256:sha('tutorial/js/tutorial-guide.js'),tutorial_css_sha256:sha('tutorial/css/tutorial-guide.css'),runtime_authority_sha256:sha('tutorial/js/runtime-authority.js'),static_data_sha256:sha('tutorial/js/static-data.js'),runtime_source_browser_sha256:sha('tutorial/runtime-source/runtime/browser/runtime-authority.browser.js'),shared_battlefield_ui_js_sha256:sha('shared-ui/battlefield-ui.js'),shared_battlefield_ui_css_sha256:sha('shared-ui/battlefield-ui.css'),counter_asset_sha256:tutorialCounters,
+  tutorial_scope:'Tutorial overlay/controller on the shared VS AI v6.42 battlefield/runtime baseline; lessons remain tutorial-specific.'
 };
-const tsync=path.join(ROOT,'tutorial','sync');fs.mkdirSync(tsync,{recursive:true});for(const f of fs.readdirSync(tsync))if(/^tutorial-github-lock\.v/.test(f))fs.unlinkSync(path.join(tsync,f));
-write('tutorial/sync/tutorial-github-lock.v0.67.json',tutorialLock);
-console.log('PASS: VS AI v6.41 / Tutorial v0.67 release locks updated for Source Stack v1.8.2 and mobile/tablet/Tutorial corrections.');
+write('tutorial/sync/tutorial-github-lock.v0.68.json',tutorialLock);
+console.log('PASS: current runtime sync v2.60 and Tutorial v0.68 consumer locks regenerated for OSA v1.9.2 / Starter v1.6.1.');

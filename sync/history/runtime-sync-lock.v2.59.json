@@ -1,0 +1,58 @@
+{
+  "schema": "GL-APPLICATION-RUNTIME-SYNC-2.59-CONSUMER",
+  "version": "v2.59",
+  "date": "2026-09-21",
+  "policy": "REFERENCE_OSA_CANONICAL_AUTHORITY_DO_NOT_REDEFINE",
+  "source_authority": "v1.9.1",
+  "canonical_card_authority": "v1.6.0",
+  "shared_runtime": "v1.94.0",
+  "runtime_data": "v0.16.0",
+  "effect_recipe": "v0.15.0",
+  "effect_checkpoint": "v0.15.0",
+  "hero_component_authority": "v1.1.0",
+  "starter60": "v1.6.0",
+  "starter_deck_authority": "v1.6.0",
+  "ui_contract": "v2.52",
+  "application_runtime_sync": "v2.59",
+  "canonical_registry_hash": "85d25ebda9bb2bc260983a566e6d430dde97bfc7a32e8042ec2fddfeaff1b42f",
+  "hero_component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
+  "publicResourceTerminology": {
+    "deck": "Shard Deck",
+    "standardShard": "Mana Shard",
+    "classShard": "Class Shard",
+    "pool": "Shard Pool"
+  },
+  "applications": {
+    "vs_ai": "v6.42",
+    "tutorial": "v0.68",
+    "deck_builder": "v1.31",
+    "pvp_reference": "v3.42",
+    "website_reference": "v1.31"
+  },
+  "visual_battlefield_baseline": "VS AI v6.42",
+  "runtime_source_tree": {
+    "osa_expected_hash": "b3a1cce980e382539eecccce3fd467ad55af8375a4a07393292270779e07a314",
+    "files": 67
+  },
+  "shared_gameplay_sha256": "53ecf0ea404497f2657d4eff0f83abe403061faa936d229b9c4f438e17de9fc7",
+  "shared_gameplay_deployment_sha256": "d84fa66605b177e92de303933616279b8c12e0691ef844be78c29fba785cf6bd",
+  "active_starters_sha256": "6e68ee64037fc1671dcc1d6b5bca2f4d57b8168ef0dbb6347d805590543332d0",
+  "active_starter_count": 5,
+  "active_starter_reference": "OSA v1.9.1 Starter Deck Authority v1.6.0",
+  "runtime_authority_sha256": "58a09b947a1d25b2e5e6018c6e0dac9508b5d534dd2a51192cd6dbaf2e1d4399",
+  "runtime_source_browser_sha256": "58a09b947a1d25b2e5e6018c6e0dac9508b5d534dd2a51192cd6dbaf2e1d4399",
+  "static_data_sha256": "10da3a93f1f42f53b3fd1d4a2a087bd6d079d364bf68e818afc2da6f70aadcb0",
+  "shared_battlefield_ui_js_sha256": "0f979a6ce1b997dcd74de6955da2fd6a9a9cc099e62271fcfb5bf7c07c7b9121",
+  "shared_battlefield_ui_css_sha256": "8abeb6eccf07d0e69635b6cf6f98602071b3e5ed5a395a8247bad05e6b81515e",
+  "mobile_app_nav_sha256": "5be991d8083c56f744f4499eb0f86031968d178dc55f5aacf8bcfcea3f6586d6",
+  "counter_asset_sha256": {
+    "1": "0163a05b27ab59f3a94cf379ccd5b61e69e9d0819fb3a56e79fc7e13e31a047a",
+    "2": "ad7f17e7ffe9290df4ed06810b6bd80417133e56a14eaa9a14cf8db3310d6bb4",
+    "3": "eef0182e7fe1824d0265d9e9419f2ea81ae594a374ba8ed3de56e9c1e90c21e3",
+    "4": "0b3169cb24c2b0e50aa72c2883c0dd970467915d5b48d2a74c2bc65a9e450c6a",
+    "5": "85f314ae9c68b8e05b27c08f89a9e208b12969e6cb113ef45acd2967928266de",
+    "6": "9b45066100db47a512cea48d91f277899eff1a1b03a97524a634a7b7a438a4ae"
+  },
+  "current_authority_status": "OSA v1.9.1 / Starter Deck Authority v1.6.0 / Shared Runtime v1.94.0 / UI Contract v2.52",
+  "playtest_lab_v014": "HISTORICAL_ONLY_NOT_ACTIVE_AUTHORITY"
+}

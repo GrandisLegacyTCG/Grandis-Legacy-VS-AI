@@ -1,0 +1,825 @@
+{
+  "schema_version": "GL-DECK-1.0",
+  "builder_version": "Starter60 v1.5 Source Stack v1.8.0",
+  "deck_name": "Starter 01 — Elemental Lord / Conqueror / Saint",
+  "display_name": "Starter 01 — Elemental Lord / Conqueror / Saint",
+  "preset_id": "starter_01_elemental_lord_conqueror_saint",
+  "format": "Grandis Legacy Season 1 / Starter60 v1.5 / 60-card Main Deck / max 3 normal / max 1 Ultimate",
+  "main_deck_count": 60,
+  "skill_count": 48,
+  "event_count": 6,
+  "item_count": 6,
+  "legacy_package_count": 3,
+  "legacy_deck_count": 12,
+  "legacy_deck_label": "Legacy Deck",
+  "legacy_deck_package_slots": [
+    {
+      "slot": "LEFT",
+      "progression": "S1-MAG-H001",
+      "legacy": "S1-MAG-L001",
+      "lineage": "VAELIS",
+      "package_name": "Elf Mage — VAELIS + Ancestral Tome"
+    },
+    {
+      "slot": "CENTER",
+      "progression": "S1-WAR-H001",
+      "legacy": "S1-WAR-L001",
+      "lineage": "DRAXEN",
+      "package_name": "Human Warrior — DRAXEN + Warrior's Relic"
+    },
+    {
+      "slot": "RIGHT",
+      "progression": "S1-CLE-H001",
+      "legacy": "S1-CLE-L001",
+      "lineage": "ELARA",
+      "package_name": "Elf Cleric — ELARA + Sun God Church"
+    }
+  ],
+  "legacy_deck_expanded": [
+    {
+      "card_id": "S1-MAG-H001",
+      "card_name": "Elf Mage",
+      "card_type": "Hero",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Mage — VAELIS + Ancestral Tome"
+    },
+    {
+      "card_id": "S1-MAG-H002",
+      "card_name": "Elf Elementalist",
+      "card_type": "Hero",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Mage — VAELIS + Ancestral Tome"
+    },
+    {
+      "card_id": "S1-MAG-H003",
+      "card_name": "Elf Elemental Lord",
+      "card_type": "Hero",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Mage — VAELIS + Ancestral Tome"
+    },
+    {
+      "card_id": "S1-MAG-L001",
+      "card_name": "Ancestral Tome",
+      "card_type": "Legacy",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Mage — VAELIS + Ancestral Tome"
+    },
+    {
+      "card_id": "S1-WAR-H001",
+      "card_name": "Human Warrior",
+      "card_type": "Hero",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Human Warrior — DRAXEN + Warrior's Relic"
+    },
+    {
+      "card_id": "S1-WAR-H002",
+      "card_name": "Human Gladiator",
+      "card_type": "Hero",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Human Warrior — DRAXEN + Warrior's Relic"
+    },
+    {
+      "card_id": "S1-WAR-H003",
+      "card_name": "Human Conqueror",
+      "card_type": "Hero",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Human Warrior — DRAXEN + Warrior's Relic"
+    },
+    {
+      "card_id": "S1-WAR-L001",
+      "card_name": "Warrior's Relic",
+      "card_type": "Legacy",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Human Warrior — DRAXEN + Warrior's Relic"
+    },
+    {
+      "card_id": "S1-CLE-H001",
+      "card_name": "Elf Cleric",
+      "card_type": "Hero",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Elf Cleric — ELARA + Sun God Church"
+    },
+    {
+      "card_id": "S1-CLE-H002",
+      "card_name": "Elf Priest",
+      "card_type": "Hero",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Elf Cleric — ELARA + Sun God Church"
+    },
+    {
+      "card_id": "S1-CLE-H003",
+      "card_name": "Elf Saint",
+      "card_type": "Hero",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Elf Cleric — ELARA + Sun God Church"
+    },
+    {
+      "card_id": "S1-CLE-L001",
+      "card_name": "Sun God Church",
+      "card_type": "Legacy",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Elf Cleric — ELARA + Sun God Church"
+    }
+  ],
+  "side_package_count": 3,
+  "side_deck_count": 12,
+  "side_deck_package_slots": [
+    {
+      "slot": "LEFT",
+      "progression": "S1-MAG-H001",
+      "legacy": "S1-MAG-L001",
+      "lineage": "VAELIS",
+      "package_name": "Elf Mage — VAELIS + Ancestral Tome"
+    },
+    {
+      "slot": "CENTER",
+      "progression": "S1-WAR-H001",
+      "legacy": "S1-WAR-L001",
+      "lineage": "DRAXEN",
+      "package_name": "Human Warrior — DRAXEN + Warrior's Relic"
+    },
+    {
+      "slot": "RIGHT",
+      "progression": "S1-CLE-H001",
+      "legacy": "S1-CLE-L001",
+      "lineage": "ELARA",
+      "package_name": "Elf Cleric — ELARA + Sun God Church"
+    }
+  ],
+  "side_deck_expanded": [
+    {
+      "card_id": "S1-MAG-H001",
+      "card_name": "Elf Mage",
+      "card_type": "Hero",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Mage — VAELIS + Ancestral Tome"
+    },
+    {
+      "card_id": "S1-MAG-H002",
+      "card_name": "Elf Elementalist",
+      "card_type": "Hero",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Mage — VAELIS + Ancestral Tome"
+    },
+    {
+      "card_id": "S1-MAG-H003",
+      "card_name": "Elf Elemental Lord",
+      "card_type": "Hero",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Mage — VAELIS + Ancestral Tome"
+    },
+    {
+      "card_id": "S1-MAG-L001",
+      "card_name": "Ancestral Tome",
+      "card_type": "Legacy",
+      "package_id": "LEFT-PACKAGE",
+      "package_name": "Elf Mage — VAELIS + Ancestral Tome"
+    },
+    {
+      "card_id": "S1-WAR-H001",
+      "card_name": "Human Warrior",
+      "card_type": "Hero",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Human Warrior — DRAXEN + Warrior's Relic"
+    },
+    {
+      "card_id": "S1-WAR-H002",
+      "card_name": "Human Gladiator",
+      "card_type": "Hero",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Human Warrior — DRAXEN + Warrior's Relic"
+    },
+    {
+      "card_id": "S1-WAR-H003",
+      "card_name": "Human Conqueror",
+      "card_type": "Hero",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Human Warrior — DRAXEN + Warrior's Relic"
+    },
+    {
+      "card_id": "S1-WAR-L001",
+      "card_name": "Warrior's Relic",
+      "card_type": "Legacy",
+      "package_id": "CENTER-PACKAGE",
+      "package_name": "Human Warrior — DRAXEN + Warrior's Relic"
+    },
+    {
+      "card_id": "S1-CLE-H001",
+      "card_name": "Elf Cleric",
+      "card_type": "Hero",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Elf Cleric — ELARA + Sun God Church"
+    },
+    {
+      "card_id": "S1-CLE-H002",
+      "card_name": "Elf Priest",
+      "card_type": "Hero",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Elf Cleric — ELARA + Sun God Church"
+    },
+    {
+      "card_id": "S1-CLE-H003",
+      "card_name": "Elf Saint",
+      "card_type": "Hero",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Elf Cleric — ELARA + Sun God Church"
+    },
+    {
+      "card_id": "S1-CLE-L001",
+      "card_name": "Sun God Church",
+      "card_type": "Legacy",
+      "package_id": "RIGHT-PACKAGE",
+      "package_name": "Elf Cleric — ELARA + Sun God Church"
+    }
+  ],
+  "is_valid": true,
+  "validation_issues": [],
+  "validation_warnings": [],
+  "main_deck": [
+    {
+      "card_id": "S1-MAG-004",
+      "card_name": "Mana Shield",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-005",
+      "card_name": "Mirror Image",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-006",
+      "card_name": "Meditation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-015",
+      "card_name": "Permafrost",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-017",
+      "card_name": "Frostfire Nova",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-018",
+      "card_name": "Double Casting",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-002",
+      "card_name": "Ice Lance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-008",
+      "card_name": "Frostbite",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-014",
+      "card_name": "Lightning Strike",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-MAG-011",
+      "card_name": "Ice Block",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-002",
+      "card_name": "Power Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-003",
+      "card_name": "Parry",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-004",
+      "card_name": "Cover Up",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-007",
+      "card_name": "Upward Thrust",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-008",
+      "card_name": "Wild Swing",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-009",
+      "card_name": "Rage Swing",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-WAR-010",
+      "card_name": "Rage Blast",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-011",
+      "card_name": "Side Step",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-012",
+      "card_name": "Deflect",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-014",
+      "card_name": "Final Grit",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-015",
+      "card_name": "Charge Attack",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-016",
+      "card_name": "Whirlwind",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-017",
+      "card_name": "Fiery Thrust",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-018",
+      "card_name": "Execute",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-002",
+      "card_name": "Sacred Bolt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-003",
+      "card_name": "Brilliant Radiance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-005",
+      "card_name": "Flash Heal",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-007",
+      "card_name": "Blessing of Wisdom",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-008",
+      "card_name": "Holy Fire",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-014",
+      "card_name": "Wrathful Radiance",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-CLE-011",
+      "card_name": "Holy Barrier",
+      "quantity": 2
+    },
+    {
+      "card_id": "S1-CLE-015",
+      "card_name": "Resurrection",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-016",
+      "card_name": "Sanctuary",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-017",
+      "card_name": "Lay on Hands",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-018",
+      "card_name": "Heaven’s Fury",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-004",
+      "card_name": "Purify",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-023",
+      "card_name": "Holy Light",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-012",
+      "card_name": "Binding Light",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-003",
+      "card_name": "Scouting",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-004",
+      "card_name": "Relentless Leveling",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-002",
+      "card_name": "Market Bargain",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-008",
+      "card_name": "Forged Alliance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-010",
+      "card_name": "Déjà vu",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-007",
+      "card_name": "Intercept",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-001",
+      "card_name": "Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-008",
+      "card_name": "Phoenix Feather",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-005",
+      "card_name": "Mana Catalyst",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-004",
+      "card_name": "Elixir",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-018",
+      "card_name": "Magic Compass",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-003",
+      "card_name": "Stamina Potion",
+      "quantity": 1
+    }
+  ],
+  "main_deck_expanded": [
+    {
+      "card_id": "S1-MAG-004",
+      "card_name": "Mana Shield",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-004",
+      "card_name": "Mana Shield",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-005",
+      "card_name": "Mirror Image",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-005",
+      "card_name": "Mirror Image",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-006",
+      "card_name": "Meditation",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-015",
+      "card_name": "Permafrost",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-015",
+      "card_name": "Permafrost",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-017",
+      "card_name": "Frostfire Nova",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-017",
+      "card_name": "Frostfire Nova",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-018",
+      "card_name": "Double Casting",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-002",
+      "card_name": "Ice Lance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-008",
+      "card_name": "Frostbite",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-008",
+      "card_name": "Frostbite",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-014",
+      "card_name": "Lightning Strike",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-014",
+      "card_name": "Lightning Strike",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-MAG-011",
+      "card_name": "Ice Block",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-002",
+      "card_name": "Power Slash",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-003",
+      "card_name": "Parry",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-004",
+      "card_name": "Cover Up",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-007",
+      "card_name": "Upward Thrust",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-007",
+      "card_name": "Upward Thrust",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-008",
+      "card_name": "Wild Swing",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-009",
+      "card_name": "Rage Swing",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-009",
+      "card_name": "Rage Swing",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-010",
+      "card_name": "Rage Blast",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-011",
+      "card_name": "Side Step",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-012",
+      "card_name": "Deflect",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-014",
+      "card_name": "Final Grit",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-015",
+      "card_name": "Charge Attack",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-016",
+      "card_name": "Whirlwind",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-017",
+      "card_name": "Fiery Thrust",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-WAR-018",
+      "card_name": "Execute",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-002",
+      "card_name": "Sacred Bolt",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-003",
+      "card_name": "Brilliant Radiance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-005",
+      "card_name": "Flash Heal",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-007",
+      "card_name": "Blessing of Wisdom",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-008",
+      "card_name": "Holy Fire",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-014",
+      "card_name": "Wrathful Radiance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-014",
+      "card_name": "Wrathful Radiance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-011",
+      "card_name": "Holy Barrier",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-011",
+      "card_name": "Holy Barrier",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-015",
+      "card_name": "Resurrection",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-016",
+      "card_name": "Sanctuary",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-017",
+      "card_name": "Lay on Hands",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-018",
+      "card_name": "Heaven’s Fury",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-004",
+      "card_name": "Purify",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-023",
+      "card_name": "Holy Light",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-CLE-012",
+      "card_name": "Binding Light",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-003",
+      "card_name": "Scouting",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-004",
+      "card_name": "Relentless Leveling",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-002",
+      "card_name": "Market Bargain",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-008",
+      "card_name": "Forged Alliance",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-010",
+      "card_name": "Déjà vu",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-EVT-007",
+      "card_name": "Intercept",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-001",
+      "card_name": "Health Potion",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-008",
+      "card_name": "Phoenix Feather",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-005",
+      "card_name": "Mana Catalyst",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-004",
+      "card_name": "Elixir",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-018",
+      "card_name": "Magic Compass",
+      "quantity": 1
+    },
+    {
+      "card_id": "S1-ITM-003",
+      "card_name": "Stamina Potion",
+      "quantity": 1
+    }
+  ],
+  "default_formation": {
+    "LEFT": "S1-MAG-H001",
+    "CENTER": "S1-WAR-H001",
+    "RIGHT": "S1-CLE-H001"
+  },
+  "source_database_version": "Source Stack v1.8.0 / Runtime Data v0.15.0",
+  "starter_pack_version": "Starter60 v1.5",
+  "notes": [
+    "Center Warrior lock: PASS.",
+    "Starter60 v0.9: team Events Coordination Attack / Defensive Formation require 3 different base classes; affected starters use Forged Alliance instead. Renegade module includes Elusive Escape x2 and Poison Mist x2.",
+    "Starter60 v1.3: every Skill has at least one legal user in the full three-Hero progression packages, including dual-class base access.",
+    "Starter60 v1.5: normal cards max 3 copies; Ultimate max 1. Shard Deck = 12; Class Shards derive from unique Ultimate Classes; Starting Mana 3 / Regen 1."
+  ],
+  "mana_deck": {
+    "size": 12,
+    "class_shards": [
+      "Mage",
+      "Warrior",
+      "Cleric"
+    ],
+    "class_shard_count": 3,
+    "generic_mana_shard_count": 9,
+    "starting_mana_cards": 3,
+    "starting_mana_regen": 1,
+    "maximum_mana_regen": 6,
+    "derived_from_ultimate_card_ids": [
+      "S1-MAG-018",
+      "S1-WAR-018",
+      "S1-CLE-018"
+    ]
+  },
+  "normal_copy_limit": 3,
+  "ultimate_copy_limit": 1
+}

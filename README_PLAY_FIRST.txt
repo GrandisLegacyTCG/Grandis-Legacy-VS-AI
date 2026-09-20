@@ -1,12 +1,10 @@
-GRANDIS LEGACY VS AI v6.36 + TUTORIAL v0.61
+GRANDIS LEGACY VS AI v6.42 + TUTORIAL v0.68
 
-1. Replace the repository contents with this package (keep .git).
-2. Commit and push.
-3. Run: npm run verify:stable
-4. Suggested commit: Release VS AI v6.36 / Tutorial v0.62 with Playtest v0.14 authority and Shard teaching
-
-Source Authority Stack: v1.8.2
-Season 1: 200 cards
-Public resource terminology: Shard Deck / Shard Pool / Mana Shard / Class Shard
-Canonical registry SHA-256: ce79e5a97c115507f68734887160b575840899056e1533488e3fddd3a11fec1f
-Hero components SHA-256: 487aa2620b5be99480a81d462082f1a35ee637ec2cc38ebf42b1bcf1103d06c9
+1. Open index.html for VS AI or tutorial/index.html for Tutorial.
+2. Active authority is Grandis Legacy OSA v1.9.2 / Starter Deck Authority v1.6.1 / Shared Runtime v1.94.0 / UI Contract v2.52.
+3. Use `npm run verify` before publishing a repository build.
+4. Current release documentation is in release/.
+5. Historical release documentation is preserved in release/history/.
+6. Playtest Lab v0.14 is historical evidence only, not active authority.
+7. Do not independently edit tutorial/runtime-source/runtime; it is a synchronized mirror of runtime-source/runtime.
+8. Do not create an independent Tutorial battlefield UI fork; both applications consume shared-ui/.

@@ -22,13 +22,13 @@ let r=b.completeOpeningFlow('PLAYER',{choice:'HEADS',outcome:'HEADS'}),s=r.snaps
 if(s.playerHand.length!==7||s.aiHand.length!==6)throw Error('opening counts player first');
 if(r.events.length!==13||r.events.filter(e=>e.reason==='OPENING_HAND').length!==12||r.events.filter(e=>e.reason==='MANDATORY_DRAW_PHASE').length!==1)throw Error('opening event count');
 if(s.presentationEvents.filter(e=>e.reason==='MANDATORY_DRAW_PHASE').length!==1)throw Error('player mandatory draw missing');
-if(s.cardsDrawnThisTurn.PLAYER!==1||s.cardsDrawnThisTurn.AI!==0)throw Error('player turn counter');
+if(s.cardsDrawnThisTurn.PLAYER!==0||s.cardsDrawnThisTurn.AI!==0)throw Error('non-Arbalest opening draw incorrectly increments Arbalest Draw This Turn counter');
 if(s.phase!=='Draw'||s.drawPhaseResolvedFor!=='PLAYER')throw Error('player first draw-phase gate');
 
 snap=b.startSharedMatch({});
 r=b.completeOpeningFlow('AI',{choice:'HEADS',outcome:'TAILS'});s=r.snapshot.appState;
 if(s.playerHand.length!==6||s.aiHand.length!==7)throw Error('opening counts AI first');
-if(s.cardsDrawnThisTurn.AI!==1||s.cardsDrawnThisTurn.PLAYER!==0)throw Error('AI turn counter');
+if(s.cardsDrawnThisTurn.AI!==0||s.cardsDrawnThisTurn.PLAYER!==0)throw Error('non-Arbalest AI opening draw incorrectly increments Arbalest Draw This Turn counter');
 if(s.turn!=='AI'||s.phase!=='Deploy')throw Error('AI first remained stuck in Draw');
 if(s.presentationEvents.filter(e=>e.reason==='MANDATORY_DRAW_PHASE'&&e.side==='AI').length!==1)throw Error('AI mandatory draw missing');
 const app=fs.readFileSync(path.join(pub,'js/app.bundle.js'),'utf8');
@@ -37,4 +37,4 @@ if(!app.includes('scaleX(.04)')||!app.includes('setTimeout(onComplete,1000)')||!
 for(const stale of ['>Reset Match<','id=\"resetMatchTop\"','id=\"mobileResetMatchButton\"','id=\"pvpResultResetRoom\"'])if(app.includes(stale))throw Error('visible Reset Match control remains: '+stale);
 if(!app.includes("advanceRoundAfterCompletedTurnPair(state,'AI')")||!app.includes("advanceRoundAfterCompletedTurnPair(state,'PLAYER')"))throw Error('paired-turn round advancement missing');
 if(app.includes('if(localSeat===2){ state.round=Number(state.round||1)+1; }'))throw Error('seat-based round increment remains');
-console.log('PASS Local AI opening flow, smooth held coin result, paired-turn Round 1 semantics, AI-first continuation, and no Reset Match control');
+console.log('PASS Local AI opening flow, mandatory Draw sequencing, Arbalest-only Draw This Turn semantics, paired-turn Round 1 semantics, AI-first continuation, and no Reset Match control');

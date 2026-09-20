@@ -1,5 +1,5 @@
 {
   "type": "commonjs",
-  "version": "1.93.0",
-  "description": "Grandis Legacy Runtime Foundation v1.93 / Runtime Core v0.61 \u2014 promoted Mana Deck, Actual Draw, Legacy Base Class, Range+Area, status stacking, and Playtest v0.14 authority."
+  "version": "1.94.0",
+  "description": "Grandis Legacy Shared Runtime v1.94.0 — Source Authority v1.9.0 canonical runtime with Attack Label/Damage Type separation, Triple Shot no-binding lifecycle, authoritative opponent blind selection, viewer-safe PvP serialization, and Shard payment-batch authority."
 }
