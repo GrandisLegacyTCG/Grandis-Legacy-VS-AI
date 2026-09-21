@@ -34,15 +34,15 @@
     "osa_expected_hash": "b0224acbb1bfd716c5917eabab804e551b307abd1b6fb72025b97d5007d04bb3",
     "files": 68
   },
-  "shared_gameplay_sha256": "5e8e6268f2085d2a17add6df4dcf525e3abc78764e7bc647d10931014a35b98f",
-  "shared_gameplay_deployment_sha256": "7814e3b319d2aaae8146d85aca70176db4f01dab270f781713d35abffc16f4f3",
+  "shared_gameplay_sha256": "8208fdc6726c539d5d47dfa156fb9439a22739a0ca482b7f352f67fde45d73a8",
+  "shared_gameplay_deployment_sha256": "581a6a250635f130e9ba49742f775300c341daa3e55153aed9a9db271836db91",
   "active_starters_sha256": "d0aa1d19280ab7e675222f562964cd1f49b612b247030549b9b4c95c2e024606",
   "active_starter_count": 5,
   "active_starter_reference": "OSA v1.9.3 / Starter Deck Authority v1.6.1 (unchanged compositions)",
   "runtime_authority_sha256": "58a09b947a1d25b2e5e6018c6e0dac9508b5d534dd2a51192cd6dbaf2e1d4399",
   "runtime_source_browser_sha256": "58a09b947a1d25b2e5e6018c6e0dac9508b5d534dd2a51192cd6dbaf2e1d4399",
   "static_data_sha256": "7b86f779744253999fa431b54adc6e87e88d19a134168e0d26d821c77886bf67",
-  "shared_battlefield_ui_js_sha256": "fa57a0b1c080a4968b52040ce601b5090f0f11b3ec6285e580427654e12880a9",
+  "shared_battlefield_ui_js_sha256": "2687a8521d2d6252a854de29ec579bf78a16d58302f24a7a38e816c452bcb0a6",
   "shared_battlefield_ui_css_sha256": "2b70d63c74081a8809b2a2d456ec1b620a9a078ab84f597c0607a928503a9378",
   "mobile_app_nav_sha256": "5be991d8083c56f744f4499eb0f86031968d178dc55f5aacf8bcfcea3f6586d6",
   "counter_asset_sha256": {

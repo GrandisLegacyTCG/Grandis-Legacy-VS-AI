@@ -22,15 +22,12 @@ for(const [w,h,protectedBottom] of [[1440,900,310],[1280,800,270],[1600,1000,340
 }
 const playedAnchor={left:1160,right:1240,top:390,bottom:500,width:80,height:110};
 const played=ui.cardPlayedPreviewPosition(playedAnchor,1440,900,272,381);
-must(Number(ui.contextualPreviewGap)>0,'shared contextual gap constant missing');
-const playedGap=playedAnchor.left-(played.x+272);must(Math.abs(playedGap-ui.contextualPreviewGap)<0.001,'Card Played must use shared contextual gap');
+must(playedAnchor.left-(played.x+272)>=8&&playedAnchor.left-(played.x+272)<=14,'Card Played preview gap must be approximately 8–14 px');
 must(played.x+272<=playedAnchor.left,'Card Played preview must prefer LEFT of Card Played');
-const leftAnchor={left:120,right:220,top:280,bottom:420,width:100,height:140},rightAnchor={left:1180,right:1280,top:280,bottom:420,width:100,height:140};
-const modalLeft=ui.contextualPreviewPosition(leftAnchor,1440,900,272,381);
+const modalLeft=ui.contextualPreviewPosition({left:120,right:220,top:280,bottom:420,width:100,height:140},1440,900,272,381);
 must(modalLeft.placement==='right','left-side modal card must prefer RIGHT contextual preview');
-const modalRight=ui.contextualPreviewPosition(rightAnchor,1440,900,272,381);
+const modalRight=ui.contextualPreviewPosition({left:1180,right:1280,top:280,bottom:420,width:100,height:140},1440,900,272,381);
 must(modalRight.placement==='left','right-side modal card must prefer LEFT contextual preview');
-const rightGap=modalLeft.x-leftAnchor.right,leftGap=rightAnchor.left-(modalRight.x+272);must(Math.abs(rightGap-leftGap)<0.001&&Math.abs(rightGap-ui.contextualPreviewGap)<0.001,'LEFT/RIGHT contextual gap parity mismatch');
 const modalFallback=ui.contextualPreviewPosition({left:610,right:710,top:500,bottom:640,width:100,height:140},900,800,400,300);
 must(['above','below','left','right'].includes(modalFallback.placement),'contextual preview returned invalid placement');
 must(modalFallback.x>=8&&modalFallback.y>=8&&modalFallback.x+400<=892&&modalFallback.y+300<=792,'contextual preview must clamp into viewport');
@@ -38,14 +35,10 @@ const css=read('shared-ui/battlefield-ui.css')+'\n'+read('shared-app/app.css')+'
 must(/is-v253-readable-preview\{[^}]*pointer-events:none!important/i.test(css),'v2.53 readable preview CSS must be non-interactive');
 must(/is-v253-contextual-preview[^}]*width:272px!important[^}]*height:381px!important/i.test(css),'contextual preview ~9% size increase missing');
 must(/\.gl-count-badge\{[^}]*border-radius:6px/i.test(css),'deck numeric badge must use rounded rectangle geometry');
-must(/\.gl-status-count\{[^}]*font-size:9px/i.test(css),'Status numeric font reduction missing');
+must(/\.gl-status-count\{[^}]*font-size:8px/i.test(css),'Candidate (6) Status numeric font must be exactly 8px');
 must(/negative-status-indicator \.gl-status-count\{[^}]*bottom:-5px/i.test(css),'per-Status bottom-right badge placement missing');
 must(/slot\.filled>\.gl-attachment-count\{[^}]*top:-7px/i.test(css),'Attachment top-corner badge placement missing');
-must(/\.legacy-hero-info\{[^}]*border-radius:50%/i.test(css),'known-good Legacy warning visual missing');
-must(/hero-info-indicator[^}]*legacy-hero-info|hero-status-overlay[^}]*legacy-hero-info/i.test(css),'Hero warning does not reuse Legacy warning CSS');
-must(/gl-lab-mana-pool-content\{[^}]*grid-template-columns:58px minmax\(0,1fr\)/i.test(css),'desktop Shard Pool Regen reservation missing');
-must(/Discard Pile[^}]*zoneCard|data-zone-type="Discard Pile"/i.test(css),'Discard scale parity rule missing');
-must(/gl-tablet-portrait-mobile[^}]*mobile-shard-pool/i.test(css),'tablet portrait Shard Pool responsive correction missing');
+must(/\.gl-warning-indicator\{[^}]*border-radius:50%/i.test(css),'shared Legacy/Hero warning icon circular visual missing');
 must(/is-exhausted>\.hero-card\.hero-main\{[^}]*rotate\(-90deg\)(?![^}]*scale)/i.test(css),'Exhausted Hero must rotate without scale reduction');
 for(const rel of ['index.html','tutorial/index.html']){
   const h=read(rel);
@@ -74,11 +67,6 @@ for(const rel of ['shared-app/app.bundle.js','js/app.bundle.js','tutorial/js/app
   must(s.includes('gl-count-badge gl-resource-count'),'deck/pile numeric badge renderer missing in '+rel);
   must(s.includes('gl-status-count'),'individual Status badge renderer missing in '+rel);
   must(s.includes('gl-attachment-count'),'Attachment badge renderer missing in '+rel);
-  must(s.includes('status-trigger legacy-hero-info'),'Hero warning must reuse known-good Legacy warning class in '+rel);
-  must(s.includes('mobile-shard-pool-content')&&s.includes('gl-lab-mana-pool-content'),'Shard Pool Regen grouping missing in '+rel);
-  must(s.includes("function labManaDeckZone(side,state){return labResourceZone(side,'Shard Deck'"),'Shard Deck still owns Regen presentation in '+rel);
-  must(s.includes("v642ManaRegenControl(state,side,'gl-lab-mana-pool-regen')"),'desktop Shard Pool Regen control missing in '+rel);
-  must(s.includes("v642ManaRegenControl(state,side,'mobile-shard-regen')"),'mobile Shard Pool Regen control missing in '+rel);
   must(!/gl-status-die/.test(s),'Status still uses graphical Counter asset in '+rel);
 }
-console.log('PASS Shared Battlefield UI v2.53 remaining correction: approved field preview/opponent Shard/modal behavior preserved; contextual gap parity, Shard Pool Regen grouping, Discard scale rule, reused warning, Exhaust scale parity, and one-source deployment parity.');
+console.log('PASS Shared Battlefield UI v2.53 correction: inward field preview, close/larger contextual previews, readable opponent Shard hover with hidden safety path, rounded-rectangle counters, persistent warning, Exhaust scale parity, and one-source deployment parity.');

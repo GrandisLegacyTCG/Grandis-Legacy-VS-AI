@@ -1,82 +1,79 @@
 # Grandis Legacy VS AI v6.42 / Tutorial v0.68
 
-Release date: 2026-09-21
+Release date: 2026-09-21  
+Correction candidate: **(6)**  
+Baseline: **(5)(1)**
 
-## Current authority baseline
+## Scope
 
-This corrected current release consumes **Grandis Legacy Source Authority v1.9.3** and keeps the application versions unchanged:
+Candidate (6) is a narrow correction pass on the existing VS AI v6.42 / Tutorial v0.68 release. It does not create a new application version and does not modify OSA, canonical card data, Starter Deck composition, Shared Runtime gameplay authority, PvP, Deck Builder, or unrelated UI.
 
-- VS AI v6.42 (`6.42.0`)
-- Tutorial v0.68 (`0.68.0`)
-- Canonical Card Authority v1.6.0 — 200 Season 1 cards
+Authority remains:
+
+- OSA v1.9.3
 - Shared Runtime v1.94.1
-- Runtime Data v0.16.0
-- Effect Recipe / Checkpoint v0.15.0 / v0.15.0
-- Hero Components v1.1.0
-- Starter Deck Authority v1.6.1 — exactly five active Starter Decks
 - UI Contract v2.53
 - Application Runtime Sync v2.61
+- Starter Deck Authority v1.6.1
+- 5 active Starter Decks
+- 200 canonical cards
 
-Canonical registry SHA256: `85d25ebda9bb2bc260983a566e6d430dde97bfc7a32e8042ec2fddfeaff1b42f`
+## Candidate (6) corrections
 
-Hero Component registry SHA256: `f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be`
+### Contextual card preview
 
-The five Starter Deck compositions remain unchanged. OSA, Runtime Data, Shared Runtime gameplay semantics, canonical card data, and PvP are not modified by this UI correction pass.
+- The already-approved standard battlefield preview X/Y position, Next Phase visibility, opponent readable Shard hover, hidden-Shard safety, and popup top-layer architecture are preserved.
+- Contextual previews now measure the **visible card artwork edge** rather than assuming the source wrapper edge is the card edge.
+- LEFT contextual placement uses the same effective visible edge-to-edge gap as the already-approved RIGHT placement.
+- Card Played remains LEFT-opening at **272 × 381 px**.
+- Legacy Deck, Full Card History, Response Window, Discard, and selection/choice popup previews remain above their modals.
 
-## 2026-09-21 UI-only correction pass — remaining issues
+### Responsive Mana Regen
 
-This correction keeps **VS AI v6.42 / Tutorial v0.68** and changes presentation only. No new release version is created.
+- Desktop and tablet landscape keep REGEN associated with the Shard Deck. REGEN plus its existing graphical Counter asset is fully contained inside the lower portion of the Shard Deck card back.
+- Phone and tablet portrait use the mobile Shard Pool grouping: REGEN occupies reserved space on the left and Shard cards start to its right.
+- The first Shard cannot overlap REGEN or the graphical Counter.
 
-### Already-approved UI preserved
+### Deck / pile / Status presentation
 
-The previously approved standard battlefield preview position remains unchanged: the current X/Y placement is preserved and Next Phase remains at least approximately 50% visible. Readable opponent face-up Mana/Shard hover remains enabled without revealing hidden Shard identity. Popup previews remain above modal stacking contexts. The approved rounded-rectangle Deck/Pile numeric badge visual and the 9 px per-Status numeric badge presentation remain unchanged.
+- The visible Discard top card uses the same card-footprint family as Legacy Deck, Shard Deck, and Main Deck without stretching its aspect ratio.
+- Status badge geometry, position, spacing, and one-badge-per-Status behavior are unchanged; only the numeral changes from **9 px to 8 px**.
+- On phone and tablet portrait, Legacy/Shard/Discard/Main count badges remain the approved rounded rectangles and are attached to the actual card/stack top-right. Titles remain readable and cards stay horizontally centered and contained.
 
-### Contextual preview gap parity
+### Warning and Legacy label alignment
 
-- Card Played remains LEFT-opening at 272×381 px.
-- Contextual placement now uses one shared effective horizontal gap for both LEFT and RIGHT placement.
-- The already-correct rendered RIGHT-side edge-to-edge gap is the reference; LEFT placement, including Card Played and modal cards, matches it within normal subpixel rendering tolerance.
-- Contextual previews remain `pointer-events:none`, viewport-clamped, immediately hidden on source mouseleave, and rendered above modal content.
+- Hero warning uses the same `gl-warning-indicator` visual authority as the already-correct Legacy/Attachment warning instead of a separate Hero approximation.
+- A Hero warning is visible immediately when active; Hero/container hover is not required.
+- Only hovering/focusing the warning icon reveals the information tooltip.
+- The warning stays fully inside the Hero container and the glyph remains centered.
+- Legacy name plus warning icon are treated as one centered horizontal group so short and long Legacy names remain visually centered against the Legacy card.
 
-### Shard Pool / Mana Regen layout
+### Shard entry presentation
 
-- Mana Regen is removed from the Shard Deck zone.
-- `REGEN` plus the existing graphical Counter asset is grouped with **Shard Pool** instead.
-- Shard Pool reserves a dedicated left area for Regen; actual Shards begin to the right and cannot overlap the Regen label/counter.
-- The existing graphical Counter asset system is unchanged; it is not replaced by the generic numeric badge.
-- Desktop, phone portrait, tablet portrait, and tablet landscape layouts are browser-checked for Regen/Shard separation.
+- The existing Shard-entry animation is reused for visible Shards that enter a Shard Pool through normal Draw and non-draw gain effects such as Steal, Meditation, Elf racial effects, and future gain paths using the same generic gain helper.
+- Multiple Shards animate sequentially with a short presentation delay.
+- This is presentation feedback only; Shard source, count, ownership, and gameplay resolution semantics are unchanged.
 
-### Deck/Pile presentation
+### Response ownership presentation/controller correction
 
-- The face-up Discard Pile card now uses the same visual footprint family as the other Deck/Pile cards while preserving normal card aspect ratio.
-- On phone/mobile presentation, Legacy Deck, Shard Deck, Discard Pile, and Main Deck count badges remain visually unchanged but are attached to the top-right of the card/stack rather than drifting toward the zone title.
-- Cards remain horizontally centered; the title stays readable. Slight bottom clipping is permitted where required by the compact mobile zone.
+- A player-interactive Response Window is shown only when the current response owner is PLAYER.
+- PLAYER → AI attacks/skills leave AI response priority to the AI controller; the player cannot choose No Response / Take Hit for AI.
+- AI → PLAYER attacks/skills still expose the player Response Window.
+- If a response chain legitimately returns priority to PLAYER, the player window is shown at that point.
+- Response legality and existing response-chain gameplay rules are unchanged.
 
-### Hero warning and Exhausted Hero
+### Tablet landscape
 
-- Hero warning now reuses the existing known-good Legacy/Attachment warning visual class instead of maintaining a separate recreated visual.
-- The circular dark/gold `!` is fully inside the Hero container and visible immediately whenever a warning condition exists.
-- Only the warning detail tooltip remains icon-hover/focus triggered; hovering the Hero elsewhere does not open the detail.
-- Ready and Exhausted Hero scale parity is re-verified. Exhausted remains the same base card scale with 90° rotation only; already-correct implementation is otherwise left untouched.
+- Tablet landscape remains visually desktop-like while using touch interaction.
+- Phase Tracker/sidebar sizing uses available viewport proportions to avoid overlap.
+- Tapping a Hand card opens the 250 × 350 right-side preview rather than an oversized battlefield-centered preview.
+- Compact Preview/Play/other Hand actions use a vertical button stack.
+- Deck/pile cards remain inside their zone boundaries; lower clipping is allowed where needed rather than spilling outside the zone.
 
-## Previously approved gameplay baseline remains unchanged
+## Preservation
 
-The already-approved v6.42 Hero-defeat lifecycle / Response-chain fix remains intact and was not changed by this pass. Existing Warp Scroll, Freeze/Freeze Bomb, Deflect, Shield Bash, Triple Shot, Attack-v-Damage classification, blind selection, AI logic, Starter Deck compositions, and other gameplay semantics remain unchanged.
+Ready/Exhausted Hero base-scale parity was browser-verified and was not needlessly rewritten. The approved battlefield preview, opponent Mana/Shard hover and hidden safety, popup z-index fix, numeric badge visual, and Status badge geometry are preserved.
 
-## Shared application / Tutorial parity
+## Verification
 
-`shared-app/app.bundle.js` and `shared-app/app.css` remain the shared VS AI/Tutorial application/UI sources. Tutorial-specific teaching remains additive in its guide/controller and guide stylesheet. Root/Tutorial deployment mirrors and the Tutorial Shared Runtime tree remain parity-checked during release verification.
-
-## Responsive behavior
-
-The established device boundaries remain intact:
-
-- desktop: mouse/hover battlefield with the corrected v2.53 preview system;
-- phone: native-scroll mobile presentation;
-- tablet portrait: mobile/touch presentation with essential Hero information visible without hover;
-- tablet landscape: desktop-style battlefield with touch-oriented interaction;
-- no tested responsive mode introduces horizontal page overflow or requires hover for essential touch-only information.
-
-## Validation
-
-The release is gated by current gameplay/AI/Tutorial regression, source/data immutability checks, generated-output reproducibility, real Chromium DOM/geometry tests for all requested UI corrections, root/Tutorial SHA-256 manifest verification, and final package hashing. See `VERIFICATION_v6.42_v0.68.md` for the recorded executable results.
+Candidate (6) is gated by root gameplay/AI/application regression, Tutorial v0.68 regression, real Chromium geometry/interaction verification, exact source-diff audit against baseline (5)(1), regenerated root/Tutorial manifests, archive integrity checking, and final SHA-256 package hashing. See `VERIFICATION_v6.42_v0.68.md` for the executable result.

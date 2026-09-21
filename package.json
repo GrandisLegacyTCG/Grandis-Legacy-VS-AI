@@ -15,7 +15,7 @@
     "test:tutorial": "cd tutorial && npm test",
     "verify": "npm run prepare:release && npm run check && npm run test:tutorial && npm run test:browser && npm run manifest && node tutorial/tests/run-manifest-verification.cjs && node tests/run-manifest-verification.cjs",
     "verify:stable": "npm run verify",
-    "test:browser": "node tests/run-v642-browser-ui.cjs"
+    "test:browser": "node tests/run-v642-browser-ui.cjs && node tests/run-v642-candidate6-browser.cjs"
   },
   "description": "Grandis Legacy VS AI v6.42 + Tutorial v0.68 \u2014 OSA v1.9.3 / Shared Runtime v1.94.1 / UI Contract v2.53 consumer"
 }
