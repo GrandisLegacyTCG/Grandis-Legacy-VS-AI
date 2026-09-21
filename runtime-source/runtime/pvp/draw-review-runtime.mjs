@@ -64,7 +64,7 @@ function updateDrawCounterCastings(state, side, cardsById) {
   for (const pending of state.pendingCastings) {
     if (!pending || pending.side !== side) continue;
     const card = cardsById[pending.card_id] || {};
-    // Runtime Data v0.16.0 exposes executable fields at the card root. Keep the
+    // Runtime Data v0.16.1 exposes executable fields at the card root. Keep the
     // canonical nested `rules` shape as a compatibility fallback, but never require it.
     const rules = card.rules || {};
     const legality = rules.legality || card.runtime_legality || card.legality || {};

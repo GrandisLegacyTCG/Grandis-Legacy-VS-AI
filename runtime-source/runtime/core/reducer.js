@@ -4907,7 +4907,7 @@ function buildSimpleModifierAttachment(pending, card, modifierType, amount, dura
     modifier_amount: amount,
     expire_timing: 'END_OF_RESTRICTED_PLAYER_TURN',
     expires_player_id: pending.player_id,
-    turns_remaining: duration || 1,
+    turns_remaining: (duration===null||typeof duration==='undefined')?1:Number(duration),
     duration: 'this_turn',
     effect_result: { amount, modifies: modifierType, expires: 'this_turn' }
   };
@@ -4935,13 +4935,13 @@ function applyV119ModifierEffect(next, pending, card, events) {
       restriction_type: 'ATTACHMENT_MODIFIER',
       modifier_type: 'TRIPLE_SHOT_AREA_CONVERSION',
       qualifying_card_ids: tripleShotPolicy.QUALIFYING_CARD_IDS.slice(),
-      lifecycle_mode: 'while_present_in_attachment_slot',
-      remaining_count: null,
-      turns_remaining: null,
-      tick_phase: null,
-      counter_mode: 'presence',
-      duration: 'while_attachment_remains_in_slot',
-      effect_result: { attack_label_override: 'Area Attack', active_while_attached: true, consumed_on_qualifying_attack: false }
+      lifecycle_mode: 'attachment_until_owner_turn_end',
+      remaining_count: 1,
+      turns_remaining: 1,
+      tick_phase: TICK_PHASE.END_PHASE,
+      counter_mode: 'countdown',
+      duration: 'this_turn',
+      effect_result: { attack_label_override: 'Area Attack', active_while_attached: true, consumed_on_qualifying_attack: false, expires: 'owner_end_phase' }
     };
   }
   addAttachmentWithCapacity(next, pending.player_id, attachment, pending.target_slot || pending.source_slot, events);

@@ -1,72 +1,48 @@
-# Grandis Legacy VS AI v6.42 / Tutorial v0.68
+# Grandis Legacy VS AI v6.42 / Tutorial v0.68 — Candidate (9)
 
 Release date: 2026-09-21  
-Stabilization candidate: **(8)**  
-Baseline: **(7)**
+Baseline: **Candidate (8)**  
+Application versions: **VS AI v6.42 / Tutorial v0.68**
 
 ## Scope
 
-Candidate (8) is the final narrow stabilization/root-cause pass before work moves to PvP. Application versions remain VS AI v6.42 and Tutorial v0.68. OSA, Shared Runtime authority, canonical card data, Starter Deck composition, PvP, Deck Builder, Mobile, and Tablet Portrait are not changed.
+Candidate (9) synchronizes VS AI/Tutorial to **Source Authority v1.9.4** and performs the final requested UI/CSS cleanup without a broad redesign. PvP and Deck Builder are not modified. Starter Deck composition remains unchanged.
 
-Authority remains OSA v1.9.3, Shared Runtime v1.94.1, UI Contract v2.53, Application Runtime Sync v2.61, Starter Deck Authority v1.6.1, 5 active Starter Decks, and 200 canonical cards.
+Active authority stack:
 
-## Candidate (8) corrections
+- OSA v1.9.4
+- Shared Runtime v1.94.2
+- Runtime Data v0.16.1
+- Effect Recipe v0.15.1
+- Effect Checkpoint v0.15.1
+- UI Contract v2.53
+- Application Runtime Sync v2.62
+- Starter Deck Authority v1.6.1 / 5 active starters
+- 200 canonical cards
 
-### Desktop contextual side preview
+## Attachment authority synchronization
 
-- Contextual previews use one shared side-placement algorithm anchored to the actual visible card element.
-- Card Played, Legacy popup, Full Card History, Response Window, Discard, and selection/choice contexts use the same rendered edge logic.
-- LEFT/RIGHT visible edge gaps are browser-measured and match within the required tolerance.
-- Battlefield quick preview remains a separate preserved system.
+- Triple Shot is no longer a presence-only/no-expiry exception. It is a canonical This-Turn Attachment with counter 1 and owner-End-Phase expiry.
+- Triple Shot still does not bind to one physical Poison Arrow/Burning Arrow card instance.
+- Attachment lifecycle fields are authority-defined; application fallback/hardcoding that conflicts with OSA is removed.
+- Countdown, multi-turn, Draw-checkpoint, Battle-checkpoint, progress/consume, Status-vs-Attachment, Hero-defeat cleanup, and final-Hero terminal behavior are covered by authority/runtime tests.
 
-### Legacy warning
+## UI/CSS cleanup
 
-- The duplicate Legacy warning render source is removed.
-- One warning condition produces exactly one warning DOM node.
-- The remaining warning stays on the same line as the Legacy name and the combined group stays centered.
+- Side previews anchor to the actual activated card element and use a single shared GAP with clamping only when necessary.
+- Legacy warning has a single render source and a single warning DOM node per condition.
+- Deck/Pile back-card sizing is consolidated to one visual footprint family.
+- The text `REGEN` is removed globally; only the existing graphical counter remains.
+- Desktop and Tablet Landscape Regen counter is centered against the Shard Deck card. Mobile/Tablet Portrait retain their approved vertical region with the graphical counter centered in-slot.
+- Mobile/Tablet Portrait count badges use badge-center = card top-right corner geometry.
+- Tablet Landscape Shard Deck count uses the same corner relationship.
+- Tablet Landscape Shards render at 80–85% of the Hand reference width.
+- Live battlefield tablet taps use one coherent routing path: first tap Quick Preview, second same-card activation Detail. Inspection/modal cards may open Detail directly. Play/Tribute remain direct actions.
+- Obsolete tablet preview remnants and stale competing touched-feature rules are removed instead of hidden behind another override layer.
 
-### Desktop Shard Deck REGEN
+## Preserved behavior
 
-- REGEN text and the existing graphical counter are one composite group centered against the Shard Deck card back.
-- Shard Deck card position, counter artwork, count badge, and zone title are unchanged.
-
-### Tablet landscape lobby
-
-- Lobby uses normal page-level vertical scrolling where content exceeds the viewport.
-- The 1024×768 family can actually scroll and reach Start Game; larger tested landscape viewports remain reachable without forced inner scrolling.
-- Mobile and Tablet Portrait lobby behavior remains locked.
-
-### Tablet landscape Phase Tracker
-
-- Obsolete competing landscape overrides were removed so one compact touch-tablet rule controls vertical fit.
-- End Phase remains its own row; Reposition/Cancel remain separate from progression.
-- Next Phase stays visible, hit-testable, and actually advances the phase.
-- End Turn is visible/reachable/hit-testable when the phase is End.
-
-### Tablet landscape Shard Deck REGEN
-
-- Tablet landscape uses the existing graphical REGEN counter only; the REGEN text is omitted in this device mode.
-- Counter is centered in the upper/upper-middle card area and remains inside the Shard Deck card even when the lower card is cropped.
-- Desktop retains the REGEN + counter composite group; Mobile/Tablet Portrait remain unchanged.
-
-### Tablet landscape Shard Pool scale
-
-- Shard cards use the canonical tablet-landscape sizing rule at approximately 82.5% of the rendered Hand-card reference width.
-- Aspect ratio is preserved and Hero/Hand/deck-back sizes are not changed by this correction.
-
-### Tablet landscape tap routing
-
-- Battlefield first tap opens Quick Preview only.
-- Second tap on the same battlefield card opens Detail Preview.
-- First tap on a different battlefield card switches Quick Preview without opening Detail.
-- Hand, Card Played, Legacy popup, and other non-battlefield cards open Detail on the first tap.
-- Explicit Play actions remain actions and do not count as preview taps.
-- No separate Preview button is introduced.
-
-### Last-Hero terminal state
-
-Candidate (7) already passes the required generic terminal lifecycle: final Hero defeated by Poison ends the match correctly for either side, non-final Poison defeat continues, Hero-bound cleanup completes before terminal evaluation, direct lethal still works, and no End Phase stall occurs. Therefore Candidate (8) makes **no gameplay production-code change** for this item.
-
-## Preservation
-
-Desktop Deck/Pile card centering, battlefield quick preview, Hero/Hand layout, desktop Phase Tracker, deck/pile geometry, numeric badge visual, Mobile, Tablet Portrait, canonical gameplay/data, OSA, PvP, and Deck Builder remain outside this pass and are preserved.
+- Battlefield quick preview remains unchanged.
+- Tablet Landscape Phase Tracker and Lobby scroll remain on their approved Candidate (8) behavior.
+- Hidden opponent information, popup stacking, Response ownership, Shard gain animation, and final-Hero terminal evaluation remain protected.
+- VS AI stays v6.42 and Tutorial stays v0.68.

@@ -1,5 +1,5 @@
 {
   "type": "commonjs",
-  "version": "1.94.1",
-  "description": "Grandis Legacy Shared Runtime v1.94.1 — Source Authority v1.9.3 generic Hero-defeat pending-state lifecycle hotfix; preserves Attack Label/Damage Type separation, Triple Shot no-binding lifecycle, opponent blind selection, viewer-safe serialization, and Shard payment-batch authority."
+  "version": "1.94.2",
+  "description": "Grandis Legacy Shared Runtime v1.94.2 \u2014 Source Authority v1.9.4 attachment lifecycle correction with Triple Shot this-turn countdown and explicit null-safe policies."
 }

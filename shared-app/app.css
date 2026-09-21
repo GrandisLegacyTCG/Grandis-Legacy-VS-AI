@@ -5369,50 +5369,6 @@ body.deck-setup-active{
   }
 }
 
-/* ========================================================================== */
-/* Grandis Legacy VS AI v5.58 — mobile Legacy control anchor consistency.     */
-/* Desktop keeps the approved Legacy name-row info button. On mobile, the     */
-/* Legacy info control shares the Hero slot's fixed top-left anchor while the */
-/* contextual action remains fixed at top-right.                              */
-/* ========================================================================== */
-.v96-app .legacy-hero-info--mobile{display:none!important}
-@media(max-width:760px){
-  .v96-app .legacy-name-bar .legacy-hero-info--desktop{display:none!important}
-  .v96-app .hero-stage.legacy-stage>.legacy-hero-info--mobile{
-    position:absolute!important;
-    display:grid!important;
-    place-items:center!important;
-    left:3px!important;
-    right:auto!important;
-    top:2px!important;
-    z-index:221!important;
-    width:18px!important;
-    height:18px!important;
-    min-width:18px!important;
-    min-height:18px!important;
-    margin:0!important;
-    padding:0!important;
-    border:1px solid #c5a33a!important;
-    border-radius:50%!important;
-    background:#101824!important;
-    color:#ffd45f!important;
-    font-size:10px!important;
-    font-weight:950!important;
-    line-height:1!important;
-    box-shadow:0 1px 5px rgba(0,0,0,.55)!important;
-  }
-  .v96-app .hero-stage.legacy-stage>.mobile-hero-action-trigger{
-    left:auto!important;
-    right:3px!important;
-    top:2px!important;
-  }
-}
-@media(min-width:761px){
-  .v96-app .legacy-hero-info--desktop{display:inline-flex!important}
-  .v96-app .legacy-hero-info--mobile{display:none!important}
-}
-
-
 /* PvP v2.6.11 final lock: battlefield card hover preview size without changing its card-relative anchor. */
 @media (min-width:761px){
   .hover-card-zoom{width:250px!important;height:350px!important;max-width:250px!important;max-height:350px!important;aspect-ratio:5/7!important}
@@ -6388,7 +6344,7 @@ body:has(.v96-app.mobile-restored-layout) #glMobileAppMenu{display:none!importan
 
 
 /* ================================================================
-   OSA v1.9.3 / UI Contract v2.53 — final shared battlefield baseline
+   OSA v1.9.4 / UI Contract v2.53 — shared battlefield baseline
    ================================================================ */
 #hoverCardZoom.is-v253-readable-preview,
 #hoverCardZoom.is-card-played-hover{width:250px!important;height:350px!important;pointer-events:none!important;z-index:5000!important;}
@@ -6411,12 +6367,6 @@ body:has(.v96-app.mobile-restored-layout) #glMobileAppMenu{display:none!importan
 .gl-lab-zone .gl-lab-zone-label{line-height:1.05!important;margin:0!important;}
 .gl-lab-zone .zoneCard{width:min(80px,100%)!important;height:auto!important;aspect-ratio:5/7!important;margin:0 auto!important;}
 .gl-lab-zone .zoneCard img{width:100%!important;height:100%!important;object-fit:contain!important;}
-
-/* The warning icon itself is persistent; only its detail bubble is hover/focus-driven. */
-.hero-info-indicator>.status-trigger{opacity:1!important;visibility:visible!important;display:inline-flex!important;}
-.hero-info-indicator .hero-indicator-tooltip{opacity:0;visibility:hidden;pointer-events:none;}
-.hero-info-indicator:hover .hero-indicator-tooltip,.hero-info-indicator:focus-within .hero-indicator-tooltip{opacity:1;visibility:visible;}
-.hero-card:hover~.hero-indicator-tooltip{opacity:0;visibility:hidden;}
 
 @media(max-width:760px),(hover:none),(pointer:coarse){
   #hoverCardZoom.is-v253-readable-preview,#hoverCardZoom.is-card-played-hover{display:none!important;}
@@ -6444,7 +6394,6 @@ body:has(.v96-app.mobile-restored-layout) #glMobileAppMenu{display:none!importan
 
 /* Restore the approved warning visual and make its condition state visible before hover. */
 .v96-app .hero-status-overlay{top:6px!important;left:6px!important;overflow:visible!important;}
-/* Candidate (6) removes the old Hero-specific warning recreation; the button reuses .legacy-hero-info / .gl-warning-indicator below. */
 .v96-app .hero-info-indicator .hero-indicator-tooltip{opacity:0!important;visibility:hidden!important;pointer-events:none!important;}
 .v96-app .hero-info-indicator:hover .hero-indicator-tooltip,.v96-app .hero-info-indicator:focus-within .hero-indicator-tooltip{opacity:1!important;visibility:visible!important;display:block!important;}
 
@@ -6458,10 +6407,7 @@ html.gl-tablet-portrait-mobile .v96-app .hero-status-overlay>.mobile-status-summ
   pointer-events:auto!important;
 }
 
-/* ================================================================
-   2026-09-21 candidate (6) narrow correction pass
-   ================================================================ */
-/* Status geometry is frozen; candidate (6) changes the numeral only: 9px -> 8px. */
+/* Status geometry is frozen; only the 8px numeral is authoritative. */
 .gl-status-count{font-size:8px!important;}
 
 /* One warning visual authority: Hero information now reuses the exact Legacy warning class. */
@@ -6493,7 +6439,7 @@ html.gl-tablet-portrait-mobile .v96-app .hero-status-overlay>.mobile-status-summ
 .v96-app .legacy-name-group{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;max-width:100%!important;min-width:0!important;}
 .v96-app .legacy-name-group>small{min-width:0!important;}
 
-/* Mobile/tablet-portrait Shard Pool reserves real space for REGEN on the left. */
+/* Mobile/tablet-portrait Shard Pool keeps the graphical Mana Regen counter in its existing left slot. */
 @media(max-width:760px){
   .v96-app.mobile-restored-layout .mobile-shard-pool-content{
     width:100%!important;height:100%!important;display:flex!important;align-items:stretch!important;min-width:0!important;
@@ -6501,10 +6447,9 @@ html.gl-tablet-portrait-mobile .v96-app .hero-status-overlay>.mobile-status-summ
   }
   .v96-app.mobile-restored-layout .mobile-shard-regen{
     width:43px!important;min-width:43px!important;flex:0 0 43px!important;height:38px!important;
-    display:flex!important;align-items:center!important;justify-content:center!important;gap:1px!important;
+    display:grid!important;place-items:center!important;
     border-right:1px solid rgba(215,184,95,.16)!important;pointer-events:none!important;overflow:hidden!important;
   }
-  .v96-app.mobile-restored-layout .mobile-shard-regen small{font-size:5px!important;line-height:6px!important;color:#e2c867!important;font-weight:900!important;}
   .v96-app.mobile-restored-layout .mobile-shard-regen img{width:22px!important;height:22px!important;flex:0 0 22px!important;object-fit:contain!important;}
   .v96-app.mobile-restored-layout .mobile-shard-pool-content>.mobile-shard-scroll{
     flex:1 1 auto!important;width:auto!important;min-width:0!important;height:38px!important;
@@ -6513,13 +6458,13 @@ html.gl-tablet-portrait-mobile .v96-app .hero-status-overlay>.mobile-status-summ
   /* Deck/Pile stack wrapper equals the visible card footprint so the count is attached to the actual card. */
   .v96-app.mobile-restored-layout .zone:not(.zone--mana) .zoneCard{
     width:46px!important;height:64px!important;min-width:46px!important;min-height:64px!important;max-width:46px!important;max-height:64px!important;
-    margin:4px auto 0!important;align-self:start!important;overflow:visible!important;aspect-ratio:5/7!important;
+    margin:7px auto 0!important;align-self:start!important;overflow:visible!important;aspect-ratio:5/7!important;
   }
   .v96-app.mobile-restored-layout .zone:not(.zone--mana) .zoneCard>img{
     width:46px!important;height:64px!important;max-width:46px!important;max-height:64px!important;object-fit:contain!important;object-position:center!important;
   }
   .v96-app.mobile-restored-layout .zone:not(.zone--mana) .zoneCard>.gl-resource-count{
-    top:-4px!important;right:-4px!important;bottom:auto!important;left:auto!important;
+    top:0!important;right:0!important;bottom:auto!important;left:auto!important;transform:translate(50%,-50%)!important;
   }
   .v96-app.mobile-restored-layout .zone:not(.zone--mana){overflow:hidden!important;align-content:start!important;}
   /* Face-up Discard uses the same card footprint as the back-facing Deck zones. */
@@ -6528,24 +6473,21 @@ html.gl-tablet-portrait-mobile .v96-app .hero-status-overlay>.mobile-status-summ
 
 /* Tablet portrait is physically wider than the mobile CSS tier in some engines; enforce the same contract. */
 html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-pool-content{width:100%!important;height:100%!important;display:flex!important;align-items:stretch!important;min-width:0!important;padding-top:8px!important;}
-html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-regen{width:43px!important;min-width:43px!important;flex:0 0 43px!important;height:38px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:1px!important;border-right:1px solid rgba(215,184,95,.16)!important;pointer-events:none!important;overflow:hidden!important;}
-html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-regen small{font-size:5px!important;color:#e2c867!important;font-weight:900!important;}
+html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-regen{width:43px!important;min-width:43px!important;flex:0 0 43px!important;height:38px!important;display:grid!important;place-items:center!important;border-right:1px solid rgba(215,184,95,.16)!important;pointer-events:none!important;overflow:hidden!important;}
 html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-regen img{width:22px!important;height:22px!important;object-fit:contain!important;}
 html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-pool-content>.mobile-shard-scroll{flex:1 1 auto!important;width:auto!important;min-width:0!important;height:38px!important;padding:1px 52px 1px 3px!important;}
-/* Candidate (6): tablet portrait uses the same Deck/Pile card/count containment contract as mobile. */
 html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .zone:not(.zone--mana) .zoneCard{
   width:46px!important;height:64px!important;min-width:46px!important;min-height:64px!important;max-width:46px!important;max-height:64px!important;
-  margin:4px auto 0!important;align-self:start!important;overflow:visible!important;aspect-ratio:5/7!important;
+  margin:7px auto 0!important;align-self:start!important;overflow:visible!important;aspect-ratio:5/7!important;
 }
 html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .zone:not(.zone--mana) .zoneCard>img{
   width:46px!important;height:64px!important;max-width:46px!important;max-height:64px!important;object-fit:contain!important;object-position:center!important;
 }
 html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .zone:not(.zone--mana) .zoneCard>.gl-resource-count{
-  top:-4px!important;right:-4px!important;bottom:auto!important;left:auto!important;
+  top:0!important;right:0!important;bottom:auto!important;left:auto!important;transform:translate(50%,-50%)!important;
 }
 html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .zone:not(.zone--mana){overflow:hidden!important;align-content:start!important;}
 
-/* Candidate (6): tablet portrait explicitly inherits the mobile battlefield geometry, not the desktop resource grid. */
 html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-field{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:4px!important;height:auto!important;overflow:visible!important;padding:0!important;}
 html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-field.field--opponent{grid-template-rows:70px 48px 218px!important;}
 html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-field.field--player{grid-template-rows:218px 48px 70px!important;}

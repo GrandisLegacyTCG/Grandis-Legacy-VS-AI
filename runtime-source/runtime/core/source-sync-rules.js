@@ -3,7 +3,7 @@
 /**
  * Grandis Legacy source-sync gameplay locks for Local AI and PvP Railway.
  * These helpers encode shared cross-build policy only; card values come from
- * Season1 Runtime Data v0.16.0 / Effect Recipe v0.15.0 generated from Source Authority v1.9.0.
+ * Season1 Runtime Data v0.16.1 / Effect Recipe v0.15.1 generated from Source Authority v1.9.4.
  */
 
 const BASE_CLASSES = Object.freeze(['Warrior', 'Mage', 'Cleric', 'Thief', 'Archer']);

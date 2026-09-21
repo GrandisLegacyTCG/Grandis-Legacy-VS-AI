@@ -1,7 +1,7 @@
 'use strict';
 const reducer=require('../../runtime-source/runtime/core/reducer.js');
-const cards=require('../../data/season1/cards.runtime.v0.16.0.json');
-const recipes=require('../../data/season1/effect-recipes.runtime.v0.15.0.json');
+const cards=require('../../data/season1/cards.runtime.v0.16.1.json');
+const recipes=require('../../data/season1/effect-recipes.runtime.v0.15.1.json');
 function stateWith(sourceHero='S1-ARC-H001', opponentHeroes=['S1-WAR-H001']){
   const oppSlots=opponentHeroes.length===1?['Center']:['Left','Center','Right'];
   const s=reducer.createInitialRuntimeState({player_id:'P1',opponent_id:'P2',runtime_data:{cards:cards.cards,effect_recipes:recipes},player_deck:{starting_hero_ids:[{slot:'Center',card_id:sourceHero}]},opponent_deck:{starting_hero_ids:opponentHeroes.map((card_id,i)=>({slot:oppSlots[i]||'Center',card_id}))}});

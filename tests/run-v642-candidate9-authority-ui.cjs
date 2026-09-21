@@ -1,0 +1,38 @@
+'use strict';
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const ROOT=path.resolve(__dirname,'..');
+const read=r=>fs.readFileSync(path.join(ROOT,r),'utf8');
+const json=r=>JSON.parse(read(r));
+const app=read('shared-app/app.bundle.js');
+const appCss=read('shared-app/app.css');
+const fieldCss=read('shared-app/battlefield-authority.css');
+const allCss=appCss+'\n'+fieldCss;
+const pkg=json('package.json'),tpkg=json('tutorial/package.json');
+assert.strictEqual(pkg.version,'6.42.0');assert.strictEqual(tpkg.version,'0.68.0');
+const stack=json('data/config/active-runtime-source-stack.v1.94.json');
+assert.deepStrictEqual({osa:stack.source_authority,shared:stack.shared_runtime,data:stack.runtime_data,recipe:stack.effect_recipe,checkpoint:stack.effect_checkpoint,sync:stack.application_runtime_sync,ui:stack.ui_contract,starter:stack.starter60},{osa:'v1.9.4',shared:'v1.94.2',data:'v0.16.1',recipe:'v0.15.1',checkpoint:'v0.15.1',sync:'v2.62',ui:'v2.53',starter:'v1.6.1'});
+const cards=json('data/season1/cards.runtime.v0.16.1.json').cards;
+const persistent=cards.filter(c=>c?.staging?.requires_attachment_slot===true);
+assert.strictEqual(persistent.length,24,'Expected 24 authority-defined persistent attachment cards');
+for(const c of persistent){
+  const p=c.attachment_policy||c?.canonical_execution?.attachment_policy||c?.structured_execution?.attachment_policy||c?.raw_locked_definition?.attachment_policy;
+  assert(p&&p.persistent===true,c.card_id+' missing explicit persistent attachment policy');
+  for(const k of ['host','role','counter_required','remaining_count','tick_phase','counter_mode','lifecycle_mode']) assert(Object.prototype.hasOwnProperty.call(p,k),c.card_id+' missing '+k);
+}
+const triple=cards.find(c=>c.card_id==='S1-ARC-013');
+const tp=triple.attachment_policy||triple?.canonical_execution?.attachment_policy||triple?.structured_execution?.attachment_policy||triple?.raw_locked_definition?.attachment_policy;
+assert(tp&&tp.persistent===true&&tp.counter_required===true&&Number(tp.remaining_count)===1&&tp.tick_phase==='END_PHASE'&&tp.counter_mode==='countdown'&&tp.lifecycle_mode==='attachment_until_owner_turn_end','Triple Shot authority consumer policy mismatch');
+assert(!/triple_shot_bind/i.test(app),'Stale Triple Shot physical-card binding remains in application source');
+assert(!/remaining_count\s*\|\|\s*1/.test(app),'Unsafe remaining_count || 1 fallback remains in application source');
+assert.strictEqual((app.match(/var legacyWarning=/g)||[]).length,1,'Legacy warning must have exactly one render source');
+assert(!/legacy-hero-info--(?:mobile|desktop)/.test(app),'Obsolete Legacy warning render variants remain');
+assert(!/touch-tablet-preview|gl-tablet-hand-actions/.test(app+allCss),'Obsolete tablet Preview button/portal implementation remains');
+assert(!/<small[^>]*>\s*REGEN\s*<\/small>|>\s*REGEN\s*</i.test(app),'Rendered REGEN text remains');
+assert(!/Candidate\s*\(9\)/i.test(allCss),'Candidate (9) patch block must not exist in final CSS');
+assert(!/Specificity lock/i.test(allCss),'Obsolete specificity-lock CSS remains');
+assert.strictEqual((fieldCss.match(/html\.gl-ui-tablet\.gl-tablet-landscape-desktop \.gl-lab-mana-card\s*\{/g)||[]).length,1,'Tablet Shard sizing must have one canonical rule');
+assert.strictEqual((fieldCss.match(/\.gl-lab-zone\[data-zone-type="Shard Deck"\] \.zoneCard>\.gl-lab-mana-regen\s*\{/g)||[]).length,1,'Desktop/tablet Regen positioning must have one canonical rule');
+const newImportantDelta=(allCss.match(/!important/g)||[]).length;
+assert(newImportantDelta>0,'Stylesheet unexpectedly empty of legacy important rules');
+const qa=app.match(/tripleShotThisTurnLifecycle:true/);assert(qa,'Application integration QA does not expose Triple Shot this-turn lifecycle gate');
+console.log('PASS Candidate (9) authority/UI architecture: OSA v1.9.4 sync, 24 explicit attachment policies, Triple Shot counter-1 End-Phase lifecycle, no stale binding/fallback, one Legacy warning render source, no REGEN text, no obsolete tablet Preview system, canonical Shard/Regen rules.');

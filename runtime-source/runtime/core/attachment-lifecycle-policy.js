@@ -34,14 +34,14 @@ function policyForCard(cardOrId,sourceClassName,explicitRecord){
   const policy=attachmentPolicy(card);
   if(policy&&policy.persistent){
     if(id==='S1-CLE-009'&&sourceClassName!=null&&!['priest','saint'].includes(normalizeClass(sourceClassName)))return null;
-    if(id==='S1-ARC-013') return {tick_phase:null,remaining_count:null,counter_mode:'presence',role:policy.role||'modifier',host:policy.host||'source_hero',exact_once_zone_movement:true,duration_rule:'active_while_attachment_remains_in_slot'};
-    let count=policy.remaining_count;
+        let count=policy.remaining_count;
     if(count==='dynamic'){
       if(id==='S1-CLE-018')count=normalizeClass(sourceClassName)==='priest'?2:1;
       else if(id==='S1-MAG-018')count=normalizeClass(sourceClassName)==='elementalist'?2:1;
       else count=1;
     }
-    return {tick_phase:policy.tick_phase,remaining_count:Number(count||1),counter_mode:policy.counter_mode||'countdown',role:policy.role||'ongoing',host:policy.host||'source_hero',exact_once_zone_movement:policy.exact_once_zone_movement!==false};
+    const remaining=(count===null||count===undefined)?null:Number(count);
+    return {tick_phase:policy.tick_phase??null,remaining_count:remaining,counter_mode:policy.counter_mode||(remaining===null?'presence':'countdown'),role:policy.role||'ongoing',host:policy.host||'source_hero',lifecycle_mode:policy.lifecycle_mode||null,duration_rule:policy.duration_rule||null,counter_required:policy.counter_required===true,zone_after_leave:policy.zone_after_leave||'Discard Pile',effect_cleanup:policy.effect_cleanup||null,exact_once_zone_movement:policy.exact_once_zone_movement!==false};
   }
   return null;
 }

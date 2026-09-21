@@ -2,7 +2,7 @@
   "name": "grandis-legacy-tutorial",
   "version": "0.68.0",
   "private": true,
-  "description": "Grandis Legacy Tutorial v0.68 \u2014 VS AI v6.42 shared battlefield/runtime baseline, OSA v1.9.3 / Shared Runtime v1.94.1 / UI Contract v2.53 consumer",
+  "description": "Grandis Legacy Tutorial v0.68 \u2014 VS AI v6.42 shared battlefield/runtime baseline, OSA v1.9.4 / Shared Runtime v1.94.2 / UI Contract v2.53 consumer",
   "scripts": {
     "build:data": "node ../tools/build-static-data.cjs",
     "metadata": "node ../tools/update-release-metadata.cjs",

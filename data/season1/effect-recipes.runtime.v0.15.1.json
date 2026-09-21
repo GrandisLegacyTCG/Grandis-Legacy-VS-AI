@@ -1,8 +1,8 @@
 {
-  "schema_version": "0.15.0",
-  "generated_at": "2026-09-20",
+  "schema_version": "0.15.1",
+  "generated_at": "2026-09-21",
   "generated_from": "Authority/Game/Cards/cards.canonical.v1.6.0.json",
-  "canonical_registry_hash": "85d25ebda9bb2bc260983a566e6d430dde97bfc7a32e8042ec2fddfeaff1b42f",
+  "canonical_registry_hash": "7ac1f90f6a9654cf575ac41db64a052901005905b1cf01f3bfc7532873cc9389",
   "hero_component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
   "generated_only": true,
   "count": 200,
@@ -19900,7 +19900,7 @@
       "name": "Arcane Scroll",
       "card_family": "Item",
       "card_subtype": "Item",
-      "canonical_hash": "2398c6007f24cb7fb192d9f5d7ade0fe1867323d4cb54d4d398e3b7766f20dca",
+      "canonical_hash": "af3918e947517ec9358cfb65c39f46077509fafa274b4723041f40d926e88c82",
       "timing": {
         "phase_or_window": "Deploy Phase",
         "default_policy": "Deploy/Reform by default; card-specific timing overrides",
@@ -19953,7 +19953,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -19988,7 +19993,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "item_lineage_policy": {
           "required_base_classes": [
@@ -20059,7 +20069,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -20123,7 +20138,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "2398c6007f24cb7fb192d9f5d7ade0fe1867323d4cb54d4d398e3b7766f20dca",
+        "canonical_hash": "af3918e947517ec9358cfb65c39f46077509fafa274b4723041f40d926e88c82",
         "class_group": "Neutral",
         "timing": {
           "phase_or_window": "Deploy Phase",
@@ -20192,7 +20207,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "item_lineage_policy": {
           "required_base_classes": [
@@ -20263,7 +20283,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -20368,7 +20393,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "item_lineage_policy": {
             "required_base_classes": [
@@ -20439,7 +20469,12 @@
               "role": "modifier",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -20473,7 +20508,7 @@
       "name": "Poison Vial",
       "card_family": "Item",
       "card_subtype": "Item",
-      "canonical_hash": "5c4c0c52c1ca947ad6177387b31ad053e2b2485412d80a7e30c650d35d79a299",
+      "canonical_hash": "7ec44711b6b62ea146922b44f423e55d252ccf76ffb308c5ef1e064b8983d74d",
       "timing": {
         "phase_or_window": "Deploy Phase",
         "default_policy": "Deploy/Reform by default; card-specific timing overrides",
@@ -20530,7 +20565,12 @@
           "role": "consumable_modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "charge_or_checkpoint_attachment",
+          "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -20565,7 +20605,12 @@
           "role": "consumable_modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "charge_or_checkpoint_attachment",
+          "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "item_lineage_policy": {
           "required_base_classes": [
@@ -20630,7 +20675,12 @@
             "role": "consumable_modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "charge_or_checkpoint_attachment",
+            "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -20711,7 +20761,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "5c4c0c52c1ca947ad6177387b31ad053e2b2485412d80a7e30c650d35d79a299",
+        "canonical_hash": "7ec44711b6b62ea146922b44f423e55d252ccf76ffb308c5ef1e064b8983d74d",
         "class_group": "Neutral",
         "timing": {
           "phase_or_window": "Deploy Phase",
@@ -20780,7 +20830,12 @@
           "role": "consumable_modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "charge_or_checkpoint_attachment",
+          "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "item_lineage_policy": {
           "required_base_classes": [
@@ -20845,7 +20900,12 @@
             "role": "consumable_modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "charge_or_checkpoint_attachment",
+            "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -20964,7 +21024,12 @@
             "role": "consumable_modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "charge_or_checkpoint_attachment",
+            "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "item_lineage_policy": {
             "required_base_classes": [
@@ -21029,7 +21094,12 @@
               "role": "consumable_modifier",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "charge_or_checkpoint_attachment",
+              "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -21732,7 +21802,7 @@
       "name": "Ring of Grace",
       "card_family": "Item",
       "card_subtype": "Item",
-      "canonical_hash": "570088698322169bebd5dc4969c1ad97ef603085014d810a4e8aa24087f95af3",
+      "canonical_hash": "9b99dcce209925baa5883e70a24f58592f8e67089493e19ba5899d45eef17ae5",
       "timing": {
         "phase_or_window": "Deploy Phase",
         "default_policy": "Deploy/Reform by default; card-specific timing overrides",
@@ -21787,7 +21857,12 @@
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
           "exact_once_zone_movement": true,
-          "selected_target_is_item_user": true
+          "selected_target_is_item_user": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -21829,7 +21904,12 @@
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
           "exact_once_zone_movement": true,
-          "selected_target_is_item_user": true
+          "selected_target_is_item_user": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "item_lineage_policy": {
           "required_base_classes": [
@@ -21891,7 +21971,12 @@
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
             "exact_once_zone_movement": true,
-            "selected_target_is_item_user": true
+            "selected_target_is_item_user": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -21971,7 +22056,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "570088698322169bebd5dc4969c1ad97ef603085014d810a4e8aa24087f95af3",
+        "canonical_hash": "9b99dcce209925baa5883e70a24f58592f8e67089493e19ba5899d45eef17ae5",
         "class_group": "Neutral",
         "timing": {
           "phase_or_window": "Deploy Phase",
@@ -22049,7 +22134,12 @@
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
           "exact_once_zone_movement": true,
-          "selected_target_is_item_user": true
+          "selected_target_is_item_user": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "item_lineage_policy": {
           "required_base_classes": [
@@ -22111,7 +22201,12 @@
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
             "exact_once_zone_movement": true,
-            "selected_target_is_item_user": true
+            "selected_target_is_item_user": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -22234,7 +22329,12 @@
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
             "exact_once_zone_movement": true,
-            "selected_target_is_item_user": true
+            "selected_target_is_item_user": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "item_lineage_policy": {
             "required_base_classes": [
@@ -22296,7 +22396,12 @@
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
               "exact_once_zone_movement": true,
-              "selected_target_is_item_user": true
+              "selected_target_is_item_user": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -22336,7 +22441,7 @@
       "name": "Holy Medallion",
       "card_family": "Item",
       "card_subtype": "Item",
-      "canonical_hash": "e768560e7379222fef7adbd437f13281a6d91cb78bdef08ffe00593617dcf8d4",
+      "canonical_hash": "32b1497659d930fa3fde61cdd63ee43894ef8c4fa78e2ee8c265a59d7c800d3e",
       "timing": {
         "phase_or_window": "Deploy Phase",
         "default_policy": "Deploy/Reform by default; card-specific timing overrides",
@@ -22392,7 +22497,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -22427,7 +22537,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "item_lineage_policy": {
           "required_base_classes": [
@@ -22502,7 +22617,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -22574,7 +22694,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "e768560e7379222fef7adbd437f13281a6d91cb78bdef08ffe00593617dcf8d4",
+        "canonical_hash": "32b1497659d930fa3fde61cdd63ee43894ef8c4fa78e2ee8c265a59d7c800d3e",
         "class_group": "Neutral",
         "timing": {
           "phase_or_window": "Deploy Phase",
@@ -22643,7 +22763,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "item_lineage_policy": {
           "required_base_classes": [
@@ -22718,7 +22843,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -22829,7 +22959,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "item_lineage_policy": {
             "required_base_classes": [
@@ -22904,7 +23039,12 @@
               "role": "modifier",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -22938,7 +23078,7 @@
       "name": "Invisibility Cloak",
       "card_family": "Item",
       "card_subtype": "Item",
-      "canonical_hash": "2e706e141cefd3dff7c8e91233bcb713c5d648451c8e1fdec8ae05001fbd7423",
+      "canonical_hash": "8daa7e5043b058330fea1ed812d84940cb7c37ee3f740c3b81cdeed6d0fd8320",
       "timing": {
         "phase_or_window": "Deploy Phase",
         "default_policy": "Deploy/Reform by default; card-specific timing overrides",
@@ -22991,7 +23131,12 @@
           "role": "defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -23053,7 +23198,12 @@
           "role": "defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "item_lineage_policy": {
           "required_base_classes": [
@@ -23115,7 +23265,12 @@
             "role": "defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -23179,7 +23334,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "2e706e141cefd3dff7c8e91233bcb713c5d648451c8e1fdec8ae05001fbd7423",
+        "canonical_hash": "8daa7e5043b058330fea1ed812d84940cb7c37ee3f740c3b81cdeed6d0fd8320",
         "class_group": "Neutral",
         "timing": {
           "phase_or_window": "Deploy Phase",
@@ -23278,7 +23433,12 @@
           "role": "defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "item_lineage_policy": {
           "required_base_classes": [
@@ -23340,7 +23500,12 @@
             "role": "defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -23474,7 +23639,12 @@
             "role": "defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "item_lineage_policy": {
             "required_base_classes": [
@@ -23536,7 +23706,12 @@
               "role": "defense",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -26918,7 +27093,7 @@
       "name": "Last Resort",
       "card_family": "Event",
       "card_subtype": "Event",
-      "canonical_hash": "38c831a069b4fd4983017b6a2a709c12f67c2b110884b7848874ccba79778e1e",
+      "canonical_hash": "9b16c8d6a278750250822319574982fffd8902f989bc05ce9a98e7b141a2459b",
       "timing": {
         "phase_or_window": "Deploy Phase; Reform Phase",
         "default_policy": "Deploy/Reform by default; card-specific timing overrides",
@@ -26980,7 +27155,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "source_card_destination_policy": {
           "commit_identity": "stable commit_token created before any response window",
@@ -27029,7 +27209,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "source_card_destination_policy": {
           "commit_identity": "stable commit_token created before any response window",
@@ -27082,7 +27267,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "source_card_destination_policy": {
             "commit_identity": "stable commit_token created before any response window",
@@ -27152,7 +27342,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "38c831a069b4fd4983017b6a2a709c12f67c2b110884b7848874ccba79778e1e",
+        "canonical_hash": "9b16c8d6a278750250822319574982fffd8902f989bc05ce9a98e7b141a2459b",
         "class_group": "Neutral",
         "timing": {
           "phase_or_window": "Deploy Phase; Reform Phase",
@@ -27236,7 +27426,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "source_card_destination_policy": {
           "commit_identity": "stable commit_token created before any response window",
@@ -27289,7 +27484,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "source_card_destination_policy": {
             "commit_identity": "stable commit_token created before any response window",
@@ -27419,7 +27619,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "source_card_destination_policy": {
             "commit_identity": "stable commit_token created before any response window",
@@ -27472,7 +27677,12 @@
               "role": "modifier",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "source_card_destination_policy": {
               "commit_identity": "stable commit_token created before any response window",
@@ -29616,7 +29826,7 @@
       "name": "Coordination Attack",
       "card_family": "Event",
       "card_subtype": "Event",
-      "canonical_hash": "e01f616345a85569eb198ccbdf0caa7f1c7f352ef1add76ce1acfc83488506cb",
+      "canonical_hash": "385ec91765b38007f426dc6fc31f5335800b73b2f623985b40b52950b9eb2ac0",
       "timing": {
         "phase_or_window": "Deploy Phase",
         "default_policy": "Deploy/Reform by default; card-specific timing overrides",
@@ -29695,7 +29905,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "source_card_destination_policy": {
           "commit_identity": "stable commit_token created before any response window",
@@ -29735,7 +29950,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "source_card_destination_policy": {
           "commit_identity": "stable commit_token created before any response window",
@@ -29813,7 +30033,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "source_card_destination_policy": {
             "commit_identity": "stable commit_token created before any response window",
@@ -29881,7 +30106,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "e01f616345a85569eb198ccbdf0caa7f1c7f352ef1add76ce1acfc83488506cb",
+        "canonical_hash": "385ec91765b38007f426dc6fc31f5335800b73b2f623985b40b52950b9eb2ac0",
         "class_group": "Neutral",
         "timing": {
           "phase_or_window": "Deploy Phase",
@@ -29947,7 +30172,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "source_card_destination_policy": {
           "commit_identity": "stable commit_token created before any response window",
@@ -30025,7 +30255,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "source_card_destination_policy": {
             "commit_identity": "stable commit_token created before any response window",
@@ -30160,7 +30395,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "source_card_destination_policy": {
             "commit_identity": "stable commit_token created before any response window",
@@ -30238,7 +30478,12 @@
               "role": "modifier",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "source_card_destination_policy": {
               "commit_identity": "stable commit_token created before any response window",
@@ -38243,7 +38488,7 @@
       "name": "Triple Shot",
       "card_family": "Skill",
       "card_subtype": "Tactical Skill",
-      "canonical_hash": "577200e70c34f9da7e5ba6b4d92ba146fb5c61a6b8fa4ed07cf7edddfd291ed2",
+      "canonical_hash": "9ca1cb93352c58cfbbf3a34beac962531586c8eb464af0148e9933c1e81c5c67",
       "timing": {
         "phase": "Deploy Phase",
         "raw_phase": "Deploy Phase"
@@ -38290,20 +38535,22 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_leave": "Discard Pile",
-          "duration_rule": "active_while_attachment_remains_in_slot",
-          "counter_required": false,
+          "duration_rule": "this_turn",
+          "counter_required": true,
           "consumed_on_qualifying_attack": false,
           "hardcoded_end_phase_expiry": false,
-          "tick_phase": null,
-          "remaining_count": null,
-          "counter_mode": "presence",
-          "lifecycle_mode": "while_present_in_attachment_slot"
+          "tick_phase": "END_PHASE",
+          "remaining_count": 1,
+          "counter_mode": "countdown",
+          "lifecycle_mode": "attachment_until_owner_turn_end",
+          "leave_slot_condition": "remaining_count reaches 0 at owner End Phase",
+          "effect_cleanup": "remove Triple Shot attack-label modifier when Attachment leaves slot"
         },
         "staging": {
           "requires_attachment_slot": true,
           "staging_host": "source_hero",
           "slot_required_before_play": true,
-          "persistent_resolution": "card remains in source Hero Attachment Slot until another rule removes/expires it",
+          "persistent_resolution": "card remains in source Hero Attachment Slot through the rest of the owner current turn, then expires at owner End Phase when its counter reaches 0",
           "slot_full_rule": "if the source Hero has no empty Attachment Slot, play is illegal",
           "legacy_mode_allowed_as_host": false
         }
@@ -38350,14 +38597,16 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_leave": "Discard Pile",
-          "duration_rule": "active_while_attachment_remains_in_slot",
-          "counter_required": false,
+          "duration_rule": "this_turn",
+          "counter_required": true,
           "consumed_on_qualifying_attack": false,
           "hardcoded_end_phase_expiry": false,
-          "tick_phase": null,
-          "remaining_count": null,
-          "counter_mode": "presence",
-          "lifecycle_mode": "while_present_in_attachment_slot"
+          "tick_phase": "END_PHASE",
+          "remaining_count": 1,
+          "counter_mode": "countdown",
+          "lifecycle_mode": "attachment_until_owner_turn_end",
+          "leave_slot_condition": "remaining_count reaches 0 at owner End Phase",
+          "effect_cleanup": "remove Triple Shot attack-label modifier when Attachment leaves slot"
         },
         "dispatch": {
           "enabled": false,
@@ -38384,20 +38633,22 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_leave": "Discard Pile",
-            "duration_rule": "active_while_attachment_remains_in_slot",
-            "counter_required": false,
+            "duration_rule": "this_turn",
+            "counter_required": true,
             "consumed_on_qualifying_attack": false,
             "hardcoded_end_phase_expiry": false,
-            "tick_phase": null,
-            "remaining_count": null,
-            "counter_mode": "presence",
-            "lifecycle_mode": "while_present_in_attachment_slot"
+            "tick_phase": "END_PHASE",
+            "remaining_count": 1,
+            "counter_mode": "countdown",
+            "lifecycle_mode": "attachment_until_owner_turn_end",
+            "leave_slot_condition": "remaining_count reaches 0 at owner End Phase",
+            "effect_cleanup": "remove Triple Shot attack-label modifier when Attachment leaves slot"
           },
           "staging": {
             "requires_attachment_slot": true,
             "staging_host": "source_hero",
             "slot_required_before_play": true,
-            "persistent_resolution": "card remains in source Hero Attachment Slot until another rule removes/expires it",
+            "persistent_resolution": "card remains in source Hero Attachment Slot through the rest of the owner current turn, then expires at owner End Phase when its counter reaches 0",
             "slot_full_rule": "if the source Hero has no empty Attachment Slot, play is illegal",
             "legacy_mode_allowed_as_host": false
           }
@@ -38427,9 +38678,9 @@
           "play_precheck": "Hand contains at least one Poison Arrow or Burning Arrow.",
           "binding_required": false,
           "effect": "While Triple Shot remains in this Hero’s Attachment Slot, each qualifying Poison Arrow or Burning Arrow used by that Hero is treated as Area Attack.",
-          "lifecycle": "Effect begins when Triple Shot becomes attached and ends only when Triple Shot leaves the Attachment Slot.",
-          "consumption": "No one-use consumption. Multiple qualifying attacks benefit while the Attachment persists.",
-          "future_duration_extension": "Any mechanic that keeps the Attachment in the slot longer automatically extends the effect.",
+          "lifecycle": "This-turn Attachment: counter starts at 1, ticks only at the owner End Phase, then leaves the Attachment Slot and enters Discard exactly once.",
+          "consumption": "No one-use consumption. Multiple qualifying attacks benefit during the current turn while the Attachment remains present.",
+          "future_duration_extension": "Duration is authority-defined by the Attachment policy; no physical-arrow binding is created.",
           "no_binding": true,
           "no_choice_on_play": true
         }
@@ -38481,7 +38732,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "577200e70c34f9da7e5ba6b4d92ba146fb5c61a6b8fa4ed07cf7edddfd291ed2",
+        "canonical_hash": "9ca1cb93352c58cfbbf3a34beac962531586c8eb464af0148e9933c1e81c5c67",
         "class_group": "ARC",
         "rank_numeric": 2,
         "timing": {
@@ -38606,14 +38857,16 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_leave": "Discard Pile",
-          "duration_rule": "active_while_attachment_remains_in_slot",
-          "counter_required": false,
+          "duration_rule": "this_turn",
+          "counter_required": true,
           "consumed_on_qualifying_attack": false,
           "hardcoded_end_phase_expiry": false,
-          "tick_phase": null,
-          "remaining_count": null,
-          "counter_mode": "presence",
-          "lifecycle_mode": "while_present_in_attachment_slot"
+          "tick_phase": "END_PHASE",
+          "remaining_count": 1,
+          "counter_mode": "countdown",
+          "lifecycle_mode": "attachment_until_owner_turn_end",
+          "leave_slot_condition": "remaining_count reaches 0 at owner End Phase",
+          "effect_cleanup": "remove Triple Shot attack-label modifier when Attachment leaves slot"
         },
         "dispatch": {
           "enabled": false,
@@ -38640,20 +38893,22 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_leave": "Discard Pile",
-            "duration_rule": "active_while_attachment_remains_in_slot",
-            "counter_required": false,
+            "duration_rule": "this_turn",
+            "counter_required": true,
             "consumed_on_qualifying_attack": false,
             "hardcoded_end_phase_expiry": false,
-            "tick_phase": null,
-            "remaining_count": null,
-            "counter_mode": "presence",
-            "lifecycle_mode": "while_present_in_attachment_slot"
+            "tick_phase": "END_PHASE",
+            "remaining_count": 1,
+            "counter_mode": "countdown",
+            "lifecycle_mode": "attachment_until_owner_turn_end",
+            "leave_slot_condition": "remaining_count reaches 0 at owner End Phase",
+            "effect_cleanup": "remove Triple Shot attack-label modifier when Attachment leaves slot"
           },
           "staging": {
             "requires_attachment_slot": true,
             "staging_host": "source_hero",
             "slot_required_before_play": true,
-            "persistent_resolution": "card remains in source Hero Attachment Slot until another rule removes/expires it",
+            "persistent_resolution": "card remains in source Hero Attachment Slot through the rest of the owner current turn, then expires at owner End Phase when its counter reaches 0",
             "slot_full_rule": "if the source Hero has no empty Attachment Slot, play is illegal",
             "legacy_mode_allowed_as_host": false
           }
@@ -38683,9 +38938,9 @@
           "play_precheck": "Hand contains at least one Poison Arrow or Burning Arrow.",
           "binding_required": false,
           "effect": "While Triple Shot remains in this Hero’s Attachment Slot, each qualifying Poison Arrow or Burning Arrow used by that Hero is treated as Area Attack.",
-          "lifecycle": "Effect begins when Triple Shot becomes attached and ends only when Triple Shot leaves the Attachment Slot.",
-          "consumption": "No one-use consumption. Multiple qualifying attacks benefit while the Attachment persists.",
-          "future_duration_extension": "Any mechanic that keeps the Attachment in the slot longer automatically extends the effect.",
+          "lifecycle": "This-turn Attachment: counter starts at 1, ticks only at the owner End Phase, then leaves the Attachment Slot and enters Discard exactly once.",
+          "consumption": "No one-use consumption. Multiple qualifying attacks benefit during the current turn while the Attachment remains present.",
+          "future_duration_extension": "Duration is authority-defined by the Attachment policy; no physical-arrow binding is created.",
           "no_binding": true,
           "no_choice_on_play": true
         },
@@ -38818,14 +39073,16 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_leave": "Discard Pile",
-            "duration_rule": "active_while_attachment_remains_in_slot",
-            "counter_required": false,
+            "duration_rule": "this_turn",
+            "counter_required": true,
             "consumed_on_qualifying_attack": false,
             "hardcoded_end_phase_expiry": false,
-            "tick_phase": null,
-            "remaining_count": null,
-            "counter_mode": "presence",
-            "lifecycle_mode": "while_present_in_attachment_slot"
+            "tick_phase": "END_PHASE",
+            "remaining_count": 1,
+            "counter_mode": "countdown",
+            "lifecycle_mode": "attachment_until_owner_turn_end",
+            "leave_slot_condition": "remaining_count reaches 0 at owner End Phase",
+            "effect_cleanup": "remove Triple Shot attack-label modifier when Attachment leaves slot"
           },
           "dispatch": {
             "enabled": false,
@@ -38852,20 +39109,22 @@
               "role": "modifier",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_leave": "Discard Pile",
-              "duration_rule": "active_while_attachment_remains_in_slot",
-              "counter_required": false,
+              "duration_rule": "this_turn",
+              "counter_required": true,
               "consumed_on_qualifying_attack": false,
               "hardcoded_end_phase_expiry": false,
-              "tick_phase": null,
-              "remaining_count": null,
-              "counter_mode": "presence",
-              "lifecycle_mode": "while_present_in_attachment_slot"
+              "tick_phase": "END_PHASE",
+              "remaining_count": 1,
+              "counter_mode": "countdown",
+              "lifecycle_mode": "attachment_until_owner_turn_end",
+              "leave_slot_condition": "remaining_count reaches 0 at owner End Phase",
+              "effect_cleanup": "remove Triple Shot attack-label modifier when Attachment leaves slot"
             },
             "staging": {
               "requires_attachment_slot": true,
               "staging_host": "source_hero",
               "slot_required_before_play": true,
-              "persistent_resolution": "card remains in source Hero Attachment Slot until another rule removes/expires it",
+              "persistent_resolution": "card remains in source Hero Attachment Slot through the rest of the owner current turn, then expires at owner End Phase when its counter reaches 0",
               "slot_full_rule": "if the source Hero has no empty Attachment Slot, play is illegal",
               "legacy_mode_allowed_as_host": false
             }
@@ -38895,9 +39154,9 @@
             "play_precheck": "Hand contains at least one Poison Arrow or Burning Arrow.",
             "binding_required": false,
             "effect": "While Triple Shot remains in this Hero’s Attachment Slot, each qualifying Poison Arrow or Burning Arrow used by that Hero is treated as Area Attack.",
-            "lifecycle": "Effect begins when Triple Shot becomes attached and ends only when Triple Shot leaves the Attachment Slot.",
-            "consumption": "No one-use consumption. Multiple qualifying attacks benefit while the Attachment persists.",
-            "future_duration_extension": "Any mechanic that keeps the Attachment in the slot longer automatically extends the effect.",
+            "lifecycle": "This-turn Attachment: counter starts at 1, ticks only at the owner End Phase, then leaves the Attachment Slot and enters Discard exactly once.",
+            "consumption": "No one-use consumption. Multiple qualifying attacks benefit during the current turn while the Attachment remains present.",
+            "future_duration_extension": "Duration is authority-defined by the Attachment policy; no physical-arrow binding is created.",
             "no_binding": true,
             "no_choice_on_play": true
           }
@@ -43799,7 +44058,7 @@
       "name": "Aura Infusion Bolt",
       "card_family": "Skill",
       "card_subtype": "Casting Attack",
-      "canonical_hash": "f85277abf5ecbb6fcf537e213311eac0b108205a902060840ed584b7ba3b026b",
+      "canonical_hash": "04264e9027906a66259d656f72732ec04077c2ce5f7af882521c3b0092b8fea5",
       "timing": {
         "phase": "Battle Phase",
         "raw_phase": "Battle Phase"
@@ -43866,7 +44125,12 @@
           "role": "draw_counter_casting",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "progress_attachment",
+          "leave_slot_condition": "progress/authority completion reaches terminal state",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -43920,7 +44184,12 @@
           "role": "draw_counter_casting",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "progress_attachment",
+          "leave_slot_condition": "progress/authority completion reaches terminal state",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "tribute": {
           "exp_value": 100
@@ -43962,7 +44231,12 @@
             "role": "draw_counter_casting",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "progress_attachment",
+            "leave_slot_condition": "progress/authority completion reaches terminal state",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -44023,7 +44297,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "f85277abf5ecbb6fcf537e213311eac0b108205a902060840ed584b7ba3b026b",
+        "canonical_hash": "04264e9027906a66259d656f72732ec04077c2ce5f7af882521c3b0092b8fea5",
         "class_group": "ARC",
         "rank_numeric": 2,
         "timing": {
@@ -44158,7 +44432,12 @@
           "role": "draw_counter_casting",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "progress_attachment",
+          "leave_slot_condition": "progress/authority completion reaches terminal state",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "tribute": {
           "exp_value": 100
@@ -44200,7 +44479,12 @@
             "role": "draw_counter_casting",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "progress_attachment",
+            "leave_slot_condition": "progress/authority completion reaches terminal state",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -44358,7 +44642,12 @@
             "role": "draw_counter_casting",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "progress_attachment",
+            "leave_slot_condition": "progress/authority completion reaches terminal state",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "tribute": {
             "exp_value": 100
@@ -44391,7 +44680,12 @@
               "role": "draw_counter_casting",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "progress_attachment",
+              "leave_slot_condition": "progress/authority completion reaches terminal state",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -48382,7 +48676,7 @@
       "name": "Blessing of Might",
       "card_family": "Skill",
       "card_subtype": "Support Skill",
-      "canonical_hash": "bc32fc9b502524f2eef64a57ebbf6f9b6229e02d9291f3ea06ef6ec415fe8eea",
+      "canonical_hash": "44b80aa6b0a68f099b26136f817d5f8cbafcb70d371da1ad16e0835d2f897aca",
       "timing": {
         "phase": "Deploy Phase; Reform Phase",
         "raw_phase": "Deploy Phase; Reform Phase"
@@ -48444,7 +48738,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -48516,7 +48815,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "attachment_host_policy": {
           "host": "selected target Hero",
@@ -48583,7 +48887,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -48656,7 +48965,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "bc32fc9b502524f2eef64a57ebbf6f9b6229e02d9291f3ea06ef6ec415fe8eea",
+        "canonical_hash": "44b80aa6b0a68f099b26136f817d5f8cbafcb70d371da1ad16e0835d2f897aca",
         "class_group": "CLE",
         "rank_numeric": 1,
         "timing": {
@@ -48810,7 +49119,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "attachment_host_policy": {
           "host": "selected target Hero",
@@ -48877,7 +49191,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -49060,7 +49379,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "attachment_host_policy": {
             "host": "selected target Hero",
@@ -49127,7 +49451,12 @@
               "role": "modifier",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -49162,7 +49491,7 @@
       "name": "Blessing of Wisdom",
       "card_family": "Skill",
       "card_subtype": "Support Skill",
-      "canonical_hash": "ed105ff180419d88aff420916afdcbced6107b3cfdabf833978af03d2964a1f5",
+      "canonical_hash": "19dbfb3e555c72b618596274322e8df7ed2000788ca91652149098b355fd968b",
       "timing": {
         "phase": "Deploy Phase; Reform Phase",
         "raw_phase": "Deploy Phase; Reform Phase"
@@ -49224,7 +49553,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -49296,7 +49630,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "attachment_host_policy": {
           "host": "selected target Hero",
@@ -49363,7 +49702,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -49436,7 +49780,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "ed105ff180419d88aff420916afdcbced6107b3cfdabf833978af03d2964a1f5",
+        "canonical_hash": "19dbfb3e555c72b618596274322e8df7ed2000788ca91652149098b355fd968b",
         "class_group": "CLE",
         "rank_numeric": 1,
         "timing": {
@@ -49590,7 +49934,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "attachment_host_policy": {
           "host": "selected target Hero",
@@ -49657,7 +50006,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -49840,7 +50194,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "attachment_host_policy": {
             "host": "selected target Hero",
@@ -49907,7 +50266,12 @@
               "role": "modifier",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -50531,7 +50895,7 @@
       "name": "Holy Ring",
       "card_family": "Skill",
       "card_subtype": "Magical Attack",
-      "canonical_hash": "3f7fce46bc51521bf38b9950af11f875b556ac538ead4b54379aa77a77553eea",
+      "canonical_hash": "144fd61b9d18c1d44a33a2a3e31ba93f05eaaf5eeeb790378c2eab6a931b2053",
       "timing": {
         "phase": "Battle Phase",
         "raw_phase": "Battle Phase"
@@ -50599,7 +50963,12 @@
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
           "exact_once_zone_movement": true,
-          "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment."
+          "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment.",
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -50687,7 +51056,12 @@
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
           "exact_once_zone_movement": true,
-          "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment."
+          "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment.",
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "handler": "resolveHolyRing",
@@ -50736,7 +51110,12 @@
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
             "exact_once_zone_movement": true,
-            "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment."
+            "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment.",
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -50829,7 +51208,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "3f7fce46bc51521bf38b9950af11f875b556ac538ead4b54379aa77a77553eea",
+        "canonical_hash": "144fd61b9d18c1d44a33a2a3e31ba93f05eaaf5eeeb790378c2eab6a931b2053",
         "class_group": "CLE",
         "rank_numeric": 1,
         "timing": {
@@ -51001,7 +51380,12 @@
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
           "exact_once_zone_movement": true,
-          "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment."
+          "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment.",
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "handler": "resolveHolyRing",
@@ -51050,7 +51434,12 @@
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
             "exact_once_zone_movement": true,
-            "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment."
+            "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment.",
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -51260,7 +51649,12 @@
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
             "exact_once_zone_movement": true,
-            "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment."
+            "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment.",
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "dispatch": {
             "handler": "resolveHolyRing",
@@ -51300,7 +51694,12 @@
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
               "exact_once_zone_movement": true,
-              "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment."
+              "conditional_persistence": "Cleric: immediate damage only/no attachment; Priest/Saint: protection attachment.",
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -55869,7 +56268,7 @@
       "name": "Heaven’s Fury",
       "card_family": "Skill",
       "card_subtype": "Support Skill",
-      "canonical_hash": "a2e00e0517bf996a7576a743ac2e01d383eac416c9aab87d702647361d10933c",
+      "canonical_hash": "6d50093b77b1735f6f1217688d7298f5ffcd8c9c6764f87e4634401ca18da09d",
       "timing": {
         "phase": "Deploy Phase; Reform Phase",
         "raw_phase": "Deploy Phase; Reform Phase"
@@ -55948,7 +56347,12 @@
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
           "exact_once_zone_movement": true,
-          "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint."
+          "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint.",
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "charge_or_checkpoint_attachment",
+          "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -56040,7 +56444,12 @@
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
           "exact_once_zone_movement": true,
-          "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint."
+          "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint.",
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "charge_or_checkpoint_attachment",
+          "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "heavens_fury_policy": {
           "rank2_activation": "next turn",
@@ -56109,7 +56518,12 @@
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
             "exact_once_zone_movement": true,
-            "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint."
+            "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint.",
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "charge_or_checkpoint_attachment",
+            "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -56202,7 +56616,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "a2e00e0517bf996a7576a743ac2e01d383eac416c9aab87d702647361d10933c",
+        "canonical_hash": "6d50093b77b1735f6f1217688d7298f5ffcd8c9c6764f87e4634401ca18da09d",
         "class_group": "CLE",
         "rank_numeric": 2,
         "timing": {
@@ -56393,7 +56807,12 @@
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
           "exact_once_zone_movement": true,
-          "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint."
+          "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint.",
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "charge_or_checkpoint_attachment",
+          "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "heavens_fury_policy": {
           "rank2_activation": "next turn",
@@ -56462,7 +56881,12 @@
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
             "exact_once_zone_movement": true,
-            "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint."
+            "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint.",
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "charge_or_checkpoint_attachment",
+            "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -56688,7 +57112,12 @@
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
             "exact_once_zone_movement": true,
-            "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint."
+            "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint.",
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "charge_or_checkpoint_attachment",
+            "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "heavens_fury_policy": {
             "rank2_activation": "next turn",
@@ -56757,7 +57186,12 @@
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
               "exact_once_zone_movement": true,
-              "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint."
+              "dynamic_count_rule": "Priest: 2 END_PHASE checkpoints; Saint: 1 END_PHASE checkpoint.",
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "charge_or_checkpoint_attachment",
+              "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -60762,7 +61196,7 @@
       "name": "Blessing of Divinity",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "dac39b4c642bc5de37800b0dc83cda8486797e93e63b9ea08cbb7154a7dadd12",
+      "canonical_hash": "878a0422d15fdafaf4d57f932bf15b8a0489433a6d5abf3ed77832b541bea977",
       "timing": {
         "phase": "Response Window / Incoming damage",
         "raw_phase": "Response Window / Incoming damage"
@@ -60825,7 +61259,12 @@
           "role": "team_defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -60949,7 +61388,12 @@
           "role": "team_defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "response_cost_policy": {
           "Paladin": 6,
@@ -60994,7 +61438,12 @@
             "role": "team_defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -61101,7 +61550,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "dac39b4c642bc5de37800b0dc83cda8486797e93e63b9ea08cbb7154a7dadd12",
+        "canonical_hash": "878a0422d15fdafaf4d57f932bf15b8a0489433a6d5abf3ed77832b541bea977",
         "class_group": "CLE",
         "rank_numeric": 2,
         "timing": {
@@ -61330,7 +61779,12 @@
           "role": "team_defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "response_cost_policy": {
           "Paladin": 6,
@@ -61375,7 +61829,12 @@
             "role": "team_defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -61637,7 +62096,12 @@
             "role": "team_defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "response_cost_policy": {
             "Paladin": 6,
@@ -61682,7 +62146,12 @@
               "role": "team_defense",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -64939,7 +65408,7 @@
       "name": "Tornado",
       "card_family": "Skill",
       "card_subtype": "Casting Attack",
-      "canonical_hash": "540f1d8459dbb23d2548176cdf222bb4baad69211214916529e8bcc4df02f47d",
+      "canonical_hash": "c5f958561c9412486c3c5b1b52b84bd2c744dc1bcb8b0ef6fe7c6af1c30eeb8a",
       "timing": {
         "phase": "Battle Phase",
         "raw_phase": "Battle Phase"
@@ -65007,7 +65476,12 @@
           "role": "casting",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -65101,7 +65575,12 @@
           "role": "casting",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "enabled": false,
@@ -65145,7 +65624,12 @@
             "role": "casting",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -65290,7 +65774,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "540f1d8459dbb23d2548176cdf222bb4baad69211214916529e8bcc4df02f47d",
+        "canonical_hash": "c5f958561c9412486c3c5b1b52b84bd2c744dc1bcb8b0ef6fe7c6af1c30eeb8a",
         "class_group": "MAG",
         "rank_numeric": 1,
         "timing": {
@@ -65466,7 +65950,12 @@
           "role": "casting",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "enabled": false,
@@ -65510,7 +65999,12 @@
             "role": "casting",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -65776,7 +66270,12 @@
             "role": "casting",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "dispatch": {
             "enabled": false,
@@ -65811,7 +66310,12 @@
               "role": "casting",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -67807,7 +68311,7 @@
       "name": "Ice Block",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "621a4eb01701840237e04d351ea8c7c36f81ab77d4c4cc70c3a2ff8f0016cb1f",
+      "canonical_hash": "76a0d866b7a014b1ac08ccfc648f4bed9bca51fc100ece324907c0c09c06f093",
       "timing": {
         "phase": "Response Window / Incoming damage",
         "raw_phase": "Response Window / Incoming damage"
@@ -67869,7 +68373,12 @@
           "role": "defense_modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -67954,7 +68463,12 @@
           "role": "defense_modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "handler": "resolveIceBlock",
@@ -67988,7 +68502,12 @@
             "role": "defense_modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -68061,7 +68580,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "621a4eb01701840237e04d351ea8c7c36f81ab77d4c4cc70c3a2ff8f0016cb1f",
+        "canonical_hash": "76a0d866b7a014b1ac08ccfc648f4bed9bca51fc100ece324907c0c09c06f093",
         "class_group": "MAG",
         "rank_numeric": 2,
         "timing": {
@@ -68226,7 +68745,12 @@
           "role": "defense_modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "handler": "resolveIceBlock",
@@ -68260,7 +68784,12 @@
             "role": "defense_modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -68452,7 +68981,12 @@
             "role": "defense_modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "dispatch": {
             "handler": "resolveIceBlock",
@@ -68486,7 +69020,12 @@
               "role": "defense_modifier",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -71874,7 +72413,7 @@
       "name": "Double Casting",
       "card_family": "Skill",
       "card_subtype": "Tactical Skill",
-      "canonical_hash": "a47b7b138d5a8cb8099efd8c96dacaac13c0bcb6424aa5eea3890d22ae180a25",
+      "canonical_hash": "f02abd0e15d4197fd6a4effed268c99142b9b04b95f6e2a3a9824234593e6938",
       "timing": {
         "phase": "Deploy Phase",
         "raw_phase": "Deploy Phase"
@@ -71939,7 +72478,12 @@
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
           "exact_once_zone_movement": true,
-          "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint."
+          "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint.",
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "charge_or_checkpoint_attachment",
+          "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -72036,7 +72580,12 @@
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
           "exact_once_zone_movement": true,
-          "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint."
+          "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint.",
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "charge_or_checkpoint_attachment",
+          "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "double_casting_policy": {
           "eligible_attack": "same Magical Attack card only",
@@ -72093,7 +72642,12 @@
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
             "exact_once_zone_movement": true,
-            "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint."
+            "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint.",
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "charge_or_checkpoint_attachment",
+            "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -72197,7 +72751,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "a47b7b138d5a8cb8099efd8c96dacaac13c0bcb6424aa5eea3890d22ae180a25",
+        "canonical_hash": "f02abd0e15d4197fd6a4effed268c99142b9b04b95f6e2a3a9824234593e6938",
         "class_group": "MAG",
         "rank_numeric": 2,
         "timing": {
@@ -72390,7 +72944,12 @@
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
           "exact_once_zone_movement": true,
-          "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint."
+          "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint.",
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "charge_or_checkpoint_attachment",
+          "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "double_casting_policy": {
           "eligible_attack": "same Magical Attack card only",
@@ -72447,7 +73006,12 @@
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
             "exact_once_zone_movement": true,
-            "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint."
+            "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint.",
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "charge_or_checkpoint_attachment",
+            "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -72678,7 +73242,12 @@
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
             "exact_once_zone_movement": true,
-            "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint."
+            "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint.",
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "charge_or_checkpoint_attachment",
+            "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "double_casting_policy": {
             "eligible_attack": "same Magical Attack card only",
@@ -72735,7 +73304,12 @@
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
               "exact_once_zone_movement": true,
-              "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint."
+              "dynamic_count_rule": "Elementalist: 2 END_PHASE checkpoints; Elemental Lord: 1 END_PHASE checkpoint.",
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "charge_or_checkpoint_attachment",
+              "leave_slot_condition": "authority consume/checkpoint count reaches 0",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -73631,7 +74205,7 @@
       "name": "Aether Ball",
       "card_family": "Skill",
       "card_subtype": "Casting Attack",
-      "canonical_hash": "bef56769e03ffb290861f195d41df0dcfd846e478b2d3ae0b6071209aaf117e9",
+      "canonical_hash": "8f115a393d59fd62d49cf2b15e88639084d6d799064bfc1407ecb99c76be582d",
       "timing": {
         "phase": "Battle Phase / Casting 1 turn",
         "raw_phase": "Battle Phase / Casting 1 turn"
@@ -73701,7 +74275,12 @@
           "role": "casting",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -73759,7 +74338,12 @@
           "role": "casting",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "tribute": {
           "exp_value": 100
@@ -73806,7 +74390,12 @@
             "role": "casting",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -73887,7 +74476,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "bef56769e03ffb290861f195d41df0dcfd846e478b2d3ae0b6071209aaf117e9",
+        "canonical_hash": "8f115a393d59fd62d49cf2b15e88639084d6d799064bfc1407ecb99c76be582d",
         "class_group": "MAG",
         "rank_numeric": 1,
         "timing": {
@@ -74034,7 +74623,12 @@
           "role": "casting",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "tribute": {
           "exp_value": 100
@@ -74081,7 +74675,12 @@
             "role": "casting",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -74250,7 +74849,12 @@
             "role": "casting",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "tribute": {
             "exp_value": 100
@@ -74285,7 +74889,12 @@
               "role": "casting",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -74910,7 +75519,7 @@
       "name": "Aether Infusion",
       "card_family": "Skill",
       "card_subtype": "Tactical Skill",
-      "canonical_hash": "5d0358ce7581cc3b11961ebf5dbdbe1187fcfa62ec142df65d576835f3fa5c6e",
+      "canonical_hash": "8a7c5ea4693fea088f1ecdc3659cb9a7a734ce561004abeebdb9d8b069388466",
       "timing": {
         "phase": "Deploy Phase",
         "raw_phase": "Deploy Phase"
@@ -74974,7 +75583,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -75018,7 +75632,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "tribute": {
           "exp_value": 100
@@ -75057,7 +75676,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -75124,7 +75748,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "5d0358ce7581cc3b11961ebf5dbdbe1187fcfa62ec142df65d576835f3fa5c6e",
+        "canonical_hash": "8a7c5ea4693fea088f1ecdc3659cb9a7a734ce561004abeebdb9d8b069388466",
         "class_group": "MAG",
         "rank_numeric": 2,
         "timing": {
@@ -75242,7 +75866,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "tribute": {
           "exp_value": 100
@@ -75281,7 +75910,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -75423,7 +76057,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "tribute": {
             "exp_value": 100
@@ -75462,7 +76101,12 @@
               "role": "modifier",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -93630,7 +94274,7 @@
       "name": "Camouflage",
       "card_family": "Skill",
       "card_subtype": "Tactical Skill",
-      "canonical_hash": "64ab6b123108676460d98d1594b526045a6a476eceda185154e86eef42c53b14",
+      "canonical_hash": "0efb4a6e1345e9d5036089c8d9648b074ff85c780c13a8ac30b89b494afb8fff",
       "timing": {
         "phase": "Deploy Phase",
         "raw_phase": "Deploy Phase"
@@ -93688,7 +94332,12 @@
           "role": "defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -93714,7 +94363,12 @@
           "role": "defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "tribute": {
           "exp_value": 100
@@ -93750,7 +94404,12 @@
             "role": "defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -93812,7 +94471,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "64ab6b123108676460d98d1594b526045a6a476eceda185154e86eef42c53b14",
+        "canonical_hash": "0efb4a6e1345e9d5036089c8d9648b074ff85c780c13a8ac30b89b494afb8fff",
         "class_group": "THF",
         "rank_numeric": 2,
         "timing": {
@@ -93911,7 +94570,12 @@
           "role": "defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "tribute": {
           "exp_value": 100
@@ -93947,7 +94611,12 @@
             "role": "defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -94061,7 +94730,12 @@
             "role": "defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "tribute": {
             "exp_value": 100
@@ -94097,7 +94771,12 @@
               "role": "defense",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -97800,7 +98479,7 @@
       "name": "Taunt",
       "card_family": "Skill",
       "card_subtype": "Tactical Skill",
-      "canonical_hash": "9f8303e0bb730d8a4e40bb058092f1f32e0ca3c2c74556c7bc2bcf1a70b8ccf6",
+      "canonical_hash": "cdcf10bd8fc203c14ac81e38a1ebb679e0fbc8a7237bbdbf739d72bd55468cac",
       "timing": {
         "phase": "Deploy Phase",
         "raw_phase": "Deploy Phase"
@@ -97863,7 +98542,12 @@
           "role": "defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -97931,7 +98615,12 @@
           "role": "defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "handler": "resolveTaunt",
@@ -97967,7 +98656,12 @@
             "role": "defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -98040,7 +98734,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "9f8303e0bb730d8a4e40bb058092f1f32e0ca3c2c74556c7bc2bcf1a70b8ccf6",
+        "canonical_hash": "cdcf10bd8fc203c14ac81e38a1ebb679e0fbc8a7237bbdbf739d72bd55468cac",
         "class_group": "WAR",
         "rank_numeric": 1,
         "timing": {
@@ -98190,7 +98884,12 @@
           "role": "defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "handler": "resolveTaunt",
@@ -98226,7 +98925,12 @@
             "role": "defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -98404,7 +99108,12 @@
             "role": "defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "dispatch": {
             "handler": "resolveTaunt",
@@ -98440,7 +99149,12 @@
               "role": "defense",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -102553,7 +103267,7 @@
       "name": "Enrage",
       "card_family": "Skill",
       "card_subtype": "Tactical Skill",
-      "canonical_hash": "08e70b8cc401b63b190c0c3720ff28245703c750606a115312e1e2e36199cfab",
+      "canonical_hash": "7028068b78e665e620abea03c67fe5f2924a8b442e475222b2e3eaca5143bcbd",
       "timing": {
         "phase": "Deploy Phase",
         "raw_phase": "Deploy Phase"
@@ -102612,7 +103326,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -102668,7 +103387,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "enabled": false,
@@ -102707,7 +103431,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -102780,7 +103509,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "08e70b8cc401b63b190c0c3720ff28245703c750606a115312e1e2e36199cfab",
+        "canonical_hash": "7028068b78e665e620abea03c67fe5f2924a8b442e475222b2e3eaca5143bcbd",
         "class_group": "WAR",
         "rank_numeric": 2,
         "timing": {
@@ -102900,7 +103629,12 @@
           "role": "modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "enabled": false,
@@ -102939,7 +103673,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -103095,7 +103834,12 @@
             "role": "modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "dispatch": {
             "enabled": false,
@@ -103134,7 +103878,12 @@
               "role": "modifier",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -106994,7 +107743,7 @@
       "name": "Shield Bash",
       "card_family": "Skill",
       "card_subtype": "Physical Attack",
-      "canonical_hash": "482668cb01f8ff35b998971ed1305bab06c0a4407800fa39ff07956929df9788",
+      "canonical_hash": "6e58cfaca610f0d5a871662f44c6f5504a906851c2652bc1789e309ba9ee1973",
       "timing": {
         "phase": "Battle Phase",
         "raw_phase": "Battle Phase"
@@ -107060,7 +107809,12 @@
           "role": "defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -107152,7 +107906,12 @@
           "role": "defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "enabled": false,
@@ -107198,7 +107957,12 @@
             "role": "defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -107293,7 +108057,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "482668cb01f8ff35b998971ed1305bab06c0a4407800fa39ff07956929df9788",
+        "canonical_hash": "6e58cfaca610f0d5a871662f44c6f5504a906851c2652bc1789e309ba9ee1973",
         "class_group": "WAR",
         "rank_numeric": 1,
         "timing": {
@@ -107468,7 +108232,12 @@
           "role": "defense",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "enabled": false,
@@ -107514,7 +108283,12 @@
             "role": "defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -107728,7 +108502,12 @@
             "role": "defense",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "dispatch": {
             "enabled": false,
@@ -107764,7 +108543,12 @@
               "role": "defense",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -108417,7 +109201,7 @@
       "name": "Unbroken Stand",
       "card_family": "Skill",
       "card_subtype": "Defense Skill",
-      "canonical_hash": "13344710d3f22c4f45f78465339e4672869787f4adaa1306ad9279d86e1815b2",
+      "canonical_hash": "9debedb11704766d88918f89b1b2a9177e6aa3fa503e449e51fc1477fb7b518c",
       "timing": {
         "phase": "Response Window / Incoming damage",
         "raw_phase": "Response Window / Incoming damage"
@@ -108484,7 +109268,12 @@
           "role": "defense_modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "staging": {
           "requires_attachment_slot": true,
@@ -108571,7 +109360,12 @@
           "role": "defense_modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "enabled": false,
@@ -108609,7 +109403,12 @@
             "role": "defense_modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -108702,7 +109501,7 @@
           "format": "webp",
           "source_archive_sha256": "12e978f08a6918f222708a28c52bf64b6a58c1534582e63d80ca9b6efde1e22c"
         },
-        "canonical_hash": "13344710d3f22c4f45f78465339e4672869787f4adaa1306ad9279d86e1815b2",
+        "canonical_hash": "9debedb11704766d88918f89b1b2a9177e6aa3fa503e449e51fc1477fb7b518c",
         "class_group": "WAR",
         "rank_numeric": 1,
         "timing": {
@@ -108889,7 +109688,12 @@
           "role": "defense_modifier",
           "zone_after_resolve": "Attachment Slot",
           "zone_after_expire": "Discard Pile",
-          "exact_once_zone_movement": true
+          "exact_once_zone_movement": true,
+          "counter_required": true,
+          "zone_after_leave": "Discard Pile",
+          "lifecycle_mode": "countdown_attachment",
+          "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+          "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
         },
         "dispatch": {
           "enabled": false,
@@ -108927,7 +109731,12 @@
             "role": "defense_modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "staging": {
             "requires_attachment_slot": true,
@@ -109137,7 +109946,12 @@
             "role": "defense_modifier",
             "zone_after_resolve": "Attachment Slot",
             "zone_after_expire": "Discard Pile",
-            "exact_once_zone_movement": true
+            "exact_once_zone_movement": true,
+            "counter_required": true,
+            "zone_after_leave": "Discard Pile",
+            "lifecycle_mode": "countdown_attachment",
+            "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+            "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
           },
           "dispatch": {
             "enabled": false,
@@ -109175,7 +109989,12 @@
               "role": "defense_modifier",
               "zone_after_resolve": "Attachment Slot",
               "zone_after_expire": "Discard Pile",
-              "exact_once_zone_movement": true
+              "exact_once_zone_movement": true,
+              "counter_required": true,
+              "zone_after_leave": "Discard Pile",
+              "lifecycle_mode": "countdown_attachment",
+              "leave_slot_condition": "remaining_count reaches 0 at the authority checkpoint",
+              "effect_cleanup": "remove attachment-owned active state/modifiers when leaving Attachment Slot"
             },
             "staging": {
               "requires_attachment_slot": true,
@@ -110596,18 +111415,18 @@
       }
     }
   ],
-  "effect_recipe_version": "0.15.0",
   "do_not_edit": true,
-  "generator": "Authority/Runtime/Validators/generate-v1.9.0.cjs",
-  "generator_version": "1.9.0-generator.1",
   "canonical_sources": [
     "Authority/Game/Cards/cards.canonical.v1.6.0.json",
     "Authority/Game/Heroes/hero-components.canonical.v1.1.0.json",
     "Authority/Game/Mechanics/gameplay-authority.v1.9.0.json"
   ],
   "source_hashes": {
-    "Authority/Game/Cards/cards.canonical.v1.6.0.json": "05ea406f24593d543f8e2f6f5d6f70af4161a634390d905c61c2015e352b911f",
+    "Authority/Game/Cards/cards.canonical.v1.6.0.json": "e92dd8dae9975103bae5dd14ce3823cd10fb91f3fe4dd024d90a4ed7ffe3fe9d",
     "Authority/Game/Heroes/hero-components.canonical.v1.1.0.json": "112632e5bb821b415a63554c287fc056977939d2efa66e9e5b50b36a328769b5",
-    "Authority/Game/Mechanics/gameplay-authority.v1.9.0.json": "27a41bc848cc43e4126c72398cb58457f3be3faba7ad996d1df1f0345b2af33c"
-  }
+    "Authority/Game/Mechanics/gameplay-authority.v1.9.0.json": "4538cd42aaed3d0dc955454870aaca7c3aa77f82152f9da01dcd2e4d3c6ae507"
+  },
+  "effect_recipe_version": "v0.15.1",
+  "generator": "Authority/Runtime/Validators/generate-v1.9.4.cjs",
+  "generator_version": "1.9.4-attachment-generator.1"
 }

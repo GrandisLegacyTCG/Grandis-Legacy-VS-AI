@@ -30,7 +30,8 @@
     if(hero.attachments[slot] && (typeof hero.attachments[slot]==='string'?hero.attachments[slot]:hero.attachments[slot].card_id)!==entry.card_id) throw new Error('Attachment Slot already occupied.');
     if(state.activeAttachments.some(function(a){return a.side===entry.side&&a.lane===entry.lane&&Number(a.slot)===slot;})) throw new Error('Attachment runtime slot already occupied.');
     hero.attachments[slot]=entry.card_id;
-    var rec=Object.assign({},entry,extra||{}, {attachment_id:attachmentId,slot:slot,remaining_count:Number(entry.remaining_count||1)}); state.activeAttachments.push(rec); return rec;
+    var remaining=(entry.remaining_count===null||typeof entry.remaining_count==='undefined')?null:Number(entry.remaining_count);
+    var rec=Object.assign({},entry,extra||{}, {attachment_id:attachmentId,slot:slot,remaining_count:remaining}); state.activeAttachments.push(rec); return rec;
   }
   function releaseAttachment(state,entry,hero,toDiscard,reason){
     ensure(state); var id=String(entry.attachment_id||('ATT:'+entry.side+':'+entry.lane+':'+entry.slot+':'+entry.card_id));
@@ -50,7 +51,8 @@
     ensure(state); if(!entry||entry.tick_phase!==checkpoint)return{ticked:false,reason:'checkpoint mismatch'};
     var sameCreationCheckpoint=String(entry.created_phase||'')===String(state.phase||'') && String(entry.created_turn||'')===String(state.turn||'') && Number(entry.created_round||0)===Number(state.round||0);
     if(sameCreationCheckpoint && !entry.creation_checkpoint_ignored){ entry.creation_checkpoint_ignored=true; return{ticked:false,reason:'creation checkpoint protection'}; }
-    entry.remaining_count=Math.max(0,Number(entry.remaining_count||1)-1);
+    if(entry.remaining_count===null||typeof entry.remaining_count==='undefined')return{ticked:false,reason:'non-countdown attachment'};
+    entry.remaining_count=Math.max(0,Number(entry.remaining_count)-1);
     return{ticked:true,expired:entry.remaining_count<=0,remaining_count:entry.remaining_count};
   }
   function openMandatoryChoice(state,pending){

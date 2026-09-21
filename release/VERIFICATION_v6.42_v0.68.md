@@ -1,96 +1,80 @@
-# Verification — Grandis Legacy VS AI v6.42 / Tutorial v0.68 — Candidate (8)
+# Verification — Grandis Legacy VS AI v6.42 / Tutorial v0.68 — Candidate (9)
 
 Verification date: 2026-09-21  
-Baseline: **(7)**  
-Candidate: **(8)**
+Baseline: **Candidate (8)**  
+Candidate: **(9)**
 
-## Final status
+## Authority / application status
 
-**PASS** — Candidate (8) resolves the remaining listed desktop/tablet-landscape stabilization issues using root-cause changes rather than additive workaround layers. Application versions and authority/data baselines remain unchanged.
-
-## Version / authority
-
+- OSA v1.9.4 — PASS
+- Shared Runtime v1.94.2 — PASS
+- Runtime Data v0.16.1 — PASS
+- Effect Recipe / Checkpoint v0.15.1 / v0.15.1 — PASS
+- Application Runtime Sync v2.62 — PASS
 - VS AI v6.42 — PASS
 - Tutorial v0.68 — PASS
-- OSA v1.9.3 — unchanged
-- Shared Runtime v1.94.1 — unchanged
-- UI Contract v2.53 — retained
-- Application Runtime Sync v2.61 — retained
-- Starter Deck Authority v1.6.1 — 5 active decks, unchanged
-- Canonical cards — 200, unchanged
-- PvP — untouched
-- Deck Builder — untouched
+- Starter Deck Authority v1.6.1 / 5 active decks — PASS, compositions unchanged
+- Canonical cards — 200
 
-## Desktop rendered verification
+## Attachment authority / consumer verification
 
-- Contextual side preview uses actual visible-card anchor — PASS
-- Card Played visible LEFT gap — **11.50 px**
-- Full Card History visible RIGHT gap — **12.171875 px**
-- LEFT/RIGHT gap difference — **0.671875 px**, within ≤2 px — PASS
-- Battlefield quick preview position/250×350 dimensions preserved — PASS
-- Legacy warning rendered DOM count per warned Legacy — **1** — PASS
-- Legacy name + warning on same row and centered — PASS
-- Shard Deck main card center preserved — PASS
-- Desktop REGEN composite center difference — **0 px** — PASS
+- Triple Shot This-Turn Attachment — PASS
+- counter starts at 1 — PASS
+- owner End Phase 1 → 0 — PASS
+- moves to Discard exactly once — PASS
+- modifier removed — PASS
+- no physical-card binding — PASS
+- unsafe `remaining_count || 1` consumer fallback absent — PASS
+- Double Casting duration audit — PASS
+- all-200 cross-phase audit — PASS; 24 explicit persistent policies
+- Status-vs-Attachment distinction — PASS
+- generic one-turn / multi-turn lifecycle — PASS
+- Draw/Battle checkpoint isolation — PASS
+- Hero defeat Attachment cleanup — PASS
+- final-Hero terminal evaluation — PASS
 
-## Tablet landscape lobby verification
+## Browser-rendered Candidate (9) measurements
 
-Test matrix: 1024×768, 1180×820, 1366×1024.
+- Contextual side preview actual clicked-card anchor — PASS
+- Right visible gap: **12 px**
+- Left visible gap: **12 px**
+- Gap difference: **0 px** — PASS (≤2 px)
+- Legacy warning DOM count for one warning condition: **1** — PASS
+- Deck-back widths (Legacy / Shard / Main): **55.4375 / 55.4375 / 55.4375 px** — PASS
+- Desktop graphical Regen counter center difference: **0 px** — PASS
+- Phone Regen in-slot center difference: **0.5 px** — PASS
+- Tablet Portrait Regen in-slot center difference: **0.5 px** — PASS
+- Tablet Landscape Regen center difference: **0.0078125 / 0.0078125 / 0 px** — PASS
+- Tablet Landscape Shard width ratios: **0.825 / 0.8248487903 / 0.8248106061** — PASS (80–85%)
+- Tablet Shard Deck count badge corner delta: **0 / 0 px** at all tested landscape viewports — PASS
+- Tablet Phase Tracker preserved — PASS
+- AI Lobby scroll preserved — PASS
+- Battlefield first tap = Quick Preview, no popup — PASS
+- second same-card activation = Detail — PASS
+- different card first tap remains Quick Preview only — PASS
+- non-battlefield first activation = Detail — PASS
+- Play/Tribute direct actions do not trigger preview routing — PASS
 
-- Normal page-level vertical scroll — PASS
-- 1024×768 actual `scrollTop` changed from **0 → 422** — PASS
-- 1024×768 bottom scroll reached **684 / 684** — PASS
-- Start Game visible/reachable/hit-testable — PASS at all three viewports
-- Larger tested landscape viewports require no extra page overflow and retain reachable Start Game — PASS
+## Code-quality gates
 
-## Tablet landscape battle verification
+- no Candidate (9) CSS override block — PASS
+- no new specificity-lock system — PASS
+- one canonical Tablet Landscape Shard sizing rule — PASS
+- one canonical Shard Deck Regen positioning rule — PASS
+- obsolete `.touch-tablet-preview` / `.gl-tablet-hand-actions` system absent — PASS
+- one Legacy warning render source — PASS
+- stale Triple Shot binding path absent — PASS
 
-At 1024×768, 1180×820, and 1366×1024:
+## Full release gate
 
-- Phase Tracker no overlap / inside usable sidebar — PASS
-- Next Phase visible and hit-testable — PASS
-- Next Phase actual click advances phase — PASS
-- End Turn visible/reachable/hit-testable in End phase — PASS
-- Tablet REGEN text removed — PASS
-- Tablet REGEN graphical counter remains inside Shard card — PASS
-- REGEN center difference: **0.0078125 px / 0 px / 0 px** — PASS
-- REGEN remains in upper visible card region — PASS
-- Shard actual width ratios: **0.825 / 0.8248487903 / 0.8248106061** — PASS (80–85%)
-- Battlefield first tap = Quick Preview, no Detail popup — PASS
-- Battlefield second same-card tap = Detail popup — PASS
-- Different battlefield card first tap stays Quick Preview only — PASS
-- Non-battlefield Hand first tap = Detail popup — PASS
-- Legacy popup card first tap = Detail popup — PASS
-- Card Played first tap = Detail popup — PASS
-- Play action does not trigger preview — PASS
+- `npm run verify` — **PASS** (exit status 0)
+- VS AI integration — **PASS**
+- Tutorial integration — **PASS**
+- Candidate (9) Chromium geometry/interaction suite — **PASS**
+- Root manifest — **PASS: 582 files; 0 missing / 0 hash mismatch / 0 size mismatch**
+- Tutorial manifest — **PASS: 168 files; 0 missing / 0 hash mismatch / 0 size mismatch**
+- Strict diff audit against Candidate (8) — **PASS**; production changes map to authority sync, Attachment consumer cleanup, contextual side preview, Legacy warning, Deck/Pile sizing, Regen UI, count-badge geometry, Tablet card routing/Shard sizing, and directly required CSS cleanup.
+- New `!important` count in touched shared styles — **0 added** (net reduction versus Candidate (8))
+- Candidate (9) patch-on-patch CSS block — **absent**
 
-## Global terminal-state verification
-
-- Poison kills non-final Hero → match continues — PASS
-- Poison kills AI final Hero → Player Win — PASS
-- Poison kills Player final Hero → AI Win — PASS
-- Hero-bound cleanup before terminal evaluation — PASS
-- Direct lethal regression — PASS
-- duplicate terminal event / End Phase stall — not observed
-- **Gameplay production-code change required: NONE — baseline (7) already passed terminal-state tests**
-
-## Locked-device / preservation verification
-
-- Mobile preserved — PASS
-- Tablet Portrait preserved — PASS
-- Desktop battlefield quick preview preserved — PASS
-- Desktop Deck/Pile main-card centering preserved — PASS
-- no authority/card/Starter/PvP/Deck Builder change — PASS
-
-## Code quality / diff control
-
-Candidate (8) production diff against Candidate (7) is limited to the shared application UI/event source, shared application CSS, battlefield authority CSS, and generated deployment mirrors/metadata derived from those sources. Obsolete conflicting tablet-landscape Phase Tracker rules and the duplicate Legacy warning render path are removed rather than hidden by later patches. No duplicate warning render source or second competing tablet tap handler is introduced.
-
-## Verification / manifests
-
-The release is gated by root syntax/current tests, Tutorial integration/tests, Chromium baseline/Candidate 6/Candidate 7/Candidate 8 suites, generated-output reproducibility, runtime security, responsive contract, strict baseline diff review, regenerated manifests, archive integrity, and final package SHA-256.
-
-Required manifest result after final packaging preparation:
-
-- root `FILE_MANIFEST_SHA256.csv`: 0 missing / 0 size mismatch / 0 SHA mismatch
-- Tutorial `tutorial/FILE_MANIFEST_SHA256.csv`: 0 missing / 0 size mismatch / 0 SHA mismatch
+Final archive integrity and SHA-256 are produced after the final manifest refresh.
