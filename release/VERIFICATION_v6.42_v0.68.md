@@ -4,7 +4,7 @@ Verification date: 2026-09-21
 
 ## Final status
 
-**PASS** — the 2026-09-21 correction pass is UI-only. The requested battlefield/contextual preview, deck/counter, Mana Regen, Status/Attachment, warning, Exhausted Hero, and responsive corrections are browser-verified while gameplay, authority, canonical data, Starter Deck compositions, and PvP remain unchanged.
+**PASS** — the remaining-issues correction is UI-only. VS AI stays **v6.42** and Tutorial stays **v0.68**. Gameplay semantics, AI behavior, authority data, Starter Deck compositions, Shared Runtime gameplay, OSA, Deck Builder, and PvP are unchanged.
 
 ## Scope declaration
 
@@ -22,179 +22,125 @@ Verification date: 2026-09-21
 - UI Contract v2.53 — PASS
 - Application Runtime Sync v2.61 — PASS
 - Runtime Data v0.16.0 — PASS / unchanged
-- Effect Recipe / Checkpoint v0.15.0 / v0.15.0 — PASS / unchanged
-- Hero Components v1.1.0 — PASS / unchanged
-- Starter Deck Authority v1.6.1 — PASS / exactly 5 active starters / compositions unchanged
+- Starter Deck Authority v1.6.1 — PASS / 5 active starters / compositions unchanged
 - Canonical cards — PASS / 200 unique IDs / canonical data unchanged
+- root and Tutorial `runtime-source/runtime/` trees — byte-identical to the supplied baseline
+- root and Tutorial gameplay/data/starter directories — byte-identical to the supplied baseline
 - PvP repository — untouched
 
-## Gameplay regression — unchanged baseline
+## Already-approved UI preservation
 
-The already-approved Hero-defeat lifecycle / Response-chain fix remains intact. Current application integration and regression suites verify the unchanged gameplay baseline, including:
+The five previously approved items remain intact:
 
-- generic Hero defeat cleanup — PASS
-- Shield Bash + Deflect lifecycle — PASS
-- Response Window/pending cleanup after source defeat — PASS
-- AI continuation after resolved Response — PASS
-- Warp Scroll — PASS
-- Freeze Bomb / generic Freeze legality, duration, stacking, Dodge and movement restrictions — PASS
-- Physical Attack vs Physical Damage / Magical Attack vs Magical Damage classification — PASS
-- Triple Shot lifetime behavior — PASS
-- Ultimate Shard return ordering — PASS
-- opponent Hand / Shard blind selection security — PASS
-- Local AI planner/gameplay — PASS
-- five Starter Deck loading/parity — PASS
+- standard battlefield preview X/Y — PASS / preserved
+- Next Phase visible area ≥ approximately 50% — PASS
+- opponent readable face-up Mana/Shard hover — PASS / preserved
+- hidden opponent Mana/Shard identity safety — PASS / preserved
+- popup previews above modal stacking contexts — PASS / preserved
+- Deck/Pile numeric badge visual — PASS / preserved rounded rectangle
+- Status badge position and 9 px numeric font — PASS / preserved
 
-No gameplay-semantic source or canonical data regeneration is introduced by this UI pass.
+## Contextual preview verification
 
-## Chromium UI verification
-
-A real headless Chromium DOM/geometry suite executes against the shared VS AI/Tutorial battlefield implementation.
-
-### Battlefield preview
-
-- standard preview size remains 250×350 — PASS
-- existing approved Y placement preserved — PASS
-- X shifted meaningfully LEFT/inward — PASS
-- right Main Deck/Discard overlap allowed — PASS
-- small Phase Tracker overlap allowed — PASS
-- Next Phase remains at least approximately 50% visible — PASS
-- Hand readable preview — PASS
-- Hero readable preview — PASS
-- Legacy readable preview — PASS
-- Attachment readable preview — PASS
-- Casting readable preview — PASS
-- player face-up Shard readable preview — PASS
-- opponent face-up/readable Shard hover — PASS
-- hidden opponent Shard removes preview metadata — PASS
-- hidden opponent Shard is visually hidden — PASS
-- hidden opponent Shard cannot open identity preview — PASS
-- opponent hidden Hand exposes no readable preview metadata — PASS
-- `pointer-events:none` — PASS
-- source mouseleave hides immediately — PASS
-- Card A → Card B updates the singleton immediately — PASS
-
-### Card Played / contextual preview
+Real Chromium geometry verification records:
 
 - Card Played opens LEFT — PASS
-- source-to-preview gap approximately 8–14 px — PASS
-- preview is vertically associated with source and viewport-clamped — PASS
-- contextual preview is 272×381 (~9% larger) — PASS
-- preview remains pointer-transparent — PASS
+- Card Played size remains 272×381 — PASS
+- current approved RIGHT-side contextual gap preserved — PASS
+- LEFT rendered edge-to-edge gap matches RIGHT within ≤1 px tolerance — PASS
+- Card Played rendered gap matches the measured RIGHT-side contextual reference — PASS
+- Legacy Deck popup RIGHT placement — PASS
+- forced representative Legacy Deck LEFT placement — PASS
+- Full Card History above-modal preview — PASS
+- Response Window above-modal preview — PASS
+- opened Discard Pile above-modal preview — PASS
+- card-selection/choice popup above-modal preview — PASS
+- preview `pointer-events:none` — PASS
+- source mouseleave hides immediately — PASS
+- source remains clickable/selectable — PASS
 
-### Popup/modal stacking matrix
+## Shard Pool / Mana Regen verification
 
-- Legacy Deck inspection preview above modal — PASS
-- Full Card History preview above modal — PASS
-- Response Window preview above modal — PASS
-- opened Discard Pile preview above modal — PASS
-- card-selection/choice popup preview above modal — PASS
-- contextual preview prefers LEFT/RIGHT with above/below fallback — PASS
-- contextual preview stays close to source — PASS
-- source cards/buttons remain clickable/selectable — PASS
-- modal scrolling/Close behavior is not blocked by the preview overlay — PASS
+- Regen removed from Shard Deck zone — PASS
+- Regen grouped with Shard Pool — PASS
+- Regen occupies reserved left area — PASS
+- first Shard starts to the right of Regen reservation — PASS
+- no Shard/Regen overlap — PASS
+- graphical `Counter-1...Counter-6.png` asset family unchanged — PASS
+- Shard Pool label remains readable — PASS
+- desktop 1440×900 — PASS
+- phone portrait 390×844 — PASS
+- tablet portrait 820×1180 — PASS
+- tablet landscape 1180×820 — PASS
 
-## Deck / pile / Mana Regen verification
+## Discard / Deck-Pile verification
 
-- Legacy Deck numeric badge uses approved rounded rectangle — PASS
-- Shard Deck numeric badge uses approved rounded rectangle — PASS
-- Discard Pile numeric badge uses approved rounded rectangle — PASS
-- Main Deck numeric badge uses approved rounded rectangle — PASS
-- numeric badges are not circular — PASS
-- 1/2/3-digit badge width expands correctly — PASS
-- numeric content is horizontally centered — PASS
-- numeric content is vertically centered — PASS
-- deck/pile card is centered independently of overlays — PASS
-- Main/Legacy/Shard card backs slightly enlarged — PASS
-- containers are not aggressively shrunk — PASS
-- Shard Deck Regen is below the card — PASS
-- Regen no longer collides with deck count — PASS
-- Mana Regen graphical Counter asset system unchanged — PASS
-- Shard Deck label remains readable — PASS
+- face-up Discard card no longer visually smaller than Legacy/Main Deck footprint family — PASS
+- Discard card aspect ratio preserved — PASS
+- numeric badge visual remains dark/gold rounded rectangle — PASS
+- numeric content remains centered — PASS
+- card/stack remains horizontally centered independently of badge overlays — PASS
 
-## Status / Attachment verification
+## Mobile Deck/Pile count verification
 
-- Status badge position unchanged — PASS
-- one Status icon → one badge; three Statuses → three individual badges — PASS
-- Status numeral reduced to the corrected 9 px presentation — PASS
-- Status number centered — PASS
-- Status badge remains rounded rectangle — PASS
-- Status icon spacing unchanged — PASS
-- Attachment badge remains at top/corner — PASS
-- Attachment number centered — PASS
-- Attachment badge remains rounded rectangle — PASS
-- no generic Counter image is used outside Mana Regen — PASS
+At phone portrait, and safety-checked on tablet portrait:
 
-## Warning verification
+- Legacy Deck count attached to card top-right — PASS
+- Shard Deck count attached to card top-right — PASS
+- Discard Pile count attached to card top-right — PASS
+- Main Deck count attached to card top-right — PASS
+- no count/title collision — PASS
+- card remains horizontally centered — PASS
+- approved badge styling unchanged — PASS
 
-- previous approved compact circular warning visual restored — PASS
-- warning icon remains circular and distinct from numeric badges — PASS
-- warning icon fully inside container — PASS
-- warning icon not clipped — PASS
-- warning `!` centered — PASS
-- warning condition renders the icon visible **before hover** — PASS
-- hover-gated icon visibility removed — PASS
-- hover/focus on `!` opens detail tooltip — PASS
-- leaving `!` closes detail tooltip — PASS
-- Hero-card hover alone does not open/keep warning detail — PASS
+## Hero warning verification
+
+- Hero warning uses the existing `legacy-hero-info` visual implementation/class — PASS
+- computed dimensions, border, background, color, font, line-height, centering match the known-good Legacy warning — PASS
+- circular icon — PASS
+- `!` centered — PASS
+- warning fully inside Hero container — PASS
+- warning visible before Hero hover — PASS
+- Hero/container hover is not required to reveal icon — PASS
+- tooltip appears on `!` hover — PASS
+- tooltip disappears when pointer leaves `!` — PASS
+- Hero hover elsewhere does not keep/open warning detail — PASS
+- existing Legacy warning remains unchanged — PASS
 
 ## Exhausted Hero verification
 
-- Ready Hero underlying dimensions recorded — PASS
-- Exhausted Hero underlying dimensions equal Ready Hero — PASS
-- Exhausted visual dimensions equal the Ready dimensions swapped by 90-degree rotation — PASS
+- Ready and Exhausted Hero underlying dimensions equal — PASS
+- Exhausted visual dimensions equal Ready dimensions rotated 90° — PASS
 - transform scale X = 1 — PASS
 - transform scale Y = 1 — PASS
-- no exhausted `scale(<1)` remains — PASS
-- Hero remains inside its lane without clipping — PASS
+- no exhausted scale-down — PASS
 - HP overlay remains visible — PASS
-- Status/warning layout remains valid under browser regression — PASS
+- no clipping — PASS
 
-## Responsive verification
+## Gameplay / AI / Tutorial regression
 
-- Desktop 1440×900 — PASS
-- Phone portrait 390×844 — PASS
-- Tablet portrait 820×1180 — PASS
-- Tablet landscape 1180×820 — PASS
-- no tested horizontal page overflow — PASS
-- deck/pile badges remain present — PASS
-- desktop hover preview is disabled on touch/mobile modes — PASS
-- tablet portrait retains touch-visible Hero information without requiring hover — PASS
-
-## Shared architecture / generated parity
-
-- common VS AI/Tutorial app source: `shared-app/app.bundle.js` — PASS
-- common VS AI/Tutorial CSS source: `shared-app/app.css` — PASS
-- common shared battlefield authority/UI sources — PASS
-- Tutorial application mirror parity — PASS
-- generated-output reproducibility — PASS
-- root/Tutorial Shared Runtime parity — PASS
-
-## Test execution summary
-
-All current release gates complete successfully:
+Current release regression remains green, including Hero defeat cleanup, Response lifecycle, Deflect, Shield Bash, Warp Scroll, Freeze/Freeze Bomb, Triple Shot, Attack-v-Damage classification, blind selection/security, AI continuation/planning, deck legality, opening flow, and five Starter Deck parity.
 
 - root syntax + current regression suite — PASS
 - Tutorial v0.68 suite — PASS
-- Chromium UI correction suite — PASS
-- root manifest verification — PASS
-- Tutorial manifest verification — PASS
+- Chromium UI suite — PASS
+- generated-output reproducibility — PASS
+- gameplay integration — PASS
+- AI regression — PASS
+- Tutorial regression — PASS
 
-The current release suite reports **22 / 22 unique release gates PASS, 0 FAIL**; shared scripts intentionally re-run by the Tutorial suite are not double-counted.
+## Manifests
 
-## Manifest
-
-Both manifests are regenerated after all source/document corrections. Final verification requires and records:
+Both manifests are regenerated only after all corrections and release-document updates:
 
 - root `FILE_MANIFEST_SHA256.csv` — 0 missing / 0 size mismatch / 0 SHA mismatch — PASS
 - Tutorial `tutorial/FILE_MANIFEST_SHA256.csv` — 0 missing / 0 size mismatch / 0 SHA mismatch — PASS
-- manifest files exclude themselves from their own tracked set by repository convention.
 
-## Packaging / scope
+## Packaging
 
-- release version remains v6.42 / v0.68 — PASS
-- release documentation updated as a UI correction pass, not a gameplay release — PASS
-- no redundant final ZIP is stored inside the repository root — PASS
-- OSA package/source not modified — PASS
-- PvP repository not opened or modified — PASS
-- Deck Builder, Website, and Player Rulebook repositories not modified — PASS
+- release remains v6.42 / v0.68 — PASS
+- final repository contains no redundant ZIP/RAR/7z copy in its root — PASS
+- OSA not modified — PASS
+- PvP not modified — PASS
+- Deck Builder not modified — PASS
+- final ZIP integrity and SHA256 recorded after packaging — PASS

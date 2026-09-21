@@ -2867,10 +2867,10 @@ body::before{display:none!important}
 }
 .v96-app .legacy-name-bar{gap:7px!important;padding:2px 8px!important}
 .v96-app .legacy-hero-info{
-  width:18px;height:18px;min-width:18px;border-radius:50%;padding:0!important;
-  display:inline-flex;align-items:center;justify-content:center;
+  width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;border-radius:50%!important;padding:0!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
   border:1px solid rgba(236,201,91,.78)!important;background:#182334!important;color:#f2ce5b!important;
-  font-size:11px;font-weight:900;line-height:1;cursor:pointer;
+  font-size:11px!important;font-weight:900!important;line-height:1!important;cursor:pointer;
   box-shadow:0 0 8px rgba(236,201,91,.18)!important;
 }
 .v96-app .legacy-hero-info:hover,.v96-app .legacy-hero-info:focus-visible{filter:brightness(1.22);outline:0!important}
@@ -6442,9 +6442,10 @@ body:has(.v96-app.mobile-restored-layout) #glMobileAppMenu{display:none!importan
 .negative-status-indicator .gl-status-count{right:-6px!important;bottom:-5px!important;}
 .slot.filled>.gl-attachment-count{top:-7px!important;right:-7px!important;}
 
-/* Restore the approved warning visual and make its condition state visible before hover. */
+/* Hero warning reuses the existing Legacy/Attachment warning component; only host placement/visibility are Hero-specific. */
 .v96-app .hero-status-overlay{top:6px!important;left:6px!important;overflow:visible!important;}
-.v96-app .hero-info-indicator>.status-trigger{width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;padding:0!important;border-radius:50%!important;border:1px solid rgba(214,166,55,.72)!important;background:#0b151d!important;color:#f3d150!important;font-size:9px!important;font-weight:1000!important;line-height:1!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;opacity:1!important;visibility:visible!important;}
+.v96-app .hero-info-indicator{opacity:1!important;visibility:visible!important;pointer-events:auto!important;}
+.v96-app .hero-info-indicator>.status-trigger.legacy-hero-info{margin:0!important;opacity:1!important;visibility:visible!important;}
 .v96-app .hero-info-indicator .hero-indicator-tooltip{opacity:0!important;visibility:hidden!important;pointer-events:none!important;}
 .v96-app .hero-info-indicator:hover .hero-indicator-tooltip,.v96-app .hero-info-indicator:focus-within .hero-indicator-tooltip{opacity:1!important;visibility:visible!important;display:block!important;}
 
@@ -6457,3 +6458,51 @@ html.gl-tablet-portrait-mobile .v96-app .hero-status-overlay>.mobile-status-summ
   place-items:center!important;
   pointer-events:auto!important;
 }
+
+
+/* ================================================================
+   2026-09-21 v6.42 / v0.68 remaining-issues UI correction
+   Scope: placement/scale only; approved counter/Status visuals stay unchanged.
+   ================================================================ */
+/* Mobile/portrait Shard Pool owns a reserved Regen column; Shards cannot enter it. */
+.v96-app.mobile-restored-layout .mobile-shard-pool-content{
+  min-width:0!important;min-height:0!important;width:100%!important;height:100%!important;
+  display:grid!important;grid-template-columns:60px minmax(0,1fr)!important;align-items:center!important;gap:4px!important;overflow:hidden!important;
+}
+.v96-app.mobile-restored-layout .mobile-shard-regen{
+  position:relative!important;z-index:6!important;grid-column:1!important;width:60px!important;height:34px!important;margin:7px 0 0 0!important;padding:0 0 0 4px!important;
+  display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:2px!important;pointer-events:none!important;white-space:nowrap!important;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.72))!important;
+}
+.v96-app.mobile-restored-layout .mobile-shard-regen img{display:block!important;width:24px!important;height:24px!important;min-width:24px!important;object-fit:contain!important;}
+.v96-app.mobile-restored-layout .mobile-shard-regen small{font-size:5.5px!important;font-weight:900!important;line-height:7px!important;letter-spacing:.05em!important;color:#dce8f3!important;text-shadow:0 1px 2px #000!important;}
+.v96-app.mobile-restored-layout .mobile-shard-scroll{grid-column:2!important;min-width:0!important;width:100%!important;margin:0!important;}
+
+@media(max-width:760px){
+  .v96-app.mobile-restored-layout .mobile-shard-pool{display:grid!important;grid-template-columns:minmax(0,1fr) 46px!important;grid-template-rows:48px!important;align-items:center!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-pool-content{grid-column:1!important;grid-row:1!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-scroll{height:100%!important;padding:8px 2px 2px 0!important;overflow-x:auto!important;overflow-y:hidden!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-racial{position:relative!important;grid-column:2!important;grid-row:1!important;right:auto!important;top:auto!important;bottom:auto!important;width:46px!important;height:44px!important;align-self:center!important;}
+  /* Attach numeric counts to the actual visible card footprint, not the full zone-width wrapper. */
+  .v96-app.mobile-restored-layout .mobile-shard-field .zone .zoneCard{
+    width:46px!important;min-width:46px!important;max-width:46px!important;height:49px!important;min-height:49px!important;max-height:49px!important;
+    margin:11px auto 0!important;overflow:visible!important;justify-self:center!important;align-self:start!important;
+  }
+  .v96-app.mobile-restored-layout .mobile-shard-field .zone .zoneCard>img{width:46px!important;height:49px!important;max-width:46px!important;max-height:49px!important;object-fit:contain!important;}
+  .v96-app.mobile-restored-layout .mobile-shard-field .zone .zoneCard>.gl-resource-count{top:-7px!important;right:-7px!important;bottom:auto!important;}
+}
+
+/* Tablet portrait uses mobile markup even above 760px; reserve Regen/Shards there too without changing the broader board geometry. */
+html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-pool{
+  position:relative!important;display:grid!important;grid-column:2/-1!important;grid-row:2!important;grid-template-columns:minmax(0,1fr) 52px!important;align-items:center!important;justify-self:stretch!important;align-self:start!important;overflow:hidden!important;
+  width:auto!important;min-width:0!important;min-height:54px!important;height:54px!important;margin:0!important;border-top:1px solid rgba(215,184,95,.16)!important;border-bottom:1px solid rgba(215,184,95,.16)!important;background:rgba(3,12,20,.78)!important;
+}
+html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-field .zone .zoneCard{transform:translateY(6px)!important;overflow:visible!important;}
+html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-pool>strong{position:absolute!important;left:5px!important;top:2px!important;z-index:8!important;font-size:6px!important;color:#e2c867!important;}
+html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-pool-content{grid-column:1!important;grid-template-columns:68px minmax(0,1fr)!important;gap:6px!important;}
+html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-regen{width:68px!important;padding-left:5px!important;}
+html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-scroll{height:100%!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:4px!important;padding:9px 2px 2px 0!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;}
+html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-scroll::-webkit-scrollbar{display:none!important;}
+html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-card{width:28px!important;height:39px!important;min-width:28px!important;flex:0 0 28px!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;}
+html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-card img{width:100%!important;height:100%!important;object-fit:contain!important;}
+html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-racial{position:relative!important;grid-column:2!important;right:auto!important;top:auto!important;bottom:auto!important;width:52px!important;height:50px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;border-left:1px solid rgba(215,184,95,.16)!important;}

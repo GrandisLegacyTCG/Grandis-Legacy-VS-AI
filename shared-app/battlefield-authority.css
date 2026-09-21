@@ -154,10 +154,9 @@ body:has(.gl-lab-authority) .hover-card-zoom.is-hand-hover img{width:100%!import
 .gl-lab-positions .attachment-row>.slot .gl-attachment-die{position:absolute!important;z-index:86!important;right:-4px!important;top:-4px!important;width:17px!important;height:17px!important;filter:drop-shadow(0 2px 3px rgba(0,0,0,.78));}
 
 
-.gl-lab-positions .hero-status-overlay .hero-info-indicator>button{width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;margin:0!important;padding:0!important;font-size:9px!important;}
-/* Stable desktop behavior: generic Hero information (!) appears only while that Hero is hovered/focused. */
-.gl-lab-positions .hero-status-overlay .hero-info-indicator{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transition:opacity .08s ease!important;}
-.gl-lab-positions .hero-panel:hover .hero-status-overlay .hero-info-indicator,.gl-lab-positions .hero-panel:focus-within .hero-status-overlay .hero-info-indicator{opacity:1!important;visibility:visible!important;pointer-events:auto!important;}
+.gl-lab-positions .hero-status-overlay .hero-info-indicator>.legacy-hero-info{margin:0!important;}
+/* Hero information reuses the proven Legacy warning component and is present whenever the warning condition exists. */
+.gl-lab-positions .hero-status-overlay .hero-info-indicator{opacity:1!important;visibility:visible!important;pointer-events:auto!important;transition:none!important;}
 .gl-lab-positions .hero-status-overlay .mobile-status-summary{display:none!important;}
 .gl-lab-positions .hero-indicator-tooltip{z-index:900!important;}
 
@@ -170,11 +169,16 @@ body:has(.gl-lab-authority) .hover-card-zoom.is-hand-hover img{width:100%!import
 .gl-lab-positions .legacy-name-bar{width:max-content!important;max-width:min(76%,310px)!important;min-height:22px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:7px!important;padding:2px 8px!important;border:0!important;outline:0!important;border-radius:7px!important;background:rgba(9,18,29,.76)!important;box-shadow:none!important;overflow:visible!important;pointer-events:auto!important;}
 .gl-lab-positions .legacy-name-bar small{display:block!important;color:#e9c765!important;font-size:7px!important;font-weight:800!important;letter-spacing:.06em!important;white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important;}
 .gl-lab-positions .legacy-hero-info--mobile{display:none!important;}
-.gl-lab-positions .legacy-hero-info--desktop{width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;border-radius:50%!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;border:1px solid rgba(236,201,91,.78)!important;background:#182334!important;color:#f2ce5b!important;font-size:11px!important;font-weight:900!important;line-height:1!important;cursor:pointer!important;pointer-events:auto!important;box-shadow:0 0 8px rgba(236,201,91,.18)!important;}
+.gl-lab-positions .legacy-hero-info--desktop,.gl-lab-positions .hero-status-overlay .hero-info-indicator>.legacy-hero-info{width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;border-radius:50%!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;border:1px solid rgba(236,201,91,.78)!important;background:#182334!important;color:#f2ce5b!important;font-size:11px!important;font-weight:900!important;line-height:1!important;cursor:pointer!important;pointer-events:auto!important;box-shadow:0 0 8px rgba(236,201,91,.18)!important;}
 
 /* Shard Pool: deliberately short/open; cards are 80% of normal battlefield card. */
-.gl-lab-mana-pool{position:relative;min-width:0;min-height:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border:0;background:transparent;overflow:visible;padding:2px 42px;}
-.gl-lab-mana-row{min-width:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;gap:clamp(8px,1.0vw,16px);overflow:visible;}
+.gl-lab-mana-pool{position:relative;min-width:0;min-height:0;width:100%;height:100%;display:grid;grid-template-rows:9px minmax(0,1fr);align-items:stretch;border:0;background:transparent;overflow:visible;padding:2px 42px;}
+.gl-lab-mana-pool-label{position:relative;z-index:6;display:block;align-self:start;text-align:left;color:#d7e3ef;font-size:6px;font-weight:900;line-height:8px;letter-spacing:.08em;text-transform:uppercase;text-shadow:0 1px 2px #000;pointer-events:none;}
+.gl-lab-mana-pool-content{min-width:0;min-height:0;width:100%;height:100%;display:grid;grid-template-columns:58px minmax(0,1fr);align-items:center;gap:8px;overflow:visible;}
+.gl-lab-mana-pool-regen{position:relative;z-index:8;min-width:0;width:58px;height:28px;margin:0;padding:0;display:flex;align-items:center;justify-content:flex-start;gap:2px;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.72));white-space:nowrap;}
+.gl-lab-mana-pool-regen img{display:block!important;width:24px!important;height:24px!important;object-fit:contain!important;flex:0 0 24px!important;}
+.gl-lab-mana-pool-regen small{position:static!important;transform:none!important;color:#dce8f3!important;font-size:5.5px!important;font-weight:900!important;line-height:7px!important;letter-spacing:.05em!important;text-shadow:0 1px 2px #000!important;}
+.gl-lab-mana-row{min-width:0;width:100%;height:100%;display:flex;align-items:center;justify-content:flex-start;gap:clamp(8px,1.0vw,16px);overflow:visible;}
 .gl-lab-mana-card{appearance:none!important;position:relative!important;flex:0 0 var(--lab-mana-w)!important;width:var(--lab-mana-w)!important;height:var(--lab-mana-h)!important;max-width:var(--lab-mana-w)!important;max-height:var(--lab-mana-h)!important;margin:0!important;padding:0!important;border:0!important;border-radius:6px!important;background:transparent!important;overflow:visible!important;filter:drop-shadow(0 4px 7px rgba(0,0,0,.52));}
 .gl-lab-mana-card img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;border-radius:6px!important;}
 .gl-lab-mana-card.is-pending-draw{visibility:hidden!important;pointer-events:none!important;}
@@ -217,18 +221,12 @@ body:has(.gl-lab-authority) .hover-card-zoom.is-card-played-hover img{width:100%
   html.gl-ui-mobile .gl-lab-sidebar{height:auto;display:block;overflow:visible;}
 }
 
-/* v0.14 UI revision — Mana Regen reads horizontally as REGEN [Counter].
-   Counter is slightly larger than v0.14 launch sizing and remains clear of the Shard Deck card. */
-.gl-lab-zone[data-zone-type="Shard Deck"] .gl-lab-mana-regen{position:absolute!important;z-index:8!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;width:auto!important;height:26px!important;margin:0!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:2px!important;pointer-events:none!important;filter:drop-shadow(0 2px 4px rgba(0,0,0,.72));white-space:nowrap!important;}
-.gl-lab-zone[data-zone-type="Shard Deck"] .gl-lab-mana-regen img{display:block!important;width:24px!important;height:24px!important;object-fit:contain!important;flex:0 0 24px!important;}
-.gl-lab-zone[data-zone-type="Shard Deck"] .gl-lab-mana-regen small{position:static!important;transform:none!important;color:#dce8f3!important;font-size:5.5px!important;font-weight:900!important;line-height:7px!important;letter-spacing:.05em!important;text-shadow:0 1px 2px #000!important;}
-.gl-lab-side--player .gl-lab-zone[data-zone-type="Shard Deck"] .gl-lab-mana-regen{top:3px!important;bottom:auto!important;}
-.gl-lab-side--opponent .gl-lab-zone[data-zone-type="Shard Deck"] .gl-lab-mana-regen{bottom:3px!important;top:auto!important;}
-/* Shard Deck keeps a full, readable card presence. The REGEN header owns the spare rail space;
-   never solve counter clearance by shrinking the deck card. */
-.gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard{width:calc(var(--lab-card-w) * .88)!important;height:calc(var(--lab-card-h) * .88)!important;}
-.gl-lab-side--player .gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard{transform:translateY(6px)!important;}
-.gl-lab-side--opponent .gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard{transform:translateY(-6px)!important;}
+/* v6.42 / v0.68 remaining UI correction — Mana Regen belongs to the Shard Pool.
+   The graphical counter is unchanged; layout reserves a dedicated left column so Shards never overlap it. */
+.gl-lab-mana-pool .gl-lab-mana-pool-regen{display:flex!important;visibility:visible!important;opacity:1!important;}
+.gl-lab-mana-pool .gl-lab-mana-row{padding:0!important;margin:0!important;}
+/* Shard Deck is now a pure deck/pile zone; no Regen presentation lives inside it. */
+.gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard{transform:none!important;}
 
 /* v0.9 — Mana confirmation communicates affordability at a glance. */
 body:has(.gl-lab-authority) #choiceConfirm.mana-confirm-ready{border-color:#2f8f58!important;background:linear-gradient(180deg,#1d6b40,#0d3f25)!important;color:#d9ffe8!important;opacity:1!important;}
@@ -345,23 +343,15 @@ body:has(.gl-lab-authority) #choiceConfirm.mana-confirm-waiting{border-color:#7d
 /* Numeric/regen overlays must never push the physical deck card off its visual center. */
 .gl-lab-zone{justify-content:center!important;align-content:center!important;overflow:visible!important;}
 .gl-lab-zone .zoneCard{justify-self:center!important;align-self:center!important;transform:none!important;}
-/* Slight card-back enlargement only for back-facing deck zones; readable Discard art keeps its existing scale. */
+/* Deck/Pile card scale family: face-up Discard must not read as a miniature stack. */
 .gl-lab-zone[data-zone-type="Main Deck"] .zoneCard,
-.gl-lab-zone[data-zone-type="Legacy Deck"] .zoneCard{width:calc(var(--lab-card-w) * .84)!important;height:calc(var(--lab-card-h) * .84)!important;}
-.gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard{width:calc(var(--lab-card-w) * .93)!important;height:calc(var(--lab-card-h) * .93)!important;transform:translateY(-10px)!important;}
-/* REGEN remains the dedicated graphical Counter asset system; only its location changes. */
-.gl-lab-side--player .gl-lab-zone[data-zone-type="Shard Deck"] .gl-lab-mana-regen,
-.gl-lab-side--opponent .gl-lab-zone[data-zone-type="Shard Deck"] .gl-lab-mana-regen{top:auto!important;bottom:8px!important;}
-/* Count stays attached to the deck card's approved corner and uses independent overlay positioning. */
+.gl-lab-zone[data-zone-type="Legacy Deck"] .zoneCard,
+.gl-lab-zone[data-zone-type="Discard Pile"] .zoneCard{width:calc(var(--lab-card-w) * .84)!important;height:calc(var(--lab-card-h) * .84)!important;}
+.gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard{width:calc(var(--lab-card-w) * .93)!important;height:calc(var(--lab-card-h) * .93)!important;transform:none!important;}
+/* Count stays attached to the physical card/stack and does not participate in centering. */
 .gl-lab-zone .zoneCard .gl-resource-count{position:absolute!important;top:-4px!important;right:-4px!important;bottom:auto!important;z-index:9!important;}
 /* Exhaust changes orientation only, never scale. */
 .gl-lab-positions .hero-card-physical-stack.is-exhausted>.hero-card.hero-main{transform:rotate(-90deg)!important;}
-
-/* Final Shard Deck stacking correction: card centered horizontally; REGEN sits below the card without driving its layout. */
-.gl-lab-side--player .gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard,
-.gl-lab-side--opponent .gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard{transform:translateY(-15px)!important;}
-.gl-lab-side--player .gl-lab-zone[data-zone-type="Shard Deck"] .gl-lab-mana-regen,
-.gl-lab-side--opponent .gl-lab-zone[data-zone-type="Shard Deck"] .gl-lab-mana-regen{top:auto!important;bottom:2px!important;}
 
 /* UI-only correction: tablet portrait follows the touch/mobile information contract even above the 760px CSS width tier. */
 html.gl-tablet-portrait-mobile .gl-lab-positions .hero-status-overlay>.mobile-status-summary{

@@ -6559,7 +6559,7 @@ function getActivatedHeroAbilities(state, side, lane){
   function glDieCounterHtml(value,label,cls){return glCounterHtml(value,label,cls);}
   function v56StatusControl(hero,side){
     var negative=v56NegativeStatuses(hero), info=v56HeroInfoLines(hero,side), orient=side==='AI'?'top':'bottom';
-    var infoHtml=info.length?'<div class="hero-info-indicator"><button class="status-trigger" type="button" aria-label="Show Hero information">!</button><div class="hero-indicator-tooltip" role="tooltip"><strong>Hero Information</strong>'+info.map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div></div>':'';
+    var infoHtml=info.length?'<div class="hero-info-indicator"><button class="status-trigger legacy-hero-info hero-warning-indicator" type="button" aria-label="Show Hero information">!</button><div class="hero-indicator-tooltip" role="tooltip"><strong>Hero Information</strong>'+info.map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div></div>':'';
     var statusHtml=negative.map(function(st){
       var n=statusName(st), key=Object.keys(V58_STATUS_ICON_ASSETS).find(function(k){return k.toLowerCase()===n.toLowerCase();}), src=key?V58_STATUS_ICON_ASSETS[key]:'';
       if(!src) return '';
@@ -6953,7 +6953,7 @@ function getActivatedHeroAbilities(state, side, lane){
     if(isLegacy&&side==='PLAYER') attrs+=' data-legacy-side="PLAYER"';
     var number=isMana?('<span class="mana-current">'+esc(Number(count||0))+'</span><i>/</i><span class="mana-max">12</span>'):esc(Number(count||0));
     var imageHtml=icon?'<img src="'+esc(icon)+'" alt="'+esc(type)+'">':'';
-    var footer=isMana?'<em>Mana Regen +'+esc(regen||1)+'</em>':(isShardDeck?'<em>REGEN +'+esc(regen||1)+'</em>':'');
+    var footer=isMana?'<em>Mana Regen +'+esc(regen||1)+'</em>':'';
     var countBadge=isMana?'':('<span class="gl-count-badge gl-resource-count" aria-label="'+esc(type+' count '+Number(count||0))+'">'+number+'</span>');
     var inner='<span>'+esc(type)+'</span><div class="zoneCard zone-card-stack '+(isMana?'zone-card-stack--mana ':'')+(emptyDiscard?'zone-card-stack--empty':'')+'">'+imageHtml+(isMana?('<b class="mana-value">'+number+'</b>'):countBadge)+'</div>'+footer;
     return '<button class="'+cls+'" type="button"'+attrs+((isLegacy&&side!=='PLAYER')||isMain||isMana||isShardDeck?' aria-disabled="true"':'')+'>'+inner+'</button>';
@@ -6971,11 +6971,15 @@ function getActivatedHeroAbilities(state, side, lane){
     var faces=[0,1].map(function(i){var active=i<racialValue,src=active?'https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Racial-Token-Head.webp':'https://grandislegacytcg.github.io/shared/season1/v1/cards/ui/Racial-Token-Tail.webp';return '<img src="'+src+'" alt="Racial Token '+(i+1)+' '+(active?'available':'spent')+'">';}).join('');
     return '<div class="mobile-shard-racial" aria-label="Racial Tokens '+racialValue+' of 2"><small>RACIAL</small><div>'+faces+'</div></div>';
   }
+  function v642ManaRegenControl(state,side,extraClass){
+    var regen=Math.max(1,Math.min(6,Number(state&&state[manaRegenKeyForSide(side)]||1)));
+    return '<span class="gl-lab-mana-regen '+esc(extraClass||'')+'" title="Mana Regen +'+esc(regen)+'" aria-label="Mana Regen +'+esc(regen)+'"><small>REGEN</small><img src="'+esc(glDieCounterAsset(regen))+'" alt="Mana Regen '+esc(regen)+'"></span>';
+  }
   function mobileShardPoolRow(side,state){
     var shards=manaPoolCardsForSide(state,side),shardHtml='';
     shards.forEach(function(sh){var label=sh.kind==='CLASS'?(sh.class_name+' Shard'):'Mana Shard',hidden=!!hiddenManaDrawToken(side,sh.uid);shardHtml+='<button class="gl-lab-mana-card mobile-shard-card '+(sh.kind==='CLASS'?'is-class':'is-generic')+' '+(hidden?'is-opening-draw-hidden':'')+'" type="button" data-mana-side="'+esc(side)+'" data-mana-uid="'+esc(sh.uid)+'"'+((!hidden)?' data-shard-preview-src="'+esc(manaShardAsset(sh))+'" data-shard-preview-label="'+esc(label)+'"':'')+' aria-label="'+esc(label)+'" title="'+esc(label)+'"><img src="'+esc(manaShardAsset(sh))+'" alt="'+esc(label)+'"></button>';});
     pendingManaDrawReservations(side).forEach(function(r){shardHtml+='<span class="gl-lab-mana-card mobile-shard-card is-pending-draw" data-mana-side="'+esc(side)+'" data-mana-pending-id="'+esc(r.id)+'" aria-hidden="true"></span>';});
-    return '<div class="mobile-shard-pool mobile-shard-pool--'+(side==='AI'?'opponent':'player')+'" aria-label="'+esc(side)+' Shard Pool"><strong>SHARD POOL</strong><div class="mobile-shard-scroll">'+shardHtml+'</div>'+mobileShardRacialTokens(side,state)+'</div>';
+    return '<div class="mobile-shard-pool mobile-shard-pool--'+(side==='AI'?'opponent':'player')+'" aria-label="'+esc(side)+' Shard Pool"><strong>SHARD POOL</strong><div class="mobile-shard-pool-content">'+v642ManaRegenControl(state,side,'mobile-shard-regen')+'<div class="mobile-shard-scroll">'+shardHtml+'</div></div>'+mobileShardRacialTokens(side,state)+'</div>';
   }
   function mobileField(side,heroes,state){
     var isAI=side==='AI',legacy=isAI?state.aiLegacyCount:state.playerLegacyCount,main=isAI?state.aiDeckCount:state.playerDeckCount,discardList=isAI?(state.aiDiscard||[]):(state.playerDiscard||[]),discard=discardList.length,regen=isAI?state.aiManaRegen:state.manaRegen;
@@ -6994,7 +6998,7 @@ function getActivatedHeroAbilities(state, side, lane){
     return '<button class="gl-lab-zone '+(empty?'is-empty':'')+'" type="button"'+attrs+' '+((isMain||isManaDeck||(isLegacy&&side==='AI'))?'aria-disabled="true"':'')+'>'+
       '<span class="gl-lab-zone-label">'+esc(type)+'</span><div class="zoneCard">'+(icon?'<img src="'+esc(icon)+'" alt="'+esc(type)+'">':'')+countHtml+'</div></button>';
   }
-  function labManaDeckZone(side,state){var html=labResourceZone(side,'Shard Deck',manaDeckForSide(state,side).length,false,null),regen=Math.max(1,Math.min(6,Number(state&&state[manaRegenKeyForSide(side)]||1)));var counter='<span class="gl-lab-mana-regen" title="Mana Regen +'+esc(regen)+'" aria-label="Mana Regen +'+esc(regen)+'"><small>REGEN</small><img src="'+esc(glDieCounterAsset(regen))+'" alt="Mana Regen '+esc(regen)+'"></span>';return html.replace('</button>',counter+'</button>');}
+  function labManaDeckZone(side,state){return labResourceZone(side,'Shard Deck',manaDeckForSide(state,side).length,false,null);}
   function labManaPoolRow(side,state){
     var shards=manaPoolCardsForSide(state,side),racial=side==='AI'?state.aiRacial:state.racial;
     var shardHtml=shards.map(function(sh){
@@ -7002,7 +7006,7 @@ function getActivatedHeroAbilities(state, side, lane){
       return '<button class="gl-lab-mana-card '+(sh.kind==='CLASS'?'is-class':'is-generic')+' '+(hidden?'is-opening-draw-hidden':'')+'" type="button" data-mana-side="'+esc(side)+'" data-mana-uid="'+esc(sh.uid)+'"'+((!hidden)?' data-shard-preview-src="'+esc(manaShardAsset(sh))+'" data-shard-preview-label="'+esc(label)+'"':'')+' aria-label="'+esc(label)+'" title="'+esc(label)+'"><img src="'+esc(manaShardAsset(sh))+'" alt="'+esc(label)+'"></button>';
     }).join('');
     pendingManaDrawReservations(side).forEach(function(r){shardHtml+='<span class="gl-lab-mana-card is-pending-draw" data-mana-side="'+esc(side)+'" data-mana-pending-id="'+esc(r.id)+'" aria-hidden="true"></span>';});
-    return '<div class="gl-lab-mana-pool gl-lab-mana-pool--'+(side==='AI'?'opponent':'player')+'" aria-label="'+esc(side)+' Shard Pool"><div class="gl-lab-racial">'+v94RacialCoins(side,racial)+'</div><div class="gl-lab-mana-row">'+shardHtml+'</div></div>';
+    return '<div class="gl-lab-mana-pool gl-lab-mana-pool--'+(side==='AI'?'opponent':'player')+'" aria-label="'+esc(side)+' Shard Pool"><strong class="gl-lab-mana-pool-label">SHARD POOL</strong><div class="gl-lab-mana-pool-content">'+v642ManaRegenControl(state,side,'gl-lab-mana-pool-regen')+'<div class="gl-lab-mana-row">'+shardHtml+'</div></div><div class="gl-lab-racial">'+v94RacialCoins(side,racial)+'</div></div>';
   }
   function field(side,heroes,state){
     var isAI=side==='AI',legacy=isAI?state.aiLegacyCount:state.playerLegacyCount;

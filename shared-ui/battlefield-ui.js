@@ -7,6 +7,7 @@
     return {vw:vw,vh:vh,w:w,h:h};
   }
   function rectValue(rect,key,fallback){const v=rect&&Number(rect[key]);return Number.isFinite(v)?v:fallback;}
+  const CONTEXTUAL_GAP=12;
   const api={
     version:'v2.53',
     visual_baseline:'VS AI v6.42',
@@ -21,16 +22,17 @@
     },
     // Card Played is special: open to its left and preserve vertical context.
     cardPlayedPreviewPosition(anchorRect,viewportWidth,viewportHeight,previewWidth,previewHeight){
-      const d=dims(viewportWidth,viewportHeight,previewWidth,previewHeight),a=anchorRect||{};
-      let x=rectValue(a,'left',d.vw-d.w-24)-d.w-12;
-      if(x<8)x=rectValue(a,'right',d.vw-8)+12;
+      const d=dims(viewportWidth,viewportHeight,previewWidth,previewHeight),a=anchorRect||{},gap=CONTEXTUAL_GAP;
+      const left=rectValue(a,'left',d.vw-d.w-24),right=rectValue(a,'right',d.vw-8);
+      let placement='left',x=left-d.w-gap;
+      if(x<8){placement='right';x=right+gap;}
       x=clamp(x,8,Math.max(8,d.vw-d.w-8));
       let y=rectValue(a,'top',8)+(rectValue(a,'height',d.h)-d.h)/2;
-      return {x:x,y:clamp(y,8,Math.max(8,d.vh-d.h-8))};
+      return {x:x,y:clamp(y,8,Math.max(8,d.vh-d.h-8)),placement:placement,gap:gap};
     },
     // Lists/modals prefer a horizontal side, then above, then below. Always clamp.
     contextualPreviewPosition(anchorRect,viewportWidth,viewportHeight,previewWidth,previewHeight){
-      const d=dims(viewportWidth,viewportHeight,previewWidth,previewHeight),a=anchorRect||{},gap=12;
+      const d=dims(viewportWidth,viewportHeight,previewWidth,previewHeight),a=anchorRect||{},gap=CONTEXTUAL_GAP;
       const left=rectValue(a,'left',0),right=rectValue(a,'right',left+rectValue(a,'width',0)),top=rectValue(a,'top',0),bottom=rectValue(a,'bottom',top+rectValue(a,'height',0));
       const width=rectValue(a,'width',Math.max(0,right-left)),height=rectValue(a,'height',Math.max(0,bottom-top));
       const roomLeft=left-gap,roomRight=d.vw-right-gap,roomAbove=top-gap,roomBelow=d.vh-bottom-gap;
@@ -54,6 +56,7 @@
       }
       return {x:clamp(x,8,Math.max(8,d.vw-d.w-8)),y:clamp(y,8,Math.max(8,d.vh-d.h-8)),placement:placement};
     },
+    contextualPreviewGap:CONTEXTUAL_GAP,
     previewPointerEvents:'none',
     deckCountPresentation:'rounded-rectangle-top-corner-badge',
     statusCountPresentation:'individual-rounded-rectangle-bottom-right-badge',

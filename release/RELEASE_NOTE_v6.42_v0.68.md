@@ -23,44 +23,41 @@ Hero Component registry SHA256: `f36f1cc83eb9845743176c3af71f7823125353eae73e832
 
 The five Starter Deck compositions remain unchanged. OSA, Runtime Data, Shared Runtime gameplay semantics, canonical card data, and PvP are not modified by this UI correction pass.
 
-## 2026-09-21 UI-only correction pass
+## 2026-09-21 UI-only correction pass — remaining issues
 
-This pass corrects presentation only. It does **not** create v6.43, v0.69, v6.42.1, or another release branch.
+This correction keeps **VS AI v6.42 / Tutorial v0.68** and changes presentation only. No new release version is created.
 
-### Battlefield readable preview
+### Already-approved UI preserved
 
-- The standard 250×350 battlefield preview keeps its approved vertical placement and is shifted further **left/inward** from the previous v6.42 candidate.
-- The preview may cover the right-side Main Deck, Discard Pile, part of the battlefield, and a small part of the Phase Tracker.
-- The Next Phase button remains at least approximately 50% visibly exposed.
-- Player Shards and legally readable/face-up opponent Shards use the same standard battlefield preview.
-- Hidden/unrevealed opponent Shards do not expose preview metadata and remain visually hidden while in the hidden presentation state.
-- Standard previews remain `pointer-events:none`, hide immediately on source mouseleave, and update immediately from Card A to Card B.
+The previously approved standard battlefield preview position remains unchanged: the current X/Y placement is preserved and Next Phase remains at least approximately 50% visible. Readable opponent face-up Mana/Shard hover remains enabled without revealing hidden Shard identity. Popup previews remain above modal stacking contexts. The approved rounded-rectangle Deck/Pile numeric badge visual and the 9 px per-Status numeric badge presentation remain unchanged.
 
-### Card Played and popup/modal previews
+### Contextual preview gap parity
 
-- Card Played keeps its LEFT-opening direction, but its enlarged preview is now anchored directly to the source card with an approximately 8–14 px gap.
-- Contextual Card Played/modal previews are approximately 8–10% larger than the prior contextual preview, while the fixed battlefield preview remains 250×350.
-- Contextual previews prefer LEFT/RIGHT placement beside the source card, are vertically centered when possible, clamp to the viewport, and fall back above/below only when necessary.
-- Popup/modal previews render through the top-level shared preview overlay so they remain visibly above modal backgrounds, content, and scrolling containers.
-- Verified representative contexts include Legacy Deck inspection, Full Card History, Response Window, opened Discard Pile, and card-selection/choice popup.
+- Card Played remains LEFT-opening at 272×381 px.
+- Contextual placement now uses one shared effective horizontal gap for both LEFT and RIGHT placement.
+- The already-correct rendered RIGHT-side edge-to-edge gap is the reference; LEFT placement, including Card Played and modal cards, matches it within normal subpixel rendering tolerance.
+- Contextual previews remain `pointer-events:none`, viewport-clamped, immediately hidden on source mouseleave, and rendered above modal content.
 
-### Deck, pile, Status, Attachment, and Mana Regen presentation
+### Shard Pool / Mana Regen layout
 
-- Deck/pile counts restore the approved dark-background, thin-gold-outline **rounded-rectangle** numeric badge visual; numeric counters are not circular.
-- 1-, 2-, and 3-digit counters remain horizontally and vertically centered, and the badge expands for additional digits.
-- Deck/pile cards are visually centered independently from count/Regen overlays.
-- Main Deck, Legacy Deck, and Shard Deck card backs are slightly enlarged so their containers feel fuller without being aggressively shrunk.
-- Mana Regen keeps its dedicated graphical `Counter.png` asset family and is repositioned below the Shard Deck card back so it no longer collides with the deck count.
-- Status badge placement remains unchanged; only the Status numeral is reduced by approximately 1–2 px and remains centered in the rounded-rectangle badge.
-- Attachment count remains attached at the top/corner of the Attachment card using the same rounded-rectangle numeric badge family.
+- Mana Regen is removed from the Shard Deck zone.
+- `REGEN` plus the existing graphical Counter asset is grouped with **Shard Pool** instead.
+- Shard Pool reserves a dedicated left area for Regen; actual Shards begin to the right and cannot overlap the Regen label/counter.
+- The existing graphical Counter asset system is unchanged; it is not replaced by the generic numeric badge.
+- Desktop, phone portrait, tablet portrait, and tablet landscape layouts are browser-checked for Regen/Shard separation.
 
-### Warning icon and Exhausted Hero
+### Deck/Pile presentation
 
-- The previously approved compact circular warning `!` visual is restored: dark center, thin gold outline, centered gold/yellow `!`.
-- When a warning condition exists, the warning icon is visible **before hover** and remains fully inside its container with normal top-left padding.
-- Only the warning detail tooltip is hover/focus-triggered; hovering the Hero card itself does not open the warning detail.
-- Ready and Exhausted Hero cards now use the same underlying dimensions and scale. Exhausted changes orientation only via a 90-degree rotation; no hidden `scale(<1)` remains.
-- HP, Status, warning, Attachment relationships, and clipping are browser-regression checked after the Exhaust scale correction.
+- The face-up Discard Pile card now uses the same visual footprint family as the other Deck/Pile cards while preserving normal card aspect ratio.
+- On phone/mobile presentation, Legacy Deck, Shard Deck, Discard Pile, and Main Deck count badges remain visually unchanged but are attached to the top-right of the card/stack rather than drifting toward the zone title.
+- Cards remain horizontally centered; the title stays readable. Slight bottom clipping is permitted where required by the compact mobile zone.
+
+### Hero warning and Exhausted Hero
+
+- Hero warning now reuses the existing known-good Legacy/Attachment warning visual class instead of maintaining a separate recreated visual.
+- The circular dark/gold `!` is fully inside the Hero container and visible immediately whenever a warning condition exists.
+- Only the warning detail tooltip remains icon-hover/focus triggered; hovering the Hero elsewhere does not open the detail.
+- Ready and Exhausted Hero scale parity is re-verified. Exhausted remains the same base card scale with 90° rotation only; already-correct implementation is otherwise left untouched.
 
 ## Previously approved gameplay baseline remains unchanged
 
