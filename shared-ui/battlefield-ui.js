@@ -19,27 +19,18 @@
       const preferredY=d.vh-d.h-pad;
       return {x:clamp(d.vw-d.w-132,8,Math.max(8,d.vw-d.w-8)),y:clamp(Math.max(minY,preferredY),8,Math.max(8,d.vh-d.h-8))};
     },
-    // Card Played is special: open to its left and preserve vertical context.
-    cardPlayedPreviewPosition(anchorRect,viewportWidth,viewportHeight,previewWidth,previewHeight){
-      const d=dims(viewportWidth,viewportHeight,previewWidth,previewHeight),a=anchorRect||{};
-      let x=rectValue(a,'left',d.vw-d.w-24)-d.w-12;
-      if(x<8)x=rectValue(a,'right',d.vw-8)+12;
-      x=clamp(x,8,Math.max(8,d.vw-d.w-8));
-      let y=rectValue(a,'top',8)+(rectValue(a,'height',d.h)-d.h)/2;
-      return {x:x,y:clamp(y,8,Math.max(8,d.vh-d.h-8))};
-    },
-    // Lists/modals prefer a horizontal side, then above, then below. Always clamp.
-    contextualPreviewPosition(anchorRect,viewportWidth,viewportHeight,previewWidth,previewHeight){
+    // Candidate (7): one side-of-card geometry authority for every contextual preview.
+    // Callers pass the *visible card-art rect*, not a padded wrapper rect.
+    sidePreviewPosition(anchorRect,viewportWidth,viewportHeight,previewWidth,previewHeight,preferredSide){
       const d=dims(viewportWidth,viewportHeight,previewWidth,previewHeight),a=anchorRect||{},gap=12;
       const left=rectValue(a,'left',0),right=rectValue(a,'right',left+rectValue(a,'width',0)),top=rectValue(a,'top',0),bottom=rectValue(a,'bottom',top+rectValue(a,'height',0));
       const width=rectValue(a,'width',Math.max(0,right-left)),height=rectValue(a,'height',Math.max(0,bottom-top));
       const roomLeft=left-gap,roomRight=d.vw-right-gap,roomAbove=top-gap,roomBelow=d.vh-bottom-gap;
-      let x,y,placement;
+      let x,y,placement,preferred=preferredSide==='left'||preferredSide==='right'?preferredSide:null;
       if(roomLeft>=d.w || roomRight>=d.w){
-        const center=left+width/2;
-        if(roomLeft>=d.w && roomRight>=d.w){
-          placement=center>=d.vw/2?'left':'right';
-        }else placement=roomRight>=d.w?'right':'left';
+        if(preferred && ((preferred==='left'&&roomLeft>=d.w)||(preferred==='right'&&roomRight>=d.w))) placement=preferred;
+        else if(roomLeft>=d.w && roomRight>=d.w) placement=(left+width/2)>=d.vw/2?'left':'right';
+        else placement=roomRight>=d.w?'right':'left';
         x=placement==='right'?right+gap:left-d.w-gap;
         y=top+(height-d.h)/2;
       }else if(roomAbove>=d.h){
@@ -47,12 +38,18 @@
       }else if(roomBelow>=d.h){
         placement='below';x=left+(width-d.w)/2;y=bottom+gap;
       }else{
-        // No side can fully contain the preview. Preserve the documented fallback order
-        // (above, then below), then clamp the portal into the viewport.
         placement=roomAbove>=roomBelow?'above':'below';
         x=left+(width-d.w)/2;y=placement==='above'?top-d.h-gap:bottom+gap;
       }
-      return {x:clamp(x,8,Math.max(8,d.vw-d.w-8)),y:clamp(y,8,Math.max(8,d.vh-d.h-8)),placement:placement};
+      return {x:clamp(x,8,Math.max(8,d.vw-d.w-8)),y:clamp(y,8,Math.max(8,d.vh-d.h-8)),placement:placement,gap:gap};
+    },
+    // Card Played remains left-preferred, but now uses the exact same visible-edge rule.
+    cardPlayedPreviewPosition(anchorRect,viewportWidth,viewportHeight,previewWidth,previewHeight){
+      return api.sidePreviewPosition(anchorRect,viewportWidth,viewportHeight,previewWidth,previewHeight,'left');
+    },
+    // Lists/modals use the same side-preview rule with automatic side selection.
+    contextualPreviewPosition(anchorRect,viewportWidth,viewportHeight,previewWidth,previewHeight){
+      return api.sidePreviewPosition(anchorRect,viewportWidth,viewportHeight,previewWidth,previewHeight,null);
     },
     previewPointerEvents:'none',
     deckCountPresentation:'rounded-rectangle-top-corner-badge',

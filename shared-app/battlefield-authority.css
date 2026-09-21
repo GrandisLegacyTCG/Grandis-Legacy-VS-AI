@@ -427,3 +427,133 @@ html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-zone .zoneCard{
   font-size:11px!important;font-weight:900!important;line-height:1!important;box-shadow:0 0 8px rgba(236,201,91,.18)!important;
   opacity:1!important;visibility:visible!important;
 }
+
+/* ================================================================
+   2026-09-21 candidate (7) narrow correction pass
+   Desktop: contextual/composite centering only.
+   Tablet landscape: dedicated touch/responsive corrections only.
+   Mobile + tablet portrait remain locked.
+   ================================================================ */
+
+/* Desktop deck/pile authority: the physical card/stack is centered in both axes;
+   labels, badges and other overlays are independent of normal flow. */
+html.gl-ui-desktop .gl-lab-zone{position:relative!important;display:block!important;overflow:visible!important;}
+html.gl-ui-desktop .gl-lab-zone>.zoneCard{
+  position:absolute!important;left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;
+  margin:0!important;transform:translate(-50%,-50%)!important;justify-self:auto!important;align-self:auto!important;
+}
+html.gl-ui-desktop .gl-lab-zone>.gl-lab-zone-label{position:absolute!important;}
+/* Composite groups are centered as a single rendered unit. */
+html.gl-ui-desktop .gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard>.gl-lab-mana-regen{
+  left:50%!important;right:auto!important;transform:translateX(-50%)!important;width:max-content!important;
+}
+html.gl-ui-desktop .gl-lab-positions .legacy-name-bar{display:flex!important;justify-content:center!important;}
+html.gl-ui-desktop .gl-lab-positions .legacy-name-group{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;
+  width:max-content!important;max-width:100%!important;white-space:nowrap!important;
+}
+html.gl-ui-desktop .gl-lab-positions .legacy-name-group>small{flex:0 1 auto!important;min-width:0!important;}
+html.gl-ui-desktop .gl-lab-positions .legacy-name-group>.legacy-hero-info--desktop{flex:0 0 18px!important;}
+
+/* Tablet-landscape gameplay shell remains desktop-like but uses proportional sidebar width. */
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-shell{
+  grid-template-columns:minmax(0,1fr) clamp(214px,22vw,300px)!important;
+}
+
+/* No tablet-landscape Preview button/portal. Hand actions remain attached to the card, desktop-style. */
+html.gl-ui-tablet.gl-tablet-landscape-desktop .touch-tablet-preview,
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-tablet-hand-actions{display:none!important;}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-hand .hand-card .hand-actions,
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-hand .hand-card:hover .hand-actions,
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-hand .hand-card:focus-within .hand-actions,
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-hand .hand-card.touch-selected .hand-actions,
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-hand .hand-card.hand-hover-active .hand-actions,
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-hand .hand-card.is-selected .hand-actions{
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  gap:2px!important;top:auto!important;bottom:5px!important;width:max-content!important;height:auto!important;min-height:0!important;
+  opacity:1!important;visibility:visible!important;pointer-events:auto!important;
+}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-hand .hand-card .hand-actions .mini-action{
+  width:auto!important;min-width:44px!important;max-width:76px!important;height:18px!important;min-height:18px!important;padding-inline:5px!important;
+}
+
+/* Single-tap battlefield quick preview is a fixed overlay; it never participates in layout. */
+html.gl-ui-tablet.gl-tablet-landscape-desktop body:has(.gl-lab-authority) .hover-card-zoom.is-tablet-battlefield-quick{
+  display:block!important;position:fixed!important;width:var(--gl-tablet-quick-w,196px)!important;height:var(--gl-tablet-quick-h,274px)!important;
+  max-width:32vw!important;max-height:52dvh!important;aspect-ratio:5/7!important;pointer-events:none!important;z-index:3200!important;
+}
+html.gl-ui-tablet.gl-tablet-landscape-desktop body:has(.gl-lab-authority) .hover-card-zoom.is-tablet-battlefield-quick img{
+  width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;
+}
+
+/* Phase rows stay structurally separate. Secondary controls occupy their own row(s). */
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-sidebar .phase-panel{
+  grid-template-rows:auto minmax(118px,1fr) auto!important;overflow:hidden!important;
+}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-sidebar .phase-list{
+  display:grid!important;grid-template-rows:repeat(5,minmax(18px,1fr))!important;min-height:0!important;gap:2px!important;
+}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-sidebar .phase-actions{
+  height:auto!important;min-height:0!important;display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  grid-template-rows:22px 27px!important;gap:3px!important;overflow:visible!important;
+}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-sidebar .phase-actions .reposition,
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-sidebar .phase-actions .cancel-action{
+  width:100%!important;height:22px!important;min-height:22px!important;min-width:0!important;white-space:normal!important;line-height:9px!important;
+}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-sidebar .phase-actions .next-phase{
+  grid-column:1/-1!important;grid-row:2!important;width:100%!important;height:27px!important;min-height:27px!important;
+}
+@media (min-width:761px) and (max-width:1080px){
+  html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-sidebar .phase-actions{
+    grid-template-columns:1fr!important;grid-template-rows:20px 20px 26px!important;
+  }
+  html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-sidebar .phase-actions .reposition{grid-column:1!important;grid-row:1!important;}
+  html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-sidebar .phase-actions .cancel-action{grid-column:1!important;grid-row:2!important;}
+  html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-sidebar .phase-actions .next-phase{grid-column:1!important;grid-row:3!important;}
+}
+
+/* Tablet-landscape deck/pile cards: contain first, crop only at the bottom if height is tight. */
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-zone{
+  position:relative!important;overflow:hidden!important;display:block!important;padding:6px 4px!important;
+}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-zone>.zoneCard{
+  position:absolute!important;left:50%!important;top:7px!important;right:auto!important;bottom:auto!important;
+  margin:0!important;transform:translateX(-50%)!important;align-self:auto!important;justify-self:auto!important;
+  max-width:calc(100% - 8px)!important;
+}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-zone .zoneCard .gl-resource-count{top:1px!important;right:1px!important;}
+/* REGEN stays inside the Shard Deck card and the combined REGEN+counter group is centered. */
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-zone[data-zone-type="Shard Deck"]>.zoneCard>.gl-lab-mana-regen{
+  left:50%!important;right:auto!important;top:auto!important;bottom:4px!important;transform:translateX(-50%)!important;
+  width:max-content!important;max-width:calc(100% - 4px)!important;height:22px!important;display:inline-flex!important;
+  align-items:center!important;justify-content:center!important;gap:1px!important;white-space:nowrap!important;
+}
+
+/* Class/Racial labels: typography-only fit; two lines before ellipsis, kept away from central Hero information. */
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions{
+  right:3px!important;top:3px!important;max-width:32%!important;width:min(92px,32%)!important;
+}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions .actionBtn{
+  width:100%!important;max-width:100%!important;height:auto!important;min-height:16px!important;max-height:28px!important;
+  padding:2px 4px!important;font-size:5.25px!important;line-height:8px!important;white-space:normal!important;
+  display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+
+/* Tablet-landscape Shards are intentionally ~82.5% of the Hand/Hero card reference width. */
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-mana-card{
+  flex:0 0 calc(var(--lab-card-w) * .825)!important;width:calc(var(--lab-card-w) * .825)!important;height:calc(var(--lab-card-h) * .825)!important;
+  max-width:calc(var(--lab-card-w) * .825)!important;max-height:calc(var(--lab-card-h) * .825)!important;
+}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-mana-row{gap:clamp(5px,.7vw,10px)!important;}
+/* Candidate (7) desktop centered card leaves labels independent; keep REGEN safely inside the card and clear of the zone label. */
+html.gl-ui-desktop .gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard>.gl-lab-mana-regen{top:auto!important;bottom:13px!important;}
+/* Specificity lock: prior Shard-side transforms must not defeat Candidate (7) desktop centering. */
+html.gl-ui-desktop body:has(.gl-lab-authority) .gl-lab-side .gl-lab-zone[data-zone-type]>.zoneCard{
+  position:absolute!important;left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;
+  margin:0!important;transform:translate(-50%,-50%)!important;justify-self:auto!important;align-self:auto!important;
+}
+/* Keep the shared warning's computed/visual implementation unchanged: the centered Legacy group is an inline formatting context, not a flex-item wrapper. */
+html.gl-ui-desktop .gl-lab-positions .legacy-name-group{display:inline-block!important;width:max-content!important;max-width:100%!important;white-space:nowrap!important;vertical-align:middle!important;}
+html.gl-ui-desktop .gl-lab-positions .legacy-name-group>small{display:inline-block!important;vertical-align:middle!important;}
+html.gl-ui-desktop .gl-lab-positions .legacy-name-group>.legacy-hero-info--desktop{display:inline-flex!important;vertical-align:middle!important;margin-left:5px!important;}

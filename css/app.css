@@ -6562,3 +6562,16 @@ html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-poo
 html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-scroll{height:100%!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:2px!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important;touch-action:pan-x pan-y!important;}
 html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-card{position:relative!important;width:24px!important;height:34px!important;min-width:24px!important;max-width:24px!important;min-height:34px!important;max-height:34px!important;flex:0 0 24px!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;border-radius:3px!important;overflow:hidden!important;box-shadow:0 1px 3px rgba(0,0,0,.65)!important;}
 html.gl-tablet-portrait-mobile .v96-app.mobile-restored-layout .mobile-shard-card img{display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;}
+
+/* 2026-09-21 Candidate (7) — tablet-landscape AI Lobby scroll only.
+   Mobile, tablet portrait and desktop lobby contracts are intentionally untouched. */
+html.gl-ui-tablet.gl-tablet-landscape-desktop body.deck-setup-active{
+  height:auto!important;min-height:100dvh!important;overflow-x:hidden!important;overflow-y:auto!important;
+}
+html.gl-ui-tablet.gl-tablet-landscape-desktop body.deck-setup-active .deck-setup-screen.runtime-ui-v14-setup{
+  position:relative!important;inset:auto!important;width:100%!important;height:auto!important;min-height:100dvh!important;
+  overflow:visible!important;display:flex!important;flex-direction:column!important;
+}
+html.gl-ui-tablet.gl-tablet-landscape-desktop body.deck-setup-active .deck-setup-screen.runtime-ui-v14-setup .deck-setup-shell{
+  height:auto!important;min-height:calc(100dvh - 150px)!important;overflow:visible!important;flex:1 0 auto!important;
+}
