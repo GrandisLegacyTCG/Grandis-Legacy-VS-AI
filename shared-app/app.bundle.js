@@ -666,7 +666,7 @@
     if(!isTouchTabletViewport()||!cardEl){hideTabletHandActionPortal();return false;}var source=cardEl.querySelector('.hand-actions'),portal=tabletHandActionPortal(),box=document.getElementById('hoverCardZoom');if(!source||!portal||!box||box.hidden){hideTabletHandActionPortal();return false;}
     var buttons=Array.prototype.map.call(source.querySelectorAll('.mini-action'),function(btn){return btn.outerHTML;}).join('');if(!buttons){hideTabletHandActionPortal();return false;}portal.innerHTML=buttons;portal.hidden=false;var r=box.getBoundingClientRect(),buttonW=88,top=Math.max(6,Math.round(r.top));var left=Math.max(6,Math.round(r.left-buttonW-6));if(left<6||left+buttonW>window.innerWidth-6){left=Math.max(6,Math.min(window.innerWidth-buttonW-6,Math.round(r.left)));top=Math.max(6,Math.round(r.top-((portal.querySelectorAll('.mini-action').length||1)*25)-5));}portal.style.left=left+'px';portal.style.top=top+'px';portal.style.width=buttonW+'px';return true;
   }
-  function clearTouchHandSelection(keep){if(typeof document==='undefined')return;Array.prototype.forEach.call(document.querySelectorAll('.hand-card.touch-selected,.hand-card.hand-hover-active'),function(cardEl){if(cardEl===keep)return;cardEl.classList.remove('touch-selected','hand-hover-active');cardEl.removeAttribute('aria-selected');});if(!keep){hideTabletHandActionPortal();v94HoverZoomHide();}}
+  function clearTouchHandSelection(keep){if(typeof document==='undefined')return;var cleared=false;Array.prototype.forEach.call(document.querySelectorAll('.hand-card.touch-selected,.hand-card.hand-hover-active'),function(cardEl){if(cardEl===keep)return;cleared=true;cardEl.classList.remove('touch-selected','hand-hover-active');cardEl.removeAttribute('aria-selected');});if(!keep){hideTabletHandActionPortal();if(cleared)v94HoverZoomHide();}}
   function selectTouchHandCard(cardEl){if(!cardEl||!isTouchTabletViewport())return false;clearTouchHandSelection(cardEl);v94HoverZoomHide();cardEl.classList.add('touch-selected');cardEl.setAttribute('aria-selected','true');var art=cardEl.querySelector('.hand-art[data-preview]'),cardId=(art&&art.getAttribute('data-preview'))||cardEl.getAttribute('data-card-id');if(art&&art.blur)art.blur();var shown=cardId&&v59HandHoverZoomShow(cardId,cardEl);if(shown)syncTabletHandActionPortal(cardEl);return !!shown;}
   var GL_MOBILE_GAME_SCROLL_TOP=0;
   function mobileGameplayScroller(){if(typeof document==='undefined')return null;return document.scrollingElement||document.documentElement||document.body||null;}
@@ -6741,28 +6741,33 @@ function getActivatedHeroAbilities(state, side, lane){
     return rect;
   }
   function v253PreviewGeometry(anchor,w,h,mode){
-    var ui=window.GL_SHARED_BATTLEFIELD_UI||{},vw=window.innerWidth||1280,vh=window.innerHeight||720,pos=null,visibleRect=v253VisibleCardRect(anchor);
-    if(mode==='card-played'&&visibleRect&&ui.sidePreviewPosition)return ui.sidePreviewPosition(visibleRect,vw,vh,w,h,'left');
+    var ui=window.GL_SHARED_BATTLEFIELD_UI||{},vw=window.innerWidth||1280,vh=window.innerHeight||720,visibleRect=v253VisibleCardRect(anchor);
     var inModal=!!(anchor&&anchor.closest&&anchor.closest('.modal-overlay.open,.overlay.open,.info-panel,.choice-panel,.response-panel,.preview-panel'));
-    if(inModal&&visibleRect&&ui.sidePreviewPosition)return ui.sidePreviewPosition(visibleRect,vw,vh,w,h,null);
-    if(mode==='card-played'&&visibleRect&&ui.cardPlayedPreviewPosition)return ui.cardPlayedPreviewPosition(visibleRect,vw,vh,w,h);
-    if(inModal&&visibleRect&&ui.contextualPreviewPosition)return ui.contextualPreviewPosition(visibleRect,vw,vh,w,h);
+    if((mode==='card-played'||inModal)&&visibleRect&&ui.sidePreviewPosition){
+      return ui.sidePreviewPosition(visibleRect,vw,vh,w,h,mode==='card-played'?'left':null);
+    }
     return ui.desktopPreviewPosition?ui.desktopPreviewPosition(vw,vh,w,h,v253ProtectedPreviewBottom()):{x:Math.max(8,vw-w-24),y:Math.max(v253ProtectedPreviewBottom()+12,vh-h-16)};
   }
   function v253OpenDesktopPreview(src,label,anchor,mode){
     if(!src||isTouchFirstViewport())return false;var box=$('hoverCardZoom'),img=$('hoverCardZoomImage');if(!box||!img)return false;
     if(v54AnyModalOpen()&&!v54AnchorInsideOpenModal(anchor)){v94HoverZoomHide();return false;}
     var inModal=!!(anchor&&anchor.closest&&anchor.closest('.modal-overlay.open,.overlay.open,.info-panel,.choice-panel,.response-panel,.preview-panel'));
-    var contextual=(mode==='card-played'||mode==='modal'||inModal),w=contextual?272:250,h=contextual?381:350,pos=v253PreviewGeometry(anchor,w,h,mode||'field');
-    img.src=src;img.alt=String(label||'Readable card')+' enlarged preview';box.classList.remove('is-click-zoom','is-modal-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview');
+    var contextual=(mode==='card-played'||mode==='modal'||inModal),w=contextual?272:250,h=contextual?381:350;
+    img.src=src;img.alt=String(label||'Readable card')+' enlarged preview';box.classList.remove('is-click-zoom','is-modal-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview','is-tablet-battlefield-quick');
     if(mode==='card-played')box.classList.add('is-card-played-hover','is-v253-contextual-preview');else box.classList.add('is-v253-readable-preview');if(contextual)box.classList.add('is-v253-contextual-preview');if(inModal)box.classList.add('is-modal-zoom');
+    /* Contextual positioning is based on the actual rendered preview card, not an assumed size. */
+    if(contextual){
+      box.style.transform='translate3d(-9999px,-9999px,0)';box.style.pointerEvents='none';box.hidden=false;box.classList.add('is-visible');box.setAttribute('aria-hidden','false');
+      var rendered=box.getBoundingClientRect();if(rendered&&rendered.width>0&&rendered.height>0){w=rendered.width;h=rendered.height;}
+    }
+    var pos=v253PreviewGeometry(anchor,w,h,mode||'field');
     box.style.transform='translate3d('+Math.round(pos.x)+'px,'+Math.round(pos.y)+'px,0)';box.style.pointerEvents='none';box._glAnchor=anchor||null;box.dataset.previewPlacement=String(pos.placement||mode||'field');box.setAttribute('aria-hidden','false');box.hidden=false;box.classList.add('is-visible');return true;
   }
   function v642DesktopPreviewShow(cardId,anchor){
     if(!cardId||!card(cardId))return false;return v253OpenDesktopPreview(fullFor(cardId),cardName(card(cardId)),anchor,'field');
   }
   function v642DesktopAssetPreviewShow(src,label,anchor){return v253OpenDesktopPreview(src,label||'Face-up Shard',anchor,'field');}
-  var GL_TABLET_BATTLEFIELD_TAP_STATE={key:'',time:0};
+  var GL_TABLET_BATTLEFIELD_TAP_STATE={key:'',anchor:null};
   function v642TabletBattlefieldQuickGeometry(anchor){
     var vw=window.innerWidth||1180,vh=window.innerHeight||820,aspect=5/7;
     var phase=document.querySelector('.gl-lab-sidebar .phase-panel'),rightRail=document.querySelector('.gl-lab-field--player .gl-lab-resource-rail--right,.gl-lab-side--player .gl-lab-resource-rail:last-child'),battle=document.querySelector('.gl-lab-battlefield');
@@ -6777,7 +6782,7 @@ function getActivatedHeroAbilities(state, side, lane){
     var y=Math.max(8,Math.min(centerY-h/2,vh-h-8));
     return{x:x,y:y,w:w,h:h,resourceEdge:resourceEdge,phaseMid:phaseMid};
   }
-  function v642TabletBattlefieldQuickPreview(cardId,anchor){
+  function v642TabletBattlefieldQuickPreview(cardId,anchor,activationKey){
     if(!isTouchTabletViewport()||!cardId||!card(cardId)||!anchor)return false;
     var box=$('hoverCardZoom'),img=$('hoverCardZoomImage');if(!box||!img)return false;
     var g=v642TabletBattlefieldQuickGeometry(anchor);
@@ -6785,16 +6790,15 @@ function getActivatedHeroAbilities(state, side, lane){
     box.classList.remove('is-click-zoom','is-modal-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview');
     box.classList.add('is-tablet-battlefield-quick');
     box.style.setProperty('--gl-tablet-quick-w',Math.round(g.w)+'px');box.style.setProperty('--gl-tablet-quick-h',Math.round(g.h)+'px');
-    box.style.transform='translate3d('+Math.round(g.x)+'px,'+Math.round(g.y)+'px,0)';box.style.pointerEvents='none';box._glAnchor=anchor;box.dataset.previewPlacement='tablet-quick';box.setAttribute('aria-hidden','false');box.hidden=false;box.classList.add('is-visible');return true;
+    box.style.transform='translate3d('+Math.round(g.x)+'px,'+Math.round(g.y)+'px,0)';box.style.pointerEvents='none';box._glAnchor=anchor;box.dataset.previewPlacement='tablet-quick';box.dataset.tabletBattlefieldKey=String(activationKey||'');box.setAttribute('aria-hidden','false');box.hidden=false;box.classList.add('is-visible');return true;
   }
   function v642TabletBattlefieldCardTap(el){
     if(!isTouchTabletViewport()||!el||!el.closest||!el.closest('.gl-lab-battlefield')||el.closest('.gl-lab-hand,.gl-lab-sidebar,.modal-overlay,.overlay'))return false;
     var cardId=el.getAttribute('data-preview');if(!cardId||!card(cardId))return false;
     var sideHost=el.closest('.hero-panel,.slot,.attachment-slot')||el,key=cardId+'|'+(sideHost.getAttribute&&((sideHost.getAttribute('data-side')||'')+'|'+(sideHost.getAttribute('data-lane')||'')))+'|'+Array.prototype.indexOf.call(el.parentNode?el.parentNode.children:[],el);
-    var now=Date.now(),second=GL_TABLET_BATTLEFIELD_TAP_STATE.key===key&&(now-GL_TABLET_BATTLEFIELD_TAP_STATE.time)<=520;
-    GL_TABLET_BATTLEFIELD_TAP_STATE.key=key;GL_TABLET_BATTLEFIELD_TAP_STATE.time=now;
-    if(second){GL_TABLET_BATTLEFIELD_TAP_STATE.key='';GL_TABLET_BATTLEFIELD_TAP_STATE.time=0;showPreview(cardId,'tablet-battlefield-detail');return true;}
-    v642TabletBattlefieldQuickPreview(cardId,el);return true;
+    var zoom=$('hoverCardZoom'),sameArmed=zoom&&!zoom.hidden&&zoom.classList.contains('is-tablet-battlefield-quick')&&zoom.dataset&&zoom.dataset.tabletBattlefieldKey===key;
+    if(sameArmed){GL_TABLET_BATTLEFIELD_TAP_STATE.key='';GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=null;v94HoverZoomHide();showPreview(cardId,'tablet-battlefield-detail');return true;}
+    GL_TABLET_BATTLEFIELD_TAP_STATE.key=key;GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=el;v642TabletBattlefieldQuickPreview(cardId,el,key);return true;
   }
   var GL_V253_DELEGATED_READABLE_PREVIEW_BOUND=false;
   function v253DelegatedReadablePreviewSource(target){
@@ -6850,7 +6854,7 @@ function getActivatedHeroAbilities(state, side, lane){
     box.style.transform='translate3d('+Math.round(x)+'px,'+Math.round(y)+'px,0)';
   }
 
-  function v94HoverZoomHide(){var box=$('hoverCardZoom');if(!box)return;box.classList.remove('is-visible','is-modal-zoom','is-click-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview','is-tablet-battlefield-quick');box.hidden=true;box._glAnchor=null;if(box.dataset)delete box.dataset.previewPlacement;box.style.transform='translate3d(-9999px,-9999px,0)';if(box.style&&typeof box.style.removeProperty==='function'){box.style.removeProperty('--gl-tablet-hand-hover-w');box.style.removeProperty('--gl-tablet-hand-hover-h');box.style.removeProperty('--gl-tablet-quick-w');box.style.removeProperty('--gl-tablet-quick-h');}box.setAttribute('aria-hidden','true');}
+  function v94HoverZoomHide(){var box=$('hoverCardZoom');if(!box)return;box.classList.remove('is-visible','is-modal-zoom','is-click-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview','is-tablet-battlefield-quick');box.hidden=true;box._glAnchor=null;if(typeof GL_TABLET_BATTLEFIELD_TAP_STATE!=='undefined'){GL_TABLET_BATTLEFIELD_TAP_STATE.key='';GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=null;}if(box.dataset){delete box.dataset.previewPlacement;delete box.dataset.tabletBattlefieldKey;}box.style.transform='translate3d(-9999px,-9999px,0)';if(box.style&&typeof box.style.removeProperty==='function'){box.style.removeProperty('--gl-tablet-hand-hover-w');box.style.removeProperty('--gl-tablet-hand-hover-h');box.style.removeProperty('--gl-tablet-quick-w');box.style.removeProperty('--gl-tablet-quick-h');}box.setAttribute('aria-hidden','true');}
   function v59HandHoverZoomShow(cardId,anchor){
     /* Hand hover order is fixed: raise the physical Hand card, keep Play/Tribute above it,
        then place the large review above that action strip. The review is positioned before
@@ -6976,10 +6980,9 @@ function getActivatedHeroAbilities(state, side, lane){
       sanitizeLegacySlot(h);
       var defeatedUnderLegacy=(h.defeated_hero_snapshot&&h.defeated_hero_snapshot.card_id)||h.original_hero_card_id||'';
       var legacyInfoAttrs=defeatedUnderLegacy?' type="button" data-preview="'+esc(defeatedUnderLegacy)+'" title="Hero under this Legacy: '+esc(cardName(card(defeatedUnderLegacy)))+'" aria-label="View Hero under this Legacy"':'';
-      var legacyInfoDesktop=defeatedUnderLegacy?'<button class="legacy-hero-info gl-warning-indicator legacy-hero-info--desktop"'+legacyInfoAttrs+'>!</button>':'';
-      var legacyInfoMobile=defeatedUnderLegacy?'<button class="legacy-hero-info gl-warning-indicator legacy-hero-info--mobile"'+legacyInfoAttrs+'>!</button>':'';
-      var legacyHealth='<div class="hero-health-row legacy-health"><div class="legacy-name-bar"><span class="legacy-name-group"><small>'+esc(legacyCardDisplayName(id))+'</small>'+legacyInfoDesktop+'</span></div></div>';
-      var mobileAction=v540MobileActionTrigger(side,lane,h,c,true);var legacyStage='<div class="hero-stage legacy-stage">'+legacyInfoMobile+mobileAction+'<button class="hero-card hero-main" type="button" data-preview="'+esc(id)+'"><img class="heroImg" src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(c))+'"></button><div class="heroActions">'+actions+'</div></div>';
+      var legacyWarningMobile=isMobileViewport(),legacyWarning=defeatedUnderLegacy?'<button class="legacy-hero-info gl-warning-indicator '+(legacyWarningMobile?'legacy-hero-info--mobile':'legacy-hero-info--desktop')+'"'+legacyInfoAttrs+'>!</button>':'';
+      var legacyHealth='<div class="hero-health-row legacy-health"><div class="legacy-name-bar"><span class="legacy-name-group"><small>'+esc(legacyCardDisplayName(id))+'</small>'+(legacyWarningMobile?'':legacyWarning)+'</span></div></div>';
+      var mobileAction=v540MobileActionTrigger(side,lane,h,c,true);var legacyStage='<div class="hero-stage legacy-stage">'+(legacyWarningMobile?legacyWarning:'')+mobileAction+'<button class="hero-card hero-main" type="button" data-preview="'+esc(id)+'"><img class="heroImg" src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(c))+'"></button><div class="heroActions">'+actions+'</div></div>';
       return '<article class="hero-lane hero-panel legacy-slot '+esc(selection)+'" data-side="'+esc(side)+'" data-lane="'+esc(lane)+'" data-slot-mode="LEGACY">'+(isAI?attachments+legacyStage+legacyHealth:legacyHealth+legacyStage+attachments)+'</article>';
     }
     var hp=(h.hp===undefined||h.hp===null)?Number(c.hp||100):Number(h.hp);
@@ -7052,7 +7055,7 @@ function getActivatedHeroAbilities(state, side, lane){
     return '<button class="gl-lab-zone '+(empty?'is-empty':'')+'" type="button"'+attrs+' '+((isMain||isManaDeck||(isLegacy&&side==='AI'))?'aria-disabled="true"':'')+'>'+
       '<span class="gl-lab-zone-label">'+esc(type)+'</span><div class="zoneCard">'+(icon?'<img src="'+esc(icon)+'" alt="'+esc(type)+'">':'')+countHtml+'</div></button>';
   }
-  function labManaDeckZone(side,state){var html=labResourceZone(side,'Shard Deck',manaDeckForSide(state,side).length,false,null),regen=Math.max(1,Math.min(6,Number(state&&state[manaRegenKeyForSide(side)]||1)));var counter='<span class="gl-lab-mana-regen" title="Mana Regen +'+esc(regen)+'" aria-label="Mana Regen +'+esc(regen)+'"><small>REGEN</small><img src="'+esc(glDieCounterAsset(regen))+'" alt="Mana Regen '+esc(regen)+'"></span>';return html.replace('</div></button>',counter+'</div></button>');}
+  function labManaDeckZone(side,state){var html=labResourceZone(side,'Shard Deck',manaDeckForSide(state,side).length,false,null),regen=Math.max(1,Math.min(6,Number(state&&state[manaRegenKeyForSide(side)]||1))),tabletLandscape=isTouchTabletViewport();var counter='<span class="gl-lab-mana-regen '+(tabletLandscape?'is-counter-only':'is-composite')+'" title="Mana Regen +'+esc(regen)+'" aria-label="Mana Regen +'+esc(regen)+'">'+(tabletLandscape?'':'<small>REGEN</small>')+'<img src="'+esc(glDieCounterAsset(regen))+'" alt="Mana Regen '+esc(regen)+'"></span>';return html.replace('</div></button>',counter+'</div></button>');}
   function labManaPoolRow(side,state){
     var shards=manaPoolCardsForSide(state,side),racial=side==='AI'?state.aiRacial:state.racial;
     var shardHtml=shards.map(function(sh){

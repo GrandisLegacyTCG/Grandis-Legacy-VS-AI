@@ -1,79 +1,72 @@
 # Grandis Legacy VS AI v6.42 / Tutorial v0.68
 
 Release date: 2026-09-21  
-Correction candidate: **(6)**  
-Baseline: **(5)(1)**
+Stabilization candidate: **(8)**  
+Baseline: **(7)**
 
 ## Scope
 
-Candidate (6) is a narrow correction pass on the existing VS AI v6.42 / Tutorial v0.68 release. It does not create a new application version and does not modify OSA, canonical card data, Starter Deck composition, Shared Runtime gameplay authority, PvP, Deck Builder, or unrelated UI.
+Candidate (8) is the final narrow stabilization/root-cause pass before work moves to PvP. Application versions remain VS AI v6.42 and Tutorial v0.68. OSA, Shared Runtime authority, canonical card data, Starter Deck composition, PvP, Deck Builder, Mobile, and Tablet Portrait are not changed.
 
-Authority remains:
+Authority remains OSA v1.9.3, Shared Runtime v1.94.1, UI Contract v2.53, Application Runtime Sync v2.61, Starter Deck Authority v1.6.1, 5 active Starter Decks, and 200 canonical cards.
 
-- OSA v1.9.3
-- Shared Runtime v1.94.1
-- UI Contract v2.53
-- Application Runtime Sync v2.61
-- Starter Deck Authority v1.6.1
-- 5 active Starter Decks
-- 200 canonical cards
+## Candidate (8) corrections
 
-## Candidate (6) corrections
+### Desktop contextual side preview
 
-### Contextual card preview
+- Contextual previews use one shared side-placement algorithm anchored to the actual visible card element.
+- Card Played, Legacy popup, Full Card History, Response Window, Discard, and selection/choice contexts use the same rendered edge logic.
+- LEFT/RIGHT visible edge gaps are browser-measured and match within the required tolerance.
+- Battlefield quick preview remains a separate preserved system.
 
-- The already-approved standard battlefield preview X/Y position, Next Phase visibility, opponent readable Shard hover, hidden-Shard safety, and popup top-layer architecture are preserved.
-- Contextual previews now measure the **visible card artwork edge** rather than assuming the source wrapper edge is the card edge.
-- LEFT contextual placement uses the same effective visible edge-to-edge gap as the already-approved RIGHT placement.
-- Card Played remains LEFT-opening at **272 × 381 px**.
-- Legacy Deck, Full Card History, Response Window, Discard, and selection/choice popup previews remain above their modals.
+### Legacy warning
 
-### Responsive Mana Regen
+- The duplicate Legacy warning render source is removed.
+- One warning condition produces exactly one warning DOM node.
+- The remaining warning stays on the same line as the Legacy name and the combined group stays centered.
 
-- Desktop and tablet landscape keep REGEN associated with the Shard Deck. REGEN plus its existing graphical Counter asset is fully contained inside the lower portion of the Shard Deck card back.
-- Phone and tablet portrait use the mobile Shard Pool grouping: REGEN occupies reserved space on the left and Shard cards start to its right.
-- The first Shard cannot overlap REGEN or the graphical Counter.
+### Desktop Shard Deck REGEN
 
-### Deck / pile / Status presentation
+- REGEN text and the existing graphical counter are one composite group centered against the Shard Deck card back.
+- Shard Deck card position, counter artwork, count badge, and zone title are unchanged.
 
-- The visible Discard top card uses the same card-footprint family as Legacy Deck, Shard Deck, and Main Deck without stretching its aspect ratio.
-- Status badge geometry, position, spacing, and one-badge-per-Status behavior are unchanged; only the numeral changes from **9 px to 8 px**.
-- On phone and tablet portrait, Legacy/Shard/Discard/Main count badges remain the approved rounded rectangles and are attached to the actual card/stack top-right. Titles remain readable and cards stay horizontally centered and contained.
+### Tablet landscape lobby
 
-### Warning and Legacy label alignment
+- Lobby uses normal page-level vertical scrolling where content exceeds the viewport.
+- The 1024×768 family can actually scroll and reach Start Game; larger tested landscape viewports remain reachable without forced inner scrolling.
+- Mobile and Tablet Portrait lobby behavior remains locked.
 
-- Hero warning uses the same `gl-warning-indicator` visual authority as the already-correct Legacy/Attachment warning instead of a separate Hero approximation.
-- A Hero warning is visible immediately when active; Hero/container hover is not required.
-- Only hovering/focusing the warning icon reveals the information tooltip.
-- The warning stays fully inside the Hero container and the glyph remains centered.
-- Legacy name plus warning icon are treated as one centered horizontal group so short and long Legacy names remain visually centered against the Legacy card.
+### Tablet landscape Phase Tracker
 
-### Shard entry presentation
+- Obsolete competing landscape overrides were removed so one compact touch-tablet rule controls vertical fit.
+- End Phase remains its own row; Reposition/Cancel remain separate from progression.
+- Next Phase stays visible, hit-testable, and actually advances the phase.
+- End Turn is visible/reachable/hit-testable when the phase is End.
 
-- The existing Shard-entry animation is reused for visible Shards that enter a Shard Pool through normal Draw and non-draw gain effects such as Steal, Meditation, Elf racial effects, and future gain paths using the same generic gain helper.
-- Multiple Shards animate sequentially with a short presentation delay.
-- This is presentation feedback only; Shard source, count, ownership, and gameplay resolution semantics are unchanged.
+### Tablet landscape Shard Deck REGEN
 
-### Response ownership presentation/controller correction
+- Tablet landscape uses the existing graphical REGEN counter only; the REGEN text is omitted in this device mode.
+- Counter is centered in the upper/upper-middle card area and remains inside the Shard Deck card even when the lower card is cropped.
+- Desktop retains the REGEN + counter composite group; Mobile/Tablet Portrait remain unchanged.
 
-- A player-interactive Response Window is shown only when the current response owner is PLAYER.
-- PLAYER → AI attacks/skills leave AI response priority to the AI controller; the player cannot choose No Response / Take Hit for AI.
-- AI → PLAYER attacks/skills still expose the player Response Window.
-- If a response chain legitimately returns priority to PLAYER, the player window is shown at that point.
-- Response legality and existing response-chain gameplay rules are unchanged.
+### Tablet landscape Shard Pool scale
 
-### Tablet landscape
+- Shard cards use the canonical tablet-landscape sizing rule at approximately 82.5% of the rendered Hand-card reference width.
+- Aspect ratio is preserved and Hero/Hand/deck-back sizes are not changed by this correction.
 
-- Tablet landscape remains visually desktop-like while using touch interaction.
-- Phase Tracker/sidebar sizing uses available viewport proportions to avoid overlap.
-- Tapping a Hand card opens the 250 × 350 right-side preview rather than an oversized battlefield-centered preview.
-- Compact Preview/Play/other Hand actions use a vertical button stack.
-- Deck/pile cards remain inside their zone boundaries; lower clipping is allowed where needed rather than spilling outside the zone.
+### Tablet landscape tap routing
+
+- Battlefield first tap opens Quick Preview only.
+- Second tap on the same battlefield card opens Detail Preview.
+- First tap on a different battlefield card switches Quick Preview without opening Detail.
+- Hand, Card Played, Legacy popup, and other non-battlefield cards open Detail on the first tap.
+- Explicit Play actions remain actions and do not count as preview taps.
+- No separate Preview button is introduced.
+
+### Last-Hero terminal state
+
+Candidate (7) already passes the required generic terminal lifecycle: final Hero defeated by Poison ends the match correctly for either side, non-final Poison defeat continues, Hero-bound cleanup completes before terminal evaluation, direct lethal still works, and no End Phase stall occurs. Therefore Candidate (8) makes **no gameplay production-code change** for this item.
 
 ## Preservation
 
-Ready/Exhausted Hero base-scale parity was browser-verified and was not needlessly rewritten. The approved battlefield preview, opponent Mana/Shard hover and hidden safety, popup z-index fix, numeric badge visual, and Status badge geometry are preserved.
-
-## Verification
-
-Candidate (6) is gated by root gameplay/AI/application regression, Tutorial v0.68 regression, real Chromium geometry/interaction verification, exact source-diff audit against baseline (5)(1), regenerated root/Tutorial manifests, archive integrity checking, and final SHA-256 package hashing. See `VERIFICATION_v6.42_v0.68.md` for the executable result.
+Desktop Deck/Pile card centering, battlefield quick preview, Hero/Hand layout, desktop Phase Tracker, deck/pile geometry, numeric badge visual, Mobile, Tablet Portrait, canonical gameplay/data, OSA, PvP, and Deck Builder remain outside this pass and are preserved.
