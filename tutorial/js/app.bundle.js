@@ -6731,8 +6731,10 @@ function getActivatedHeroAbilities(state, side, lane){
   function v253OpenDesktopPreview(src,label,anchor,mode){
     if(!src||isTouchFirstViewport())return false;var box=$('hoverCardZoom'),img=$('hoverCardZoomImage');if(!box||!img)return false;
     if(v54AnyModalOpen()&&!v54AnchorInsideOpenModal(anchor)){v94HoverZoomHide();return false;}
-    var rect=box.getBoundingClientRect?box.getBoundingClientRect():{width:250,height:350};var w=Math.max(250,Number(rect.width||250)),h=Math.max(350,Number(rect.height||350)),pos=v253PreviewGeometry(anchor,w,h,mode||'field');
-    img.src=src;img.alt=String(label||'Readable card')+' enlarged preview';box.classList.remove('is-click-zoom','is-modal-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview');box.classList.add(mode==='card-played'?'is-card-played-hover':'is-v253-readable-preview');if(anchor&&anchor.closest&&anchor.closest('.modal-overlay.open,.overlay.open,.info-panel,.choice-panel,.response-panel,.preview-panel'))box.classList.add('is-modal-zoom');
+    var inModal=!!(anchor&&anchor.closest&&anchor.closest('.modal-overlay.open,.overlay.open,.info-panel,.choice-panel,.response-panel,.preview-panel'));
+    var contextual=(mode==='card-played'||mode==='modal'||inModal),w=contextual?272:250,h=contextual?381:350,pos=v253PreviewGeometry(anchor,w,h,mode||'field');
+    img.src=src;img.alt=String(label||'Readable card')+' enlarged preview';box.classList.remove('is-click-zoom','is-modal-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview');
+    if(mode==='card-played')box.classList.add('is-card-played-hover','is-v253-contextual-preview');else box.classList.add('is-v253-readable-preview');if(contextual)box.classList.add('is-v253-contextual-preview');if(inModal)box.classList.add('is-modal-zoom');
     box.style.transform='translate3d('+Math.round(pos.x)+'px,'+Math.round(pos.y)+'px,0)';box.style.pointerEvents='none';box._glAnchor=anchor||null;box.dataset.previewPlacement=String(pos.placement||mode||'field');box.setAttribute('aria-hidden','false');box.hidden=false;box.classList.add('is-visible');return true;
   }
   function v642DesktopPreviewShow(cardId,anchor){
@@ -6793,7 +6795,7 @@ function getActivatedHeroAbilities(state, side, lane){
     box.style.transform='translate3d('+Math.round(x)+'px,'+Math.round(y)+'px,0)';
   }
 
-  function v94HoverZoomHide(){var box=$('hoverCardZoom');if(!box)return;box.classList.remove('is-visible','is-modal-zoom','is-click-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview');box.hidden=true;box._glAnchor=null;if(box.dataset)delete box.dataset.previewPlacement;box.style.transform='translate3d(-9999px,-9999px,0)';if(box.style&&typeof box.style.removeProperty==='function'){box.style.removeProperty('--gl-tablet-hand-hover-w');box.style.removeProperty('--gl-tablet-hand-hover-h');}box.setAttribute('aria-hidden','true');}
+  function v94HoverZoomHide(){var box=$('hoverCardZoom');if(!box)return;box.classList.remove('is-visible','is-modal-zoom','is-click-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview');box.hidden=true;box._glAnchor=null;if(box.dataset)delete box.dataset.previewPlacement;box.style.transform='translate3d(-9999px,-9999px,0)';if(box.style&&typeof box.style.removeProperty==='function'){box.style.removeProperty('--gl-tablet-hand-hover-w');box.style.removeProperty('--gl-tablet-hand-hover-h');}box.setAttribute('aria-hidden','true');}
   function v59HandHoverZoomShow(cardId,anchor){
     /* Hand hover order is fixed: raise the physical Hand card, keep Play/Tribute above it,
        then place the large review above that action strip. The review is positioned before
@@ -6973,7 +6975,7 @@ function getActivatedHeroAbilities(state, side, lane){
   }
   function mobileShardPoolRow(side,state){
     var shards=manaPoolCardsForSide(state,side),shardHtml='';
-    shards.forEach(function(sh){var label=sh.kind==='CLASS'?(sh.class_name+' Shard'):'Mana Shard',hidden=!!hiddenManaDrawToken(side,sh.uid);shardHtml+='<button class="gl-lab-mana-card mobile-shard-card '+(sh.kind==='CLASS'?'is-class':'is-generic')+' '+(hidden?'is-opening-draw-hidden':'')+'" type="button" data-mana-side="'+esc(side)+'" data-mana-uid="'+esc(sh.uid)+'"'+((side==='PLAYER'&&!hidden)?' data-shard-preview-src="'+esc(manaShardAsset(sh))+'" data-shard-preview-label="'+esc(label)+'"':'')+' aria-label="'+esc(label)+'" title="'+esc(label)+'"><img src="'+esc(manaShardAsset(sh))+'" alt="'+esc(label)+'"></button>';});
+    shards.forEach(function(sh){var label=sh.kind==='CLASS'?(sh.class_name+' Shard'):'Mana Shard',hidden=!!hiddenManaDrawToken(side,sh.uid);shardHtml+='<button class="gl-lab-mana-card mobile-shard-card '+(sh.kind==='CLASS'?'is-class':'is-generic')+' '+(hidden?'is-opening-draw-hidden':'')+'" type="button" data-mana-side="'+esc(side)+'" data-mana-uid="'+esc(sh.uid)+'"'+((!hidden)?' data-shard-preview-src="'+esc(manaShardAsset(sh))+'" data-shard-preview-label="'+esc(label)+'"':'')+' aria-label="'+esc(label)+'" title="'+esc(label)+'"><img src="'+esc(manaShardAsset(sh))+'" alt="'+esc(label)+'"></button>';});
     pendingManaDrawReservations(side).forEach(function(r){shardHtml+='<span class="gl-lab-mana-card mobile-shard-card is-pending-draw" data-mana-side="'+esc(side)+'" data-mana-pending-id="'+esc(r.id)+'" aria-hidden="true"></span>';});
     return '<div class="mobile-shard-pool mobile-shard-pool--'+(side==='AI'?'opponent':'player')+'" aria-label="'+esc(side)+' Shard Pool"><strong>SHARD POOL</strong><div class="mobile-shard-scroll">'+shardHtml+'</div>'+mobileShardRacialTokens(side,state)+'</div>';
   }
@@ -6999,7 +7001,7 @@ function getActivatedHeroAbilities(state, side, lane){
     var shards=manaPoolCardsForSide(state,side),racial=side==='AI'?state.aiRacial:state.racial;
     var shardHtml=shards.map(function(sh){
       var label=sh.kind==='CLASS'?(sh.class_name+' Shard'):'Mana Shard',hidden=!!hiddenManaDrawToken(side,sh.uid);
-      return '<button class="gl-lab-mana-card '+(sh.kind==='CLASS'?'is-class':'is-generic')+' '+(hidden?'is-opening-draw-hidden':'')+'" type="button" data-mana-side="'+esc(side)+'" data-mana-uid="'+esc(sh.uid)+'"'+((side==='PLAYER'&&!hidden)?' data-shard-preview-src="'+esc(manaShardAsset(sh))+'" data-shard-preview-label="'+esc(label)+'"':'')+' aria-label="'+esc(label)+'" title="'+esc(label)+'"><img src="'+esc(manaShardAsset(sh))+'" alt="'+esc(label)+'"></button>';
+      return '<button class="gl-lab-mana-card '+(sh.kind==='CLASS'?'is-class':'is-generic')+' '+(hidden?'is-opening-draw-hidden':'')+'" type="button" data-mana-side="'+esc(side)+'" data-mana-uid="'+esc(sh.uid)+'"'+((!hidden)?' data-shard-preview-src="'+esc(manaShardAsset(sh))+'" data-shard-preview-label="'+esc(label)+'"':'')+' aria-label="'+esc(label)+'" title="'+esc(label)+'"><img src="'+esc(manaShardAsset(sh))+'" alt="'+esc(label)+'"></button>';
     }).join('');
     pendingManaDrawReservations(side).forEach(function(r){shardHtml+='<span class="gl-lab-mana-card is-pending-draw" data-mana-side="'+esc(side)+'" data-mana-pending-id="'+esc(r.id)+'" aria-hidden="true"></span>';});
     return '<div class="gl-lab-mana-pool gl-lab-mana-pool--'+(side==='AI'?'opponent':'player')+'" aria-label="'+esc(side)+' Shard Pool"><div class="gl-lab-racial">'+v94RacialCoins(side,racial)+'</div><div class="gl-lab-mana-row">'+shardHtml+'</div></div>';
@@ -10101,6 +10103,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     setRenderSuppressed:function(active){SUPPRESS_RENDER=!!active;return SUPPRESS_RENDER;},
     getPendingClosePolicy:function(){ return localPendingClosePolicy(appState,appState&&appState.pending); },
     clearTransientUiState:clearTransientUiState,
+    testSetManaPreviewHidden:function(side,uid,hidden){side=side==='AI'?'AI':'PLAYER';if(hidden){if(!hiddenManaDrawToken(side,uid))addHiddenManaDrawToken(side,uid);}else removeHiddenManaDrawToken(side,uid,{suppressRender:true});if(appState&&matchStarted&&!SUPPRESS_RENDER)render();return !!hiddenManaDrawToken(side,uid);},
     testGameplayFoundationFixes:simulateV559GameplayFixes,
     testV69SourcePendingAudit:simulateV69SourcePendingAudit,
     playOpeningCoinSound:playOpeningCoinSound,

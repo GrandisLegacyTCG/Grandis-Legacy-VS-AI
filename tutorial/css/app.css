@@ -209,7 +209,7 @@ button{background:#0e1824;color:#fff;border:1px solid #4b5c72;border-radius:10px
 
 
 /* Local AI v3.87 — presentation-only, response-aware motion. Runtime remains authoritative. */
-.gl-animation-layer{position:fixed;inset:0;z-index:1800;pointer-events:none;overflow:hidden}.gl-flying-card{position:fixed;display:block;object-fit:cover;border-radius:6px;border:1px solid rgba(255,218,73,.75);box-shadow:0 12px 28px rgba(0,0,0,.58);will-change:transform,opacity;pointer-events:none}.heroImg{transform-origin:center center;transition:transform .28s cubic-bezier(.2,.75,.2,1),filter .28s ease}.heroImg.exhausted-card{transform:rotate(-90deg) scale(.72);filter:saturate(.72) brightness(.84)}.heroImgWrap{overflow:visible}.slot[data-attachment-side]{position:relative}@media (prefers-reduced-motion:reduce){.gl-animation-layer{display:none!important}.heroImg{transition:none!important}}
+.gl-animation-layer{position:fixed;inset:0;z-index:1800;pointer-events:none;overflow:hidden}.gl-flying-card{position:fixed;display:block;object-fit:cover;border-radius:6px;border:1px solid rgba(255,218,73,.75);box-shadow:0 12px 28px rgba(0,0,0,.58);will-change:transform,opacity;pointer-events:none}.heroImg{transform-origin:center center;transition:transform .28s cubic-bezier(.2,.75,.2,1),filter .28s ease}.heroImg.exhausted-card{transform:rotate(-90deg);filter:saturate(.72) brightness(.84)}.heroImgWrap{overflow:visible}.slot[data-attachment-side]{position:relative}@media (prefers-reduced-motion:reduce){.gl-animation-layer{display:none!important}.heroImg{transition:none!important}}
 
 .gl-flying-card.gl-held-card{opacity:1;filter:drop-shadow(0 12px 18px rgba(0,0,0,.42));}
 
@@ -483,8 +483,8 @@ body::before{
   border-radius:10px;
   box-shadow:0 10px 22px rgba(0,0,0,.50);
 }
-.hero-card.is-exhausted{transform:rotate(-90deg) scale(.78)}
-.hero-card.is-exhausted:hover{transform:rotate(-90deg) scale(.81)}
+.hero-card.is-exhausted{transform:rotate(-90deg)}
+.hero-card.is-exhausted:hover{transform:rotate(-90deg)}
 .info-dot{
   position:absolute;
   left:8px;
@@ -1570,7 +1570,7 @@ body::before{
 .v94-app .hero-card{display:block;background:transparent;border:0;padding:0;cursor:pointer}
 .v94-app .hero-main{display:block;width:100%;height:100%;background:transparent;border:0;padding:0;cursor:pointer}
 .v94-app .hero-stage .heroImg{display:block;width:100%;height:100%;max-width:none;object-fit:contain;border-radius:10px}
-.v94-app .hero-stage .heroImg.exhausted-card{transform:rotate(-90deg) scale(.78)}
+.v94-app .hero-stage .heroImg.exhausted-card{transform:rotate(-90deg)}
 .v94-app .hero-info-button{position:absolute;left:7px;top:50%;translate:0 -50%;width:24px;height:24px;border:1px solid rgba(214,166,55,.48);border-radius:50%;background:rgba(2,8,12,.88);color:#fff;font-weight:900;cursor:pointer;z-index:8}
 .v94-app .heroActions{position:absolute;right:4px;top:4px;z-index:18;display:flex;flex-direction:column;gap:3px;max-width:110px}
 .v94-app .heroActions:empty{display:none}
@@ -2038,7 +2038,7 @@ body::before{
   padding:0!important;
 }
 .v96-app .hero-card.hero-main .heroImg{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;border-radius:7px!important}
-.v96-app .hero-card.hero-main .heroImg.exhausted-card{transform:rotate(-90deg) scale(.86)!important}
+.v96-app .hero-card.hero-main .heroImg.exhausted-card{transform:rotate(-90deg)!important}
 .v96-app .hero-health-row{display:grid!important;grid-template-columns:26px minmax(0,1fr)!important;gap:5px!important;align-items:center!important;padding:0 4px!important;min-width:0!important}
 .v96-app .hp-bar{height:18px!important;border:1px solid #27343e!important;border-radius:999px!important;background:#02070b!important;position:relative!important;overflow:hidden!important}
 .v96-app .hp-bar>span{position:absolute!important;inset:1px auto 1px 1px!important;width:var(--hp-value)!important;border-radius:999px!important;background:#37c96d!important}
@@ -6239,7 +6239,7 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
   filter:none!important;
 }
 .v96-app .hero-card-physical-stack.is-exhausted>.hero-card.hero-main{
-  transform:rotate(-90deg) scale(.86)!important;
+  transform:rotate(-90deg)!important;
   filter:saturate(.72) brightness(.84)!important;
 }
 .v96-app .hero-card-physical-stack>.hero-exp-stack{
@@ -6424,3 +6424,36 @@ body:has(.v96-app.mobile-restored-layout) #glMobileAppMenu{display:none!importan
 }
 /* UI Contract v2.53: keep battlefield deck/pile containers proportional to their card stack. */
 .gl-lab-zone{align-self:center!important;height:auto!important;max-height:118px!important;}
+
+
+/* ================================================================
+   2026-09-21 v6.42 / v0.68 UI-only correction pass
+   Preserve versions and gameplay semantics; correct presentation only.
+   ================================================================ */
+/* Contextual previews: fixed battlefield stays 250x350; modal/Card Played grows ~9%. */
+#hoverCardZoom.is-v253-contextual-preview,#hoverCardZoom.is-card-played-hover{width:272px!important;height:381px!important;max-width:272px!important;max-height:381px!important;pointer-events:none!important;z-index:2147482000!important;}
+
+/* Numeric counters: approved dark/gold rounded rectangles; warning ! remains a separate circle. */
+.gl-count-badge{border-radius:6px!important;background:#071019!important;border-color:#6a5821!important;color:#f4d35e!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;line-height:1!important;}
+.gl-status-count{font-size:9px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;line-height:1!important;}
+.gl-attachment-count{display:inline-flex!important;align-items:center!important;justify-content:center!important;line-height:1!important;}
+
+/* Keep the existing Status/Attachment attachment points unchanged. */
+.negative-status-indicator .gl-status-count{right:-6px!important;bottom:-5px!important;}
+.slot.filled>.gl-attachment-count{top:-7px!important;right:-7px!important;}
+
+/* Restore the approved warning visual and make its condition state visible before hover. */
+.v96-app .hero-status-overlay{top:6px!important;left:6px!important;overflow:visible!important;}
+.v96-app .hero-info-indicator>.status-trigger{width:18px!important;height:18px!important;min-width:18px!important;min-height:18px!important;padding:0!important;border-radius:50%!important;border:1px solid rgba(214,166,55,.72)!important;background:#0b151d!important;color:#f3d150!important;font-size:9px!important;font-weight:1000!important;line-height:1!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;opacity:1!important;visibility:visible!important;}
+.v96-app .hero-info-indicator .hero-indicator-tooltip{opacity:0!important;visibility:hidden!important;pointer-events:none!important;}
+.v96-app .hero-info-indicator:hover .hero-indicator-tooltip,.v96-app .hero-info-indicator:focus-within .hero-indicator-tooltip{opacity:1!important;visibility:visible!important;display:block!important;}
+
+/* Ready/Exhausted parity: identical scale, only a 90-degree rotation changes orientation. */
+.v96-app .hero-card-physical-stack.is-exhausted>.hero-card.hero-main{transform:rotate(-90deg)!important;}
+
+/* UI-only correction: tablet portrait uses the mobile/touch Hero information control even when its physical viewport exceeds 760px. */
+html.gl-tablet-portrait-mobile .v96-app .hero-status-overlay>.mobile-status-summary{
+  display:grid!important;
+  place-items:center!important;
+  pointer-events:auto!important;
+}

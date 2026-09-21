@@ -21,52 +21,65 @@ Canonical registry SHA256: `85d25ebda9bb2bc260983a566e6d430dde97bfc7a32e8042ec2f
 
 Hero Component registry SHA256: `f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be`
 
-The five Starter Deck compositions remain unchanged by this v1.9.3 hotfix. Their copied Starter Authority v1.6.1 generated payloads may truthfully retain their original OSA v1.9.2 artifact provenance.
+The five Starter Deck compositions remain unchanged. OSA, Runtime Data, Shared Runtime gameplay semantics, canonical card data, and PvP are not modified by this UI correction pass.
 
-## Shared Runtime v1.94.1 — generic Hero-defeat lifecycle hotfix
+## 2026-09-21 UI-only correction pass
 
-The runtime now performs generic cleanup when an active Hero transitions to Defeated / Legacy mode. Unresolved pending state that requires that Hero to remain an active source, owner, host, actor, movement subject, target host, or Attachment host is invalidated through the canonical defeat path. Already-resolved external consequences are not rolled back.
+This pass corrects presentation only. It does **not** create v6.43, v0.69, v6.42.1, or another release branch.
 
-The reproduced Shield Bash + Deflect stall is covered by real runtime and application integration:
+### Battlefield readable preview
 
-- Deflect retaliation can defeat the attacking source Hero.
-- the defeated Hero transitions normally to Defeated / Legacy mode;
-- illegal post-resolution Attachment placement is cancelled instead of throwing;
-- Shield Bash resolves to Discard rather than attaching to Legacy;
-- the Response Window and associated pending source-Hero state close deterministically;
-- the AI controller no longer remains at `Waiting for PLAYER response...` and can continue the turn/phase.
+- The standard 250×350 battlefield preview keeps its approved vertical placement and is shifted further **left/inward** from the previous v6.42 candidate.
+- The preview may cover the right-side Main Deck, Discard Pile, part of the battlefield, and a small part of the Phase Tracker.
+- The Next Phase button remains at least approximately 50% visibly exposed.
+- Player Shards and legally readable/face-up opponent Shards use the same standard battlefield preview.
+- Hidden/unrevealed opponent Shards do not expose preview metadata and remain visually hidden while in the hidden presentation state.
+- Standard previews remain `pointer-events:none`, hide immediately on source mouseleave, and update immediately from Card A to Card B.
 
-The fix is lifecycle-based, not a Shield Bash/Deflect card-specific branch. Existing Warp Scroll, Freeze/Freeze Bomb, Attack Label vs Damage Type, Whirlwind = 50, Triple Shot, Ultimate Shard return, blind selection, card data, Hero Components, and Starter Deck semantics remain unchanged.
+### Card Played and popup/modal previews
 
-## UI Contract v2.53 — final battlefield baseline refinement
+- Card Played keeps its LEFT-opening direction, but its enlarged preview is now anchored directly to the source card with an approximately 8–14 px gap.
+- Contextual Card Played/modal previews are approximately 8–10% larger than the prior contextual preview, while the fixed battlefield preview remains 250×350.
+- Contextual previews prefer LEFT/RIGHT placement beside the source card, are vertically centered when possible, clamp to the viewport, and fall back above/below only when necessary.
+- Popup/modal previews render through the top-level shared preview overlay so they remain visibly above modal backgrounds, content, and scrolling containers.
+- Verified representative contexts include Legacy Deck inspection, Full Card History, Response Window, opened Discard Pile, and card-selection/choice popup.
 
-The shared VS AI/Tutorial battlefield presentation now implements the current v2.53 contract:
+### Deck, pile, Status, Attachment, and Mana Regen presentation
 
-- Standard readable field-card previews are a single 250×350 **lower-right battlefield overlay**, dynamically kept below the protected Your Turn / Phase Tracker / Next Phase controls.
-- `Card Played` is the explicit special case and opens its enlarged preview to the **left** of the Card Played source.
-- Full Card History, Response Window, opened Discard lists, selection/card-choice popups, and other legally readable modal/list card representations use the same universal preview system with contextual left/right placement and above/below fallback when needed.
-- Preview overlays live outside modal scrolling/clipping regions, use `pointer-events:none`, disappear immediately on source mouseleave, update immediately Card A → Card B, and never reveal hidden identities.
-- Legacy Deck, Shard Deck, Discard Pile, and Main Deck counts use the same compact dark/gold **top-corner badge** visual. The old large Main Deck number is not used.
-- Deck/pile containers are tightened so the card/stack fills the zone proportionally without excessive empty space.
-- Every Status icon owns its own compact **bottom-right** numeric badge.
-- Warning `!` remains visibly present while its condition exists; only warning detail is hover/focus-triggered. Hero-card hover remains independent.
-- Attachment count uses the same compact badge family at the Attachment card's top corner.
-- Mana Regen continues to use the dedicated Counter image assets; those assets are not reused for deck, Status, or Attachment counts.
+- Deck/pile counts restore the approved dark-background, thin-gold-outline **rounded-rectangle** numeric badge visual; numeric counters are not circular.
+- 1-, 2-, and 3-digit counters remain horizontally and vertically centered, and the badge expands for additional digits.
+- Deck/pile cards are visually centered independently from count/Regen overlays.
+- Main Deck, Legacy Deck, and Shard Deck card backs are slightly enlarged so their containers feel fuller without being aggressively shrunk.
+- Mana Regen keeps its dedicated graphical `Counter.png` asset family and is repositioned below the Shard Deck card back so it no longer collides with the deck count.
+- Status badge placement remains unchanged; only the Status numeral is reduced by approximately 1–2 px and remains centered in the rounded-rectangle badge.
+- Attachment count remains attached at the top/corner of the Attachment card using the same rounded-rectangle numeric badge family.
+
+### Warning icon and Exhausted Hero
+
+- The previously approved compact circular warning `!` visual is restored: dark center, thin gold outline, centered gold/yellow `!`.
+- When a warning condition exists, the warning icon is visible **before hover** and remains fully inside its container with normal top-left padding.
+- Only the warning detail tooltip is hover/focus-triggered; hovering the Hero card itself does not open the warning detail.
+- Ready and Exhausted Hero cards now use the same underlying dimensions and scale. Exhausted changes orientation only via a 90-degree rotation; no hidden `scale(<1)` remains.
+- HP, Status, warning, Attachment relationships, and clipping are browser-regression checked after the Exhaust scale correction.
+
+## Previously approved gameplay baseline remains unchanged
+
+The already-approved v6.42 Hero-defeat lifecycle / Response-chain fix remains intact and was not changed by this pass. Existing Warp Scroll, Freeze/Freeze Bomb, Deflect, Shield Bash, Triple Shot, Attack-v-Damage classification, blind selection, AI logic, Starter Deck compositions, and other gameplay semantics remain unchanged.
 
 ## Shared application / Tutorial parity
 
-`shared-app/app.bundle.js` and `shared-app/app.css` remain the one editable common VS AI/Tutorial application/battlefield sources. Tutorial-specific teaching remains additive in its guide/controller and guide stylesheet. Generated root/Tutorial deployment mirrors and the Tutorial Shared Runtime tree are parity-checked during release verification.
+`shared-app/app.bundle.js` and `shared-app/app.css` remain the shared VS AI/Tutorial application/UI sources. Tutorial-specific teaching remains additive in its guide/controller and guide stylesheet. Root/Tutorial deployment mirrors and the Tutorial Shared Runtime tree remain parity-checked during release verification.
 
 ## Responsive behavior
 
 The established device boundaries remain intact:
 
-- desktop: mouse/hover battlefield with the v2.53 preview system;
+- desktop: mouse/hover battlefield with the corrected v2.53 preview system;
 - phone: native-scroll mobile presentation;
-- tablet portrait: mobile presentation;
+- tablet portrait: mobile/touch presentation with essential Hero information visible without hover;
 - tablet landscape: desktop-style battlefield with touch-oriented interaction;
-- touch layouts do not depend on desktop hover behavior.
+- no tested responsive mode introduces horizontal page overflow or requires hover for essential touch-only information.
 
 ## Validation
 
-The release is gated by the complete current runtime/application regression suite, the new Hero-defeat integration tests, generated-data/deployment reproducibility, real Chromium DOM/geometry checks for field and dynamic modal previews/badges/warning behavior, Tutorial parity, and root/Tutorial SHA-256 manifest verification. See `VERIFICATION_v6.42_v0.68.md` for the recorded executable results.
+The release is gated by current gameplay/AI/Tutorial regression, source/data immutability checks, generated-output reproducibility, real Chromium DOM/geometry tests for all requested UI corrections, root/Tutorial SHA-256 manifest verification, and final package hashing. See `VERIFICATION_v6.42_v0.68.md` for the recorded executable results.

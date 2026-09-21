@@ -96,7 +96,7 @@ body:has(.gl-lab-authority) .hover-card-zoom.is-hand-hover img{width:100%!import
 .gl-lab-positions .hero-card.hero-main{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;min-width:0!important;min-height:0!important;margin:0!important;padding:0!important;display:block!important;border:0!important;background:transparent!important;border-radius:8px!important;overflow:visible!important;transform:none;z-index:35!important;}
 .gl-lab-positions .hero-card.hero-main .heroImg,.gl-lab-positions .hero-card.hero-main>img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;border:0!important;border-radius:8px!important;opacity:1!important;visibility:visible!important;}
 .gl-lab-positions .hero-card-physical-stack.is-ready>.hero-card.hero-main{transform:none!important;filter:none!important;}
-.gl-lab-positions .hero-card-physical-stack.is-exhausted>.hero-card.hero-main{transform:rotate(-90deg) scale(.86)!important;filter:saturate(.72) brightness(.84)!important;}
+.gl-lab-positions .hero-card-physical-stack.is-exhausted>.hero-card.hero-main{transform:rotate(-90deg)!important;filter:saturate(.72) brightness(.84)!important;}
 
 /* HP: reuse the approved production desktop HP geometry. The overlay is owned by
    the Hero-card anchor and directly masks the printed HP in the card's upper-right. */
@@ -178,6 +178,7 @@ body:has(.gl-lab-authority) .hover-card-zoom.is-hand-hover img{width:100%!import
 .gl-lab-mana-card{appearance:none!important;position:relative!important;flex:0 0 var(--lab-mana-w)!important;width:var(--lab-mana-w)!important;height:var(--lab-mana-h)!important;max-width:var(--lab-mana-w)!important;max-height:var(--lab-mana-h)!important;margin:0!important;padding:0!important;border:0!important;border-radius:6px!important;background:transparent!important;overflow:visible!important;filter:drop-shadow(0 4px 7px rgba(0,0,0,.52));}
 .gl-lab-mana-card img{display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;border-radius:6px!important;}
 .gl-lab-mana-card.is-pending-draw{visibility:hidden!important;pointer-events:none!important;}
+.gl-lab-mana-card.is-opening-draw-hidden{visibility:hidden!important;pointer-events:none!important;}
 .gl-lab-mana-card.is-opening-draw-hidden img{visibility:hidden!important;}
 .gl-lab-racial{position:absolute;top:50%;transform:translateY(-50%);z-index:90;}
 .gl-lab-mana-pool--player .gl-lab-racial{left:4px;}.gl-lab-mana-pool--opponent .gl-lab-racial{right:4px;}
@@ -337,4 +338,34 @@ body:has(.gl-lab-authority) #choiceConfirm.mana-confirm-waiting{border-color:#7d
   html.gl-ui-tablet .gl-lab-sidebar .card-played-panel{min-height:0!important;height:auto!important;max-height:none!important;grid-template-rows:auto minmax(0,1fr) 22px!important;gap:3px!important;overflow:hidden!important;}
   html.gl-ui-tablet .gl-lab-sidebar .played-grid{min-height:0!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(28px,1fr))!important;gap:3px!important;overflow-y:auto!important;}
   html.gl-ui-tablet .gl-lab-sidebar .full-width{height:22px!important;min-height:22px!important;}
+}
+
+
+/* 2026-09-21 v6.42 / v0.68 UI-only correction pass. */
+/* Numeric/regen overlays must never push the physical deck card off its visual center. */
+.gl-lab-zone{justify-content:center!important;align-content:center!important;overflow:visible!important;}
+.gl-lab-zone .zoneCard{justify-self:center!important;align-self:center!important;transform:none!important;}
+/* Slight card-back enlargement only for back-facing deck zones; readable Discard art keeps its existing scale. */
+.gl-lab-zone[data-zone-type="Main Deck"] .zoneCard,
+.gl-lab-zone[data-zone-type="Legacy Deck"] .zoneCard{width:calc(var(--lab-card-w) * .84)!important;height:calc(var(--lab-card-h) * .84)!important;}
+.gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard{width:calc(var(--lab-card-w) * .93)!important;height:calc(var(--lab-card-h) * .93)!important;transform:translateY(-10px)!important;}
+/* REGEN remains the dedicated graphical Counter asset system; only its location changes. */
+.gl-lab-side--player .gl-lab-zone[data-zone-type="Shard Deck"] .gl-lab-mana-regen,
+.gl-lab-side--opponent .gl-lab-zone[data-zone-type="Shard Deck"] .gl-lab-mana-regen{top:auto!important;bottom:8px!important;}
+/* Count stays attached to the deck card's approved corner and uses independent overlay positioning. */
+.gl-lab-zone .zoneCard .gl-resource-count{position:absolute!important;top:-4px!important;right:-4px!important;bottom:auto!important;z-index:9!important;}
+/* Exhaust changes orientation only, never scale. */
+.gl-lab-positions .hero-card-physical-stack.is-exhausted>.hero-card.hero-main{transform:rotate(-90deg)!important;}
+
+/* Final Shard Deck stacking correction: card centered horizontally; REGEN sits below the card without driving its layout. */
+.gl-lab-side--player .gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard,
+.gl-lab-side--opponent .gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard{transform:translateY(-15px)!important;}
+.gl-lab-side--player .gl-lab-zone[data-zone-type="Shard Deck"] .gl-lab-mana-regen,
+.gl-lab-side--opponent .gl-lab-zone[data-zone-type="Shard Deck"] .gl-lab-mana-regen{top:auto!important;bottom:2px!important;}
+
+/* UI-only correction: tablet portrait follows the touch/mobile information contract even above the 760px CSS width tier. */
+html.gl-tablet-portrait-mobile .gl-lab-positions .hero-status-overlay>.mobile-status-summary{
+  display:grid!important;
+  place-items:center!important;
+  pointer-events:auto!important;
 }

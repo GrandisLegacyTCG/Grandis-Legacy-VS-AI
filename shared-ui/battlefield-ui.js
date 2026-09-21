@@ -17,7 +17,7 @@
       const d=dims(viewportWidth,viewportHeight,previewWidth,previewHeight),pad=16;
       const minY=Math.max(8,Number(protectedBottom||0)+12);
       const preferredY=d.vh-d.h-pad;
-      return {x:clamp(d.vw-d.w-24,8,Math.max(8,d.vw-d.w-8)),y:clamp(Math.max(minY,preferredY),8,Math.max(8,d.vh-d.h-8))};
+      return {x:clamp(d.vw-d.w-132,8,Math.max(8,d.vw-d.w-8)),y:clamp(Math.max(minY,preferredY),8,Math.max(8,d.vh-d.h-8))};
     },
     // Card Played is special: open to its left and preserve vertical context.
     cardPlayedPreviewPosition(anchorRect,viewportWidth,viewportHeight,previewWidth,previewHeight){
@@ -55,9 +55,9 @@
       return {x:clamp(x,8,Math.max(8,d.vw-d.w-8)),y:clamp(y,8,Math.max(8,d.vh-d.h-8)),placement:placement};
     },
     previewPointerEvents:'none',
-    deckCountPresentation:'compact-top-corner-badge',
-    statusCountPresentation:'individual-bottom-right-badge',
-    attachmentCountPresentation:'compact-top-corner-badge',
+    deckCountPresentation:'rounded-rectangle-top-corner-badge',
+    statusCountPresentation:'individual-rounded-rectangle-bottom-right-badge',
+    attachmentCountPresentation:'rounded-rectangle-top-corner-badge',
     warningPresentation:'persistent-icon-hover-detail',
     counterAssetScope:'mana-regen-only'
   };
