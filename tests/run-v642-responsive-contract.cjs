@@ -17,5 +17,5 @@ for(const [name,text] of [['VS AI app',app],['Tutorial app',tapp]]){
   assert(text.includes('pointerType') && text.includes("'touch'"),name+' missing touch-specific input handling');
   assert(text.includes('v642DesktopPreviewShow'),name+' missing v6.42 desktop preview');
 }
-assert(shared.includes("version:'v2.52'") && shared.includes("visual_baseline:'VS AI v6.42'"));
+assert(shared.includes("version:'v2.53'") && shared.includes("visual_baseline:'VS AI v6.42'"));
 console.log('PASS v6.42 responsive contract: desktop hover path coexists with retained phone/tablet portrait mobile and tablet-landscape touch handling.');

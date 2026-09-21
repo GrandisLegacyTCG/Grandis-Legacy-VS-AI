@@ -4,157 +4,142 @@ Verification date: 2026-09-21
 
 ## Final status
 
-**PASS** — all mandatory final-correction and current-release gates completed before packaging.
+**PASS** — OSA v1.9.3 / Shared Runtime v1.94.1 / UI Contract v2.53 propagation, Hero-defeat lifecycle hotfix, battlefield refinements, gameplay regressions, Tutorial parity, and packaging gates completed before final archiving.
 
-## Authority and data
+## Authority / immutable data
 
-- VS AI version: v6.42 — PASS
-- Tutorial version: v0.68 — PASS
-- Root package: 6.42.0 — PASS
-- Tutorial package: 0.68.0 — PASS
-- OSA: v1.9.2 — PASS
-- Shared Runtime: v1.94.0 — PASS
-- Runtime Data: v0.16.0 — PASS
-- Effect Recipe / Checkpoint: v0.15.0 / v0.15.0 — PASS
-- Hero Components: v1.1.0 — PASS
-- Runtime Sync: v2.60 — PASS
-- UI Contract: v2.52 — PASS
-- Canonical cards: 200 / 200 unique IDs — PASS
+- VS AI v6.42 / root package `6.42.0` — PASS
+- Tutorial v0.68 / Tutorial package `0.68.0` — PASS
+- OSA v1.9.3 — PASS
+- Shared Runtime v1.94.1 — PASS
+- UI Contract v2.53 — PASS
+- Application Runtime Sync v2.61 — PASS
+- Runtime Data v0.16.0 — PASS / unchanged
+- Effect Recipe / Checkpoint v0.15.0 / v0.15.0 — PASS / unchanged
+- Hero Components v1.1.0 — PASS / unchanged
+- Starter Deck Authority v1.6.1 / exactly 5 active starters — PASS / compositions unchanged
+- Canonical cards: 200 / 200 unique IDs — PASS / canonical registry unchanged
 
-## Active Starter Deck correction
+## Hero Defeat Cleanup
 
-- Only Starter 1 changed in this propagation; Starters 2–5 were verified semantically unchanged — PASS
-- Active application Starter Deck count: **5 / 5** — PASS
-- Active IDs exactly match the five approved IDs — PASS
-- Starter 1: Elemental Lord / Conqueror / Renegade — PASS
-- Starter 1 direct user source `Starter_1_ElementalLord_Conqueror_Renegade.json` (SHA256 `f63e14a9cc43729fe2e27d77a6d1606a067bc399a5230fa2489eded3ad066353`) is gameplay-semantically identical to the active OSA v1.9.2 generated Starter 1 — PASS
-- Starter 2: Saint / Crusader / Grand Ranger — PASS
-- Starter 3: Arcane Duelist / Elemental Lord / Saint — PASS
-- Starter 4: Grand Ranger / Grand Arbalest / Renegade — PASS
-- Starter 5: Renegade / Arcane Duelist / Elemental Lord — PASS
-- Hero/Legacy package composition matches OSA v1.9.2 Starter Authority — PASS
-- Main Deck card IDs/quantities match OSA v1.9.2 Starter Authority — PASS
-- Every Main Deck totals 60 — PASS
-- All referenced IDs resolve against the current 200-card registry — PASS
-- Player/AI active starter pool uses the same five — PASS
-- Tutorial does not reintroduce a 15-option active selector — PASS
-- Starter Deck Authority v1.6.1 exposes exactly five active starters; retired Starter60 v1.5 15-preset material remains history-only — PASS
-- OSA v1.9.2 generated Starter60 v1.6.1 current snapshots are hash-locked and deployed byte-identically — PASS
+- Generic defeat cleanup is wired into the real Hero defeat transition path — PASS
+- Cleanup is source/owner/host/actor/subject scoped rather than card-name hardcoded — PASS
+- Unresolved Hero-bound Attachment placement is invalidated when its required active host is defeated — PASS
+- Representative Hero-bound pending state is removed — PASS
+- Unrelated pending state belonging to a different valid Hero survives — PASS
+- Already-resolved external damage/healing/Status consequences are not rolled back — PASS
+- No orphan unresolved references requiring the defeated active Hero remain — PASS
 
-## Shared application / battlefield architecture
+### Shield Bash + Deflect reproduced regression
 
-- Exactly one editable common app/battlefield JS source: `shared-app/app.bundle.js` — PASS
-- Exactly one editable common app/battlefield CSS source: `shared-app/app.css` — PASS
-- VS AI directly consumes shared sources — PASS
-- Tutorial directly consumes the same shared sources — PASS
-- Tutorial-specific behavior remains additive/controller-oriented — PASS
-- Root/Tutorial app-bundle deployment mirrors are generated from shared source — PASS
-- Root/Tutorial common CSS deployment mirrors are generated from shared source — PASS
-- Deployment mirror parity/reproducibility is executable-tested — PASS
-- No independent Tutorial battlefield fork remains as editable authority — PASS
+- attacker begins at the reproduced low-HP state — PASS
+- Deflect response resolves and retaliation defeats the attacker — PASS
+- attacker transitions to Defeated / Legacy correctly — PASS
+- Shield Bash is not attached to the Legacy/defeated source — PASS
+- Shield Bash reaches Discard — PASS
+- no runtime exception — PASS
+- Response Window closes — PASS
+- pending response / pending source-Hero host state clears — PASS
+- AI controller is no longer waiting for PLAYER response — PASS
+- AI turn/phase can continue normally — PASS
 
-## Active authority cleanup
+The application-level integration returns `heroDefeatCleanup=true`, `shieldBashDeflect=true`, and `aiTurnContinuation=true` for both the VS AI and Tutorial shared-app execution paths.
 
-- Active `runtime-source/data/` stale tree removed — PASS
-- Runtime Data v0.15.0 stale source retained history-only — PASS
-- Effect Recipe v0.14.0 stale source retained history-only — PASS
-- Hero Components v1.0.0 stale source retained history-only — PASS
-- Source stack v1.90 stale source retained history-only — PASS
-- Active production `GL_LAB_V014_RULE_SYNC_QA_SELF_TEST` removed — PASS
-- Active Triple Shot mandatory-binding QA residue removed — PASS
-- Active `lab-authority.css` naming retired — PASS
-- Neutral `shared-app/battlefield-authority.css` used — PASS
-- Playtest Lab v0.14 remains historical only — PASS
+## Existing gameplay regression
 
-## Gameplay integration
+The pre-existing approved gameplay remains PASS:
 
-Executable integration passed for both VS AI and Tutorial application paths:
-
-- Warp Scroll actual two-Hero swap — PASS
-- Warp Scroll player flow — PASS
-- Warp Scroll AI resolution — PASS
-- Freeze Bomb target → Freeze 1 → Discard — PASS
-- Freeze Bomb player flow — PASS
-- Freeze Bomb AI resolution — PASS
-- Frozen Hero manual Reposition rejected — PASS
-- Frozen Hero Skill movement rejected — PASS
-- Frozen Hero Dodge rejected — PASS
-- Freeze alone does not reject legal Block — PASS
-- Freeze does not block Warp Scroll Item movement — PASS
-- Freeze does not block automatic 1v1 Center — PASS
-- Freeze owner-End-Phase duration processing — PASS
-- Freeze additive stacking — PASS
-- Physical Attack != Physical Damage — PASS
-- Magical Attack != Magical Damage — PASS
+- Warp Scroll — PASS
+- Freeze Bomb / generic Freeze legality, duration, stacking and exceptions — PASS
+- Physical Attack != Physical Damage / Magical Attack != Magical Damage — PASS
 - Conqueror + Whirlwind: expected 50 / actual 50 — PASS
-- Triple Shot no binding — PASS
-- Triple Shot Attachment lifetime — PASS
+- Triple Shot no-binding Attachment lifetime — PASS
 - Ultimate Shard payment-batch return — PASS
-- Opponent Hand blind selection — PASS
-- Opponent Shard Pool blind selection — PASS
-- Own hidden zones are not unnecessarily blind-randomized — PASS
+- opponent Hand / Shard Pool blind selection and hidden-information security — PASS
+- five Starter Deck loading/parity — PASS
+- Local AI planner/gameplay — PASS
+- Tutorial lesson sequencing — PASS
 
-## AI and security
+## Battlefield UI Contract v2.53 — executable Chromium
 
-- Tactical AI regression — PASS
-- Warp Scroll and Freeze Bomb AI resolution — PASS
-- Blind-selection production seed cannot be selected by normal player intent — PASS
-- Opaque opponent mapping is created before choice — PASS
-- Canonical hidden-zone state and Shard Deck are not unnecessarily reordered — PASS
-- Viewer-safe/hidden-information runtime security — PASS
+A real headless Chromium DOM/geometry suite validates the shared presentation rather than relying only on source-string checks.
 
-## Desktop UI — executable Chromium verification
+### Standard field preview
 
-Shared Battlefield UI v2.52 passed actual DOM/geometry verification at desktop viewport:
+- Hand — lower-right 250×350 preview — PASS
+- Hero — lower-right 250×350 preview — PASS
+- Legacy — lower-right 250×350 preview — PASS
+- Attachment — lower-right 250×350 preview — PASS
+- Casting — lower-right 250×350 preview — PASS
+- face-up player Shard — lower-right readable preview — PASS
+- preview top remains below the protected Turn / Phase Tracker / Next Phase region — PASS
+- overlay remains viewport-clamped — PASS
+- `pointer-events:none` — PASS
+- source mouseleave immediately hides — PASS
+- Card A → Card B updates the same singleton overlay — PASS
+- hidden opponent Hand / hidden Shard identity preview metadata is not exposed — PASS
 
-- One right-side 250×350 overlay — PASS
-- Preview is non-interactive (`pointer-events:none`) — PASS
-- Hand preview — PASS
-- Hero preview — PASS
-- Legacy preview — PASS
-- Attachment preview — PASS
-- Casting preview — PASS
-- Card Played preview — PASS
-- Face-up player Shard preview — PASS
-- Hidden opponent Shards have no preview identity metadata — PASS
-- Source-card mouseleave immediately hides every tested preview — PASS
-- Moving toward the preview does not extend preview lifetime — PASS
-- Card A → Card B updates the same overlay — PASS
-- Battlefield Deck Setup button absent — PASS
-- Pre-match Deck Setup remains present — PASS
-- Counter graphics limited to Mana Regen; deck/status counts are numeric — PASS
+### Card Played / modal and list preview
+
+- Card Played preview opens to the LEFT of Card Played — PASS
+- Full Card History dynamically-created cards preview contextually — PASS
+- Full Card History left/center/right source samples remain viewport-clamped — PASS
+- modal preview is top-level/not clipped by modal overflow — PASS
+- dynamic History Card A → Card B updates immediately — PASS
+- real Response Window readable response card preview — PASS
+- Response selection remains usable while preview is pointer-transparent — PASS
+- opened Discard list readable-card preview — PASS
+- actual Hand-Limit selection popup readable-card preview — PASS
+- contextual placement reports a valid left/right/above/below placement with horizontal preference when available — PASS
+
+## Counter / indicator presentation
+
+- Legacy Deck compact top-corner badge — PASS
+- Shard Deck compact top-corner badge — PASS
+- Discard Pile compact top-corner badge — PASS
+- Main Deck compact top-corner badge; old large count absent — PASS
+- deck/pile card stack occupies a proportional share of its container — PASS
+- Hero with three Statuses renders three independent Status badges with values 1/2/3 — PASS
+- each Status badge is attached to its own Status icon — PASS
+- Attachment count renders as a compact top-corner badge — PASS
+- Counter image assets do not escape the Mana Regen presentation — PASS
+- warning `!` is visible before hover — PASS
+- warning detail is hidden initially, appears on `!` hover, and closes when pointer moves to Hero card — PASS
+- Hero-card hover does not itself trigger warning detail — PASS
 
 ## Responsive UI
 
-- Desktop right-side hover presentation — PASS
-- Phone native-scroll/mobile presentation retained — PASS
-- Tablet portrait mobile presentation retained — PASS
-- Tablet landscape desktop-style/touch interaction retained — PASS
-- Mobile navigation regression — PASS
+- Desktop v2.53 battlefield presentation — PASS
+- Phone portrait mobile presentation — PASS
+- Tablet portrait mobile presentation — PASS
+- Tablet landscape desktop-style/touch presentation — PASS
+- compact deck/pile badges remain present through tested responsive modes — PASS
+- touch layouts do not depend on the desktop hover overlay — PASS
+- no new responsive overflow/navigation regression in the current suite — PASS
 
-## Tutorial parity
+## Shared architecture / generated parity
 
-- Tutorial uses the shared VS AI v6.42 runtime/app/UI baseline — PASS
-- Tutorial-specific guide/overlay/controller remains separate — PASS
-- Existing Shard/Mana/Ultimate/Draw lesson sequencing remains valid — PASS
-- Tutorial v0.68 release lock — PASS
-
-## Generated data and history
-
-- Generated/deployment reproducibility: **23 / 23 tracked outputs byte-identical after regeneration** — PASS
-- Shared Runtime Tutorial mirror parity: 68 files — PASS
-- Historical release records remain separated under `release/history/` — PASS
-- No duplicate current release note at repository root — PASS
+- one editable common app JS: `shared-app/app.bundle.js` — PASS
+- one editable common app CSS: `shared-app/app.css` — PASS
+- one editable Shared Runtime home: `runtime-source/runtime/` — PASS
+- Tutorial consumes generated/parity-checked mirrors rather than independent forks — PASS
+- generated application/runtime/data deployment reproducibility: 23 / 23 tracked outputs byte-identical after regeneration — PASS
 
 ## Test execution summary
 
-Unique executable current-release verification scripts: **22 / 22 PASS, 0 FAIL**.
+Unique current-release verification gates: **22 / 22 PASS, 0 FAIL**.
 
-This counts 18 root current-regression scripts, the Tutorial-specific v0.68 test, the Chromium UI test, and the two root/Tutorial manifest verification scripts. Tutorial calls that intentionally rerun shared root integration/UI scripts are not double-counted. Syntax checks, source generation, metadata generation, and build steps also passed.
+This consists of the 18 root current-regression scripts, the Tutorial-specific v0.68 suite gate, the real Chromium UI gate, and the two root/Tutorial manifest verification gates. Tutorial calls that intentionally re-run shared root scripts are not double-counted. Build/data generation, metadata generation, and syntax checks also pass.
 
 ## Manifest
 
-- Root `FILE_MANIFEST_SHA256.csv`: **571 tracked files** (manifest excludes itself) — PASS
-- Tutorial `FILE_MANIFEST_SHA256.csv`: **166 tracked files** (manifest excludes itself) — PASS
-- Both manifest verifiers require exact file sets, byte sizes, and SHA-256 hashes with 0 missing / 0 stale / 0 mismatch.
-- The outer archive SHA256 is intentionally delivered in the external `.sha256.txt` sidecar.
+- Root `FILE_MANIFEST_SHA256.csv`: **574** tracked files, 0 missing / 0 size mismatch / 0 SHA mismatch — PASS
+- Tutorial `FILE_MANIFEST_SHA256.csv`: **167** tracked files, 0 missing / 0 size mismatch / 0 SHA mismatch — PASS
+- manifest files exclude themselves from their tracked file count by repository convention.
+
+## Packaging / scope
+
+- current release records remain in `release/`; prior v1.9.2 Starter-1 synchronization audit/invariants were moved to `release/history/` — PASS
+- historical records remain historical and are not rewritten as current authority — PASS
+- no redundant final ZIP is stored inside the repository — PASS
+- no PvP, Website, Deck Builder, OSA source package, or Player Rulebook repository is modified by Part B — PASS

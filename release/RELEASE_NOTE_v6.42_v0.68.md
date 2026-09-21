@@ -2,78 +2,71 @@
 
 Release date: 2026-09-21
 
-## Authority baseline
+## Current authority baseline
 
-This release consumes Grandis Legacy Source Authority v1.9.2 as the current authority and consumes the approved generated/runtime baseline:
+This corrected current release consumes **Grandis Legacy Source Authority v1.9.3** and keeps the application versions unchanged:
 
+- VS AI v6.42 (`6.42.0`)
+- Tutorial v0.68 (`0.68.0`)
 - Canonical Card Authority v1.6.0 — 200 Season 1 cards
-- Shared Runtime v1.94.0
+- Shared Runtime v1.94.1
 - Runtime Data v0.16.0
-- Effect Recipe v0.15.0
-- Effect Checkpoint v0.15.0
+- Effect Recipe / Checkpoint v0.15.0 / v0.15.0
 - Hero Components v1.1.0
-- Starter Deck Authority v1.6.1 — exactly five active OSA starter compositions
-- Retired Starter60 v1.5 15-preset library — retained as non-active history/reference
-- UI Contract v2.52
-- Application Runtime Sync v2.60
+- Starter Deck Authority v1.6.1 — exactly five active Starter Decks
+- UI Contract v2.53
+- Application Runtime Sync v2.61
 
 Canonical registry SHA256: `85d25ebda9bb2bc260983a566e6d430dde97bfc7a32e8042ec2fddfeaff1b42f`
 
 Hero Component registry SHA256: `f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be`
 
-## Starter 1-only OSA v1.9.2 propagation
+The five Starter Deck compositions remain unchanged by this v1.9.3 hotfix. Their copied Starter Authority v1.6.1 generated payloads may truthfully retain their original OSA v1.9.2 artifact provenance.
 
-This synchronization is intentionally narrow: only Starter 1 gameplay composition changed. Starters 2–5 were re-snapshotted from OSA v1.9.2 only to carry current authority/provenance metadata and are verified gameplay-semantically unchanged. Shared Runtime and Shared Battlefield UI source hashes remain unchanged.
+## Shared Runtime v1.94.1 — generic Hero-defeat lifecycle hotfix
 
-## Exact active Starter Deck set
+The runtime now performs generic cleanup when an active Hero transitions to Defeated / Legacy mode. Unresolved pending state that requires that Hero to remain an active source, owner, host, actor, movement subject, target host, or Attachment host is invalidated through the canonical defeat path. Already-resolved external consequences are not rolled back.
 
-This final synchronization moves the application starter authority to OSA v1.9.2 / Starter Deck Authority v1.6.1. The active player/AI set is exactly:
+The reproduced Shield Bash + Deflect stall is covered by real runtime and application integration:
 
-1. `starter_01_elemental_lord_conqueror_renegade` — Elemental Lord / Conqueror / Renegade
-2. `starter_02_saint_crusader_grand_ranger` — Saint / Crusader / Grand Ranger
-3. `starter_03_arcane_duelist_elemental_lord_saint` — Arcane Duelist / Elemental Lord / Saint
-4. `starter_04_grand_ranger_grand_arbalest_renegade` — Grand Ranger / Grand Arbalest / Renegade
-5. `starter_05_renegade_arcane_duelist_elemental_lord` — Renegade / Arcane Duelist / Elemental Lord
+- Deflect retaliation can defeat the attacking source Hero.
+- the defeated Hero transitions normally to Defeated / Legacy mode;
+- illegal post-resolution Attachment placement is cancelled instead of throwing;
+- Shield Bash resolves to Discard rather than attaching to Legacy;
+- the Response Window and associated pending source-Hero state close deterministically;
+- the AI controller no longer remains at `Waiting for PLAYER response...` and can continue the turn/phase.
 
-This narrow propagation changes only Starter 1 to the final OSA v1.9.2 composition; Starters 2, 3, 4, and 5 remain semantically unchanged from the approved application baseline. Starter 1 is explicitly locked to the supplied `Starter_1_ElementalLord_Conqueror_Renegade.json` gameplay composition (source SHA256 `f63e14a9cc43729fe2e27d77a6d1606a067bc399a5230fa2489eded3ad066353`), which matches the OSA v1.9.2 canonical/generated Starter 1 semantics. The five exact OSA generated Starter60 v1.6.1 payloads are the current application source snapshot. The retired 15-preset v1.5 library and earlier Deck Builder v1.30 reference files remain history only. Runtime Sync is v2.60. No gameplay/runtime/UI semantic change is introduced by this pass.
+The fix is lifecycle-based, not a Shield Bash/Deflect card-specific branch. Existing Warp Scroll, Freeze/Freeze Bomb, Attack Label vs Damage Type, Whirlwind = 50, Triple Shot, Ultimate Shard return, blind selection, card data, Hero Components, and Starter Deck semantics remain unchanged.
 
-## Gameplay/runtime propagation
+## UI Contract v2.53 — final battlefield baseline refinement
 
-- Warp Scroll (`S1-ITM-019`) resolves through the actual application runtime and UI/AI flow: exactly two allied active Heroes are selected and swapped, including non-adjacent positions; Hero-connected state and hosted Attachments follow their Hero; the Item movement does not add Exhaust or consume the manual Reposition limit; the card resolves normally.
-- Freeze Bomb (`S1-ITM-020`) resolves through the actual dispatcher/reducer and applies generic Freeze duration 1 to one legal opponent Hero, then resolves to Discard.
-- Generic Freeze legality is enforced in runtime: manual Reposition and Skill-effect movement are blocked, Dodge is blocked, while Block, Warp Scroll Item movement, and automatic 1v1 Center remain available when otherwise legal. Freeze duration uses owner-End-Phase processing and additive stacking.
-- Physical Attack and Physical Damage remain distinct, as do Magical Attack and Magical Damage. The Conqueror + Whirlwind regression remains 50 damage before unrelated modifiers.
-- Triple Shot retains the previously approved no-binding Attachment lifetime and no active v0.14 binding QA remains in production JS.
-- Ultimate Tribute Shards use payment-batch return ordering with the matching Class Shard deepest/last inside the batch.
-- Opponent hidden-card/Shard blind selection randomizes an opaque selection mapping before choice, does not expose a player-controlled production seed, and does not mutate canonical hidden-zone order or the Shard Deck as a side effect.
+The shared VS AI/Tutorial battlefield presentation now implements the current v2.53 contract:
 
-## True shared application / battlefield implementation
+- Standard readable field-card previews are a single 250×350 **lower-right battlefield overlay**, dynamically kept below the protected Your Turn / Phase Tracker / Next Phase controls.
+- `Card Played` is the explicit special case and opens its enlarged preview to the **left** of the Card Played source.
+- Full Card History, Response Window, opened Discard lists, selection/card-choice popups, and other legally readable modal/list card representations use the same universal preview system with contextual left/right placement and above/below fallback when needed.
+- Preview overlays live outside modal scrolling/clipping regions, use `pointer-events:none`, disappear immediately on source mouseleave, update immediately Card A → Card B, and never reveal hidden identities.
+- Legacy Deck, Shard Deck, Discard Pile, and Main Deck counts use the same compact dark/gold **top-corner badge** visual. The old large Main Deck number is not used.
+- Deck/pile containers are tightened so the card/stack fills the zone proportionally without excessive empty space.
+- Every Status icon owns its own compact **bottom-right** numeric badge.
+- Warning `!` remains visibly present while its condition exists; only warning detail is hover/focus-triggered. Hero-card hover remains independent.
+- Attachment count uses the same compact badge family at the Attachment card's top corner.
+- Mana Regen continues to use the dedicated Counter image assets; those assets are not reused for deck, Status, or Attachment counts.
 
-- `shared-app/app.bundle.js` is now the one editable common application/battlefield source consumed directly by both VS AI and Tutorial.
-- `shared-app/app.css` is the one editable common battlefield/application CSS source.
-- Root and Tutorial `js/app.bundle.js` / `css/app.css` exist only as generated deployment/compatibility mirrors and are reproducibly regenerated and parity-checked.
-- Tutorial-only teaching remains additive in its guide/controller and guide stylesheet instead of a second large battlefield fork.
-- `shared-ui/` remains the shared UI-contract/helper layer.
+## Shared application / Tutorial parity
 
-## Active authority cleanup
+`shared-app/app.bundle.js` and `shared-app/app.css` remain the one editable common VS AI/Tutorial application/battlefield sources. Tutorial-specific teaching remains additive in its guide/controller and guide stylesheet. Generated root/Tutorial deployment mirrors and the Tutorial Shared Runtime tree are parity-checked during release verification.
 
-- Stale `runtime-source/data/` copies from Runtime Data v0.15.0, Effect Recipe v0.14.0, Hero Components v1.0.0, and source stack v1.90 are no longer in the active editable runtime-source tree. Historical copies are retained under `history/runtime-source-data-v1.90/`.
-- Active production `GL_LAB_V014_RULE_SYNC_QA_SELF_TEST` / Triple Shot mandatory-binding residue is removed. Historical v0.14 tests remain historical evidence only.
-- Active `lab-authority.css` naming is retired; the neutral shared source is `shared-app/battlefield-authority.css`.
+## Responsive behavior
 
-## Shared battlefield/UI update
+The established device boundaries remain intact:
 
-- VS AI v6.42 remains the current visual battlefield baseline for later Grandis Legacy battlefield propagation.
-- Desktop enlarged previews use one v2.52 right-side 250×350 temporary overlay with `pointer-events:none` and immediate source-card mouseleave.
-- Real browser coverage includes Hand, Hero, Legacy, Attachment, Casting, Card Played, and face-up player Shard sources. Hidden opponent Shards are not assigned readable preview metadata.
-- Existing phone, tablet portrait, and tablet landscape interaction boundaries are preserved.
-- The battlefield-only Deck Setup button is removed; pre-match Deck Setup remains present and functional.
-- Counter image assets remain Mana-Regen-only. Deck counts and Status counts use numeric/text presentation; deck counts are displayed above the deck card.
+- desktop: mouse/hover battlefield with the v2.53 preview system;
+- phone: native-scroll mobile presentation;
+- tablet portrait: mobile presentation;
+- tablet landscape: desktop-style battlefield with touch-oriented interaction;
+- touch layouts do not depend on desktop hover behavior.
 
-## Tutorial v0.68
+## Validation
 
-Tutorial v0.68 consumes the same Shared Runtime and shared application/battlefield source as VS AI v6.42 while retaining its lesson sequencing and tutorial controller/overlay. Tutorial does not reintroduce a 15-option active starter selector.
-
-## Verification
-
-The final release verification includes exact OSA v1.9.2 Starter Authority parity, one-source application/CSS structural checks, current-authority cleanup, actual reducer/application integrations, security/blind-selection checks, Chromium DOM/geometry testing across all required face-up preview categories, responsive regression testing, Tutorial parity, generated-data/deployment reproducibility, and root/Tutorial SHA-256 manifest validation. See `VERIFICATION_v6.42_v0.68.md` for recorded results.
+The release is gated by the complete current runtime/application regression suite, the new Hero-defeat integration tests, generated-data/deployment reproducibility, real Chromium DOM/geometry checks for field and dynamic modal previews/badges/warning behavior, Tutorial parity, and root/Tutorial SHA-256 manifest verification. See `VERIFICATION_v6.42_v0.68.md` for the recorded executable results.

@@ -2,18 +2,18 @@
   "schema_version": "GL-ACTIVE-STARTERS-1.2",
   "active_starter_count": 5,
   "application_release": "VS AI v6.42 / Tutorial v0.68",
-  "source_authority": "v1.9.2",
+  "source_authority": "v1.9.3",
   "starter_authority_version": "v1.6.1",
-  "application_runtime_sync": "v2.60",
-  "composition_authority": "OSA v1.9.2 Starter Deck Authority v1.6.1",
+  "application_runtime_sync": "v2.61",
+  "composition_authority": "OSA v1.9.3 consumer of unchanged Starter Deck Authority v1.6.1",
   "canonical_registry_hash": "85d25ebda9bb2bc260983a566e6d430dde97bfc7a32e8042ec2fddfeaff1b42f",
   "osa_active_starters_authority_sha256": "d818646d13bf41414d81aedeb14495e8308b2882c7f9bd2e50215be5e615dd10",
   "osa_generated_master_sha256": "c3314691accc56089e04bb95bd2f9987f2c90aec48907ff6104c04d6d0d0fc28",
   "notes": [
-    "These five exact generated Starter60 v1.6.1 files are the current application Starter source snapshot from OSA v1.9.2.",
-    "Only Starter 1 gameplay composition changed in OSA v1.9.2; Starters 2-5 are semantically unchanged.",
+    "These five exact Starter60 v1.6.1 compositions remain unchanged by OSA v1.9.3; their copied generated payload provenance may truthfully retain OSA v1.9.2.",
+    "OSA v1.9.3 changes only generic Hero-defeat pending-state lifecycle semantics and UI Contract v2.53; Starter gameplay composition is unchanged.",
     "The retired 15-preset Starter60 v1.5 library remains historical/non-active only and is never a fallback source.",
-    "Shared Runtime v1.94.0 and Shared Battlefield UI v2.52 gameplay/presentation semantics are unchanged by this starter-only propagation."
+    "Shared Runtime v1.94.1 and UI Contract v2.53 are the current application consumer baseline."
   ],
   "starters": [
     {

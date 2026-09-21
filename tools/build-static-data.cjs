@@ -4,7 +4,7 @@ const ROOT=path.resolve(__dirname,'..');
 const CARD_HASH='85d25ebda9bb2bc260983a566e6d430dde97bfc7a32e8042ec2fddfeaff1b42f';
 const HERO_HASH='f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be';
 const ASSET_BASE = 'https://grandislegacytcg.github.io/shared/season1/v1/cards';
-const V={osa:'v1.9.2',sharedRuntime:'v1.94.0',runtimeData:'v0.16.0',recipe:'v0.15.0',checkpoint:'v0.15.0',hero:'v1.1.0',starter:'v1.6.1',ui:'v2.52',sync:'v2.60',vsai:'v6.42',tutorial:'v0.68'};
+const V={osa:'v1.9.3',sharedRuntime:'v1.94.1',runtimeData:'v0.16.0',recipe:'v0.15.0',checkpoint:'v0.15.0',hero:'v1.1.0',starter:'v1.6.1',ui:'v2.53',sync:'v2.61',vsai:'v6.42',tutorial:'v0.68'};
 function j(p){return JSON.parse(fs.readFileSync(path.join(ROOT,p),'utf8'));}
 function write(p,v){fs.mkdirSync(path.dirname(path.join(ROOT,p)),{recursive:true});fs.writeFileSync(path.join(ROOT,p),v);}
 function copy(a,b){fs.mkdirSync(path.dirname(path.join(ROOT,b)),{recursive:true});fs.copyFileSync(path.join(ROOT,a),path.join(ROOT,b));}
@@ -16,8 +16,8 @@ function assignment(k,v){return 'window.'+k+'='+JSON.stringify(v)+';';}
 
 function buildActiveStarters(runtime){
   const src=j('data/starter-decks/active-starters.v1.json');
-  if(src.source_authority!=='v1.9.2'||src.starter_authority_version!=='v1.6.1'||src.application_runtime_sync!=='v2.60')throw Error('Active starter source must be OSA v1.9.2 / Starter v1.6.1 / Sync v2.60');
-  if(src.active_starter_count!==5||!Array.isArray(src.starters)||src.starters.length!==5)throw Error('Active starter set must contain exactly 5 OSA v1.9.2 starters');
+  if(src.source_authority!=='v1.9.3'||src.starter_authority_version!=='v1.6.1'||src.application_runtime_sync!=='v2.61')throw Error('Active starter consumer metadata must be OSA v1.9.3 / Starter v1.6.1 / Sync v2.61');
+  if(src.active_starter_count!==5||!Array.isArray(src.starters)||src.starters.length!==5)throw Error('Active starter set must contain exactly 5 current OSA starters');
   const registry=new Set(runtime.cards.map(c=>c.card_id));
   const expected=['starter_01_elemental_lord_conqueror_renegade','starter_02_saint_crusader_grand_ranger','starter_03_arcane_duelist_elemental_lord_saint','starter_04_grand_ranger_grand_arbalest_renegade','starter_05_renegade_arcane_duelist_elemental_lord'];
   const options={};
@@ -29,14 +29,14 @@ function buildActiveStarters(runtime){
     if(sourceHash!==entry.source_sha256)throw Error('OSA starter snapshot hash mismatch: '+entry.id);
     const d=JSON.parse(fs.readFileSync(abs,'utf8')); const total=(d.main_deck||[]).reduce((n,x)=>n+Number(x.quantity||0),0);
     if(total!==60||Number(d.main_deck_count)!==60)throw Error(entry.id+' Main Deck must be exactly 60');
-    if(!/Source Authority v1\.9\.2/.test(String(d.format||''))||!/Starter Deck Authority v1\.6\.1/.test(String(d.format||'')))throw Error(entry.id+' is not the OSA v1.9.2 Starter v1.6.1 generated payload');
+    if(!/Source Authority v1\.9\.2/.test(String(d.format||''))||!/Starter Deck Authority v1\.6\.1/.test(String(d.format||'')))throw Error(entry.id+' no longer matches the unchanged OSA v1.9.2-generated Starter v1.6.1 payload provenance');
     for(const x of d.main_deck||[])if(!registry.has(x.card_id))throw Error(entry.id+' missing current card '+x.card_id);
     for(const slot of d.legacy_deck_package_slots||d.side_deck_package_slots||[]){if(!registry.has(slot.progression)||!registry.has(slot.legacy))throw Error(entry.id+' missing Hero/Legacy package authority');}
     options[entry.id]={label:entry.label,file:'starter_deck_examples/'+entry.id+'_GL_DECK_1_0.json',deck:d};
   });
-  const payload={schema_version:src.schema_version,active_starter_count:5,composition_authority:src.composition_authority,source_authority:'v1.9.2',starter_authority_version:'v1.6.1',application_runtime_sync:'v2.60',canonical_registry_hash:src.canonical_registry_hash,ids:expected};
+  const payload={schema_version:src.schema_version,active_starter_count:5,composition_authority:src.composition_authority,source_authority:'v1.9.3',starter_authority_version:'v1.6.1',application_runtime_sync:'v2.61',canonical_registry_hash:src.canonical_registry_hash,ids:expected};
   write('shared-app/active-starters.js',"'use strict';\n(function(w){w.GL_ACTIVE_STARTER_SET_META="+JSON.stringify(payload)+";w.GL_ACTIVE_STARTER_DECKS="+JSON.stringify(options)+";})(typeof window!=='undefined'?window:globalThis);\n");
-  // Root and Tutorial deployment examples are exact byte copies of the five OSA v1.9.2 generated Starter60 files.
+  // Root and Tutorial deployment examples remain exact byte copies of the unchanged Starter60 v1.6.1 generated files; original v1.9.2 provenance is preserved.
   for(const base of ['starter_deck_examples','tutorial/starter_deck_examples']){
     fs.rmSync(path.join(ROOT,base),{recursive:true,force:true});fs.mkdirSync(path.join(ROOT,base),{recursive:true});
     src.starters.forEach(entry=>copy(entry.source_path,base+'/'+entry.id+'_GL_DECK_1_0.json'));
@@ -53,16 +53,17 @@ function syncSharedApplicationMirrors(){
 
 function syncRuntimeMirror(){
   fs.rmSync(path.join(ROOT,'tutorial/runtime-source/runtime'),{recursive:true,force:true}); fs.mkdirSync(path.join(ROOT,'tutorial/runtime-source'),{recursive:true}); fs.cpSync(path.join(ROOT,'runtime-source/runtime'),path.join(ROOT,'tutorial/runtime-source/runtime'),{recursive:true});
-  write('runtime-source/README.md','# Shared Runtime Source\n\n**Editable canonical repository home.** Shared Runtime v1.94.0 payload was propagated from OSA v1.9.0 and is unchanged by the Starter 1-only OSA v1.9.2 update. The current application consumer baseline is OSA v1.9.2. VS AI and Tutorial consume this same source.\n');
+  write('runtime-source/README.md','# Shared Runtime Source\n\n**Editable application deployment home.** Shared Runtime v1.94.1 is propagated from OSA v1.9.3 and contains the generic Hero-defeat pending-state lifecycle hotfix. The only deployment-path adaptation is the blind-selection helper import (`Authority/Digital/Blind-Choice` in OSA is colocated as `runtime/digital/` here); helper bytes are copied from OSA unchanged. VS AI and Tutorial consume this same source; gameplay data and Starter compositions remain unchanged.\n');
   write('tutorial/runtime-source/README.md','# GENERATED Shared Runtime Deployment Mirror\n\nDO NOT EDIT. Generated byte-for-byte from `../../runtime-source/runtime/` by `npm run build:data`.\n');
 }
+
 function build(){
  const runtime=stableCards(), recipes=j('data/season1/effect-recipes.runtime.v0.15.0.json'), hero=j('data/season1/hero-components.runtime.v1.1.0.json');
  const activeStarters=buildActiveStarters(runtime);
  if(recipes.canonical_registry_hash!==CARD_HASH||!Array.isArray(recipes.effect_recipes)||recipes.effect_recipes.length!==200)throw Error('Effect Recipe mismatch'); if(hero.registry_hash!==HERO_HASH)throw Error('Hero Component mismatch');
  const preview=previewFrom(runtime), legality=legalityFrom(runtime); write('data/season1/card-preview.generated.v1.6.0.json',JSON.stringify(preview,null,2)+'\n'); write('data/season1/legality-map.runtime.v1.6.0.json',JSON.stringify(legality,null,2)+'\n');
  for(const old of ['data/season1/card-preview.generated.v1.5.0.json','data/season1/legality-map.runtime.v1.5.0.json','data/config/active-runtime-source-stack.v1.91.json'])fs.rmSync(path.join(ROOT,old),{force:true});
- const stack={source_authority:V.osa,shared_runtime:V.sharedRuntime,runtime_data:V.runtimeData,effect_recipe:V.recipe,effect_checkpoint:V.checkpoint,hero_components:V.hero,starter60:V.starter,active_application_starters:'OSA v1.9.2 Starter Deck Authority v1.6.1',active_starter_count:5,ui_contract:V.ui,application_runtime_sync:V.sync,vs_ai:V.vsai,tutorial:V.tutorial,canonical_registry_hash:CARD_HASH,hero_component_registry_hash:HERO_HASH,card_count:200,authority_mode:'OSA_CONSUMER_FAIL_CLOSED'}; write('data/config/active-runtime-source-stack.v1.94.json',JSON.stringify(stack,null,2)+'\n');
+ const stack={source_authority:V.osa,shared_runtime:V.sharedRuntime,runtime_data:V.runtimeData,effect_recipe:V.recipe,effect_checkpoint:V.checkpoint,hero_components:V.hero,starter60:V.starter,active_application_starters:'OSA v1.9.3 / Starter Deck Authority v1.6.1 (unchanged compositions)',active_starter_count:5,ui_contract:V.ui,application_runtime_sync:V.sync,vs_ai:V.vsai,tutorial:V.tutorial,canonical_registry_hash:CARD_HASH,hero_component_registry_hash:HERO_HASH,card_count:200,authority_mode:'OSA_CONSUMER_FAIL_CLOSED'}; write('data/config/active-runtime-source-stack.v1.94.json',JSON.stringify(stack,null,2)+'\n');
  const sourceStack={one_source_authority:V.osa,source_authority_stack_bundle:V.osa,shared_runtime:V.sharedRuntime,runtime_foundation:V.sharedRuntime,runtime_data:V.runtimeData,effect_checkpoint:V.checkpoint,effect_recipe:V.recipe,legality_map:'v1.6.0',hero_component_authority:V.hero,starter60:V.starter,ui_lock:V.ui,ui_design_lock:V.ui,application_runtime_sync:V.sync,local_ai:V.vsai,tutorial:V.tutorial,pvp_railway:'v3.42 (read-only reference)',deck_builder:'v1.31 (external)',canonical_registry_hash:CARD_HASH,hero_component_registry_hash:HERO_HASH,card_count:200,product_positioning:'RPG-Style TCG',resource_terminology:{deck:'Shard Deck',standard_shard:'Mana Shard',class_shard:'Class Shard',pool:'Shard Pool'},authority_mode:'OSA_CONSUMER_FAIL_CLOSED',generated_file:'js/static-data.js'};
  const definitions=Object.assign({version:V.runtimeData,date:'2026-09-21',status:'AUTHORITATIVE_GENERATED_RUNTIME_DATA'},runtime,{families:runtime.cards.reduce((g,c)=>{(g[c.family||'Unknown']||(g[c.family||'Unknown']={cards:[]})).cards.push(c);return g;},{})});
  const effectRecipes=Object.assign({version:V.recipe,date:'2026-09-21',status:'AUTHORITATIVE_GENERATED_EFFECT_RECIPES'},recipes);
@@ -73,6 +74,6 @@ function build(){
  for(const f of ['cards.runtime.v0.16.0.json','effect-recipes.runtime.v0.15.0.json','hero-components.runtime.v1.1.0.json','gameplay-authority.runtime.v1.9.0.json','card-preview.generated.v1.6.0.json','legality-map.runtime.v1.6.0.json'])copy('data/season1/'+f,'tutorial/data/season1/'+f); copy('data/config/active-runtime-source-stack.v1.94.json','tutorial/data/config/active-runtime-source-stack.v1.94.json'); write('tutorial/js/static-data.js',out); copy('js/runtime-authority.js','tutorial/js/runtime-authority.js');
  syncSharedApplicationMirrors();
  syncRuntimeMirror();
- console.log('PASS: OSA v1.9.2 Starter 1 authority -> VS AI v6.42 + Tutorial v0.68; 5 active starters / 200 canonical cards; runtime/UI semantics unchanged.');
+ console.log('PASS: OSA v1.9.3 / Shared Runtime v1.94.1 / UI v2.53 -> VS AI v6.42 + Tutorial v0.68; 5 unchanged starters / 200 canonical cards.');
 }
 build();

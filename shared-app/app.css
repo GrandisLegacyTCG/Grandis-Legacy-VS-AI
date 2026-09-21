@@ -6385,3 +6385,42 @@ body:has(.v96-app.mobile-restored-layout) #glMobileAppMenu{display:none!importan
 @media (max-width:760px){
   .v96-app.mobile-restored-layout .hero-card-composition{transform:translateX(14px)!important;}
 }
+
+
+/* ================================================================
+   OSA v1.9.3 / UI Contract v2.53 — final shared battlefield baseline
+   ================================================================ */
+#hoverCardZoom.is-v253-readable-preview,
+#hoverCardZoom.is-card-played-hover{width:250px!important;height:350px!important;pointer-events:none!important;z-index:5000!important;}
+
+/* One compact numeric badge family. Counter.png graphics remain Mana Regen-only. */
+.gl-count-badge,.gl-status-count,.gl-attachment-count{
+  display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;
+  border:1px solid rgba(235,196,67,.92);border-radius:999px;background:rgba(7,10,14,.94);color:#ffd94d;
+  font-size:11px;font-weight:900;line-height:1;box-shadow:0 2px 7px rgba(0,0,0,.5);text-shadow:0 1px 2px #000;
+}
+.gl-lab-zone .zoneCard,.zone .zoneCard,.slot.filled,.negative-status-indicator{position:relative!important;overflow:visible!important;}
+.gl-lab-zone .zoneCard .gl-resource-count,.zone .zoneCard .gl-resource-count{position:absolute;top:-7px;right:-7px;z-index:6;}
+.negative-status-indicator .gl-status-count{position:absolute;right:-6px;bottom:-5px;z-index:7;}
+.slot.filled>.gl-attachment-count{position:absolute;top:-7px;right:-7px;z-index:7;}
+.attachment-counter,.gl-deck-count--above{display:none!important;}
+
+/* v2.53 proportional resource stacks: the stack is the visual focus, not empty container chrome. */
+.gl-lab-resource-rail{align-items:center!important;}
+.gl-lab-zone{min-height:0!important;padding:4px 5px!important;gap:3px!important;justify-content:flex-start!important;overflow:visible!important;}
+.gl-lab-zone .gl-lab-zone-label{line-height:1.05!important;margin:0!important;}
+.gl-lab-zone .zoneCard{width:min(80px,100%)!important;height:auto!important;aspect-ratio:5/7!important;margin:0 auto!important;}
+.gl-lab-zone .zoneCard img{width:100%!important;height:100%!important;object-fit:contain!important;}
+
+/* The warning icon itself is persistent; only its detail bubble is hover/focus-driven. */
+.hero-info-indicator>.status-trigger{opacity:1!important;visibility:visible!important;display:inline-flex!important;}
+.hero-info-indicator .hero-indicator-tooltip{opacity:0;visibility:hidden;pointer-events:none;}
+.hero-info-indicator:hover .hero-indicator-tooltip,.hero-info-indicator:focus-within .hero-indicator-tooltip{opacity:1;visibility:visible;}
+.hero-card:hover~.hero-indicator-tooltip{opacity:0;visibility:hidden;}
+
+@media(max-width:760px),(hover:none),(pointer:coarse){
+  #hoverCardZoom.is-v253-readable-preview,#hoverCardZoom.is-card-played-hover{display:none!important;}
+  .gl-count-badge,.gl-status-count,.gl-attachment-count{min-width:18px;height:17px;padding:0 4px;font-size:9px;}
+}
+/* UI Contract v2.53: keep battlefield deck/pile containers proportional to their card stack. */
+.gl-lab-zone{align-self:center!important;height:auto!important;max-height:118px!important;}

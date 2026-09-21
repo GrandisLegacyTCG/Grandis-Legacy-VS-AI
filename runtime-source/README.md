@@ -1,3 +1,3 @@
 # Shared Runtime Source
 
-**Editable canonical repository home.** Shared Runtime v1.94.0 payload was propagated from OSA v1.9.0 and is unchanged by the Starter 1-only OSA v1.9.2 update. The current application consumer baseline is OSA v1.9.2. VS AI and Tutorial consume this same source.
+**Editable application deployment home.** Shared Runtime v1.94.1 is propagated from OSA v1.9.3 and contains the generic Hero-defeat pending-state lifecycle hotfix. The only deployment-path adaptation is the blind-selection helper import (`Authority/Digital/Blind-Choice` in OSA is colocated as `runtime/digital/` here); helper bytes are copied from OSA unchanged. VS AI and Tutorial consume this same source; gameplay data and Starter compositions remain unchanged.

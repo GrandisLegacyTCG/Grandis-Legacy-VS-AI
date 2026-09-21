@@ -1,19 +1,19 @@
 # Grandis Legacy VS AI v6.42 + Tutorial v0.68
 
-This repository contains the Grandis Legacy local **VS AI v6.42** application and **Tutorial v0.68**. It consumes **Grandis Legacy Source Authority v1.9.2** and does not redefine canonical card or gameplay authority.
+This repository contains the Grandis Legacy local **VS AI v6.42** application and **Tutorial v0.68**. It consumes **Grandis Legacy Source Authority v1.9.3** and does not redefine canonical card or gameplay authority.
 
 ## Active authority baseline
 
-- Source Authority: v1.9.2
+- Source Authority: v1.9.3
 - Canonical Card Authority: v1.6.0 — 200 Season 1 cards
-- Shared Runtime: v1.94.0
+- Shared Runtime: v1.94.1
 - Runtime Data: v0.16.0
 - Effect Recipe / Checkpoint: v0.15.0 / v0.15.0
 - Hero Component Authority: v1.1.0
 - Starter Deck Authority: v1.6.1 — **exactly 5 active Starter Decks**
 - Retired Starter60 v1.5 15-preset library: historical/non-active only
-- UI Contract: v2.52
-- Application Runtime Sync: v2.60
+- UI Contract: v2.53
+- Application Runtime Sync: v2.61
 - Current visual battlefield baseline after this release: VS AI v6.42
 
 Canonical registry SHA256: `85d25ebda9bb2bc260983a566e6d430dde97bfc7a32e8042ec2fddfeaff1b42f`
@@ -22,16 +22,16 @@ Hero Component registry SHA256: `f36f1cc83eb9845743176c3af71f7823125353eae73e832
 
 ## Active Starter Deck set
 
-The player-facing VS AI starter selector consumes the five current OSA v1.9.2 / Starter Deck Authority v1.6.1 compositions:
+The player-facing VS AI starter selector consumes the five current OSA v1.9.3 / Starter Deck Authority v1.6.1 compositions:
 
 1. Elemental Lord / Conqueror / Renegade
-   - Starter 1 composition source is the new user-supplied `Starter_1_ElementalLord_Conqueror_Renegade.json` (SHA256 `f63e14a9cc43729fe2e27d77a6d1606a067bc399a5230fa2489eded3ad066353`), adopted canonically by OSA v1.9.2.
+   - Starter 1 composition source is the new user-supplied `Starter_1_ElementalLord_Conqueror_Renegade.json` (SHA256 `f63e14a9cc43729fe2e27d77a6d1606a067bc399a5230fa2489eded3ad066353`), adopted canonically by OSA v1.9.3.
 2. Saint / Crusader / Grand Ranger
 3. Arcane Duelist / Elemental Lord / Saint
 4. Grand Ranger / Grand Arbalest / Renegade
 5. Renegade / Arcane Duelist / Elemental Lord
 
-The exact generated OSA v1.9.2 Starter60 v1.6.1 files are snapshotted under `data/starter-decks/active/` and generate the shared player/AI starter payload. The retired 15-preset Starter60 v1.5 library remains under history/reference only and cannot enter current selection or fallback paths.
+The exact generated OSA v1.9.3 Starter60 v1.6.1 files are snapshotted under `data/starter-decks/active/` and generate the shared player/AI starter payload. The retired 15-preset Starter60 v1.5 library remains under history/reference only and cannot enter current selection or fallback paths.
 
 ## One-source architecture
 
@@ -43,9 +43,9 @@ The exact generated OSA v1.9.2 Starter60 v1.6.1 files are snapshotted under `dat
 
 ## v6.42 / v0.68 highlights
 
-The release consumes the OSA v1.9.2 current baseline; its unchanged gameplay/runtime payload remains the previously validated Shared Runtime v1.94.0 behavior including executable Warp Scroll, Freeze Bomb and generic Freeze rules, Attack Label vs Damage Type separation, Conqueror + Whirlwind = 50 before unrelated modifiers, Triple Shot no-binding Attachment lifetime, Ultimate Shard payment-batch return semantics, and opponent-only blind-selection hardening.
+The release consumes the OSA v1.9.3 current baseline; its unchanged gameplay/runtime payload remains the previously validated Shared Runtime v1.94.1 behavior including executable Warp Scroll, Freeze Bomb and generic Freeze rules, Attack Label vs Damage Type separation, Conqueror + Whirlwind = 50 before unrelated modifiers, Triple Shot no-binding Attachment lifetime, Ultimate Shard payment-batch return semantics, and opponent-only blind-selection hardening.
 
-Desktop readable face-up cards use the v2.52 right-side 250×350 temporary preview overlay. Hand, Hero, Legacy, Attachment, Casting, Card Played, and face-up player Shards use the same source-card-only hover lifetime. The overlay is display-only (`pointer-events:none`) and disappears immediately on source mouseleave. Hidden opponent Shards do not receive preview identity metadata. Touch/mobile interaction remains on the established responsive paths.
+Desktop readable face-up cards use the UI Contract v2.53 universal 250×350 temporary preview overlay. Normal field cards open in the lower-right below the protected Turn/Phase/Next-Phase region; Card Played opens to its left; readable history/response/discard/selection lists use contextual side-first placement with viewport clamping. Previews are display-only (`pointer-events:none`), disappear immediately on source mouseleave, and never reveal hidden identities. Deck/pile, Attachment, and per-Status counts use the shared compact badge family, while Mana Regen keeps its dedicated Counter assets.
 
 The battlefield-only Deck Setup entry point is removed; pre-match Deck Setup remains. Graphical Counter assets are reserved for Mana Regen; deck/status counts use numeric text.
 

@@ -17,5 +17,5 @@
     "verify:stable": "npm run verify",
     "test:browser": "node tests/run-v642-browser-ui.cjs"
   },
-  "description": "Grandis Legacy VS AI v6.42 + Tutorial v0.68 — OSA v1.9.2 / Starter Deck Authority v1.6.1 / Shared Runtime v1.94.0 consumer"
+  "description": "Grandis Legacy VS AI v6.42 + Tutorial v0.68 \u2014 OSA v1.9.3 / Shared Runtime v1.94.1 / UI Contract v2.53 consumer"
 }

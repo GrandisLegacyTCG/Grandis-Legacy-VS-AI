@@ -19,6 +19,7 @@ const statusEngine = require('../engines/status-engine');
 const attackSemantics = require('./attack-damage-classification-policy');
 const tripleShotPolicy = require('./triple-shot-policy');
 const blindChoice = require('../digital/opponent-blind-selection.js');
+const heroDefeatLifecycle = require('./hero-defeat-lifecycle');
 
 const MINIMAL_REDUCER_INTENTS = Object.freeze([
   'START_GAME',
@@ -2839,6 +2840,7 @@ function cleanupConfirmedDefeatRuntimeState(next, playerId, slotRaw, hero, event
   const player = getPlayer(next, playerId);
   const slot = normalizeSlotKey(slotRaw);
   if (!player || !hero) return { attachments: [], statuses_cleared: 0, casting_canceled: 0 };
+  const lifecycleCleanup = heroDefeatLifecycle.cleanupHeroBoundPendingState(next, { playerId, slot, heroCardId: hero.card_id });
   const removed = cleanupDefeatedHeroRuntimeAttachments(player, slot);
   const removedCasting = removed.filter(att => att && String(att.attachment_state || '').toUpperCase() === 'CASTING');
   const removedIds = new Set(removedCasting.map(att => att.attachment_id).filter(Boolean));
@@ -2859,7 +2861,7 @@ function cleanupConfirmedDefeatRuntimeState(next, playerId, slotRaw, hero, event
     target_player_id: att.target_player_id || getOpponentId(next, playerId), target_slot: att.target_slot,
     payload: { result: 'CASTING_CANCELED', reason: 'Source Hero was defeated before Casting release.', attachment_id: att.attachment_id, no_damage: true }
   }));
-  return { attachments: removed, statuses_cleared: statusesCleared, casting_canceled: removedCasting.length + Math.max(0, beforeQueue - (next.continuation_queue || []).length), removed_casting_attachment_ids: Array.from(removedIds) };
+  return { attachments: removed, statuses_cleared: statusesCleared, casting_canceled: removedCasting.length + Math.max(0, beforeQueue - (next.continuation_queue || []).length), removed_casting_attachment_ids: Array.from(removedIds), pending_cleanup: lifecycleCleanup };
 }
 
 function runtimeHeroRankNumber(state, hero) {
@@ -3788,8 +3790,9 @@ function resolvePendingAttackDamage(next, events, resolverPlayerId, options) {
       payload: { from: 'Pending Attack Resolution', to: 'Hand', response_result: response }
     }));
   } else if (!abilityDamage) {
-    const holyRingRemainsAttached=attackResolution.card_id==='S1-CLE-009'&&/\b(?:priest|saint)\b/i.test(String(attackResolution.source_hero_class||''));
-    const remainsAttached=(holyRingRemainsAttached||attackResolution.card_id==='S1-WAR-020')&&!attackResolution.attack_negated&&!(response&&responseNegatesAttack(response.type));
+    const sourceSlot=normalizeSlotKey(attackResolution.source_slot);
+    const sourcePlayer=next.players&&next.players[attackResolution.attacking_player_id];
+    const remainsAttached=Boolean(sourcePlayer&&(sourcePlayer.attachments||[]).some(att=>att&&att.card_id===attackResolution.card_id&&normalizeSlotKey(att.host_slot||att.source_slot||att.target_slot)===sourceSlot));
     const hasQueuedSecondary = (next.continuation_queue || []).some(item => item && item.type === 'post_attack_reposition' && item.card_id === attackResolution.card_id);
     if (!hasQueuedSecondary&&!remainsAttached) {
       next.players[attackResolution.attacking_player_id].discard_pile.push(attackResolution.card_id);
@@ -5115,11 +5118,16 @@ function addHolyRingRestrictionAfterAttack(next, attackResolution, events) {
 }
 
 function addShieldBashReductionAfterAttack(next,attackResolution,events){
-  if(!attackResolution||attackResolution.card_id!=='S1-WAR-020'||attackResolution.attack_negated||responseNegatesAttack(attackResolution.response_result&&attackResolution.response_result.type))return;
-  const ownerId=attackResolution.attacking_player_id,sourceSlot=normalizeSlotKey(attackResolution.source_slot),policy=attachmentLifecycle.policyForCard(attackResolution.card_id,attackResolution.source_hero_class);
-  const attachment={attachment_id:`${attackResolution.card_id}:reduction:${Date.now()}`,card_id:attackResolution.card_id,owner_id:ownerId,source_slot:sourceSlot,host_slot:sourceSlot,attachment_state:'ONGOING_EFFECT',restriction_type:'PHYSICAL_DAMAGE_REDUCTION',physical_damage_reduction:20,expires_player_id:ownerId,remaining_count:policy.remaining_count,turns_remaining:policy.remaining_count,tick_phase:policy.tick_phase,counter_mode:policy.counter_mode,duration:'until_start_of_owner_next_turn',effect_result:{physical_damage_reduction:20,protected_slot:sourceSlot,expires:'until_start_of_owner_next_turn'}};
+  if(!attackResolution||attackResolution.card_id!=='S1-WAR-020'||attackResolution.attack_negated||responseNegatesAttack(attackResolution.response_result&&attackResolution.response_result.type))return false;
+  const ownerId=attackResolution.attacking_player_id,sourceSlot=normalizeSlotKey(attackResolution.source_slot);
+  const policy=attachmentLifecycle.policyForCard(attackResolution.card_id,attackResolution.source_hero_class,getCard(next,attackResolution.card_id));
+  if(!policy){
+    events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED,next,{player_id:ownerId,card_id:attackResolution.card_id,source_slot:sourceSlot,payload:{result:'POST_RESOLUTION_HOST_PLACEMENT_INVALIDATED',reason:'NO_PERSISTENT_ATTACHMENT_POLICY'}}));
+    return false;
+  }
+  const attachment={attachment_id:`${attackResolution.card_id}:reduction:${Date.now()}`,card_id:attackResolution.card_id,owner_id:ownerId,source_slot:sourceSlot,host_slot:sourceSlot,source_hero_card_id:attackResolution.source_hero_card_id||null,attachment_state:'ONGOING_EFFECT',restriction_type:'PHYSICAL_DAMAGE_REDUCTION',physical_damage_reduction:20,expires_player_id:ownerId,remaining_count:policy.remaining_count,turns_remaining:policy.remaining_count,tick_phase:policy.tick_phase,counter_mode:policy.counter_mode,duration:'until_start_of_owner_next_turn',effect_result:{physical_damage_reduction:20,protected_slot:sourceSlot,expires:'until_start_of_owner_next_turn'}};
   const added=addAttachmentWithCapacity(next,ownerId,attachment,sourceSlot,events);
-  if(!added.ok){events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED,next,{player_id:ownerId,card_id:attackResolution.card_id,source_slot:sourceSlot,payload:{result:'SHIELD_BASH_ATTACHMENT_FAILED',errors:added.errors||[]}}));return false;}
+  if(!added.ok){events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED,next,{player_id:ownerId,card_id:attackResolution.card_id,source_slot:sourceSlot,payload:{result:'POST_RESOLUTION_HOST_PLACEMENT_INVALIDATED',reason:added.error_code||'ATTACHMENT_PLACEMENT_REJECTED',errors:added.errors||[]}}));return false;}
   events.push(createRuntimeEvent(EVENT_TYPES.ACTION_RESOLVED,next,{player_id:ownerId,card_id:attackResolution.card_id,source_slot:sourceSlot,payload:{result:'SHIELD_BASH_REDUCTION_ATTACHED',attachment_id:added.attachment.attachment_id,physical_damage_reduction:20,duration:attachment.duration,remaining_count:added.attachment.remaining_count,tick_phase:added.attachment.tick_phase}}));
   return true;
 }
@@ -5148,10 +5156,14 @@ function normalizeAttachmentLifecycleRecord(attachment, phaseHint, ownerId, host
 
 function addAttachmentWithCapacity(next, playerId, attachment, hostSlot, events) {
   const player=next.players&&next.players[playerId];
-  if(!player) return {ok:false,errors:['Unknown attachment owner.']};
+  if(!player) return {ok:false,error_code:'UNKNOWN_ATTACHMENT_OWNER',errors:['Unknown attachment owner.']};
   const slot=normalizeSlotKey(hostSlot||attachment.source_slot||attachment.target_slot);
+  const slotState=player.board&&player.board[slot];
+  const hostHero=slotState&&slotState.slot_mode==='HERO'&&slotState.hero&&!slotState.hero.defeated&&Number(slotState.hero.hp||0)>0?slotState.hero:null;
+  if(!hostHero) return {ok:false,error_code:'ATTACHMENT_HOST_NOT_ACTIVE',errors:[`Hero in ${slot} is not an active Attachment host.`]};
+  if(attachment&&attachment.source_hero_card_id&&hostHero.card_id!==attachment.source_hero_card_id) return {ok:false,error_code:'ATTACHMENT_HOST_CHANGED',errors:[`Hero in ${slot} is no longer the original Attachment host.`]};
   const hosted=(player.attachments||[]).filter(a=>normalizeSlotKey(a.host_slot||a.source_slot||a.target_slot)===slot);
-  if(hosted.length>=2) return {ok:false,errors:[`Hero in ${slot} has no empty Attachment Slot.`]};
+  if(hosted.length>=2) return {ok:false,error_code:'ATTACHMENT_SLOTS_FULL',errors:[`Hero in ${slot} has no empty Attachment Slot.`]};
   const record=normalizeAttachmentLifecycleRecord(attachment,null,playerId,slot,next);
   player.attachments.push(record);
   if(events) events.push(createRuntimeEvent(EVENT_TYPES.CARD_MOVED,next,{player_id:playerId,card_id:record.card_id,source_slot:slot,payload:{from:record.origin_zone||'Pending/Casting',to:'Attachment Slot',attachment_id:record.attachment_id,remaining_count:record.remaining_count,tick_phase:record.tick_phase}}));
