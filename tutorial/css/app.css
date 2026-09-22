@@ -5915,15 +5915,6 @@ body.deck-setup-active{
 /* v5.58 — Tutorial joins the right-side navigation group. */
 .ai-lobby-actions .ai-lobby-btn--outline{min-width:218px!important}
 
-/* LOCAL MOBILE UI — retain the approved slightly taller Next Phase control. */
-@media (max-width:760px){
-  .v96-app .phase-actions .next-phase{height:34px!important;min-height:34px!important}
-}
-@media (min-width:521px) and (max-width:760px){
-  .v96-app .phase-actions{grid-template-rows:38px 52px!important}
-  .v96-app .phase-actions .next-phase{height:52px!important;min-height:52px!important}
-}
-
 /* LOCAL BATTLE VFX TEST v2 — resolution feedback anchored to Hero cards. */
 .gl-battle-feedback-layer{position:fixed;inset:0;z-index:11850;pointer-events:none;overflow:hidden}
 .gl-battle-vfx-clip{position:fixed;overflow:hidden;pointer-events:none;user-select:none;z-index:11851}

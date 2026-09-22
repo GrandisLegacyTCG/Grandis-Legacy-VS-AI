@@ -57,7 +57,8 @@ for(const rel of ['shared-app/app.bundle.js','js/app.bundle.js','tutorial/js/app
   must(s.includes('v253OpenDesktopPreview'),'v2.53 universal preview implementation missing in '+rel);
   must(s.includes('v253BindDelegatedReadablePreview'),'dynamic modal/list preview delegation missing in '+rel);
   must(s.includes("anchor,'card-played'"),'Card Played LEFT special preview path missing in '+rel);
-  must(s.includes("contextual?272:250")&&s.includes("h=contextual?381:350"),'contextual preview sizing runtime guard missing in '+rel);
+  must(s.includes("contextual?272:(tabletSize?tabletSize.w:250)")&&s.includes("h=contextual?381:(tabletSize?tabletSize.h:350)"),'contextual/Desktop preview sizing guard with Tablet responsive branch missing in '+rel);
+  must(s.includes('v642TabletLandscapePreviewSize')&&s.includes('vw*.21')&&s.includes('vh*.50'),'Tablet Landscape viewport-relative preview sizing missing in '+rel);
   must(s.includes("box.style.pointerEvents='none'"),'preview pointer-events runtime guard missing in '+rel);
   must(s.includes("pointerleave',function(ev){if(!ev||ev.pointerType!=='touch')v94HoverZoomHide();"),'source-card immediate mouseleave missing in '+rel);
   must(s.includes("((!hidden)?' data-shard-preview-src="),'readable opponent Shard hover metadata path missing in '+rel);

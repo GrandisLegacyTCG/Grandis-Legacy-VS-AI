@@ -243,11 +243,13 @@ body:has(.gl-lab-authority) #choiceConfirm.mana-confirm-waiting{border-color:#7d
 .gl-ui-tablet .touch-tablet-legal--play{background:linear-gradient(180deg,#2e9e55,#155a32)!important;border-color:#55c978!important;}
 .gl-ui-tablet .touch-tablet-legal--tribute{background:linear-gradient(180deg,#a97a19,#5d4108)!important;border-color:#e7c654!important;color:#fff8d2!important;}
 
-.gl-ui-tablet body:has(.gl-lab-authority) .hover-card-zoom.is-hand-hover{
-  width:var(--gl-tablet-hand-hover-w,250px)!important;height:var(--gl-tablet-hand-hover-h,350px)!important;
-  max-width:calc(100vw - 12px)!important;max-height:calc(100dvh - 78px)!important;aspect-ratio:5/7!important;z-index:3200!important;
+html.gl-ui-tablet.gl-tablet-landscape-desktop body:has(.gl-lab-authority) #hoverCardZoom.is-hand-hover,
+html.gl-ui-tablet.gl-tablet-landscape-desktop body:has(.gl-lab-authority) #hoverCardZoom.is-v253-readable-preview{
+  width:var(--gl-tablet-preview-w)!important;height:var(--gl-tablet-preview-h)!important;
+  max-width:calc(100vw - 16px)!important;max-height:calc(100dvh - 16px)!important;aspect-ratio:5/7!important;z-index:3200!important;pointer-events:none!important;
 }
-.gl-ui-tablet body:has(.gl-lab-authority) .hover-card-zoom.is-hand-hover img{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;}
+html.gl-ui-tablet.gl-tablet-landscape-desktop body:has(.gl-lab-authority) #hoverCardZoom.is-hand-hover img,
+html.gl-ui-tablet.gl-tablet-landscape-desktop body:has(.gl-lab-authority) #hoverCardZoom.is-v253-readable-preview img{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;}
 
 /* Short landscape tablets: defeat the constrained-desktop Phase Tracker rules
    from app.css and fit all critical controls inside the actual browser viewport. */
@@ -354,10 +356,13 @@ html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions .ac
   display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;overflow:hidden!important;text-overflow:ellipsis!important;
 }
 
-/* Tablet-landscape Shard Pool cards: 80% of the previously rendered Shard footprint. */
+/* Tablet-landscape resource strip: physical Shards and Racial Tokens fit the strip itself. */
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-mana-pool{padding-block:0!important;overflow:hidden!important;}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-mana-row{height:100%!important;align-items:center!important;gap:clamp(4px,.55vw,8px)!important;overflow:hidden!important;}
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-mana-card{
-  flex:0 0 calc(var(--lab-card-w) * .66)!important;width:calc(var(--lab-card-w) * .66)!important;height:calc(var(--lab-card-h) * .66)!important;
-  max-width:calc(var(--lab-card-w) * .66)!important;max-height:calc(var(--lab-card-h) * .66)!important;
+  flex:0 0 auto!important;width:auto!important;height:66%!important;max-width:none!important;max-height:72%!important;aspect-ratio:5/7!important;
 }
-html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-mana-row{gap:clamp(5px,.7vw,10px)!important;}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-racial{height:66%!important;min-height:0!important;top:50%!important;transform:translateY(-50%)!important;display:flex!important;align-items:center!important;}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-racial .racial-coins{width:auto!important;min-width:0!important;height:100%!important;min-height:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:3px!important;}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-racial .coin{flex:1 1 0!important;width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;max-height:calc((100% - 3px)/2)!important;aspect-ratio:1/1!important;}
 

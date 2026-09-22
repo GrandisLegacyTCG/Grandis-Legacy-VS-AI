@@ -6760,11 +6760,27 @@ function getActivatedHeroAbilities(state, side, lane){
     if((mode==='card-played'||inModal)&&visibleRect&&ui.sidePreviewPosition)return ui.sidePreviewPosition(visibleRect,vw,vh,w,h,mode==='card-played'?'left':null);
     return ui.desktopPreviewPosition?ui.desktopPreviewPosition(vw,vh,w,h,v253ProtectedPreviewBottom()):{x:Math.max(8,vw-w-24),y:Math.max(v253ProtectedPreviewBottom()+12,vh-h-16)};
   }
+  function v642TabletLandscapePreviewSize(){
+    if(!isTouchTabletViewport()||typeof window==='undefined')return null;
+    var vw=Math.max(1,Number(window.innerWidth||0)),vh=Math.max(1,Number(window.innerHeight||0));
+    var w=Math.min(vw*.21,(vh*.50)*(5/7));
+    var h=w*(7/5),maxW=Math.max(1,vw-16),maxH=Math.max(1,vh-16);
+    if(w>maxW){w=maxW;h=w*(7/5);}if(h>maxH){h=maxH;w=h*(5/7);}
+    return{w:w,h:h};
+  }
+  function v642ApplyTabletLandscapePreviewSize(box,size){
+    if(!box||!box.style||!size||!Number.isFinite(size.w)||!Number.isFinite(size.h))return false;
+    box.style.setProperty('--gl-tablet-preview-w',size.w.toFixed(3)+'px');
+    box.style.setProperty('--gl-tablet-preview-h',size.h.toFixed(3)+'px');
+    return true;
+  }
   function v253OpenDesktopPreview(src,label,anchor,mode,allowTouch){
     if(!src||(isTouchFirstViewport()&&!allowTouch))return false;var box=$('hoverCardZoom'),img=$('hoverCardZoomImage');if(!box||!img)return false;
     if(v54AnyModalOpen()&&!v54AnchorInsideOpenModal(anchor)){v94HoverZoomHide();return false;}
     var inModal=!!(anchor&&anchor.closest&&anchor.closest('.modal-overlay.open,.overlay.open,.info-panel,.choice-panel,.response-panel,.preview-panel'));
-    var contextual=(mode==='card-played'||mode==='modal'||inModal),w=contextual?272:250,h=contextual?381:350,paintOffsetX=0,paintOffsetY=0,boxW=w,boxH=h;
+    var contextual=(mode==='card-played'||mode==='modal'||inModal),tabletTouch=!!allowTouch&&isTouchTabletViewport()&&!contextual,tabletSize=tabletTouch?v642TabletLandscapePreviewSize():null;
+    var w=contextual?272:(tabletSize?tabletSize.w:250),h=contextual?381:(tabletSize?tabletSize.h:350),paintOffsetX=0,paintOffsetY=0,boxW=w,boxH=h;
+    if(tabletSize)v642ApplyTabletLandscapePreviewSize(box,tabletSize);
     img.src=src;img.alt=String(label||'Readable card')+' enlarged preview';box.classList.remove('is-click-zoom','is-modal-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview');
     if(mode==='card-played')box.classList.add('is-card-played-hover','is-v253-contextual-preview');else box.classList.add('is-v253-readable-preview');if(contextual)box.classList.add('is-v253-contextual-preview');if(inModal)box.classList.add('is-modal-zoom');
     if(contextual){
@@ -6772,23 +6788,41 @@ function getActivatedHeroAbilities(state, side, lane){
       var rendered=box.getBoundingClientRect(),painted=(inModal&&mode!=='card-played')?v253PaintedImageRect(img):null;if(rendered&&rendered.width>0&&rendered.height>0){boxW=rendered.width;boxH=rendered.height;w=rendered.width;h=rendered.height;}if(painted&&painted.width>0&&painted.height>0){w=painted.width;h=painted.height;paintOffsetX=painted.left-rendered.left;paintOffsetY=painted.top-rendered.top;}
     }
     var pos=v253PreviewGeometry(anchor,w,h,mode||'field'),x=Number(pos.x||0)-paintOffsetX,y=Number(pos.y||0)-paintOffsetY,vw=window.innerWidth||1280,vh=window.innerHeight||720;
-    if(contextual){x=Math.max(8,Math.min(x,vw-boxW-8));y=Math.max(8,Math.min(y,vh-boxH-8));}
+    if(contextual||tabletTouch){x=Math.max(8,Math.min(x,vw-boxW-8));y=Math.max(8,Math.min(y,vh-boxH-8));}
     box.style.transform='translate3d('+Math.round(x)+'px,'+Math.round(y)+'px,0)';box.style.pointerEvents='none';box._glAnchor=anchor||null;box.dataset.previewPlacement=String(pos.placement||mode||'field');box.setAttribute('aria-hidden','false');box.hidden=false;box.classList.add('is-visible');return true;
   }
   function v642DesktopPreviewShow(cardId,anchor){
     if(!cardId||!card(cardId))return false;return v253OpenDesktopPreview(fullFor(cardId),cardName(card(cardId)),anchor,'field');
   }
-  function v642DesktopAssetPreviewShow(src,label,anchor){return v253OpenDesktopPreview(src,label||'Face-up Shard',anchor,'field');}
+  function v642DesktopAssetPreviewShow(src,label,anchor,allowTouch){return v253OpenDesktopPreview(src,label||'Face-up Shard',anchor,'field',!!allowTouch);}
   window.GL_V253_PAINTED_IMAGE_RECT_FOR_TEST=v253PaintedImageRect;window.GL_HERO_COMPONENT_QA_ACCESSOR=getResolvedHeroComponents;
   var GL_TABLET_BATTLEFIELD_TAP_STATE={anchor:null};
+  function v642ClearTabletHandSelection(exceptCard){
+    if(typeof document==='undefined')return;
+    Array.prototype.forEach.call(document.querySelectorAll('.gl-lab-hand .hand-card.hand-hover-active'),function(cardEl){if(!exceptCard||cardEl!==exceptCard)cardEl.classList.remove('hand-hover-active');});
+  }
+  function v642TabletLandscapeHandTap(el){
+    if(!isTouchTabletViewport()||!el||!el.closest)return false;
+    var cardEl=el.closest('.gl-lab-hand .hand-card[data-card-id]');if(!cardEl||!el.matches('.hand-art[data-preview]'))return false;
+    var cardId=el.getAttribute('data-preview');if(!cardId||!card(cardId))return false;
+    v642ClearTabletHandSelection(cardEl);GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=null;
+    return v59HandHoverZoomShow(cardId,cardEl);
+  }
   function v642TabletBattlefieldCardTap(el){
     if(!isTouchTabletViewport()||!el||!el.closest||!el.closest('.gl-lab-battlefield')||el.closest('.gl-lab-hand,.gl-lab-sidebar,.modal-overlay,.overlay'))return false;
     var cardId=el.getAttribute('data-preview');if(!cardId||!card(cardId))return false;
+    v642ClearTabletHandSelection();
     var zoom=$('hoverCardZoom'),sameArmed=GL_TABLET_BATTLEFIELD_TAP_STATE.anchor===el&&el.isConnected&&zoom&&!zoom.hidden&&zoom._glAnchor===el&&zoom.classList.contains('is-v253-readable-preview');
     if(sameArmed){GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=null;v94HoverZoomHide();showPreview(cardId,'tablet-battlefield-detail');return true;}
     GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=el;
     if(!v253OpenDesktopPreview(fullFor(cardId),cardName(card(cardId)),el,'field',true)){GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=null;return false;}
     return true;
+  }
+  function v642TabletShardTap(el){
+    if(!isTouchTabletViewport()||!el||!el.closest||!el.closest('.gl-lab-mana-pool')||el.classList.contains('is-opening-draw-hidden')||el.classList.contains('is-pending-draw'))return false;
+    var src=el.getAttribute('data-shard-preview-src');if(!src)return false;
+    v642ClearTabletHandSelection();GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=null;
+    return v642DesktopAssetPreviewShow(src,el.getAttribute('data-shard-preview-label')||'Face-up Shard',el,true);
   }
   var GL_V253_DELEGATED_READABLE_PREVIEW_BOUND=false;
   function v253DelegatedReadablePreviewSource(target){
@@ -6844,7 +6878,7 @@ function getActivatedHeroAbilities(state, side, lane){
     box.style.transform='translate3d('+Math.round(x)+'px,'+Math.round(y)+'px,0)';
   }
 
-  function v94HoverZoomHide(){var box=$('hoverCardZoom');if(!box)return;box.classList.remove('is-visible','is-modal-zoom','is-click-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview');box.hidden=true;box._glAnchor=null;if(typeof GL_TABLET_BATTLEFIELD_TAP_STATE!=='undefined')GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=null;if(box.dataset)delete box.dataset.previewPlacement;box.style.transform='translate3d(-9999px,-9999px,0)';if(box.style&&typeof box.style.removeProperty==='function'){box.style.removeProperty('--gl-tablet-hand-hover-w');box.style.removeProperty('--gl-tablet-hand-hover-h');}box.setAttribute('aria-hidden','true');}
+  function v94HoverZoomHide(){var box=$('hoverCardZoom');if(!box)return;box.classList.remove('is-visible','is-modal-zoom','is-click-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview');box.hidden=true;box._glAnchor=null;if(typeof GL_TABLET_BATTLEFIELD_TAP_STATE!=='undefined')GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=null;if(typeof document!=='undefined')Array.prototype.forEach.call(document.querySelectorAll('.gl-lab-hand .hand-card.hand-hover-active'),function(cardEl){cardEl.classList.remove('hand-hover-active');});if(box.dataset)delete box.dataset.previewPlacement;box.style.transform='translate3d(-9999px,-9999px,0)';if(box.style&&typeof box.style.removeProperty==='function'){box.style.removeProperty('--gl-tablet-preview-w');box.style.removeProperty('--gl-tablet-preview-h');}box.setAttribute('aria-hidden','true');}
   function v59HandHoverZoomShow(cardId,anchor){
     /* Hand hover order is fixed: raise the physical Hand card, keep Play/Tribute above it,
        then place the large review above that action strip. The review is positioned before
@@ -6857,12 +6891,12 @@ function getActivatedHeroAbilities(state, side, lane){
     cardEl.classList.add('hand-hover-active');
     /* Force the raised-card transform into layout before measuring its final anchor. */
     if(cardEl.getBoundingClientRect)cardEl.getBoundingClientRect();
-    var rect=art.getBoundingClientRect(),tablet=isTouchTabletViewport();
-    var h=350,w=250,upperEdge=rect.top;
-    var x=tablet?Math.max(6,Number(window.innerWidth||1180)-w-10):rect.left+(rect.width-w)/2,y=tablet?8:(upperEdge-h-14);
+    var rect=art.getBoundingClientRect(),tablet=isTouchTabletViewport(),tabletSize=tablet?v642TabletLandscapePreviewSize():null;
+    var h=tabletSize?tabletSize.h:350,w=tabletSize?tabletSize.w:250,upperEdge=rect.top,pos=tablet?v253PreviewGeometry(cardEl,w,h,'field'):null;
+    var x=tablet?Number(pos&&pos.x||0):rect.left+(rect.width-w)/2,y=tablet?Number(pos&&pos.y||0):(upperEdge-h-14);
     x=Math.max(6,Math.min(x,window.innerWidth-w-6));y=Math.max(6,Math.min(y,window.innerHeight-h-8));
     img.src=fullFor(cardId);img.alt=cardName(card(cardId))+' hand preview';
-    if(tablet&&box.style&&typeof box.style.setProperty==='function'){box.style.setProperty('--gl-tablet-hand-hover-w',w+'px');box.style.setProperty('--gl-tablet-hand-hover-h',h+'px');}
+    if(tablet)v642ApplyTabletLandscapePreviewSize(box,tabletSize);
     box.classList.remove('is-click-zoom','is-modal-zoom');box.classList.add('is-hand-hover');
     box.style.transform='translate3d('+Math.round(x)+'px,'+Math.round(y)+'px,0)';
     box._glAnchor=cardEl;box.setAttribute('aria-hidden','false');box.hidden=false;box.classList.add('is-visible');
@@ -7253,7 +7287,7 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
   function opponentPlayedVisibleEvents(state){
     return ((state&&state.opponentPlayedEvents)||[]).filter(function(e){ return e && visibleOpponentEventTypes().indexOf(e.label)!==-1; });
   }
-  function showInfoHtml(title, html){ $('infoTitle').textContent=title; $('infoBody').innerHTML=html||'<p>No additional detail available.</p>'; $('infoOverlay').classList.add('open'); bringModalToFront($('infoOverlay')); }
+  function showInfoHtml(title, html){ if(isTouchTabletViewport())v94HoverZoomHide(); $('infoTitle').textContent=title; $('infoBody').innerHTML=html||'<p>No additional detail available.</p>'; $('infoOverlay').classList.add('open'); bringModalToFront($('infoOverlay')); }
   function showOpponentEventDetail(evt){ if(!evt) return showInfo('Opponent Played','No opponent action yet.'); showInfo('Opponent Played', opponentPlayedDetail(evt,appState)); }
   function opponentPlayedArchiveHtml(state){
     var events=opponentPlayedVisibleEvents(state);
@@ -7510,10 +7544,11 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
   function collapsePreviewEffectSections(sections){var seen={},out=[];(sections||[]).forEach(function(sec){var text=normalizedPreviewEffectText(sec&&sec.text);if(!text)return;var key=text.toLowerCase();if(seen[key])return;seen[key]=true;out.push({title:cleanDisplayText(sec&&sec.title,'Effect'),text:text});});return out;}
   function appendPreviewEffectSections(parts,sections){var unique=collapsePreviewEffectSections(sections);if(!unique.length)return false;if(unique.length===1){parts.push('<section class="preview-effect-row"><h3>Effect</h3><p>'+esc(unique[0].text)+'</p></section>');return true;}unique.forEach(function(sec){parts.push('<section class="preview-effect-row"><h3>'+esc(sec.title)+'</h3><p>'+esc(sec.text)+'</p></section>');});return true;}
   function previewSections(c){var parts=[],sections=previewPrintedClassSections(c);if(sections.length)appendPreviewEffectSections(parts,sections);else{var text=cleanDisplayText((c&&c.card_text)||((c&&c.effect_text)||''),'');parts.push('<section class="preview-effect-row"><h3>Effect</h3><p>'+esc(text||'—')+'</p></section>');}return parts.join('');}
-  function showInfo(title, body){ $('infoTitle').textContent=title; $('infoBody').innerHTML=formatInfoBody(body); $('infoOverlay').classList.add('open'); bringModalToFront($('infoOverlay')); }
+  function showInfo(title, body){ if(isTouchTabletViewport())v94HoverZoomHide(); $('infoTitle').textContent=title; $('infoBody').innerHTML=formatInfoBody(body); $('infoOverlay').classList.add('open'); bringModalToFront($('infoOverlay')); }
   function closeInfo(){ $('infoOverlay').classList.remove('open'); }
-  function showChoice(title, cardIds, confirmText){ $('choiceTitle').textContent=title; $('choiceConfirm').style.display=''; $('choiceBody').innerHTML='<div class="choice-grid">'+cardIds.map(function(id){ return cardTile(id,{cls:'choice-card'}); }).join('')+'</div>'; $('choiceConfirm').textContent=confirmText||'Confirm'; $('choiceOverlay').classList.add('open'); bringModalToFront($('choiceOverlay')); }
+  function showChoice(title, cardIds, confirmText){ if(isTouchTabletViewport())v94HoverZoomHide(); $('choiceTitle').textContent=title; $('choiceConfirm').style.display=''; $('choiceBody').innerHTML='<div class="choice-grid">'+cardIds.map(function(id){ return cardTile(id,{cls:'choice-card'}); }).join('')+'</div>'; $('choiceConfirm').textContent=confirmText||'Confirm'; $('choiceOverlay').classList.add('open'); bringModalToFront($('choiceOverlay')); }
   function showDiscard(side){
+    if(isTouchTabletViewport())v94HoverZoomHide();
     var state=currentShellState(),ids=side==='AI'?(state.aiDiscard||[]):(state.playerDiscard||[]);
     $('choiceTitle').textContent=(side==='AI'?'Opponent':'Your')+' Discard Pile — '+ids.length+' Cards';
     $('choiceConfirm').style.display='none';
@@ -7522,6 +7557,7 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
   }
   function showLegacyDeck(side){
     if(side!=='PLAYER')return;
+    if(isTouchTabletViewport())v94HoverZoomHide();
     var ids=(currentShellState().playerLegacy||[]).map(function(x){return heroIdFrom(x)||x;}).filter(Boolean);
     $('choiceTitle').textContent='Your Legacy Deck — '+ids.length+' Cards';$('choiceConfirm').style.display='none';
     $('choiceBody').innerHTML=ids.length?'<p class="choice-instruction">Private zone: only your own Legacy Deck can be inspected. Click a card to zoom.</p><div class="choice-grid inspect-card-grid">'+ids.map(function(id){return '<button type="button" class="inspect-card" data-preview="'+esc(id)+'"><img src="'+esc(thumbFor(id))+'" alt="'+esc(cardName(card(id)))+'"><span>'+esc(cardName(card(id)))+'</span></button>';}).join('')+'</div>':'<div class="empty-state">Legacy Deck is empty.</div>';
@@ -7883,8 +7919,8 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
       if(gameplayInputLocked()&&!safeDuringLock){ev.preventDefault();ev.stopPropagation();return;}
       if(ev.target.id==='mobileMatchMenuOverlay'){ closeMobileMatchMenu(); return; }
       if(ev.target.closest('#hoverCardZoom.is-click-zoom')){ v55ClickZoomHide(); return; }
-      var play=ev.target.closest('[data-play-index]'); if(play){ var playIndex=Number(play.getAttribute('data-play-index')); beginPlayFromHand(playIndex); return; }
-      var tribute=ev.target.closest('[data-tribute-index]'); if(tribute){ var tributeIndex=Number(tribute.getAttribute('data-tribute-index')); beginTributeFromHand(tributeIndex); return; }
+      var play=ev.target.closest('[data-play-index]'); if(play){ if(isTouchTabletViewport())v94HoverZoomHide(); var playIndex=Number(play.getAttribute('data-play-index')); beginPlayFromHand(playIndex); return; }
+      var tribute=ev.target.closest('[data-tribute-index]'); if(tribute){ if(isTouchTabletViewport())v94HoverZoomHide(); var tributeIndex=Number(tribute.getAttribute('data-tribute-index')); beginTributeFromHand(tributeIndex); return; }
       var heroPick=ev.target.closest('.hero-panel'); if(heroPick && appState && appState.pending && (appState.pending.type==='warp_scroll_selection'||appState.pending.type==='source_selection'||appState.pending.type==='target_selection'||appState.pending.type==='exact_two_target_selection'||appState.pending.type==='scouting_target_selection'||appState.pending.type==='tribute_target'||appState.pending.type==='racial_target_selection'||appState.pending.type==='hero_ability_target_selection'||appState.pending.type==='legacy_hero_target_selection'||appState.pending.type==='double_casting_target_selection')){ chooseHeroFromBoard(heroPick.getAttribute('data-side'), heroPick.getAttribute('data-lane')); return; }
       var manaSpend=ev.target.closest('[data-mana-spend]'); if(manaSpend){ setArrowBarrageSpend(Number(manaSpend.getAttribute('data-mana-spend'))); return; }
       var drawChoice=ev.target.closest('[data-draw-replacement-choice]'); if(drawChoice){ commitDrawReplacementChoice(drawChoice.getAttribute('data-draw-replacement-choice')==='redraw'); return; }
@@ -7928,7 +7964,8 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
       var sideArchive=ev.target.closest('[data-side-archive-id]'); if(sideArchive){v55ZoomPlayedCard(sideArchive.getAttribute('data-side-archive'),sideArchive.getAttribute('data-side-archive-id'));return;}
       var legacyDeck=ev.target.closest('[data-legacy-side]'); if(legacyDeck){showLegacyDeck(legacyDeck.getAttribute('data-legacy-side'));return;}
       var disc=ev.target.closest('[data-discard-side]'); if(disc){ showDiscard(disc.getAttribute('data-discard-side')); return; }
-      var zoomCard=ev.target.closest('[data-preview]'); if(zoomCard){ if(v642TabletBattlefieldCardTap(zoomCard))return; showPreview(zoomCard.getAttribute('data-preview')); return; }
+      var tabletShard=ev.target.closest('[data-shard-preview-src]'); if(tabletShard&&v642TabletShardTap(tabletShard))return;
+      var zoomCard=ev.target.closest('[data-preview]'); if(zoomCard){ if(v642TabletLandscapeHandTap(zoomCard))return; if(v642TabletBattlefieldCardTap(zoomCard))return; v642ClearTabletHandSelection(); showPreview(zoomCard.getAttribute('data-preview')); return; }
     });
     $('previewClose').addEventListener('click', function(){ $('previewOverlay').classList.remove('open'); }); $('previewOverlay').addEventListener('click', function(ev){ if(ev.target.id==='previewOverlay') $('previewOverlay').classList.remove('open'); });
     $('infoClose').addEventListener('click', closeInfo); $('infoOverlay').addEventListener('click', function(ev){ if(ev.target.id==='infoOverlay') closeInfo(); });
