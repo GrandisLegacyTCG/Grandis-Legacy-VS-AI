@@ -337,6 +337,7 @@ html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-zone>.zoneCard{
   position:absolute!important;left:50%!important;top:7px!important;right:auto!important;bottom:auto!important;
   margin:0!important;transform:translateX(-50%)!important;align-self:auto!important;justify-self:auto!important;max-width:calc(100% - 8px)!important;
 }
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-side--opponent .gl-lab-zone>.gl-lab-zone-label{top:auto!important;bottom:3px!important;}
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-zone[data-zone-type="Shard Deck"] .zoneCard .gl-resource-count{
   top:0!important;right:0!important;transform:translate(50%,-50%)!important;
 }
@@ -357,6 +358,7 @@ html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-hand .hand-card .hand-acti
 /* Tablet-landscape Class/Racial labels: deterministic compact display; Desktop keeps the full canonical label. */
 .tablet-ability-label-compact{display:none;}
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions{right:3px!important;top:3px!important;max-width:32%!important;width:min(92px,32%)!important;}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions:has(.racialAbilityAction,.classAbilityAction){top:calc(15.428% + 11px)!important;}
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions .actionBtn{
   width:100%!important;max-width:100%!important;height:auto!important;min-height:16px!important;max-height:28px!important;
   padding:2px 4px!important;font-size:5.25px!important;line-height:8px!important;white-space:nowrap!important;overflow:hidden!important;

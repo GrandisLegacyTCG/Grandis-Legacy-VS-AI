@@ -34,8 +34,8 @@
     "osa_expected_hash": "87d65f125bbe840649be5daa6f4e0f7a85ec2ec16469820f844405a1608f4a6e",
     "files": 68
   },
-  "shared_gameplay_sha256": "18b1776ec3706692be6ac30f735b6f9ba33209cd181013dbdf6ce29c3348028a",
-  "shared_gameplay_deployment_sha256": "6434a92aa8c938a404713d275fd7ed245d61a98bc5c06abcefeefe5a11097e9a",
+  "shared_gameplay_sha256": "4f25c6993be78ce62eeaadc71e0312696b0928b17e7fcbf8d71ce41effd092bd",
+  "shared_gameplay_deployment_sha256": "cca25c0d5a9ef853a339fc4b908a6483618dafc78b68c535dc2f89f1215fab30",
   "active_starters_sha256": "6ef77cb9508465c6569698fc65ef77e0ea04cb5a1abfb09cfd8b098e3b340f31",
   "active_starter_count": 5,
   "active_starter_reference": "OSA v1.9.5 / Starter Deck Authority v1.6.1 (unchanged compositions)",

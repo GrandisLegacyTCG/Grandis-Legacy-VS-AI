@@ -6837,6 +6837,17 @@ function getActivatedHeroAbilities(state, side, lane){
     if(!v253OpenDesktopPreview(fullFor(cardId),cardName(card(cardId)),el,'field',true)){GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=null;return false;}
     return true;
   }
+  function v642TabletLandscapePassiveShardPreviewTarget(target){
+    if(!isTouchTabletViewport()||!target||!target.closest)return null;
+    var el=target.closest('[data-shard-preview-src]');
+    if(!el||!el.closest('.gl-lab-mana-pool')||el.classList.contains('is-opening-draw-hidden')||el.classList.contains('is-pending-draw'))return null;
+    if(target.closest('[data-mana-spend],[data-response-mana-uid],[data-mana-class-uid],[data-opponent-mana-choice],[data-play-index],[data-tribute-index]'))return null;
+    return el;
+  }
+  function v642TabletLandscapeShardPreviewSafeDuringTransientLock(target){
+    if(!(animationBusy()||!!(appState&&appState.drawPresentationPending))||!!(appState&&appState.preGame))return null;
+    return v642TabletLandscapePassiveShardPreviewTarget(target);
+  }
   function v642TabletShardTap(el){
     if(physicalResponsiveDeviceFamily()!=='tablet'||!el||!el.closest||el.classList.contains('is-opening-draw-hidden')||el.classList.contains('is-pending-draw'))return false;
     var landscapePool=el.closest('.gl-lab-mana-pool'),portraitPool=el.closest('.mobile-shard-pool');if(!landscapePool&&!portraitPool)return false;
@@ -7938,7 +7949,8 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
     document.addEventListener('dragstart',function(ev){if(ev.target&&ev.target.closest&&ev.target.closest('.hand-card'))ev.preventDefault();});
     document.body.addEventListener('click', function(ev){
       var safeDuringLock=ev.target.closest('#soundToggleButton,#mobileSoundToggleButton,#mobileMatchMenuButton,#mobileMatchMenuClose,#mobileMatchMenuOverlay,#mobileSurrenderButton,#pvpRoomMobileButton,[data-preview],#previewClose,#infoClose,#choiceClose');
-      if(gameplayInputLocked()&&!safeDuringLock){ev.preventDefault();ev.stopPropagation();return;}
+      var passiveLandscapeShardDuringLock=v642TabletLandscapeShardPreviewSafeDuringTransientLock(ev.target);
+      if(gameplayInputLocked()&&!safeDuringLock&&!passiveLandscapeShardDuringLock){ev.preventDefault();ev.stopPropagation();return;}
       if(ev.target.id==='mobileMatchMenuOverlay'){ closeMobileMatchMenu(); return; }
       if(ev.target.closest('#hoverCardZoom.is-click-zoom')){ v55ClickZoomHide(); return; }
       var play=ev.target.closest('[data-play-index]'); if(play){ if(isTouchTabletViewport())v94HoverZoomHide(); var playIndex=Number(play.getAttribute('data-play-index')); beginPlayFromHand(playIndex); return; }
@@ -7987,7 +7999,7 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
       var legacyDeck=ev.target.closest('[data-legacy-side]'); if(legacyDeck){showLegacyDeck(legacyDeck.getAttribute('data-legacy-side'));return;}
       var disc=ev.target.closest('[data-discard-side]'); if(disc){ showDiscard(disc.getAttribute('data-discard-side')); return; }
       var tabletHand=ev.target.closest('.gl-lab-hand .hand-card[data-card-id]'); if(tabletHand&&v642TabletLandscapeHandTap(ev.target,tabletHand))return;
-      var tabletShard=ev.target.closest('[data-shard-preview-src]'); if(tabletShard&&v642TabletShardTap(tabletShard))return;
+      var tabletShard=passiveLandscapeShardDuringLock||ev.target.closest('[data-shard-preview-src]'); if(tabletShard&&v642TabletShardTap(tabletShard))return;
       var zoomCard=ev.target.closest('[data-preview]'); if(zoomCard){ if(v642TabletBattlefieldCardTap(zoomCard))return; v642ClearTabletHandSelection(); showPreview(zoomCard.getAttribute('data-preview')); return; }
     });
     $('previewClose').addEventListener('click', function(){ $('previewOverlay').classList.remove('open'); }); $('previewOverlay').addEventListener('click', function(ev){ if(ev.target.id==='previewOverlay') $('previewOverlay').classList.remove('open'); });
