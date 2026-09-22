@@ -6763,7 +6763,7 @@ function getActivatedHeroAbilities(state, side, lane){
     var ui=window.GL_SHARED_BATTLEFIELD_UI||{},vw=window.innerWidth||1280,vh=window.innerHeight||720;
     var inModal=!!(anchor&&anchor.closest&&anchor.closest('.modal-overlay.open,.overlay.open,.info-panel,.choice-panel,.response-panel,.preview-panel'));
     var visibleRect=v253VisibleCardRect(anchor,inModal&&mode!=='card-played');
-    if(mode==='tablet-portrait-shard'&&visibleRect&&ui.sidePreviewPosition)return ui.sidePreviewPosition(visibleRect,vw,vh,w,h,null);
+    if((mode==='tablet-portrait-shard'||mode==='phone-shard')&&visibleRect&&ui.sidePreviewPosition)return ui.sidePreviewPosition(visibleRect,vw,vh,w,h,null);
     if((mode==='card-played'||inModal)&&visibleRect&&ui.sidePreviewPosition)return ui.sidePreviewPosition(visibleRect,vw,vh,w,h,mode==='card-played'?'left':null);
     return ui.desktopPreviewPosition?ui.desktopPreviewPosition(vw,vh,w,h,v253ProtectedPreviewBottom()):{x:Math.max(8,vw-w-24),y:Math.max(v253ProtectedPreviewBottom()+12,vh-h-16)};
   }
@@ -6776,8 +6776,8 @@ function getActivatedHeroAbilities(state, side, lane){
     if(w>maxW){w=maxW;h=w*(7/5);}if(h>maxH){h=maxH;w=h*(5/7);}
     return{w:w,h:h};
   }
-  function tabletPortraitShardPreviewSize(){
-    if(!isPhysicalTabletPortrait()||typeof window==='undefined')return null;
+  function touchPortraitShardPreviewSize(){
+    if(typeof window==='undefined')return null;
     var vw=Math.max(1,Number(window.innerWidth||0)),vh=Math.max(1,Number(window.innerHeight||0));
     var w=Math.min(vw*.30,(vh*.42)*(5/7));
     var h=w*(7/5),maxW=Math.max(1,vw-16),maxH=Math.max(1,vh-16);
@@ -6794,11 +6794,11 @@ function getActivatedHeroAbilities(state, side, lane){
     if(!src||(isTouchFirstViewport()&&!allowTouch))return false;var box=$('hoverCardZoom'),img=$('hoverCardZoomImage');if(!box||!img)return false;
     if(v54AnyModalOpen()&&!v54AnchorInsideOpenModal(anchor)){v94HoverZoomHide();return false;}
     var inModal=!!(anchor&&anchor.closest&&anchor.closest('.modal-overlay.open,.overlay.open,.info-panel,.choice-panel,.response-panel,.preview-panel'));
-    var contextual=(mode==='card-played'||mode==='modal'||inModal),tabletLandscapeTouch=!!allowTouch&&isTouchTabletViewport()&&!contextual,tabletPortraitShardTouch=!!allowTouch&&isPhysicalTabletPortrait()&&mode==='tablet-portrait-shard'&&!contextual,tabletTouch=tabletLandscapeTouch||tabletPortraitShardTouch,tabletSize=tabletLandscapeTouch?v642TabletLandscapePreviewSize():(tabletPortraitShardTouch?tabletPortraitShardPreviewSize():null);
+    var contextual=(mode==='card-played'||mode==='modal'||inModal),tabletLandscapeTouch=!!allowTouch&&isTouchTabletViewport()&&!contextual,tabletPortraitShardTouch=!!allowTouch&&isPhysicalTabletPortrait()&&mode==='tablet-portrait-shard'&&!contextual,phoneShardTouch=!!allowTouch&&physicalResponsiveDeviceFamily()==='mobile'&&responsiveDeviceFamily()==='mobile'&&mode==='phone-shard'&&!contextual,portraitShardTouch=tabletPortraitShardTouch||phoneShardTouch,tabletTouch=tabletLandscapeTouch||portraitShardTouch,tabletSize=tabletLandscapeTouch?v642TabletLandscapePreviewSize():(portraitShardTouch?touchPortraitShardPreviewSize():null);
     var w=contextual?272:(tabletSize?tabletSize.w:250),h=contextual?381:(tabletSize?tabletSize.h:350),paintOffsetX=0,paintOffsetY=0,boxW=w,boxH=h;
     if(tabletSize)v642ApplyTabletLandscapePreviewSize(box,tabletSize);
-    img.src=src;img.alt=String(label||'Readable card')+' enlarged preview';box.classList.remove('is-click-zoom','is-modal-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview','is-tablet-portrait-shard-preview');
-    if(mode==='card-played')box.classList.add('is-card-played-hover','is-v253-contextual-preview');else box.classList.add('is-v253-readable-preview');if(contextual)box.classList.add('is-v253-contextual-preview');if(inModal)box.classList.add('is-modal-zoom');if(tabletPortraitShardTouch)box.classList.add('is-tablet-portrait-shard-preview');
+    img.src=src;img.alt=String(label||'Readable card')+' enlarged preview';box.classList.remove('is-click-zoom','is-modal-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview','is-tablet-portrait-shard-preview','is-phone-shard-preview');
+    if(mode==='card-played')box.classList.add('is-card-played-hover','is-v253-contextual-preview');else box.classList.add('is-v253-readable-preview');if(contextual)box.classList.add('is-v253-contextual-preview');if(inModal)box.classList.add('is-modal-zoom');if(tabletPortraitShardTouch)box.classList.add('is-tablet-portrait-shard-preview');if(phoneShardTouch)box.classList.add('is-phone-shard-preview');
     if(contextual){
       box.style.transform='translate3d(-9999px,-9999px,0)';box.style.pointerEvents='none';box.hidden=false;box.classList.add('is-visible');box.setAttribute('aria-hidden','false');
       var rendered=box.getBoundingClientRect(),painted=(inModal&&mode!=='card-played')?v253PaintedImageRect(img):null;if(rendered&&rendered.width>0&&rendered.height>0){boxW=rendered.width;boxH=rendered.height;w=rendered.width;h=rendered.height;}if(painted&&painted.width>0&&painted.height>0){w=painted.width;h=painted.height;paintOffsetX=painted.left-rendered.left;paintOffsetY=painted.top-rendered.top;}
@@ -6851,12 +6851,13 @@ function getActivatedHeroAbilities(state, side, lane){
     return v642TabletLandscapePassiveShardPreviewTarget(target);
   }
   function v642TabletShardTap(el){
-    if(physicalResponsiveDeviceFamily()!=='tablet'||!el||!el.closest||el.classList.contains('is-opening-draw-hidden')||el.classList.contains('is-pending-draw'))return false;
+    if(!isTouchFirstViewport()||!el||!el.closest||el.classList.contains('is-opening-draw-hidden')||el.classList.contains('is-pending-draw'))return false;
     var landscapePool=el.closest('.gl-lab-mana-pool'),portraitPool=el.closest('.mobile-shard-pool');if(!landscapePool&&!portraitPool)return false;
     var src=el.getAttribute('data-shard-preview-src');if(!src)return false;
-    if(!isTouchTabletViewport()&&!isPhysicalTabletPortrait())return false;
+    var tabletLandscape=isTouchTabletViewport(),tabletPortrait=isPhysicalTabletPortrait(),phone=physicalResponsiveDeviceFamily()==='mobile'&&responsiveDeviceFamily()==='mobile';
+    if(!tabletLandscape&&!tabletPortrait&&!phone)return false;
     v642ClearTabletHandSelection();GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=null;
-    return v642DesktopAssetPreviewShow(src,el.getAttribute('data-shard-preview-label')||'Face-up Shard',el,true,isPhysicalTabletPortrait()?'tablet-portrait-shard':'field');
+    return v642DesktopAssetPreviewShow(src,el.getAttribute('data-shard-preview-label')||'Face-up Shard',el,true,tabletPortrait?'tablet-portrait-shard':(phone?'phone-shard':'field'));
   }
   var GL_V253_DELEGATED_READABLE_PREVIEW_BOUND=false;
   function v253DelegatedReadablePreviewSource(target){
@@ -6912,7 +6913,7 @@ function getActivatedHeroAbilities(state, side, lane){
     box.style.transform='translate3d('+Math.round(x)+'px,'+Math.round(y)+'px,0)';
   }
 
-  function v94HoverZoomHide(){var box=$('hoverCardZoom');if(!box)return;box.classList.remove('is-visible','is-modal-zoom','is-click-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview','is-tablet-portrait-shard-preview');box.hidden=true;box._glAnchor=null;if(typeof GL_TABLET_BATTLEFIELD_TAP_STATE!=='undefined')GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=null;if(typeof document!=='undefined')Array.prototype.forEach.call(document.querySelectorAll('.gl-lab-hand .hand-card.hand-hover-active'),function(cardEl){cardEl.classList.remove('hand-hover-active');});if(box.dataset)delete box.dataset.previewPlacement;box.style.transform='translate3d(-9999px,-9999px,0)';if(box.style&&typeof box.style.removeProperty==='function'){box.style.removeProperty('--gl-tablet-preview-w');box.style.removeProperty('--gl-tablet-preview-h');}box.setAttribute('aria-hidden','true');}
+  function v94HoverZoomHide(){var box=$('hoverCardZoom');if(!box)return;box.classList.remove('is-visible','is-modal-zoom','is-click-zoom','is-hand-hover','is-card-played-hover','is-v642-right-preview','is-v253-readable-preview','is-v253-contextual-preview','is-tablet-portrait-shard-preview','is-phone-shard-preview');box.hidden=true;box._glAnchor=null;if(typeof GL_TABLET_BATTLEFIELD_TAP_STATE!=='undefined')GL_TABLET_BATTLEFIELD_TAP_STATE.anchor=null;if(typeof document!=='undefined')Array.prototype.forEach.call(document.querySelectorAll('.gl-lab-hand .hand-card.hand-hover-active'),function(cardEl){cardEl.classList.remove('hand-hover-active');});if(box.dataset)delete box.dataset.previewPlacement;box.style.transform='translate3d(-9999px,-9999px,0)';if(box.style&&typeof box.style.removeProperty==='function'){box.style.removeProperty('--gl-tablet-preview-w');box.style.removeProperty('--gl-tablet-preview-h');}box.setAttribute('aria-hidden','true');}
   function v59HandHoverZoomShow(cardId,anchor){
     /* Hand hover order is fixed: raise the physical Hand card, keep Play/Tribute above it,
        then place the large review above that action strip. The review is positioned before
@@ -7929,7 +7930,7 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
     Array.prototype.forEach.call(document.querySelectorAll('[data-played-preview-side]'),function(btn){btn.onclick=function(){var side=btn.getAttribute('data-played-preview-side'),evt=v94EventsForSide(appState,side)[0];if(evt)v94ShowPlayedDetail(side,evt.id);};});
     Array.prototype.forEach.call(document.querySelectorAll('.combined-played-card[data-preview]'),function(tile){tile.addEventListener('pointerenter',function(ev){if(!ev||ev.pointerType!=='touch')v80CardPlayedHoverShow(tile.getAttribute('data-preview'),tile);});tile.addEventListener('pointerleave',function(ev){if(!ev||ev.pointerType!=='touch')v80CardPlayedHoverHide(tile);});tile.addEventListener('focus',function(){if(!isTouchFirstViewport())v80CardPlayedHoverShow(tile.getAttribute('data-preview'),tile);});tile.addEventListener('blur',function(){if(!tile.matches||!tile.matches(':hover'))v80CardPlayedHoverHide(tile);});});
     Array.prototype.forEach.call(document.querySelectorAll('[data-preview]'),function(el){if(el.closest&&(el.closest('.hand-card')||el.closest('.combined-played-card')))return;el.addEventListener('pointerenter',function(ev){if(!ev||ev.pointerType!=='touch')v642DesktopPreviewShow(el.getAttribute('data-preview'),el);});el.addEventListener('pointerleave',function(ev){if(!ev||ev.pointerType!=='touch')v94HoverZoomHide();});el.addEventListener('focus',function(){if(!isTouchFirstViewport())v642DesktopPreviewShow(el.getAttribute('data-preview'),el);});el.addEventListener('blur',function(){v94HoverZoomHide();});});
-    Array.prototype.forEach.call(document.querySelectorAll('[data-shard-preview-src]'),function(el){el.addEventListener('pointerenter',function(ev){if(!ev||ev.pointerType!=='touch')v642DesktopAssetPreviewShow(el.getAttribute('data-shard-preview-src'),el.getAttribute('data-shard-preview-label'),el);});el.addEventListener('pointerleave',function(ev){if(!ev||ev.pointerType!=='touch')v94HoverZoomHide();});el.addEventListener('focus',function(){if(!isTouchFirstViewport())v642DesktopAssetPreviewShow(el.getAttribute('data-shard-preview-src'),el.getAttribute('data-shard-preview-label'),el);});el.addEventListener('blur',function(){v94HoverZoomHide();});});
+    Array.prototype.forEach.call(document.querySelectorAll('[data-shard-preview-src]'),function(el){el.addEventListener('pointerenter',function(ev){if(!ev||ev.pointerType!=='touch')v642DesktopAssetPreviewShow(el.getAttribute('data-shard-preview-src'),el.getAttribute('data-shard-preview-label'),el);});el.addEventListener('pointerleave',function(ev){if(!ev||ev.pointerType!=='touch')v94HoverZoomHide();});el.addEventListener('focus',function(){if(!isTouchFirstViewport())v642DesktopAssetPreviewShow(el.getAttribute('data-shard-preview-src'),el.getAttribute('data-shard-preview-label'),el);});el.addEventListener('blur',function(){if(!isTouchFirstViewport())v94HoverZoomHide();});});
     Array.prototype.forEach.call(document.querySelectorAll('.hand-card[data-card-id]'),function(cardEl){
       var el=cardEl.querySelector('.hand-art[data-preview]');if(!el)return;
       cardEl.addEventListener('pointerenter',function(ev){if(!ev||ev.pointerType!=='touch')v59HandHoverZoomShow(el.getAttribute('data-preview'),cardEl);});
