@@ -1,7 +1,7 @@
 {
   "schema_version": "1.6.0",
-  "generated_at": "2026-09-21",
-  "generated_from": "OSA v1.9.4 Runtime Data v0.16.1",
+  "generated_at": "2026-09-22",
+  "generated_from": "OSA v1.9.5 Runtime Data v0.16.2",
   "canonical_registry_hash": "7ac1f90f6a9654cf575ac41db64a052901005905b1cf01f3bfc7532873cc9389",
   "hero_component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
   "generated_only": true,

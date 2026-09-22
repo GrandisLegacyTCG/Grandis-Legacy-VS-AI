@@ -1,6 +1,6 @@
 {
-  "schema_version": "0.16.1",
-  "generated_at": "2026-09-21",
+  "schema_version": "0.16.2",
+  "generated_at": "2026-09-22",
   "generated_from": "Authority/Game/Cards/cards.canonical.v1.6.0.json",
   "canonical_registry_hash": "7ac1f90f6a9654cf575ac41db64a052901005905b1cf01f3bfc7532873cc9389",
   "hero_component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
@@ -1707,6 +1707,41 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Primal Strike",
+        "text": "During your Battle Phase, you may spend 1 Racial Token to deal 20 Physical damage to an injured opponent’s Hero.",
+        "action": {
+          "action_key": "primal_strike",
+          "phase": "Battle Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "target": {
+            "type": "injured_opponent_hero",
+            "current_hp_lt_max_hp": true
+          },
+          "effect": {
+            "direct_damage": 20,
+            "damage_source": "racial ability direct damage",
+            "not_attack_damage": true,
+            "coverage_used": false,
+            "damage_type": "Physical",
+            "not_attack_card_damage": true
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          },
+          "optional_choice": true
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Battle Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
       }
     },
     {
@@ -1956,6 +1991,63 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Primal Strike",
+        "text": "During your Battle Phase, you may spend 1 Racial Token to deal 20 Physical damage to an injured opponent’s Hero.",
+        "action": {
+          "action_key": "primal_strike",
+          "phase": "Battle Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "target": {
+            "type": "injured_opponent_hero",
+            "current_hp_lt_max_hp": true
+          },
+          "effect": {
+            "direct_damage": 20,
+            "damage_source": "racial ability direct damage",
+            "not_attack_damage": true,
+            "coverage_used": false,
+            "damage_type": "Physical",
+            "not_attack_card_damage": true
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          },
+          "optional_choice": true
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Battle Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Sharpshooter",
+        "text": "Your Physical Attack card gains Range Attack.",
+        "action": {
+          "type": "passive_attack_profile_modifier",
+          "trigger": "physical_attack_card_used_by_this_hero",
+          "gain_attack_profile": "Range Attack",
+          "range_exclusions": [
+            "S1-ARC-001"
+          ],
+          "range_conversion": {
+            "resulting_attack_profile": "Range Attack",
+            "excluded_card_ids": [
+              "S1-ARC-001"
+            ],
+            "eligible_attack_label": "Physical Attack",
+            "do_not_infer_from_damage_type": true
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -2209,6 +2301,86 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Primal Strike",
+        "text": "During your Battle Phase, you may spend 1 Racial Token to deal 20 Physical damage to an injured opponent’s Hero.",
+        "action": {
+          "action_key": "primal_strike",
+          "phase": "Battle Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "target": {
+            "type": "injured_opponent_hero",
+            "current_hp_lt_max_hp": true
+          },
+          "effect": {
+            "direct_damage": 20,
+            "damage_source": "racial ability direct damage",
+            "not_attack_damage": true,
+            "coverage_used": false,
+            "damage_type": "Physical",
+            "not_attack_card_damage": true
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          },
+          "optional_choice": true
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Battle Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Dead Eye",
+        "text": "Your Physical Attack card gains Range Attack. Increase this Hero’s Physical Attack damage by 10.",
+        "action": {
+          "type": "passive_attack_profile_modifier",
+          "trigger": "physical_attack_card_used_by_this_hero",
+          "gain_attack_profile": "Range Attack",
+          "range_exclusions": [
+            "S1-ARC-001"
+          ],
+          "damage_modifier": {
+            "amount": 10,
+            "damage_type": "Physical",
+            "scope": "Physical Attack cards using the explicit Attack Label before Dead Eye's own Range Attack conversion",
+            "excluded_card_ids": [],
+            "condition_attack_label": "Physical Attack",
+            "damage_type_is_output_only": true,
+            "condition_attack_label_stage": "before_dead_eye_range_conversion"
+          },
+          "range_conversion": {
+            "resulting_attack_profile": "Range Attack",
+            "excluded_card_ids": [
+              "S1-ARC-001"
+            ],
+            "eligible_attack_label": "Physical Attack",
+            "do_not_infer_from_damage_type": true
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ],
+            "match_dimension": "attack_label",
+            "required_attack_label": "Physical Attack",
+            "do_not_infer_from_damage_type": true,
+            "attack_label_stage": "before_dead_eye_range_conversion"
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -2386,6 +2558,31 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Human Ambition",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to draw 2 cards.",
+        "action": {
+          "action_key": "human_ambition",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "draw_cards": 2
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
       }
     },
     {
@@ -2646,6 +2843,43 @@
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         },
         "base_class_family": "Archer"
+      },
+      "racial_ability": {
+        "name": "Human Ambition",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to draw 2 cards.",
+        "action": {
+          "action_key": "human_ambition",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "draw_cards": 2
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Quick Reload",
+        "text": "During your Draw Phase, you may shuffle the card you just drew into your deck and draw a new card.",
+        "action": {
+          "action_key": "quick_reload",
+          "type": "draw_replacement",
+          "trigger": "draw_phase_choice",
+          "effect": {
+            "draw_replacement_shuffle_redraw": true
+          }
+        }
       }
     },
     {
@@ -2924,6 +3158,64 @@
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         },
         "base_class_family": "Archer"
+      },
+      "racial_ability": {
+        "name": "Human Ambition",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to draw 2 cards.",
+        "action": {
+          "action_key": "human_ambition",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "draw_cards": 2
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Rapid Chamber",
+        "text": "During your Draw Phase, you may shuffle the card you just drew into your deck and draw a new card. Increase this Hero’s Physical Attack damage by 10.",
+        "action": {
+          "action_key": "rapid_chamber",
+          "type": "draw_replacement_and_passive_attack_modifier",
+          "trigger": "draw_phase_choice_and_physical_attack_damage",
+          "effect": {
+            "draw_replacement_shuffle_redraw": true,
+            "attack_damage_by_this_hero": 10
+          },
+          "damage_modifier": {
+            "amount": 10,
+            "damage_type": "Physical",
+            "scope": "Attack Card damage",
+            "condition_attack_label": "Physical Attack",
+            "damage_type_is_output_only": true
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ],
+            "match_dimension": "attack_label",
+            "required_attack_label": "Physical Attack",
+            "do_not_infer_from_damage_type": true
+          }
+        }
       }
     },
     {
@@ -3135,6 +3427,33 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Ancestral Focus",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to gain 2 Mana Shards to your Mana Pool.",
+        "action": {
+          "action_key": "ancestral_focus",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "gain_mana": 2
+          },
+          "normalization_note": "Backend resource is Mana; source wording may say Mana Shard.",
+          "backend_resource": "Mana",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
       }
     },
     {
@@ -3370,6 +3689,47 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Ancestral Focus",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to gain 2 Mana Shards to your Mana Pool.",
+        "action": {
+          "action_key": "ancestral_focus",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "gain_mana": 2
+          },
+          "normalization_note": "Backend resource is Mana; source wording may say Mana Shard.",
+          "backend_resource": "Mana",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Holy Grace",
+        "text": "Increase this Hero’s Healing done by +20.",
+        "action": {
+          "action_key": "holy_grace",
+          "type": "passive_healing_modifier",
+          "trigger": "healing_done_by_this_hero",
+          "effect": {
+            "healing_done": 20
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -3609,6 +3969,53 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Ancestral Focus",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to gain 2 Mana Shards to your Mana Pool.",
+        "action": {
+          "action_key": "ancestral_focus",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "gain_mana": 2
+          },
+          "normalization_note": "Backend resource is Mana; source wording may say Mana Shard.",
+          "backend_resource": "Mana",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Holy Rejuvenation",
+        "text": "Increase this Hero’s Healing done by +20 and remove 1 negative status from the healed ally.",
+        "action": {
+          "action_key": "holy_rejuvenation",
+          "type": "passive_healing_and_cleanse_modifier",
+          "trigger": "healing_done_by_this_hero",
+          "effect": {
+            "healing_done": 20,
+            "remove_negative_status_from_healed_ally": 1
+          },
+          "healing_done_modifier": 20,
+          "after_successful_heal": {
+            "choose_and_remove_negative_status": 1,
+            "per_healed_ally": true
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -3820,6 +4227,42 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Stoneblood",
+        "text": "When this Hero would be defeated, you may spend 1 Racial Token. If you do, this Hero remains on the field with 30 HP.",
+        "action": {
+          "action_key": "stoneblood",
+          "trigger": "would_be_defeated",
+          "cost": {
+            "racial_token": 1
+          },
+          "target": "self",
+          "effect": {
+            "prevent_defeat": true,
+            "set_hp": 30,
+            "preserve_zone": true,
+            "preserve_exp": true,
+            "preserve_attachments": true,
+            "preserve_buffs": true,
+            "preserve_debuffs": true,
+            "preserve_exhaust_state": true,
+            "no_legacy_flow_if_prevented": true,
+            "preserve_current_state": true
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          },
+          "optional_choice": true
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Trigger racial trait only. It must not appear as a free Deploy/Battle action button. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
       }
     },
     {
@@ -4055,6 +4498,56 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Stoneblood",
+        "text": "When this Hero would be defeated, you may spend 1 Racial Token. If you do, this Hero remains on the field with 30 HP.",
+        "action": {
+          "action_key": "stoneblood",
+          "trigger": "would_be_defeated",
+          "cost": {
+            "racial_token": 1
+          },
+          "target": "self",
+          "effect": {
+            "prevent_defeat": true,
+            "set_hp": 30,
+            "preserve_zone": true,
+            "preserve_exp": true,
+            "preserve_attachments": true,
+            "preserve_buffs": true,
+            "preserve_debuffs": true,
+            "preserve_exhaust_state": true,
+            "no_legacy_flow_if_prevented": true,
+            "preserve_current_state": true
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          },
+          "optional_choice": true
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Trigger racial trait only. It must not appear as a free Deploy/Battle action button. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Holy Grace",
+        "text": "Increase this Hero’s Healing done by +20.",
+        "action": {
+          "action_key": "holy_grace",
+          "type": "passive_healing_modifier",
+          "trigger": "healing_done_by_this_hero",
+          "effect": {
+            "healing_done": 20
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -4294,6 +4787,62 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Stoneblood",
+        "text": "When this Hero would be defeated, you may spend 1 Racial Token. If you do, this Hero remains on the field with 30 HP.",
+        "action": {
+          "action_key": "stoneblood",
+          "trigger": "would_be_defeated",
+          "cost": {
+            "racial_token": 1
+          },
+          "target": "self",
+          "effect": {
+            "prevent_defeat": true,
+            "set_hp": 30,
+            "preserve_zone": true,
+            "preserve_exp": true,
+            "preserve_attachments": true,
+            "preserve_buffs": true,
+            "preserve_debuffs": true,
+            "preserve_exhaust_state": true,
+            "no_legacy_flow_if_prevented": true,
+            "preserve_current_state": true
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          },
+          "optional_choice": true
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Trigger racial trait only. It must not appear as a free Deploy/Battle action button. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Holy Rejuvenation",
+        "text": "Increase this Hero’s Healing done by +20 and remove 1 negative status from the healed ally.",
+        "action": {
+          "action_key": "holy_rejuvenation",
+          "type": "passive_healing_and_cleanse_modifier",
+          "trigger": "healing_done_by_this_hero",
+          "effect": {
+            "healing_done": 20,
+            "remove_negative_status_from_healed_ally": 1
+          },
+          "healing_done_modifier": 20,
+          "after_successful_heal": {
+            "choose_and_remove_negative_status": 1,
+            "per_healed_ally": true
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -4505,6 +5054,33 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Ancestral Focus",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to gain 2 Mana Shards to your Mana Pool.",
+        "action": {
+          "action_key": "ancestral_focus",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "gain_mana": 2
+          },
+          "normalization_note": "Backend resource is Mana; source wording may say Mana Shard.",
+          "backend_resource": "Mana",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
       }
     },
     {
@@ -4750,6 +5326,56 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Ancestral Focus",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to gain 2 Mana Shards to your Mana Pool.",
+        "action": {
+          "action_key": "ancestral_focus",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "gain_mana": 2
+          },
+          "normalization_note": "Backend resource is Mana; source wording may say Mana Shard.",
+          "backend_resource": "Mana",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Elemental Mastery",
+        "text": "Increase the duration of Burn and Freeze you inflict on opponent’s Heroes by 1 turn.",
+        "action": {
+          "action_key": "magic_mastery",
+          "type": "passive_status_duration_modifier",
+          "trigger": "status_inflicted_by_this_hero_attack_skill",
+          "effect": {
+            "duration_delta": 1
+          },
+          "status_duration_modifier": {
+            "statuses": [
+              "Burn",
+              "Freeze"
+            ],
+            "amount": 1,
+            "targets": "opponent Heroes",
+            "all_infliction_sources_by_this_hero": true
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -4999,6 +5625,81 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Ancestral Focus",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to gain 2 Mana Shards to your Mana Pool.",
+        "action": {
+          "action_key": "ancestral_focus",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "gain_mana": 2
+          },
+          "normalization_note": "Backend resource is Mana; source wording may say Mana Shard.",
+          "backend_resource": "Mana",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Elemental Sovereignty",
+        "text": "Increase the duration of Burn and Freeze you inflict on opponent’s Heroes by 1 turn. Increase this Hero’s Magical Attack damage by 10.",
+        "action": {
+          "action_key": "elemental_sovereignty",
+          "type": "passive_status_duration_and_attack_modifier",
+          "trigger": "always_active",
+          "effect": {
+            "status_duration_delta": {
+              "source": "this_hero_attack_skill",
+              "delta": 1
+            },
+            "attack_damage_by_this_hero": 10
+          },
+          "effect_scope_note": "Attack damage modifier is gated by the explicit effective Magical Attack label. Physical/Magical damage type alone never qualifies.",
+          "status_duration_modifier": {
+            "statuses": [
+              "Burn",
+              "Freeze"
+            ],
+            "amount": 1,
+            "targets": "opponent Heroes",
+            "all_infliction_sources_by_this_hero": true
+          },
+          "damage_modifier": {
+            "amount": 10,
+            "damage_type": "Magical",
+            "scope": "Attack Card damage",
+            "condition_attack_label": "Magical Attack",
+            "damage_type_is_output_only": true
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ],
+            "match_dimension": "attack_label",
+            "required_attack_label": "Magical Attack",
+            "do_not_infer_from_damage_type": true
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -5210,6 +5911,31 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Human Ambition",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to draw 2 cards.",
+        "action": {
+          "action_key": "human_ambition",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "draw_cards": 2
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
       }
     },
     {
@@ -5445,6 +6171,54 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Human Ambition",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to draw 2 cards.",
+        "action": {
+          "action_key": "human_ambition",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "draw_cards": 2
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Elemental Mastery",
+        "text": "Increase the duration of Burn and Freeze you inflict on opponent’s Heroes by 1 turn.",
+        "action": {
+          "action_key": "magic_mastery",
+          "type": "passive_status_duration_modifier",
+          "trigger": "status_inflicted_by_this_hero_attack_skill",
+          "effect": {
+            "duration_delta": 1
+          },
+          "status_duration_modifier": {
+            "statuses": [
+              "Burn",
+              "Freeze"
+            ],
+            "amount": 1,
+            "targets": "opponent Heroes",
+            "all_infliction_sources_by_this_hero": true
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -5684,6 +6458,79 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Human Ambition",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to draw 2 cards.",
+        "action": {
+          "action_key": "human_ambition",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "draw_cards": 2
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Elemental Sovereignty",
+        "text": "Increase the duration of Burn and Freeze you inflict on opponent’s Heroes by 1 turn. Increase this Hero’s Magical Attack damage by 10.",
+        "action": {
+          "action_key": "elemental_sovereignty",
+          "type": "passive_status_duration_and_attack_modifier",
+          "trigger": "always_active",
+          "effect": {
+            "status_duration_delta": {
+              "source": "this_hero_attack_skill",
+              "delta": 1
+            },
+            "attack_damage_by_this_hero": 10
+          },
+          "effect_scope_note": "Attack damage modifier is gated by the explicit effective Magical Attack label. Physical/Magical damage type alone never qualifies.",
+          "status_duration_modifier": {
+            "statuses": [
+              "Burn",
+              "Freeze"
+            ],
+            "amount": 1,
+            "targets": "opponent Heroes",
+            "all_infliction_sources_by_this_hero": true
+          },
+          "damage_modifier": {
+            "amount": 10,
+            "damage_type": "Magical",
+            "scope": "Attack Card damage",
+            "condition_attack_label": "Magical Attack",
+            "damage_type_is_output_only": true
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ],
+            "match_dimension": "attack_label",
+            "required_attack_label": "Magical Attack",
+            "do_not_infer_from_damage_type": true
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -5901,6 +6748,38 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Second Chance",
+        "text": "Spend 1 Racial Token to dodge incoming Physical or Magical damage.",
+        "action": {
+          "action_key": "second_chance",
+          "type": "response_damage_dodge",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "dodge_incoming_damage": true,
+            "damage_types": [
+              "Physical",
+              "Magical"
+            ]
+          },
+          "response_window": "incoming Physical/Magical damage to this Halfling Hero",
+          "effect_type": "dodge incoming attack damage like normal Dodge",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Response racial trait only. It must not appear as a free Deploy/Battle action button. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "review_policy": "APPROVED: Second Chance is a defensive Dodge response racial trait.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
       }
     },
     {
@@ -6142,6 +7021,60 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Second Chance",
+        "text": "Spend 1 Racial Token to dodge incoming Physical or Magical damage.",
+        "action": {
+          "action_key": "second_chance",
+          "type": "response_damage_dodge",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "dodge_incoming_damage": true,
+            "damage_types": [
+              "Physical",
+              "Magical"
+            ]
+          },
+          "response_window": "incoming Physical/Magical damage to this Halfling Hero",
+          "effect_type": "dodge incoming attack damage like normal Dodge",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Response racial trait only. It must not appear as a free Deploy/Battle action button. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "review_policy": "APPROVED: Second Chance is a defensive Dodge response racial trait.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Venom Mastery",
+        "text": "Increase the duration of Poison you inflict on opponent’s Heroes by 1 turn.",
+        "action": {
+          "action_key": "venom_mastery",
+          "type": "passive_status_duration_modifier",
+          "trigger": "poison_inflicted_by_this_hero",
+          "effect": {
+            "duration_delta": 1
+          },
+          "status_duration_modifier": {
+            "statuses": [
+              "Poison"
+            ],
+            "amount": 1,
+            "targets": "opponent Heroes",
+            "all_infliction_sources_by_this_hero": true
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -6387,6 +7320,82 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Second Chance",
+        "text": "Spend 1 Racial Token to dodge incoming Physical or Magical damage.",
+        "action": {
+          "action_key": "second_chance",
+          "type": "response_damage_dodge",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "dodge_incoming_damage": true,
+            "damage_types": [
+              "Physical",
+              "Magical"
+            ]
+          },
+          "response_window": "incoming Physical/Magical damage to this Halfling Hero",
+          "effect_type": "dodge incoming attack damage like normal Dodge",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Response racial trait only. It must not appear as a free Deploy/Battle action button. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "review_policy": "APPROVED: Second Chance is a defensive Dodge response racial trait.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Nightshade Venom",
+        "text": "Increase the duration of Poison you inflict on opponent’s Heroes by 1 turn. Increase this Hero’s Physical Attack damage by 10.",
+        "action": {
+          "action_key": "nightshade_venom",
+          "type": "passive_poison_duration_and_attack_modifier",
+          "trigger": "always_active",
+          "effect": {
+            "poison_duration_delta_by_this_hero": 1,
+            "attack_damage_by_this_hero": 10
+          },
+          "effect_scope_note": "Attack damage modifier is gated by the explicit effective Physical Attack label. Physical/Magical damage type alone never qualifies.",
+          "status_duration_modifier": {
+            "statuses": [
+              "Poison"
+            ],
+            "amount": 1,
+            "targets": "opponent Heroes",
+            "all_infliction_sources_by_this_hero": true
+          },
+          "damage_modifier": {
+            "amount": 10,
+            "damage_type": "Physical",
+            "scope": "Attack Card damage",
+            "condition_attack_label": "Physical Attack",
+            "damage_type_is_output_only": true
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ],
+            "match_dimension": "attack_label",
+            "required_attack_label": "Physical Attack",
+            "do_not_infer_from_damage_type": true
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -6564,6 +7573,33 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Ancestral Focus",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to gain 2 Mana Shards to your Mana Pool.",
+        "action": {
+          "action_key": "ancestral_focus",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "gain_mana": 2
+          },
+          "normalization_note": "Backend resource is Mana; source wording may say Mana Shard.",
+          "backend_resource": "Mana",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
       }
     },
     {
@@ -6778,6 +7814,64 @@
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         },
         "base_class_family": "Thief"
+      },
+      "racial_ability": {
+        "name": "Ancestral Focus",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to gain 2 Mana Shards to your Mana Pool.",
+        "action": {
+          "action_key": "ancestral_focus",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "gain_mana": 2
+          },
+          "normalization_note": "Backend resource is Mana; source wording may say Mana Shard.",
+          "backend_resource": "Mana",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Mana Surge",
+        "text": "When this Hero uses a Magical Attack, you may spend 1 additional Mana Shard to increase the Magical damage by 10.",
+        "action": {
+          "type": "optional_attack_additional_cost",
+          "trigger": "this_hero_uses_Magical_Attack",
+          "additional_cost": {
+            "mana_shard": 1
+          },
+          "damage_modifier": {
+            "amount": 10,
+            "damage_type": "Magical",
+            "scope": "selected attack",
+            "condition_attack_label": "Magical Attack",
+            "damage_type_is_output_only": true
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ],
+            "match_dimension": "attack_label",
+            "required_attack_label": "Magical Attack",
+            "do_not_infer_from_damage_type": true
+          }
+        }
       }
     },
     {
@@ -6996,6 +8090,64 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Ancestral Focus",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to gain 2 Mana Shards to your Mana Pool.",
+        "action": {
+          "action_key": "ancestral_focus",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "gain_mana": 2
+          },
+          "normalization_note": "Backend resource is Mana; source wording may say Mana Shard.",
+          "backend_resource": "Mana",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Arcane Surge",
+        "text": "When this Hero uses a Magical Attack, you may spend 1 additional Mana Shard to increase the Magical damage by 20.",
+        "action": {
+          "type": "optional_attack_additional_cost",
+          "trigger": "this_hero_uses_Magical_Attack",
+          "additional_cost": {
+            "mana_shard": 1
+          },
+          "damage_modifier": {
+            "amount": 20,
+            "damage_type": "Magical",
+            "scope": "selected attack",
+            "condition_attack_label": "Magical Attack",
+            "damage_type_is_output_only": true
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ],
+            "match_dimension": "attack_label",
+            "required_attack_label": "Magical Attack",
+            "do_not_infer_from_damage_type": true
+          }
+        }
       }
     },
     {
@@ -7207,6 +8359,31 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Human Ambition",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to draw 2 cards.",
+        "action": {
+          "action_key": "human_ambition",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "draw_cards": 2
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
       }
     },
     {
@@ -7442,6 +8619,48 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Human Ambition",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to draw 2 cards.",
+        "action": {
+          "action_key": "human_ambition",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "draw_cards": 2
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Vanquisher’s Resolve",
+        "text": "Reduce incoming Physical damage by -10.",
+        "action": {
+          "action_key": "vanquishers_resolve",
+          "type": "passive_damage_reduction",
+          "trigger": "incoming_damage_to_self",
+          "filter": {
+            "damage_type": "Physical"
+          },
+          "effect": {
+            "damage_reduction": 10
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -7681,6 +8900,71 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Human Ambition",
+        "text": "During Deploy Phase, you may spend 1 Racial Token to draw 2 cards.",
+        "action": {
+          "action_key": "human_ambition",
+          "phase": "Deploy Phase",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "draw_cards": 2
+          },
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Active racial trait. Legal only during controller Deploy Phase. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Arena Dominator",
+        "text": "Reduce incoming Physical damage by -10 and increase this Hero’s Physical Attack damage by 10.",
+        "action": {
+          "action_key": "arena_dominator",
+          "type": "passive_damage_reduction_and_attack_modifier",
+          "trigger": "always_active",
+          "effect": {
+            "incoming_physical_damage_reduction_to_self": 10,
+            "attack_damage_by_this_hero": 10
+          },
+          "effect_scope_note": "Attack damage modifier is gated by the explicit effective Physical Attack label. Physical/Magical damage type alone never qualifies.",
+          "incoming_damage_reduction": {
+            "amount": 10,
+            "damage_type": "Physical"
+          },
+          "damage_modifier": {
+            "amount": 10,
+            "damage_type": "Physical",
+            "scope": "Attack Card damage",
+            "condition_attack_label": "Physical Attack",
+            "damage_type_is_output_only": true
+          },
+          "damage_gate": {
+            "requires_attack_card": true,
+            "excluded_damage_sources": [
+              "direct damage",
+              "status damage",
+              "reflect damage",
+              "self-damage",
+              "healing"
+            ],
+            "match_dimension": "attack_label",
+            "required_attack_label": "Physical Attack",
+            "do_not_infer_from_damage_type": true
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves."
       }
     },
     {
@@ -7898,6 +9182,38 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Dragon Scale",
+        "text": "You may spend 1 Racial Token to Block 50 incoming Physical or Magical damage.",
+        "action": {
+          "action_key": "dragon_scale",
+          "type": "response_damage_block",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "block_damage": 50,
+            "damage_types": [
+              "Physical",
+              "Magical"
+            ]
+          },
+          "response_window": "incoming Physical/Magical damage to this Dragonborn Hero",
+          "effect_type": "block/prevent damage like normal block",
+          "status_policy": "Damage block only. Explicit inflict status still applies if attack/effect resolves; damage-conditioned effects require final HP damage > 0.",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Response racial trait only. It must not appear as a free Deploy/Battle action button. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
       }
     },
     {
@@ -8155,6 +9471,74 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Dragon Scale",
+        "text": "You may spend 1 Racial Token to Block 50 incoming Physical or Magical damage.",
+        "action": {
+          "action_key": "dragon_scale",
+          "type": "response_damage_block",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "block_damage": 50,
+            "damage_types": [
+              "Physical",
+              "Magical"
+            ]
+          },
+          "response_window": "incoming Physical/Magical damage to this Dragonborn Hero",
+          "effect_type": "block/prevent damage like normal block",
+          "status_policy": "Damage block only. Explicit inflict status still applies if attack/effect resolves; damage-conditioned effects require final HP damage > 0.",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Response racial trait only. It must not appear as a free Deploy/Battle action button. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Holy Resurgence",
+        "text": "Once per turn during your Deploy Phase, you may spend 1 Mana Shard to heal one of your Heroes for +10 HP. Exhaust this Hero afterward.",
+        "action": {
+          "action_key": "holy_resurgence",
+          "type": "activated_heal",
+          "phase": "Deploy Phase",
+          "once_per_turn": true,
+          "cost": {
+            "mana": 1
+          },
+          "effect": {
+            "heal": 10
+          },
+          "exhaust_after_successful_resolve": true,
+          "source_requirements": [
+            "Hero Mode",
+            "active",
+            "non-Exhausted",
+            "not Stunned",
+            "ability unused this turn"
+          ],
+          "resolver": {
+            "target_is_resolver_owned": true,
+            "target_validator": "1 own active damaged Hero, including self only if damaged; target must not have Bleed",
+            "coverage_used": false,
+            "heal_target_damaged_required": true,
+            "bleed_invalid": true,
+            "full_hp_invalid": true,
+            "heal_validator_policy": "Uses standard heal validator: target must be damaged and must not have Bleed."
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves.",
+        "review_policy": "APPROVED: Paladin/Crusader class heal follows heal rule; full HP and Bleed are invalid targets."
       }
     },
     {
@@ -8416,6 +9800,74 @@
           "component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
           "resolution_policy": "Hero Component Authority is the single editable home. Generated runtime cards materialize compatibility caches from these references."
         }
+      },
+      "racial_ability": {
+        "name": "Dragon Scale",
+        "text": "You may spend 1 Racial Token to Block 50 incoming Physical or Magical damage.",
+        "action": {
+          "action_key": "dragon_scale",
+          "type": "response_damage_block",
+          "cost": {
+            "racial_token": 1
+          },
+          "effect": {
+            "block_damage": 50,
+            "damage_types": [
+              "Physical",
+              "Magical"
+            ]
+          },
+          "response_window": "incoming Physical/Magical damage to this Dragonborn Hero",
+          "effect_type": "block/prevent damage like normal block",
+          "status_policy": "Damage block only. Explicit inflict status still applies if attack/effect resolves; damage-conditioned effects require final HP damage > 0.",
+          "racial_token_spend_limit": {
+            "scope": "player",
+            "limit": 1,
+            "period": "global_turn"
+          }
+        },
+        "does_exhaust": false,
+        "cost_policy": "Racial Traits do not Exhaust; they require Racial Token cost if activated.",
+        "timing_policy": "Response racial trait only. It must not appear as a free Deploy/Battle action button. Not blocked by Exhaust.",
+        "source_display": "Hero Card is shown as Played when Racial Ability is activated.",
+        "usage_limit_policy": "A player may spend only 1 Racial Token total per global turn across all Heroes and Racial Traits.",
+        "shared_player_turn_spend_limit": true
+      },
+      "class_ability": {
+        "name": "Radiant Oblivion",
+        "text": "Once per turn during your Deploy Phase, you may spend 1 Mana Shard to heal one of your Heroes for +20 HP. Exhaust this Hero afterward.",
+        "action": {
+          "action_key": "radiant_oblivion",
+          "type": "activated_heal",
+          "phase": "Deploy Phase",
+          "once_per_turn": true,
+          "cost": {
+            "mana": 1
+          },
+          "effect": {
+            "heal": 20
+          },
+          "exhaust_after_successful_resolve": true,
+          "source_requirements": [
+            "Hero Mode",
+            "active",
+            "non-Exhausted",
+            "not Stunned",
+            "ability unused this turn"
+          ],
+          "resolver": {
+            "target_is_resolver_owned": true,
+            "target_validator": "1 own active damaged Hero, including self only if damaged; target must not have Bleed",
+            "coverage_used": false,
+            "heal_target_damaged_required": true,
+            "bleed_invalid": true,
+            "full_hp_invalid": true,
+            "heal_validator_policy": "Uses standard heal validator: target must be damaged and must not have Bleed."
+          }
+        },
+        "player_facing_label": "Class Ability",
+        "source_display": "Hero Card is shown as Played only when Class Ability is actively activated. Passive Class Abilities do not create a Played action by themselves.",
+        "review_policy": "APPROVED: Paladin/Crusader class heal follows heal rule; full HP and Bleed are invalid targets."
       }
     },
     {
@@ -80112,7 +81564,7 @@
     "Authority/Game/Heroes/hero-components.canonical.v1.1.0.json": "112632e5bb821b415a63554c287fc056977939d2efa66e9e5b50b36a328769b5",
     "Authority/Game/Mechanics/gameplay-authority.v1.9.0.json": "4538cd42aaed3d0dc955454870aaca7c3aa77f82152f9da01dcd2e4d3c6ae507"
   },
-  "runtime_data_version": "v0.16.1",
-  "generator": "Authority/Runtime/Validators/generate-v1.9.4.cjs",
-  "generator_version": "1.9.4-attachment-generator.1"
+  "runtime_data_version": "v0.16.2",
+  "generator": "Authority/Runtime/Validators/generate-v1.9.5.cjs",
+  "generator_version": "1.9.5-hero-component-generator.1"
 }

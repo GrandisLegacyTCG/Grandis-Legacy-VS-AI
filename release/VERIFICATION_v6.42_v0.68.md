@@ -1,80 +1,98 @@
-# Verification — Grandis Legacy VS AI v6.42 / Tutorial v0.68 — Candidate (9)
+# Verification — Grandis Legacy VS AI v6.42 / Tutorial v0.68 — 2026-09-22
 
-Verification date: 2026-09-21  
-Baseline: **Candidate (8)**  
-Candidate: **(9)**
+## Authority / data
 
-## Authority / application status
+- OSA v1.9.5 — **PASS**
+- Shared Runtime v1.94.2 — **PASS / unchanged**
+- Runtime Data v0.16.2 — **PASS**
+- Effect Recipe / Checkpoint v0.15.2 / v0.15.2 — **PASS**
+- Application Runtime Sync v2.63 — **PASS**
+- Starter Deck Authority v1.6.1 / 5 active decks — **PASS**, compositions unchanged
+- Canonical cards — **200**
+- Hero cards — **30**
+- Racial Ability caches — **30 / 30**
+- Class Ability caches — **20 / 20**
+- Component deep parity / registry hash — **PASS**
 
-- OSA v1.9.4 — PASS
-- Shared Runtime v1.94.2 — PASS
-- Runtime Data v0.16.1 — PASS
-- Effect Recipe / Checkpoint v0.15.1 / v0.15.1 — PASS
-- Application Runtime Sync v2.62 — PASS
-- VS AI v6.42 — PASS
-- Tutorial v0.68 — PASS
-- Starter Deck Authority v1.6.1 / 5 active decks — PASS, compositions unchanged
-- Canonical cards — 200
+## Mandatory gameplay regressions
 
-## Attachment authority / consumer verification
+- Marksman qualifying Physical Attack gains Range — **PASS**
+- Marksman LEFT can target RIGHT — **PASS**
+- Renegade Rank III qualifying Physical Attack +10 — **PASS**
+- Renegade Poison duration +1 — **PASS**
+- Conqueror qualifying Physical Attack +10 — **PASS**
+- Whirlwind does not incorrectly receive +10 — **PASS**
+- Triple Shot counter starts at 1 — **PASS**
+- Triple Shot qualifying Arrow becomes Area/multi-target — **PASS**
+- Triple Shot + Marksman Range coverage — **PASS**
+- LEFT Marksman covers all legal positions with separate Response windows — **PASS** (`LEFT`, `CENTER`, `RIGHT`)
+- Triple Shot owner End Phase 1 → 0 — **PASS**
+- Triple Shot Discard exactly once — **PASS**
+- Rank Up component refresh — **PASS**
+- Hero UI component visibility — **PASS**
 
-- Triple Shot This-Turn Attachment — PASS
-- counter starts at 1 — PASS
-- owner End Phase 1 → 0 — PASS
-- moves to Discard exactly once — PASS
-- modifier removed — PASS
-- no physical-card binding — PASS
-- unsafe `remaining_count || 1` consumer fallback absent — PASS
-- Double Casting duration audit — PASS
-- all-200 cross-phase audit — PASS; 24 explicit persistent policies
-- Status-vs-Attachment distinction — PASS
-- generic one-turn / multi-turn lifecycle — PASS
-- Draw/Battle checkpoint isolation — PASS
-- Hero defeat Attachment cleanup — PASS
-- final-Hero terminal evaluation — PASS
+## Class Ability matrix
 
-## Browser-rendered Candidate (9) measurements
+Quick Reload, Rapid Chamber, Sharpshooter, Dead Eye, Venom Mastery, Nightshade Venom, Mana Surge, Arcane Surge, Vanquisher's Resolve, Arena Dominator, Holy Resurgence, Radiant Oblivion, Holy Grace, Holy Rejuvenation, Elemental Mastery, and Elemental Sovereignty — **PASS (16 / 16)**.
 
-- Contextual side preview actual clicked-card anchor — PASS
-- Right visible gap: **12 px**
-- Left visible gap: **12 px**
-- Gap difference: **0 px** — PASS (≤2 px)
-- Legacy warning DOM count for one warning condition: **1** — PASS
-- Deck-back widths (Legacy / Shard / Main): **55.4375 / 55.4375 / 55.4375 px** — PASS
-- Desktop graphical Regen counter center difference: **0 px** — PASS
-- Phone Regen in-slot center difference: **0.5 px** — PASS
-- Tablet Portrait Regen in-slot center difference: **0.5 px** — PASS
-- Tablet Landscape Regen center difference: **0.0078125 / 0.0078125 / 0 px** — PASS
-- Tablet Landscape Shard width ratios: **0.825 / 0.8248487903 / 0.8248106061** — PASS (80–85%)
-- Tablet Shard Deck count badge corner delta: **0 / 0 px** at all tested landscape viewports — PASS
-- Tablet Phase Tracker preserved — PASS
-- AI Lobby scroll preserved — PASS
-- Battlefield first tap = Quick Preview, no popup — PASS
-- second same-card activation = Detail — PASS
-- different card first tap remains Quick Preview only — PASS
-- non-battlefield first activation = Detail — PASS
-- Play/Tribute direct actions do not trigger preview routing — PASS
+## Racial matrix
 
-## Code-quality gates
+Primal Strike, Dragon Scale, Stoneblood, Ancestral Focus, Second Chance, and Human Ambition — **PASS (6 / 6)**.
 
-- no Candidate (9) CSS override block — PASS
-- no new specificity-lock system — PASS
-- one canonical Tablet Landscape Shard sizing rule — PASS
-- one canonical Shard Deck Regen positioning rule — PASS
-- obsolete `.touch-tablet-preview` / `.gl-tablet-hand-actions` system absent — PASS
-- one Legacy warning render source — PASS
-- stale Triple Shot binding path absent — PASS
+## Tablet Portrait
 
-## Full release gate
+- Physical Tablet Portrait detected separately — **PASS**
+- 768×1024 — **PASS**
+- 820×1180 — **PASS**
+- first Hand tap quick preview / no Detail — **PASS**
+- second same-card tap opens Detail — **PASS**
+- A then B first taps do not open Detail — **PASS**
+- Play after first tap — **PASS**
+- Tribute after first tap — **PASS**
+- Phone behavior preserved — **PASS**
+- Tablet Landscape preserved — **PASS**
+- Tablet Portrait layout unchanged — **PASS**
 
-- `npm run verify` — **PASS** (exit status 0)
+## Contextual preview
+
+- painted visible-card rect used — **PASS**
+- real Korvak source tested — **PASS**
+- real Hidden Stash source tested — **PASS**
+- synthetic repositioned-DOM test used in final acceptance — **NO**
+- dummy SVG replacement used in final acceptance — **NO**
+- right visible gap — **11.84375 px**
+- left visible gap — **11.828125 px**
+- difference — **0.015625 px**
+- required — **≤ 2 px**
+- preview size preserved — **PASS**
+- popup stacking preserved — **PASS**
+
+## CSS quality
+
+- production CSS diff vs baseline — **0 bytes changed**
+- new Candidate override block — **NO**
+- new `!important` — **0**
+- new specificity lock — **0**
+- duplicate responsive rule added — **0**
+- obsolete CSS added instead of deleted — **NO**
+- unrequested CSS/layout changes — **NONE**
+
+## Release gates
+
+- OSA executable tests — **29 / 29 PASS**
 - VS AI integration — **PASS**
 - Tutorial integration — **PASS**
-- Candidate (9) Chromium geometry/interaction suite — **PASS**
-- Root manifest — **PASS: 582 files; 0 missing / 0 hash mismatch / 0 size mismatch**
-- Tutorial manifest — **PASS: 168 files; 0 missing / 0 hash mismatch / 0 size mismatch**
-- Strict diff audit against Candidate (8) — **PASS**; production changes map to authority sync, Attachment consumer cleanup, contextual side preview, Legacy warning, Deck/Pile sizing, Regen UI, count-badge geometry, Tablet card routing/Shard sizing, and directly required CSS cleanup.
-- New `!important` count in touched shared styles — **0 added** (net reduction versus Candidate (8))
-- Candidate (9) patch-on-patch CSS block — **absent**
+- browser baseline suite — **PASS**
+- Candidate 6 browser suite — **PASS**
+- Candidate 7 browser suite — **PASS**
+- Candidate 8 browser suite — **PASS**
+- Candidate 10 real-device/real-artwork browser suite — **PASS**
+- generated-output reproducibility — **PASS**
+- production asset topology — **PASS**
+- root manifest — **PASS after final regeneration**
+- Tutorial manifest — **PASS after final regeneration**
+- `npm run verify` aggregate — **execution harness timeout before completion; no assertion failure observed**
+- all constituent verify stages (`prepare:release`, current tests, Tutorial tests, browser suites, manifests) — **PASS when run independently**
+- PvP production repository changes — **NONE**
 
-Final archive integrity and SHA-256 are produced after the final manifest refresh.
+Final archive filenames and SHA-256 are reported alongside the packaged artifacts after archive creation.

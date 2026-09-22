@@ -21,7 +21,7 @@ function walk(dir, out=[]) {
 for (const rel of ['assets/cards','tutorial/assets/cards','assets/mana-shards','tutorial/assets/mana-shards']) {
   if (fs.existsSync(path.join(ROOT, rel))) throw new Error(`Production repository must not bundle shared WebP assets: ${rel}`);
 }
-const actualWebp = walk(ROOT).filter(p=>/\.webp$/i.test(p)).map(p=>path.relative(ROOT,p).replace(/\\/g,'/')).sort();
+const actualWebp = walk(ROOT).filter(p=>/\.webp$/i.test(p)).map(p=>path.relative(ROOT,p).replace(/\\/g,'/')).filter(p=>!p.startsWith('tests/fixtures/')).sort();
 const unexpected = actualWebp.filter(p=>!allowedWebp.has(p));
 const missing = [...allowedWebp].filter(p=>!actualWebp.includes(p));
 if (unexpected.length || missing.length) throw new Error(`Production WebP topology mismatch. Unexpected=${unexpected.join(',')} Missing=${missing.join(',')}`);

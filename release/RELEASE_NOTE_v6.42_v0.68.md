@@ -1,48 +1,73 @@
-# Grandis Legacy VS AI v6.42 / Tutorial v0.68 — Candidate (9)
+# Grandis Legacy VS AI v6.42 / Tutorial v0.68 — Final Stability Pass (2026-09-22)
 
-Release date: 2026-09-21  
-Baseline: **Candidate (8)**  
-Application versions: **VS AI v6.42 / Tutorial v0.68**
+Baseline application package: **2026-09-21(9)**  
+Application versions remain: **VS AI v6.42 / Tutorial v0.68**
 
 ## Scope
 
-Candidate (9) synchronizes VS AI/Tutorial to **Source Authority v1.9.4** and performs the final requested UI/CSS cleanup without a broad redesign. PvP and Deck Builder are not modified. Starter Deck composition remains unchanged.
+This release synchronizes VS AI/Tutorial to **Source Authority v1.9.5** and fixes only the final pre-PvP stability scope:
 
-Active authority stack:
+1. systemic Class Ability resolution,
+2. systemic Racial Trait resolution,
+3. Triple Shot + Hero Class Ability interaction,
+4. Tablet Portrait Hand-card interaction,
+5. contextual side-preview painted-edge geometry.
 
-- OSA v1.9.4
-- Shared Runtime v1.94.2
-- Runtime Data v0.16.1
-- Effect Recipe v0.15.1
-- Effect Checkpoint v0.15.1
-- UI Contract v2.53
-- Application Runtime Sync v2.62
+PvP is not modified. Starter Deck composition remains unchanged.
+
+## Active authority stack
+
+- OSA v1.9.5
+- Shared Runtime v1.94.2 (unchanged)
+- Runtime Data v0.16.2
+- Effect Recipe v0.15.2
+- Effect Checkpoint v0.15.2
+- Application Runtime Sync v2.63
+- UI Contract v2.53 (unchanged)
 - Starter Deck Authority v1.6.1 / 5 active starters
 - 200 canonical cards
 
-## Attachment authority synchronization
+## Hero Components
 
-- Triple Shot is no longer a presence-only/no-expiry exception. It is a canonical This-Turn Attachment with counter 1 and owner-End-Phase expiry.
-- Triple Shot still does not bind to one physical Poison Arrow/Burning Arrow card instance.
-- Attachment lifecycle fields are authority-defined; application fallback/hardcoding that conflicts with OSA is removed.
-- Countdown, multi-turn, Draw-checkpoint, Battle-checkpoint, progress/consume, Status-vs-Attachment, Hero-defeat cleanup, and final-Hero terminal behavior are covered by authority/runtime tests.
+Generated Hero compatibility caches now come from canonical Hero Component references:
 
-## UI/CSS cleanup
+- Racial Trait caches: **30 / 30**
+- Class Ability caches: **20 / 20**
+- Rank-I Heroes without Class Ability: **10**, intentionally unchanged
+- component deep parity and registry-hash validation: **PASS**
+- application startup guard fails loudly on missing/mismatched component caches
+- gameplay/UI uses a single resolved Hero Component access path
 
-- Side previews anchor to the actual activated card element and use a single shared GAP with clamping only when necessary.
-- Legacy warning has a single render source and a single warning DOM node per condition.
-- Deck/Pile back-card sizing is consolidated to one visual footprint family.
-- The text `REGEN` is removed globally; only the existing graphical counter remains.
-- Desktop and Tablet Landscape Regen counter is centered against the Shard Deck card. Mobile/Tablet Portrait retain their approved vertical region with the graphical counter centered in-slot.
-- Mobile/Tablet Portrait count badges use badge-center = card top-right corner geometry.
-- Tablet Landscape Shard Deck count uses the same corner relationship.
-- Tablet Landscape Shards render at 80–85% of the Hand reference width.
-- Live battlefield tablet taps use one coherent routing path: first tap Quick Preview, second same-card activation Detail. Inspection/modal cards may open Detail directly. Play/Tribute remain direct actions.
-- Obsolete tablet preview remnants and stale competing touched-feature rules are removed instead of hidden behind another override layer.
+Existing execution engines remain where appropriate, but ability identity, eligibility, cost, amount, duration, and modifiers are authorized by resolved component definitions rather than isolated class-name repair hacks.
 
-## Preserved behavior
+## Triple Shot / attack profile
 
-- Battlefield quick preview remains unchanged.
-- Tablet Landscape Phase Tracker and Lobby scroll remain on their approved Candidate (8) behavior.
-- Hidden opponent information, popup stacking, Response ownership, Shard gain animation, and final-Hero terminal evaluation remain protected.
-- VS AI stays v6.42 and Tutorial stays v0.68.
+The v1.9.4 Triple Shot lifecycle is preserved exactly: counter 1, owner End Phase `1 -> 0`, remove Attachment, Discard exactly once, no one-attack consumption, and no physical Arrow binding.
+
+For Marksman, Sharpshooter Range coverage and Triple Shot Area/multi-target behavior coexist. Attack Label, Damage Type, Coverage, and Target Multiplicity remain distinct dimensions. A LEFT-lane Marksman with Triple Shot + qualifying Arrow processes legal targets LEFT → CENTER → RIGHT with separate Response opportunities.
+
+## Tablet Portrait
+
+Physical Tablet Portrait is detected separately from generic mobile layout. Hand behavior is now:
+
+- first tap = existing quick preview,
+- second tap on the same card = Detail Preview,
+- first tap A then first tap B = quick preview B, no Detail popup,
+- Play / Tribute action always wins over preview routing,
+- armed state resets on the required lifecycle transitions.
+
+Phone and Tablet Landscape behavior remain preserved.
+
+## Contextual preview
+
+Modal contextual preview positioning now measures actual painted `object-fit: contain` artwork edges rather than only the `<img>` layout box. Real production Korvak Ironfang / Hidden Stash acceptance measured:
+
+- right visible gap: **11.84375 px**
+- left visible gap: **11.828125 px**
+- difference: **0.015625 px** (required ≤ 2 px)
+
+No dummy SVG replacement and no synthetic repositioned-DOM acceptance test is used in the final Candidate 10 gate.
+
+## CSS / locked UI
+
+Production CSS is byte-identical to the 2026-09-21(9) baseline. No new `!important`, specificity lock, duplicate responsive rule, Candidate override block, or layout redesign was added. Desktop, phone, Tablet Landscape, Tablet Portrait layout, Card Played, Response Window, battlefield quick preview, Deck/Pile geometry, Regen presentation, badges, Shard sizing, Status UI, Attachment UI, and Lobby layout remain locked except for the requested JS interaction/geometry behavior.

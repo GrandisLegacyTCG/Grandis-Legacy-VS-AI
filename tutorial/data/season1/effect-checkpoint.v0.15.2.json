@@ -1,0 +1,34 @@
+{
+  "schema_version": "0.15.2",
+  "effect_checkpoint_version": "0.15.2",
+  "data_type": "effect_checkpoint_index",
+  "do_not_edit": true,
+  "generated_at": "2026-09-22",
+  "generator": "Authority/Runtime/Validators/generate-v1.9.5.cjs",
+  "generator_version": "1.9.5-hero-component-generator.1",
+  "canonical_sources": [
+    "Authority/Game/Cards/cards.canonical.v1.6.0.json",
+    "Authority/Game/Heroes/hero-components.canonical.v1.1.0.json",
+    "Authority/Game/Mechanics/gameplay-authority.v1.9.0.json"
+  ],
+  "source_hashes": {
+    "Authority/Game/Cards/cards.canonical.v1.6.0.json": "e92dd8dae9975103bae5dd14ce3823cd10fb91f3fe4dd024d90a4ed7ffe3fe9d",
+    "Authority/Game/Heroes/hero-components.canonical.v1.1.0.json": "112632e5bb821b415a63554c287fc056977939d2efa66e9e5b50b36a328769b5",
+    "Authority/Game/Mechanics/gameplay-authority.v1.9.0.json": "4538cd42aaed3d0dc955454870aaca7c3aa77f82152f9da01dcd2e4d3c6ae507"
+  },
+  "canonical_registry_hash": "7ac1f90f6a9654cf575ac41db64a052901005905b1cf01f3bfc7532873cc9389",
+  "hero_component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
+  "count": 200,
+  "runtime_data": {
+    "version": "v0.16.2",
+    "file": "Generated/Runtime-Data/cards.runtime.v0.16.2.json",
+    "sha256": "79f090fb78fb45b6fc48646c664438d5d5d4c3bab67f72aa36bc89bbccbd89f0"
+  },
+  "effect_recipe": {
+    "version": "v0.15.2",
+    "file": "Generated/Effect-Recipe/effect-recipes.runtime.v0.15.2.json",
+    "sha256": "173728d564f93d95afda938426492ce853f88179e67ca4147a5fb9c530255b3d"
+  },
+  "policy": "Checkpoint stores identity and hashes instead of duplicating full Runtime Data or Effect Recipe payloads.",
+  "generated_only": true
+}
