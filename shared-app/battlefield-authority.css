@@ -346,15 +346,6 @@ html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-hand .hand-card .hand-acti
   width:auto!important;min-width:44px!important;max-width:76px!important;height:18px!important;min-height:18px!important;padding-inline:5px!important;
 }
 
-/* Single-tap battlefield quick preview is a fixed overlay and never participates in layout. */
-html.gl-ui-tablet.gl-tablet-landscape-desktop body:has(.gl-lab-authority) .hover-card-zoom.is-tablet-battlefield-quick{
-  display:block!important;position:fixed!important;width:var(--gl-tablet-quick-w,196px)!important;height:var(--gl-tablet-quick-h,274px)!important;
-  max-width:32vw!important;max-height:52dvh!important;aspect-ratio:5/7!important;pointer-events:none!important;z-index:3200!important;
-}
-html.gl-ui-tablet.gl-tablet-landscape-desktop body:has(.gl-lab-authority) .hover-card-zoom.is-tablet-battlefield-quick img{
-  width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;
-}
-
 /* Tablet-landscape Class/Racial labels: typography-only fit, up to two lines before ellipsis. */
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions{right:3px!important;top:3px!important;max-width:32%!important;width:min(92px,32%)!important;}
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions .actionBtn{
@@ -363,10 +354,10 @@ html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions .ac
   display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;overflow:hidden!important;text-overflow:ellipsis!important;
 }
 
-/* Tablet-landscape Shard Pool cards have one canonical actual rendered size: 82.5% of Hand/Hero reference. */
+/* Tablet-landscape Shard Pool cards: 80% of the previously rendered Shard footprint. */
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-mana-card{
-  flex:0 0 calc(var(--lab-card-w) * .825)!important;width:calc(var(--lab-card-w) * .825)!important;height:calc(var(--lab-card-h) * .825)!important;
-  max-width:calc(var(--lab-card-w) * .825)!important;max-height:calc(var(--lab-card-h) * .825)!important;
+  flex:0 0 calc(var(--lab-card-w) * .66)!important;width:calc(var(--lab-card-w) * .66)!important;height:calc(var(--lab-card-h) * .66)!important;
+  max-width:calc(var(--lab-card-w) * .66)!important;max-height:calc(var(--lab-card-h) * .66)!important;
 }
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-mana-row{gap:clamp(5px,.7vw,10px)!important;}
 

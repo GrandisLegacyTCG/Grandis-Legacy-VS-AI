@@ -13,7 +13,7 @@ Current data/runtime references:
 - Application Runtime Sync v2.63
 - Canonical cards: 200
 
-Candidate (10) consumes the OSA v1.9.5 Attachment lifecycle correction, including Triple Shot's authority-defined This-Turn counter-1 End-Phase expiry, while preserving no physical Arrow-card binding. Tutorial gameplay/runtime behavior stays synchronized with VS AI.
+Candidate (11) consumes the OSA v1.9.5 Attachment lifecycle correction, including Triple Shot's authority-defined This-Turn counter-1 End-Phase expiry, while preserving no physical Arrow-card binding. Tutorial gameplay/runtime behavior stays synchronized with VS AI.
 
 The retired Starter60 v1.5 15-preset library is historical/non-active only. Established teaching for Starting Shards, the 12-card Shard Deck, Mana Regen, payment batches, Ultimate Tribute 200 EXP, Bound Hero/matching Class Shard requirements, and Draw sequencing remains preserved.
 

@@ -22,7 +22,7 @@ Hero Component registry SHA256: `f36f1cc83eb9845743176c3af71f7823125353eae73e832
 
 ## Active Starter Deck set
 
-The player-facing starter selector consumes the five current OSA v1.9.5 / Starter Deck Authority v1.6.1 compositions. Candidate (10) does **not** change Starter Deck composition. The retired Starter60 v1.5 15-preset library remains historical/non-active only.
+The player-facing starter selector consumes the five current OSA v1.9.5 / Starter Deck Authority v1.6.1 compositions. Candidate (11) does **not** change Starter Deck composition. The retired Starter60 v1.5 15-preset library remains historical/non-active only.
 
 ## One-source architecture
 
@@ -32,13 +32,13 @@ The player-facing starter selector consumes the five current OSA v1.9.5 / Starte
 
 `shared-ui/` provides the shared Battlefield UI contract/helper. Tutorial-specific teaching remains additive in `tutorial/js/tutorial-guide.js` and `tutorial/css/tutorial-guide.css`.
 
-## Candidate (10) authority synchronization
+## Candidate (11) authority synchronization
 
 OSA v1.9.5 formalizes card-owned persistent Attachment lifecycles. In particular, **Triple Shot** now follows its canonical **This turn** lifecycle: it enters an Attachment Slot with counter 1, remains active through the owner's turn, ticks at the owner's End Phase, expires at 0, removes its modifier, and moves to Discard exactly once. Its no-physical-card-instance-binding behavior is preserved. Status-producing immediate cards are not kept attached merely because the Status persists.
 
 The application consumes the authority-defined Attachment policy instead of retaining a Triple Shot lifetime exception, unsafe `remaining_count || 1` fallback, or universal End-Phase Attachment expiry. The final-Hero terminal lifecycle remains protected after Hero-bound cleanup.
 
-## Candidate (10) UI cleanup
+## Candidate (11) UI cleanup
 
 - Contextual side previews anchor to the exact activated visible card and use one shared left/right gap algorithm. Battlefield quick preview remains separate.
 - Legacy warning rendering has one source and one DOM warning node per warning condition.
@@ -46,7 +46,7 @@ The application consumes the authority-defined Attachment policy instead of reta
 - Mana Regen uses only the graphical counter; the text label `REGEN` is removed on all devices.
 - Mobile/Tablet Portrait deck counts use badge-center-to-card-corner anchoring.
 - Tablet Landscape keeps the approved Phase Tracker and Lobby scroll, uses counter-only Shard Deck Regen, 80–85% Shard Pool card sizing, and coherent first-tap Quick Preview / second-same-card Detail routing for live battlefield cards. Explicit Play/Tribute actions remain direct actions.
-- Touched CSS/JS is consolidated rather than adding a Candidate (10) override layer.
+- Touched CSS/JS is consolidated rather than adding a Candidate (11) override layer.
 
 ## Verification
 

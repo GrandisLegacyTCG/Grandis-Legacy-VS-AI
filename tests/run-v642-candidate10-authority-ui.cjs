@@ -28,11 +28,24 @@ assert.strictEqual((app.match(/var legacyWarning=/g)||[]).length,1,'Legacy warni
 assert(!/legacy-hero-info--(?:mobile|desktop)/.test(app),'Obsolete Legacy warning render variants remain');
 assert(!/touch-tablet-preview|gl-tablet-hand-actions/.test(app+allCss),'Obsolete tablet Preview button/portal implementation remains');
 assert(!/<small[^>]*>\s*REGEN\s*<\/small>|>\s*REGEN\s*</i.test(app),'Rendered REGEN text remains');
-assert(!/Candidate\s*\(9\)/i.test(allCss),'Candidate (10) patch block must not exist in final CSS');
+assert(!/Candidate\s*\(11\)/i.test(allCss),'Candidate (11) must not be appended as a bottom CSS override block');
 assert(!/Specificity lock/i.test(allCss),'Obsolete specificity-lock CSS remains');
 assert.strictEqual((fieldCss.match(/html\.gl-ui-tablet\.gl-tablet-landscape-desktop \.gl-lab-mana-card\s*\{/g)||[]).length,1,'Tablet Shard sizing must have one canonical rule');
+
+assert(!/isTouchTabletPortraitViewport|v642TabletPortraitHandCardTap|GL_TABLET_PORTRAIT_HAND_TAP_STATE|resetTabletPortraitHandTapState/.test(app),'Obsolete Tablet Portrait 1/2-tap implementation remains');
+assert(!/v642TabletBattlefieldQuickGeometry|v642TabletBattlefieldQuickPreview|is-tablet-battlefield-quick/.test(app+allCss),'Duplicate Tablet Landscape preview renderer remains');
+assert(/GL_TABLET_BATTLEFIELD_TAP_STATE=\{anchor:null\}/.test(app),'Tablet Landscape battlefield instance state missing');
+assert(/GL_TABLET_BATTLEFIELD_TAP_STATE\.anchor===el/.test(app)&&/zoom\._glAnchor===el/.test(app),'Second tap must be bound to the exact same battlefield DOM instance');
+assert(/v253OpenDesktopPreview\(fullFor\(cardId\),cardName\(card\(cardId\)\),el,'field',true\)/.test(app),'Tablet Landscape first tap does not reuse the canonical Desktop preview renderer');
+assert(/if\(v642TabletBattlefieldCardTap\(zoomCard\)\)return;\s*showPreview\(zoomCard\.getAttribute\('data-preview'\)\)/.test(app),'Canonical event dispatcher order for battlefield then generic inspection is missing');
+assert(!/\.825/.test(fieldCss),'Old 82.5% Tablet Landscape Shard rule remains');
+const shardRule=fieldCss.match(/html\.gl-ui-tablet\.gl-tablet-landscape-desktop \.gl-lab-mana-card\s*\{[\s\S]*?\}/)?.[0]||'';
+assert(/\* \.66\)/.test(shardRule),'Canonical Tablet Landscape Shard footprint is not 80% of prior .825 baseline');
+assert(!/transform\s*:\s*scale\s*\(\s*\.8/i.test(shardRule),'Shard reduction must change the layout box, not transform-only scale');
+assert(/gl-shared-v642-068-c11/.test(read('index.html'))&&/gl-authority-v642-068-c11/.test(read('index.html')),'Candidate 11 cache-buster missing in root index');
+assert(/gl-shared-v642-068-c11/.test(read('tutorial/index.html'))&&/gl-authority-v642-068-c11/.test(read('tutorial/index.html')),'Candidate 11 cache-buster missing in tutorial index');
 assert.strictEqual((fieldCss.match(/\.gl-lab-zone\[data-zone-type="Shard Deck"\] \.zoneCard>\.gl-lab-mana-regen\s*\{/g)||[]).length,1,'Desktop/tablet Regen positioning must have one canonical rule');
 const newImportantDelta=(allCss.match(/!important/g)||[]).length;
 assert(newImportantDelta>0,'Stylesheet unexpectedly empty of legacy important rules');
 const qa=app.match(/tripleShotThisTurnLifecycle:true/);assert(qa,'Application integration QA does not expose Triple Shot this-turn lifecycle gate');
-console.log('PASS Candidate (10) authority/UI architecture: OSA v1.9.5 sync, 24 explicit attachment policies, Triple Shot counter-1 End-Phase lifecycle, no stale binding/fallback, one Legacy warning render source, no REGEN text, no obsolete tablet Preview system, canonical Shard/Regen rules.');
+console.log('PASS Candidate (11) authority/UI architecture: OSA v1.9.5 sync, 24 explicit attachment policies, Triple Shot counter-1 End-Phase lifecycle, no stale binding/fallback, one Legacy warning render source, no REGEN text, no obsolete tablet Preview system, canonical Shard/Regen rules.');

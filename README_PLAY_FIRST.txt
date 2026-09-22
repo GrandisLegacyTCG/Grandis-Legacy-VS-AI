@@ -8,4 +8,4 @@ GRANDIS LEGACY VS AI v6.42 + TUTORIAL v0.68 — CANDIDATE (9)
 6. Historical release documentation is preserved in release/history/.
 7. Do not independently edit tutorial/runtime-source/runtime; it is generated from runtime-source/runtime.
 8. Do not create an independent Tutorial battlefield UI fork; both applications consume shared-ui/.
-9. PvP and Deck Builder are outside Candidate (10) application changes.
+9. PvP and Deck Builder are outside Candidate (11) application changes.

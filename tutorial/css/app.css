@@ -6369,7 +6369,7 @@ body:has(.v96-app.mobile-restored-layout) #glMobileAppMenu{display:none!importan
 .gl-lab-zone .zoneCard img{width:100%!important;height:100%!important;object-fit:contain!important;}
 
 @media(max-width:760px),(hover:none),(pointer:coarse){
-  #hoverCardZoom.is-v253-readable-preview,#hoverCardZoom.is-card-played-hover{display:none!important;}
+  body:not(.gl-ui-desktop):not(.gl-tablet-landscape-desktop) #hoverCardZoom.is-v253-readable-preview,#hoverCardZoom.is-card-played-hover{display:none!important;}
   .gl-count-badge,.gl-status-count,.gl-attachment-count{min-width:18px;height:17px;padding:0 4px;font-size:9px;}
 }
 /* UI Contract v2.53: keep battlefield deck/pile containers proportional to their card stack. */
