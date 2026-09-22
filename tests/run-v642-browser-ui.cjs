@@ -2,6 +2,7 @@
 const fs=require('fs'),path=require('path'),assert=require('assert'),{spawn,spawnSync}=require('child_process');
 const ROOT=path.resolve(__dirname,'..');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function terminateChromeTree(child){if(!child)return;const kill=sig=>{try{if(process.platform!=='win32'&&child.pid)process.kill(-child.pid,sig);else child.kill(sig);}catch{try{child.kill(sig);}catch{}}};kill('SIGTERM');await sleep(180);kill('SIGKILL');await sleep(60);}
 function findChrome(){for(const c of ['chromium','chromium-browser','google-chrome','google-chrome-stable']){const r=spawnSync('bash',['-lc',`command -v ${c}`],{encoding:'utf8'});if(r.status===0&&r.stdout.trim())return r.stdout.trim();}throw new Error('Chromium/Chrome is required for the v6.42 browser UI verification.');}
 class CDP{
   constructor(ws){this.ws=ws;this.id=0;this.wait=new Map();ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.id&&this.wait.has(m.id)){this.wait.get(m.id)(m);this.wait.delete(m.id);}};}
@@ -10,7 +11,7 @@ class CDP{
 }
 (async()=>{
   const chromePath=findChrome(),port=9237,profile='/tmp/grandis-v642-v253-browser-profile';fs.rmSync(profile,{recursive:true,force:true});
-  const chrome=spawn(chromePath,['--headless=new','--no-sandbox','--disable-gpu',`--user-data-dir=${profile}`,`--remote-debugging-port=${port}`,'--remote-allow-origins=*','about:blank'],{stdio:'ignore'});
+  const chrome=spawn(chromePath,['--headless=new','--no-sandbox','--disable-gpu',`--user-data-dir=${profile}`,`--remote-debugging-port=${port}`,'--remote-allow-origins=*','about:blank'],{stdio:'ignore',detached:true});
   let ws=null;
   try{
     let tabs=null;for(let i=0;i<80;i++){try{const res=await fetch(`http://127.0.0.1:${port}/json`);tabs=await res.json();if(tabs&&tabs.length)break;}catch{}await sleep(100);}if(!tabs||!tabs.length)throw new Error('Could not connect to headless Chromium DevTools endpoint.');
@@ -114,5 +115,5 @@ class CDP{
     await mode('tablet',1180,820,'gl-tablet-landscape-desktop');
 
     console.log('PASS Chromium UI correction: battlefield X/Next Phase, readable opponent Shard + hidden safety, close/larger Card Played, Legacy/History/Response/Discard/selection modal portal, rounded-rectangle counters, centered deck backs, responsive Regen, Status/Attachment badges, persistent warning, Exhaust scale parity, and desktop/phone/tablet regression.');
-  } finally {try{if(ws)ws.close();}catch{}chrome.kill('SIGTERM');}
+  } finally {try{if(ws)ws.close();}catch{}await terminateChromeTree(chrome);}
 })().then(()=>process.exit(0)).catch(err=>{console.error(err&&err.stack||err);process.exit(1);});

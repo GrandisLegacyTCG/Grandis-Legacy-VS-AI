@@ -248,8 +248,14 @@ html.gl-ui-tablet.gl-tablet-landscape-desktop body:has(.gl-lab-authority) #hover
   width:var(--gl-tablet-preview-w)!important;height:var(--gl-tablet-preview-h)!important;
   max-width:calc(100vw - 16px)!important;max-height:calc(100dvh - 16px)!important;aspect-ratio:5/7!important;z-index:3200!important;pointer-events:none!important;
 }
+/* Tablet Portrait keeps Mobile interaction except Shard readability: reuse the same readable-preview node beside the resource strip. */
+html.gl-device-tablet.gl-tablet-portrait-mobile body:has(.v96-app.mobile-restored-layout) #hoverCardZoom.is-v253-readable-preview.is-tablet-portrait-shard-preview{
+  display:block!important;width:var(--gl-tablet-preview-w)!important;height:var(--gl-tablet-preview-h)!important;
+  max-width:calc(100vw - 16px)!important;max-height:calc(100dvh - 16px)!important;aspect-ratio:5/7!important;z-index:3200!important;pointer-events:none!important;
+}
 html.gl-ui-tablet.gl-tablet-landscape-desktop body:has(.gl-lab-authority) #hoverCardZoom.is-hand-hover img,
-html.gl-ui-tablet.gl-tablet-landscape-desktop body:has(.gl-lab-authority) #hoverCardZoom.is-v253-readable-preview img{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;}
+html.gl-ui-tablet.gl-tablet-landscape-desktop body:has(.gl-lab-authority) #hoverCardZoom.is-v253-readable-preview img,
+html.gl-device-tablet.gl-tablet-portrait-mobile body:has(.v96-app.mobile-restored-layout) #hoverCardZoom.is-tablet-portrait-shard-preview img{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain!important;}
 
 /* Short landscape tablets: defeat the constrained-desktop Phase Tracker rules
    from app.css and fit all critical controls inside the actual browser viewport. */
@@ -348,19 +354,23 @@ html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-hand .hand-card .hand-acti
   width:auto!important;min-width:44px!important;max-width:76px!important;height:18px!important;min-height:18px!important;padding-inline:5px!important;
 }
 
-/* Tablet-landscape Class/Racial labels: typography-only fit, up to two lines before ellipsis. */
+/* Tablet-landscape Class/Racial labels: deterministic compact display; Desktop keeps the full canonical label. */
+.tablet-ability-label-compact{display:none;}
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions{right:3px!important;top:3px!important;max-width:32%!important;width:min(92px,32%)!important;}
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions .actionBtn{
   width:100%!important;max-width:100%!important;height:auto!important;min-height:16px!important;max-height:28px!important;
-  padding:2px 4px!important;font-size:5.25px!important;line-height:8px!important;white-space:normal!important;
-  display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  padding:2px 4px!important;font-size:5.25px!important;line-height:8px!important;white-space:nowrap!important;overflow:hidden!important;
 }
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions .racialAbilityAction .tablet-ability-label-full,
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions .classAbilityAction .tablet-ability-label-full{display:none!important;}
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions .racialAbilityAction .tablet-ability-label-compact,
+html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-positions .heroActions .classAbilityAction .tablet-ability-label-compact{display:inline!important;}
 
 /* Tablet-landscape resource strip: physical Shards and Racial Tokens fit the strip itself. */
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-mana-pool{padding-block:0!important;overflow:hidden!important;}
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-mana-row{height:100%!important;align-items:center!important;gap:clamp(4px,.55vw,8px)!important;overflow:hidden!important;}
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-mana-card{
-  flex:0 0 auto!important;width:auto!important;height:66%!important;max-width:none!important;max-height:72%!important;aspect-ratio:5/7!important;
+  flex:0 0 auto!important;width:auto!important;height:82.5%!important;max-width:none!important;max-height:84%!important;aspect-ratio:5/7!important;
 }
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-racial{height:66%!important;min-height:0!important;top:50%!important;transform:translateY(-50%)!important;display:flex!important;align-items:center!important;}
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-racial .racial-coins{width:auto!important;min-width:0!important;height:100%!important;min-height:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:3px!important;}
