@@ -5,11 +5,11 @@ const read=r=>fs.readFileSync(path.join(ROOT,r),'utf8');
 const json=r=>JSON.parse(read(r));
 const sha=r=>crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT,r))).digest('hex');
 const app=read('shared-app/app.bundle.js'),css=read('shared-app/app.css'),index=read('index.html'),tutorialIndex=read('tutorial/index.html');
-assert.strictEqual(json('package.json').version,'6.43.0');
+assert.strictEqual(json('package.json').version,'6.44.0');
 assert.strictEqual(json('tutorial/package.json').version,'0.68.0');
 const stack=json('data/config/active-runtime-source-stack.v1.95.json');
-assert.strictEqual(stack.vs_ai,'v6.43');assert.strictEqual(stack.tutorial,'v0.68');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
-assert(/shared-app\/app\.bundle\.js\?v=gl-vs-ai-643-lobby/.test(index),'Root Lobby does not load canonical shared-app bundle');
+assert.strictEqual(stack.vs_ai,'v6.44');assert.strictEqual(stack.tutorial,'v0.68');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
+assert(/shared-app\/app\.bundle\.js\?v=gl-vs-ai-644-ai-lobby-card-presentation/.test(index),'Root Lobby does not load canonical shared-app bundle');
 assert(/window\.GL_APP_MODE="LOCAL_AI"/.test(index));assert(/window\.GL_APP_MODE="TUTORIAL"/.test(tutorialIndex));
 // Navigation authority.
 for(const url of ['https://grandislegacytcg.github.io/','https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/','https://grandislegacytcg.github.io/pvp/']) assert(index.includes(url),`Missing route ${url}`);
@@ -50,4 +50,4 @@ assert(!/vsai-v643-(?:formation-grid|swap-button|rank-control)/.test(tutorialInd
 // Generated mirrors must stay synchronized to canonical shared source architecture.
 assert.strictEqual(sha('js/app.bundle.js'),sha('tutorial/js/app.bundle.js'),'Generated JS deployment mirrors diverged');
 assert.strictEqual(sha('css/app.css'),sha('tutorial/css/app.css'),'Generated CSS deployment mirrors diverged');
-console.log('PASS VS AI v6.43 static Lobby authority: canonical active bundle, navigation repair, Style 1 formation/Rank controls, local-only Rank preview, locked Battlefield/Tutorial controller, and synchronized generated mirrors.');
+console.log('PASS VS AI v6.44 static Lobby authority: canonical active bundle, navigation repair, Style 1 formation/Rank controls, local-only Rank preview, locked Battlefield/Tutorial controller, and synchronized generated mirrors.');

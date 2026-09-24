@@ -5,7 +5,7 @@ const read=r=>fs.readFileSync(path.join(ROOT,r),'utf8');
 const json=r=>JSON.parse(read(r));
 const app=read('shared-app/app.bundle.js'),fieldCss=read('shared-app/battlefield-authority.css');
 const rootIndex=read('index.html'),tutorialIndex=read('tutorial/index.html');
-assert.strictEqual(json('package.json').version,'6.43.0');
+assert.strictEqual(json('package.json').version,'6.44.0');
 assert.strictEqual(json('tutorial/package.json').version,'0.68.0');
 const stack=json('data/config/active-runtime-source-stack.v1.95.json');
 assert.deepStrictEqual({osa:stack.source_authority,shared:stack.shared_runtime,data:stack.runtime_data,recipe:stack.effect_recipe,checkpoint:stack.effect_checkpoint,sync:stack.application_runtime_sync,ui:stack.ui_contract,starter:stack.starter60},{osa:'v1.9.5',shared:'v1.94.2',data:'v0.16.2',recipe:'v0.15.2',checkpoint:'v0.15.2',sync:'v2.63',ui:'v2.53',starter:'v1.6.1'});
@@ -42,8 +42,8 @@ assert(/\.heroActions:has\(\.racialAbilityAction,\.classAbilityAction,\.legacyAb
 assert(/html\.gl-ui-tablet\.gl-tablet-landscape-desktop \.gl-lab-positions \.heroActions\{right:3px!important;top:3px!important;max-width:32%!important;width:min\(92px,32%\)!important;\}/.test(fieldCss),'Hero-control X/width baseline changed');
 assert(/function compactTabletAbilityLabel\(fullName\)/.test(app),'Compact Class/Racial label logic changed');
 
-assert(/gl-vs-ai-643-lobby/.test(rootIndex),'root VS AI v6.43 shared Lobby cache-buster missing');
-assert(/gl-shared-v642-068-c15/.test(tutorialIndex),'Tutorial Candidate 15 shared cache-buster changed');
+assert(/gl-vs-ai-644-ai-lobby-card-presentation/.test(rootIndex),'root VS AI v6.44 shared Lobby cache-buster missing');
+assert(/gl-shared-v644-068/.test(tutorialIndex),'Tutorial shared-app cache-buster must follow regenerated v6.44 shared bytes');
 for(const [name,text] of [['root',rootIndex],['tutorial',tutorialIndex]]){
   assert(/gl-authority-v642-068-c15/.test(text),`${name} Candidate 15 authority cache-buster missing`);
   assert(!/gl-(?:shared|authority)-v642-068-c14/.test(text),`${name} stale Candidate 14 production cache-buster remains`);

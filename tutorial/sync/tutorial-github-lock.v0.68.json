@@ -4,7 +4,7 @@
   "tutorial": "v0.68",
   "base_vs_ai": "v6.42",
   "delivery": "GitHub Pages",
-  "date": "2026-09-22",
+  "date": "2026-09-25",
   "source_authority": "v1.9.5",
   "canonical_card_authority": "v1.6.0",
   "shared_runtime": "v1.94.2",
@@ -26,14 +26,14 @@
   },
   "visual_battlefield_baseline": "VS AI v6.42 / Shared Battlefield UI v2.53",
   "runtime_source_role": "GENERATED_MIRROR_OF_ROOT_RUNTIME_SOURCE",
-  "shared_app_bundle_sha256": "0eb5997d67223a6b2efc1c88f08ffa8bca176aea44fc16497959c55b7a08f8e4",
-  "app_bundle_sha256": "3e977075f26f6c1022c74c7635a629cf0db11b87838383cdea61b27a779e1a3a",
+  "shared_app_bundle_sha256": "a10200a7a769a8eecaf24befb4d8f57e97edbaca82c691b00c598cf59a1ff974",
+  "app_bundle_sha256": "d1cbe9178b76298e53e45caea87548c4cc98654c45dd66abda74ab8e4d83b4a5",
   "active_starters_sha256": "6ef77cb9508465c6569698fc65ef77e0ea04cb5a1abfb09cfd8b098e3b340f31",
   "active_starter_count": 5,
   "tutorial_guide_sha256": "7a5f56729cd20bd173321cef7958c78ee7c6c652ec17f56fa2f01c6121e3a367",
   "tutorial_css_sha256": "ef2c532b3eccb2c43a5810f4538c897862bd54051e31805e81d5553a9bbdcc2f",
   "runtime_authority_sha256": "58a09b947a1d25b2e5e6018c6e0dac9508b5d534dd2a51192cd6dbaf2e1d4399",
-  "static_data_sha256": "02fed69d858685fbf5aba24112d5e33f2b6dde844922a95d1c09452c212d71dd",
+  "static_data_sha256": "9bb011cbbbae8fdee83fc6158cafe42e9708cc3d5c2f91ca457a0b8e5511d8bb",
   "runtime_source_browser_sha256": "bacafbe720fa83ddb68267114ba7a718f16c44a4b20453decc86ed63b190c8f4",
   "shared_battlefield_ui_js_sha256": "110394df12e3052bbcc961de24dad29b5734af65d0a7c0afdd2c8ffdaf8a81cb",
   "shared_battlefield_ui_css_sha256": "2b70d63c74081a8809b2a2d456ec1b620a9a078ab84f597c0607a928503a9378",
@@ -45,5 +45,5 @@
     "5": "85f314ae9c68b8e05b27c08f89a9e208b12969e6cb113ef45acd2967928266de",
     "6": "9b45066100db47a512cea48d91f277899eff1a1b03a97524a634a7b7a438a4ae"
   },
-  "tutorial_scope": "Tutorial overlay/controller on the shared VS AI v6.42 battlefield/runtime baseline; lessons remain tutorial-specific."
+  "tutorial_scope": "Tutorial overlay/controller on the shared generated application mirror; Tutorial v0.68 lessons/controller remain unchanged."
 }
