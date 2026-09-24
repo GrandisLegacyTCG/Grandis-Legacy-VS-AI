@@ -6519,3 +6519,12 @@ html.gl-ui-tablet.gl-tablet-landscape-desktop body.deck-setup-active .deck-setup
 html.gl-ui-tablet.gl-tablet-landscape-desktop body.deck-setup-active .deck-setup-screen.runtime-ui-v14-setup .deck-side{
   height:auto!important;max-height:none!important;overflow:visible!important;
 }
+/* VS AI v6.43 Lobby Hero controls — Deck Builder v1.31 Style 1 component authority. */
+.deck-setup-screen.runtime-ui-v14-setup .vsai-v643-formation-grid{display:grid;grid-template-columns:minmax(0,1fr) 27px minmax(0,1fr) 27px minmax(0,1fr);gap:6px;align-items:center}
+.deck-setup-screen.runtime-ui-v14-setup .vsai-v643-swap-button{width:27px;height:27px;padding:0;display:grid;place-items:center;border:0;border-radius:50%;background:#0aa8f6;color:#fff;font-size:17px;font-weight:900;cursor:pointer;box-shadow:0 4px 10px rgba(0,157,239,.38)}
+.deck-setup-screen.runtime-ui-v14-setup .vsai-v643-swap-button:disabled{opacity:.25;cursor:not-allowed}
+.deck-setup-screen.runtime-ui-v14-setup .vsai-v643-rank-control{width:max-content;margin:17px auto 0;display:grid;grid-template-columns:31px 74px 31px;align-items:center;border:1px solid #40424c;border-radius:7px;background:#121318;overflow:hidden}
+.deck-setup-screen.runtime-ui-v14-setup .vsai-v643-rank-control button{height:31px;padding:0;border:0;border-radius:0;background:transparent;color:#fff;font-size:22px;font-weight:400;line-height:normal;cursor:pointer;box-shadow:none}
+.deck-setup-screen.runtime-ui-v14-setup .vsai-v643-rank-control button:hover{background:#24262e}
+.deck-setup-screen.runtime-ui-v14-setup .vsai-v643-rank-control strong{text-align:center;color:#f0d27f;font-size:10px;font-weight:700;line-height:normal}
+
