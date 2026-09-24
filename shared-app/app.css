@@ -6527,7 +6527,7 @@ html.gl-ui-tablet.gl-tablet-landscape-desktop body.deck-setup-active .deck-setup
 html.gl-ui-tablet.gl-tablet-landscape-desktop body.deck-setup-active .deck-setup-screen.runtime-ui-v14-setup .deck-side{
   height:auto!important;max-height:none!important;overflow:visible!important;
 }
-/* VS AI v6.44 Lobby Hero controls — Deck Builder v1.31 Style 1 component authority; shared by Player and AI. */
+/* VS AI v6.45 Lobby Hero controls — Deck Builder v1.31 Style 1 component authority; shared by Player and AI. */
 .deck-setup-screen.runtime-ui-v14-setup .vsai-v643-formation-grid{display:grid;grid-template-columns:minmax(0,1fr) 27px minmax(0,1fr) 27px minmax(0,1fr);gap:6px;align-items:center}
 .deck-setup-screen.runtime-ui-v14-setup .vsai-v643-swap-button{width:27px;height:27px;padding:0;display:grid;place-items:center;border:0;border-radius:50%;background:#0aa8f6;color:#fff;font-size:17px;font-weight:900;cursor:pointer;box-shadow:0 4px 10px rgba(0,157,239,.38)}
 .deck-setup-screen.runtime-ui-v14-setup .vsai-v643-swap-button:disabled{opacity:.25;cursor:not-allowed}

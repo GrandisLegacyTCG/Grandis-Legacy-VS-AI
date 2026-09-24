@@ -1,6 +1,6 @@
 {
   "name": "grandis-legacy-vs-ai-tutorial",
-  "version": "6.44.0",
+  "version": "6.45.0",
   "private": true,
   "scripts": {
     "build:data": "node tools/build-static-data.cjs",
@@ -8,18 +8,18 @@
     "manifest": "node tools/build-file-manifests.cjs",
     "syntax": "node --check shared-app/active-starters.js && node --check shared-app/app.bundle.js && node --check js/app.bundle.js && node --check js/static-data.js && node --check js/runtime-authority.js && node --check shared-ui/battlefield-ui.js && node --check tutorial/js/app.bundle.js && node --check tutorial/js/tutorial-guide.js && node --check tutorial/js/static-data.js && node --check tutorial/js/runtime-authority.js && find runtime-source/runtime tutorial/runtime-source/runtime -type f \\( -name \"*.js\" -o -name \"*.mjs\" \\) -print0 | sort -z | xargs -0 -r -n1 node --check",
     "prepare:release": "npm run build:data && npm run metadata",
-    "test:current": "node tests/run-v642-final-correction.cjs && node tests/run-v642-authority-sync.cjs && node tests/run-v642-osa192-starter-sync.cjs && node tests/run-v642-osa192-starter1-scope.cjs && node tests/run-v642-application-integration.cjs && node tests/run-v642-ui-contract.cjs && node tests/run-v642-generated-reproducibility.cjs && node tests/run-v642-runtime-security.cjs && node tests/run-v642-responsive-contract.cjs && node tests/run-production-asset-topology.cjs && node tests/run-v625-deck-legality.cjs && node tests/run-v626-response-payment-framework.cjs && node tests/run-attachment-slot-parity.cjs && node tests/run-opening-flow-test.cjs && node tests/run-v614-result-reload.cjs && node tests/run-v610-audio-rename.cjs && node tests/run-tactical-ai-planner.cjs && node tests/run-v612-mobile-navigation.cjs && node tests/run-v642-candidate15-authority-ui.cjs && node tests/run-v642-final-stability-hero-components.cjs && node tests/run-v643-lobby.cjs && node tests/run-v644-ai-lobby-card-presentation.cjs",
+    "test:current": "node tests/run-v642-final-correction.cjs && node tests/run-v642-authority-sync.cjs && node tests/run-v642-osa192-starter-sync.cjs && node tests/run-v642-osa192-starter1-scope.cjs && node tests/run-v642-application-integration.cjs && node tests/run-v642-ui-contract.cjs && node tests/run-v642-generated-reproducibility.cjs && node tests/run-v642-runtime-security.cjs && node tests/run-v642-responsive-contract.cjs && node tests/run-production-asset-topology.cjs && node tests/run-v625-deck-legality.cjs && node tests/run-v626-response-payment-framework.cjs && node tests/run-attachment-slot-parity.cjs && node tests/run-opening-flow-test.cjs && node tests/run-v614-result-reload.cjs && node tests/run-v610-audio-rename.cjs && node tests/run-tactical-ai-planner.cjs && node tests/run-v612-mobile-navigation.cjs && node tests/run-v642-candidate15-authority-ui.cjs && node tests/run-v642-final-stability-hero-components.cjs && node tests/run-v643-lobby.cjs && node tests/run-v644-ai-lobby-card-presentation.cjs && node tests/run-v645-ai-reposition.cjs",
     "test:historical-promotion-v014": "node tests/history/promotion-v014/run-baseline-preservation-v07.cjs && node tests/history/promotion-v014/run-card-played-audit.cjs && node tests/history/promotion-v014/run-draw-phase-sequencing-v010.cjs && node tests/history/promotion-v014/run-layout-authority-v010.cjs && node tests/history/promotion-v014/run-opening-flow-lab.cjs && node tests/history/promotion-v014/run-physical-mana-gameplay-smoke-v07.cjs && node tests/history/promotion-v014/run-playtest-mana-system.cjs && node tests/history/promotion-v014/run-render-smoke-v010.cjs && node tests/history/promotion-v014/run-v010-finishing-audit.cjs && node tests/history/promotion-v014/run-v011-root-fix.cjs && node tests/history/promotion-v014/run-v012-opening-arbalest.cjs && node tests/history/promotion-v014/run-v013-update.cjs && node tests/history/promotion-v014/run-v014-rule-sync.cjs && node tests/history/promotion-v014/run-v07-payment-racial.cjs",
     "check": "npm run syntax && npm run test:current",
     "test": "npm run check",
     "test:tutorial": "cd tutorial && npm test",
     "verify": "npm run prepare:release && npm run check && npm run test:tutorial && npm run test:browser && npm run manifest && node tutorial/tests/run-manifest-verification.cjs && node tests/run-manifest-verification.cjs",
     "verify:stable": "npm run verify",
-    "test:browser": "node tests/run-v644-ai-lobby-card-presentation-browser.cjs && node tests/run-v643-lobby-browser.cjs && node tests/run-v642-browser-suite.cjs",
+    "test:browser": "node tests/run-v645-opponent-hand-browser.cjs && node tests/run-v644-ai-lobby-card-presentation-browser.cjs && node tests/run-v643-lobby-browser.cjs && node tests/run-v642-browser-suite.cjs",
     "test:v643:lobby": "node tests/run-v643-lobby.cjs",
     "test:v643:lobby-browser": "node tests/run-v643-lobby-browser.cjs",
     "test:v644:presentation": "node tests/run-v644-ai-lobby-card-presentation.cjs",
     "test:v644:presentation-browser": "node tests/run-v644-ai-lobby-card-presentation-browser.cjs"
   },
-  "description": "Grandis Legacy VS AI v6.44 + Tutorial v0.68 — AI Lobby parity + card presentation cleanup; OSA v1.9.5 / Shared Runtime v1.94.2 / UI Contract v2.53 consumer"
+  "description": "Grandis Legacy VS AI v6.45 + Tutorial v0.68 \u2014 opponent-hand visual cleanup + tactical AI Reposition upgrade; OSA v1.9.5 / Shared Runtime v1.94.2 / UI Contract v2.53 consumer"
 }

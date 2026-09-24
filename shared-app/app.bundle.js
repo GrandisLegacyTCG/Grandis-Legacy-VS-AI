@@ -1,4 +1,4 @@
-/* Grandis Legacy shared gameplay application v3.4 — ONE EDITABLE SOURCE for VS AI v6.44 + Tutorial v0.68.
+/* Grandis Legacy shared gameplay application v3.4 — ONE EDITABLE SOURCE for VS AI v6.45 + Tutorial v0.68.
    One Source Authority v1.9.5 + Runtime Foundation v1.94.2 / Runtime Core v0.61 / Runtime Data v0.16.2.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
@@ -6,7 +6,7 @@
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
   var IS_TUTORIAL_APP=GL_APP_MODE==='TUTORIAL';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.41 · VS AI v6.42 Battlefield · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.68 GitHub Pages · VS AI v6.42 Base · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61':'Grandis Legacy VS AI v6.44 · Shared Gameplay Bundle v3.4 · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61');
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.41 · VS AI v6.42 Battlefield · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.68 GitHub Pages · VS AI v6.42 Base · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61':'Grandis Legacy VS AI v6.45 · Shared Gameplay Bundle v3.4 · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61');
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
@@ -17,7 +17,7 @@
   var GL_LAB_MANA_ASSET={Generic:'https://grandislegacytcg.github.io/shared/season1/v1/mana-shards/Generic.webp',Warrior:'https://grandislegacytcg.github.io/shared/season1/v1/mana-shards/Warrior.webp',Mage:'https://grandislegacytcg.github.io/shared/season1/v1/mana-shards/Mage.webp',Archer:'https://grandislegacytcg.github.io/shared/season1/v1/mana-shards/Archer.webp',Cleric:'https://grandislegacytcg.github.io/shared/season1/v1/mana-shards/Cleric.webp',Thief:'https://grandislegacytcg.github.io/shared/season1/v1/mana-shards/Thief.webp'};
   var GL_SHARED_CARD_BASE='https://grandislegacytcg.github.io/shared/season1/v1/cards/';
   var GL_REMOTE_CARD_BASE='https://grandislegacytcg.github.io/shared/season1/v1/cards/';
-  var GL_ASSET_REV=IS_TUTORIAL_APP?'gl-tutorial-0.68-osa-1.9.0':'gl-vs-ai-6.44-osa-1.9.0';
+  var GL_ASSET_REV=IS_TUTORIAL_APP?'gl-tutorial-0.68-osa-1.9.0':'gl-vs-ai-6.45-osa-1.9.0';
   var GL_CARD_ZOOM_ID=null;
   var GL_LAST_PLAYER_TURN_BANNER_KEY='', GL_PLAYER_TURN_BANNER_TIMER=null;
   var GL_MODAL_HOVER_GUARD_BOUND=false;
@@ -2215,7 +2215,10 @@
       hand.forEach(function(cardId,idx){ var ts=legalTributeStateFor(state,side,cardId); if(!ts.can) return; legalTributeTargetLanesFor(state,side,cardId).forEach(function(lane){ actions.push({type:'TRIBUTE_CARD', side:side, card_id:cardId, hand_index:idx, target_side:side, target_lane:lane, exp:ts.exp}); }); });
     }
     if(side==='AI' && (state.phase==='Deploy' || state.phase==='Reform')){
-      manualRepositionPairsForSide(state,'AI').forEach(function(pair){ actions.push({type:'REPOSITION', side:'AI', pair:pair.slice(), score:aiRepositionScore(state,pair), label:'AI Reposition '+pair.join(' ↔ ')}); });
+      var repositionPlan=aiChooseRepositionPlan(state);
+      if(repositionPlan && repositionPlan.pair){
+        actions.push({type:'REPOSITION', side:'AI', pair:repositionPlan.pair.slice(), score:Number(repositionPlan.score||100), ai_reposition_reason:repositionPlan.reason||'STAY_PUT', label:'AI Reposition '+repositionPlan.pair.join(' ↔ ')});
+      }
     }
     return actions;
   }
@@ -2236,6 +2239,14 @@
     if(!state || aiBattleAttackActions(state).length) return false;
     var sim=clone(state); gainMana(sim,'AI',2);
     return aiBattleAttackActions(sim).length>0;
+  }
+  function aiSideAreaAttackShouldWaitForCenter(state,action){
+    if(!state||!action||!action.card_id||action.source_lane==='CENTER')return false;
+    var c=card(action.card_id), h=sideHeroes(state,'AI')[action.source_lane]; if(!(isAreaAttack(c)||isAllTargetAttack(c))||!isActiveHeroSlot(h))return false;
+    var sideCoverage=aiAreaCoverageCount(state,action.source_lane), centerCoverage=aiAreaCoverageCount(state,'CENTER'); if(centerCoverage<=sideCoverage)return false;
+    var damage=Number(estimateAIDamage(state,action)||0), opp=sideHeroes(state,'PLAYER')||{}, canKill=false;
+    targetCoverage(action.source_lane).forEach(function(lane){var t=opp[lane];if(isActiveHeroSlot(t)&&Number(t.hp||0)<=damage)canKill=true;});
+    return !canKill;
   }
   function aiChooseDeployRacialAction(state){
     if(!state||state.phase!=='Deploy'||racialTokenSpentThisTurn(state,'AI')||Number(state.aiRacial||0)<=0) return null;
@@ -2494,6 +2505,8 @@
     if(phase==='Battle'){
       var finisherRacial=aiChooseBattleFinisherRacialAction(state); if(finisherRacial) return finisherRacial;
       var attacks=playable.filter(function(a){ return isAttackCard(card(a.card_id)); });
+      var tacticallyReady=attacks.filter(function(a){return !aiSideAreaAttackShouldWaitForCenter(state,a);});
+      if(tacticallyReady.length) attacks=tacticallyReady; else if(attacks.some(function(a){return aiSideAreaAttackShouldWaitForCenter(state,a);})) attacks=[];
       if(attacks.length) return attacks.sort(function(a,b){ return estimateAIDamage(state,b)-estimateAIDamage(state,a) || Number(b.cost||0)-Number(a.cost||0); })[0];
     }
     if(phase==='Deploy'){
@@ -5278,8 +5291,74 @@
     return false;
   }
   function laneThreatValueForSide(state, side, lane){ var opp=oppositeSide(side), heroes=sideHeroes(state,opp)||{}; var v=0; targetCoverage(lane).forEach(function(t){ var h=heroes[t]; if(h && Number(h.hp||0)>0 && !isLegacyModeHero(h)) v += (t===lane?3:1); }); return v; }
-  function aiRepositionScore(state, pair){ var heroes=sideHeroes(state,'AI'), a=pair[0], b=pair[1]; var before=laneThreatValueForSide(state,'AI',a)+laneThreatValueForSide(state,'AI',b); swapBoardLanes(heroes,a,b); var after=laneThreatValueForSide(state,'AI',a)+laneThreatValueForSide(state,'AI',b); swapBoardLanes(heroes,a,b); return after-before; }
-  function performAIReposition(state, pair){ if(!state || !pair || pair.length<2 || manualRepositionUsedThisTurn(state,'AI')) return false; var pairs=manualRepositionPairsForSide(state,'AI'); var ok=pairs.some(function(p){return p[0]===pair[0]&&p[1]===pair[1];}); if(!ok) return false; var h=sideHeroes(state,'AI'); swapBoardStateLanes(state,'AI',pair[0],pair[1]); h=sideHeroes(state,'AI'); var exhausted=[]; [pair[0],pair[1]].forEach(function(l){ var u=h[l]; if(repositionHeroEligible(u)){ u.exhausted=true; u.exhaust_reason='AI Reposition.'; exhausted.push(l); } }); var exhaustLine=exhausted.length===2?'Both moved Heroes Exhaust.':(exhausted.length===1?'Only the moved Hero Exhausts; Legacy does not Exhaust.':'No Hero Exhausted.'); pushLog(state,'AI Reposition: '+pair[0]+' ↔ '+pair[1]+'. '+exhaustLine); recordOpponentAction(state,'REPOSITION',null,'AI Reposition','AI repositioned '+pair[0]+' ↔ '+pair[1]+'.',{action_line:'Action: AI Reposition.', result_lines:['Swapped '+pair[0]+' and '+pair[1]+'.',exhaustLine]}); markManualRepositionUsed(state,'AI'); syncCounts(state); return true; }
+  function aiActiveHeroCount(state,side){ return activeNonLegacyLanes(state,side).length; }
+  function aiNormalAttackExposure(state,targetLane){
+    var opp=sideHeroes(state,'PLAYER')||{}, count=0;
+    LANE_ORDER.forEach(function(sourceLane){ var h=opp[sourceLane]; if(!isActiveHeroSlot(h)) return; if(targetCoverage(sourceLane).indexOf(targetLane)!==-1) count++; });
+    return count;
+  }
+  function aiPairDestinationForLane(pair,lane){ if(!pair||pair.length<2)return lane; if(pair[0]===lane)return pair[1]; if(pair[1]===lane)return pair[0]; return lane; }
+  function aiAreaCoverageCount(state,lane){ var opp=sideHeroes(state,'PLAYER')||{}, count=0; targetCoverage(lane).forEach(function(t){if(isActiveHeroSlot(opp[t]))count++;}); return count; }
+  function aiAreaAttackCandidateForHero(state,lane){
+    var h=sideHeroes(state,'AI')[lane]; if(!isActiveHeroSlot(h)) return null;
+    var best=null, anticipated=Number(manaAvailableValueForCard(state,'AI',null)||0)+Math.max(1,Number(state.aiManaRegen||1))*2;
+    (state.aiHand||[]).forEach(function(id){ var c=card(id); if(!(isAreaAttack(c)||isAllTargetAttack(c)))return; if(!sourceCompatible(c,h))return; var cost=Number(cardPlayCostForSource(c,h,state,'AI')||cardCost(c)||0); if(cost>anticipated)return; var sideCoverage=aiAreaCoverageCount(state,lane), centerCoverage=aiAreaCoverageCount(state,'CENTER'); if(centerCoverage<=sideCoverage||centerCoverage<2)return; var value=(centerCoverage-sideCoverage)*20+centerCoverage*5-cost; if(!best||value>best.value)best={card_id:id,value:value,sideCoverage:sideCoverage,centerCoverage:centerCoverage}; });
+    return best;
+  }
+  function aiDefenseSupportScore(state,lane){
+    var h=sideHeroes(state,'AI')[lane]; if(!isActiveHeroSlot(h))return 0; var score=0;
+    (state.aiHand||[]).forEach(function(id){var c=card(id); if(!isResponseOnly(c))return; if(sourceCompatibleForResponse(c,h))score++;});
+    return score;
+  }
+  function aiDefenderRoleScore(state,lane){
+    var h=sideHeroes(state,'AI')[lane]; if(!isActiveHeroSlot(h))return -999; var fam=String(baseFamilyForHero(h)||''); var score=aiDefenseSupportScore(state,lane)*2; if(/Warrior|Rogue|Thief/i.test(fam))score+=4; return score;
+  }
+  function aiPairWouldExhaustCurrentBattlePlan(state,pair){
+    if(!state||state.phase!=='Deploy')return false; var heroes=sideHeroes(state,'AI');
+    return pair.some(function(lane){ var h=heroes[lane]; if(!isActiveHeroSlot(h))return false; return (state.aiHand||[]).some(function(id){ var c=card(id); if(!isAttackCard(c)||!cardPlayPhaseAllowed(c,'Battle'))return false; if(!sourceCompatible(c,h))return false; return Number(cardPlayCostForSource(c,h,state,'AI')||cardCost(c)||0)<=Number(manaAvailableValueForCard(state,'AI',c)||0); }); });
+  }
+  function aiChooseRepositionPlan(state){
+    if(!state||state.turn!=='AI'||(state.phase!=='Deploy'&&state.phase!=='Reform')||manualRepositionUsedThisTurn(state,'AI'))return null;
+    var pairs=manualRepositionPairsForSide(state,'AI'); if(!pairs.length)return null;
+    var aiCount=aiActiveHeroCount(state,'AI'), oppCount=aiActiveHeroCount(state,'PLAYER'), heroes=sideHeroes(state,'AI');
+    // Plan 3: survival overrides every generic role/area plan. With one Hero remaining, do not force Center.
+    if(aiCount===1 && (oppCount===2||oppCount===3)){
+      var heroLane=activeNonLegacyLanes(state,'AI')[0]; if(heroLane==='CENTER'){
+        var candidates=pairs.map(function(pair){var dest=aiPairDestinationForLane(pair,heroLane);return {pair:pair,dest:dest,exposure:aiNormalAttackExposure(state,dest),facing:(sideHeroes(state,'PLAYER')[dest]||{}).hp};}).filter(function(x){return x.dest!=='CENTER';});
+        candidates.sort(function(a,b){return a.exposure-b.exposure || (Number(a.facing||9999)-Number(b.facing||9999));});
+        if(candidates.length){ var current=aiNormalAttackExposure(state,heroLane), best=candidates[0]; if(best.exposure<current || (oppCount===3 && best.exposure===current)) return {pair:best.pair,reason:oppCount===2?'SURVIVAL_1V2':'SURVIVAL_1V3',score:200-best.exposure*20}; }
+      }
+      return null;
+    }
+    // Plan 4: preserve a 3v2 advantage by protecting the lowest-current-HP Hero only when danger clearly falls.
+    if(aiCount===3 && oppCount===2){
+      var lowLane=activeNonLegacyLanes(state,'AI').sort(function(a,b){return Number(heroes[a].hp||0)-Number(heroes[b].hp||0);})[0]; var curExposure=aiNormalAttackExposure(state,lowLane), best4=null;
+      pairs.forEach(function(pair){ if(pair.indexOf(lowLane)===-1)return; var dest=aiPairDestinationForLane(pair,lowLane), exp=aiNormalAttackExposure(state,dest); if(exp>=curExposure)return; var cand={pair:pair,dest:dest,exp:exp}; if(!best4||cand.exp<best4.exp)best4=cand; });
+      if(best4 && !(state.phase==='Deploy'&&aiPairWouldExhaustCurrentBattlePlan(state,best4.pair))) return {pair:best4.pair,reason:'PRESERVE_ADVANTAGE_3V2',score:170+(curExposure-best4.exp)*20};
+      return null;
+    }
+    // Plan 1: deliberate one-turn-ahead Area Attack setup. Prefer Reform so the next Draw readies the moved Hero.
+    if(state.phase==='Reform'){
+      var best1=null; activeNonLegacyLanes(state,'AI').forEach(function(lane){ if(lane==='CENTER')return; var area=aiAreaAttackCandidateForHero(state,lane); if(!area)return; pairs.forEach(function(pair){if(pair.indexOf(lane)===-1)return; if(aiPairDestinationForLane(pair,lane)!=='CENTER')return; var cand={pair:pair,area:area,lane:lane}; if(!best1||area.value>best1.area.value)best1=cand;}); });
+      if(best1)return {pair:best1.pair,reason:'AREA_ATTACK_SETUP',score:150+best1.area.value};
+    }
+    // Plan 2: conservative defender restoration, strictly on a normal 3v3 board and preferably in Reform.
+    if(aiCount===3 && oppCount===3 && state.phase==='Reform'){
+      var centerScore=aiDefenderRoleScore(state,'CENTER'), best2=null; ['LEFT','RIGHT'].forEach(function(lane){var score=aiDefenderRoleScore(state,lane); if(score<4||score<centerScore+2)return; var pair=lane==='LEFT'?['LEFT','CENTER']:['CENTER','RIGHT']; if(!pairs.some(function(p){return p[0]===pair[0]&&p[1]===pair[1];}))return; if(!best2||score>best2.score)best2={pair:pair,score:score};});
+      if(best2)return {pair:best2.pair,reason:'RETURN_DEFENDER_CENTER_3V3',score:130+best2.score};
+    }
+    return null;
+  }
+  function aiRepositionScore(state, pair){ var plan=aiChooseRepositionPlan(state); return plan&&plan.pair&&plan.pair[0]===pair[0]&&plan.pair[1]===pair[1]?Number(plan.score||100):-1000; }
+  if(typeof window!=='undefined') window.GL_AI_REPOSITION_QA={
+    freshState:function(){initCards();var s=buildInitialMatchState();s.preGame=null;s.pending=null;s.responseWindow=null;s.turn='AI';s.phase='Reform';s.round=Math.max(2,Number(s.round||1));return s;},
+    choosePlan:function(state){return clone(aiChooseRepositionPlan(state));},
+    chooseAction:function(state,phase){return clone(chooseAIAction(state,phase||state.phase));},
+    exposure:function(state,lane){return aiNormalAttackExposure(state,lane);},
+    sideAreaShouldWait:function(state,action){return aiSideAreaAttackShouldWaitForCenter(state,action);},
+    perform:function(state,pair){return performAIReposition(state,pair);}
+  };
+  function performAIReposition(state, pair){ if(!state || !pair || pair.length<2 || manualRepositionUsedThisTurn(state,'AI')) return false; var chosenPlan=aiChooseRepositionPlan(state); var reason=chosenPlan&&chosenPlan.pair&&chosenPlan.pair[0]===pair[0]&&chosenPlan.pair[1]===pair[1]?(chosenPlan.reason||'TACTICAL_REPOSITION'):'TACTICAL_REPOSITION'; state.aiLastRepositionDecision={reason:reason,pair:pair.slice(),round:Number(state.round||0),phase:state.phase}; var pairs=manualRepositionPairsForSide(state,'AI'); var ok=pairs.some(function(p){return p[0]===pair[0]&&p[1]===pair[1];}); if(!ok) return false; var h=sideHeroes(state,'AI'); swapBoardStateLanes(state,'AI',pair[0],pair[1]); h=sideHeroes(state,'AI'); var exhausted=[]; [pair[0],pair[1]].forEach(function(l){ var u=h[l]; if(repositionHeroEligible(u)){ u.exhausted=true; u.exhaust_reason='AI Reposition.'; exhausted.push(l); } }); var exhaustLine=exhausted.length===2?'Both moved Heroes Exhaust.':(exhausted.length===1?'Only the moved Hero Exhausts; Legacy does not Exhaust.':'No Hero Exhausted.'); pushLog(state,'AI Reposition ['+reason+']: '+pair[0]+' ↔ '+pair[1]+'. '+exhaustLine); recordOpponentAction(state,'REPOSITION',null,'AI Reposition','AI repositioned '+pair[0]+' ↔ '+pair[1]+'.',{action_line:'Action: AI Reposition.', result_lines:['Swapped '+pair[0]+' and '+pair[1]+'.',exhaustLine]}); markManualRepositionUsed(state,'AI'); syncCounts(state); return true; }
   function openManualRepositionChoice(){
     if(!manualRepositionAvailable(appState)){ showInfo('Reposition',manualRepositionUsedThisTurn(appState,'PLAYER')?'Manual Reposition can be used at most once during your active turn. Deploy and Reform share this limit.':'Manual Reposition is only available during your Deploy or Reform Phase when no action is pending.'); return false; }
     var pairs=manualRepositionPairs(appState);
@@ -12206,7 +12285,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
       // Opponent Shard blind selector randomizes view before selection without mutating real pool order/deck.
       s=fresh('PLAYER','Deploy');s.aiManaPoolCards=[makeManaShard('GENERIC','','AI','B1'),makeManaShard('CLASS','Warrior','AI','B2'),makeManaShard('GENERIC','','AI','B3')];syncManaCountForSide(s,'AI');var poolOrder=s.aiManaPoolCards.map(function(x){return x.uid;});var deckOrder=(s.aiManaDeck||[]).map(function(x){return x.uid;});if(!startOpponentManaSelection(s,{side:'PLAYER',amount:1,mode:'REMOVE_ONLY',reason:'V642 blind QA'}))return{ok:false,reason:'Opponent Shard blind selector did not open'};var shown=(s.pending&&s.pending.candidates||[]).map(function(x){return x.uid;});if(shown.length>1&&shown.join('|')===poolOrder.join('|'))return{ok:false,reason:'Opponent blind mapping preserved full original positional identity'};if((s.pending.candidates||[]).some(function(x){return Object.prototype.hasOwnProperty.call(x,'kind')||Object.prototype.hasOwnProperty.call(x,'class_name');}))return{ok:false,reason:'Opponent Shard identity leaked before commit'};if((s.aiManaPoolCards||[]).map(function(x){return x.uid;}).join('|')!==poolOrder.join('|')||(s.aiManaDeck||[]).map(function(x){return x.uid;}).join('|')!==deckOrder.join('|'))return{ok:false,reason:'Blind selector mutated canonical Shard Pool/Deck state before commit'};
 
-      return{ok:true,version:'VS AI v6.44 / Tutorial v0.68',canonicalCards:200,starter60:'v1.6.1',starterDecks:5,warpScrollPlayer:true,warpScrollAI:true,freezeBombPlayer:true,freezeBombAI:true,freezeManualReposition:true,freezeSkillMovement:true,freezeDodge:true,freezeBlock:true,freezeAutoCenter:true,freezeDuration:true,freezeStacking:true,tripleShotNoBinding:true,tripleShotThisTurnLifecycle:true,whirlwind:50,blindHandSelection:true,blindSelection:true,heroDefeatCleanup:true,shieldBashDeflect:true,aiTurnContinuation:true};
+      return{ok:true,version:'VS AI v6.45 / Tutorial v0.68',canonicalCards:200,starter60:'v1.6.1',starterDecks:5,warpScrollPlayer:true,warpScrollAI:true,freezeBombPlayer:true,freezeBombAI:true,freezeManualReposition:true,freezeSkillMovement:true,freezeDodge:true,freezeBlock:true,freezeAutoCenter:true,freezeDuration:true,freezeStacking:true,tripleShotNoBinding:true,tripleShotThisTurnLifecycle:true,whirlwind:50,blindHandSelection:true,blindSelection:true,heroDefeatCleanup:true,shieldBashDeflect:true,aiTurnContinuation:true};
     }catch(e){return{ok:false,error:String(e&&e.stack||e)}}finally{appState=oldState;matchStarted=oldStarted;SUPPRESS_RENDER=oldSuppress;try{closeChoice();closeResponseWindowUI();}catch(_){}}
   };
 

@@ -18,8 +18,8 @@ const counters={};for(let i=1;i<=6;i++)counters[String(i)]=sha(`assets/counters/
 const rootLock={
   schema:'GL-APPLICATION-RUNTIME-SYNC-2.63-CONSUMER',version:'v2.63',date:'2026-09-25',policy:'REFERENCE_OSA_CANONICAL_AUTHORITY_DO_NOT_REDEFINE',
   ...shared,
-  applications:{vs_ai:'v6.44',tutorial:'v0.68',deck_builder:'v1.31',pvp_reference:'v3.42',website_reference:'v1.31'},
-  visual_battlefield_baseline:'VS AI v6.44',runtime_source_tree:{osa_expected_hash:OSA_RUNTIME_TREE_HASH,files:68},
+  applications:{vs_ai:'v6.45',tutorial:'v0.68',deck_builder:'v1.31',pvp_reference:'v3.42',website_reference:'v1.31'},
+  visual_battlefield_baseline:'VS AI v6.45',runtime_source_tree:{osa_expected_hash:OSA_RUNTIME_TREE_HASH,files:68},
   shared_gameplay_sha256:sha('shared-app/app.bundle.js'),shared_gameplay_deployment_sha256:sha('js/app.bundle.js'),active_starters_sha256:sha('data/starter-decks/active-starters.v1.json'),active_starter_count:5,active_starter_reference:'OSA v1.9.5 / Starter Deck Authority v1.6.1 (unchanged compositions)',runtime_authority_sha256:sha('js/runtime-authority.js'),runtime_source_browser_sha256:sha('runtime-source/runtime/browser/runtime-authority.browser.js'),
   static_data_sha256:sha('js/static-data.js'),shared_battlefield_ui_js_sha256:sha('shared-ui/battlefield-ui.js'),shared_battlefield_ui_css_sha256:sha('shared-ui/battlefield-ui.css'),mobile_app_nav_sha256:sha('js/mobile-app-nav.js'),counter_asset_sha256:counters,
   current_authority_status:'OSA v1.9.5 / Starter Deck Authority v1.6.1 / Shared Runtime v1.94.2 / UI Contract v2.53',playtest_lab_v014:'HISTORICAL_ONLY_NOT_ACTIVE_AUTHORITY'

@@ -380,3 +380,29 @@ html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-racial{height:66%!importan
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-racial .racial-coins{width:auto!important;min-width:0!important;height:100%!important;min-height:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:3px!important;}
 html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-racial .coin{flex:1 1 0!important;width:auto!important;height:auto!important;min-width:0!important;min-height:0!important;max-height:calc((100% - 3px)/2)!important;aspect-ratio:1/1!important;}
 
+
+/* VS AI v6.45 — opponent hand renders only the original card-back pixels.
+   This layer loads after app.css, so it owns the final passive opponent-card surface. */
+.gl-lab-hand--opponent .opponent-hand-slot,
+.gl-lab-hand--opponent .opponent-hand-slot .back{
+  border:0!important;
+  border-image:none!important;
+  outline:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+  padding:0!important;
+}
+.gl-lab-hand--opponent .opponent-hand-slot::before,
+.gl-lab-hand--opponent .opponent-hand-slot::after,
+.gl-lab-hand--opponent .opponent-hand-slot .back::before,
+.gl-lab-hand--opponent .opponent-hand-slot .back::after{
+  content:none!important;
+  display:none!important;
+  box-shadow:none!important;
+  border:0!important;
+}
+.gl-lab-hand--opponent .opponent-hand-slot .back{
+  border-radius:0!important;
+  filter:none!important;
+  text-shadow:none!important;
+}

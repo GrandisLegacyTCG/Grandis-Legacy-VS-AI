@@ -4,7 +4,7 @@ const ROOT=path.resolve(__dirname,'..');
 const CARD_HASH='7ac1f90f6a9654cf575ac41db64a052901005905b1cf01f3bfc7532873cc9389';
 const HERO_HASH='f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be';
 const ASSET_BASE = 'https://grandislegacytcg.github.io/shared/season1/v1/cards';
-const V={osa:'v1.9.5',sharedRuntime:'v1.94.2',runtimeData:'v0.16.2',recipe:'v0.15.2',checkpoint:'v0.15.2',hero:'v1.1.0',starter:'v1.6.1',ui:'v2.53',sync:'v2.63',vsai:'v6.44',tutorial:'v0.68'};
+const V={osa:'v1.9.5',sharedRuntime:'v1.94.2',runtimeData:'v0.16.2',recipe:'v0.15.2',checkpoint:'v0.15.2',hero:'v1.1.0',starter:'v1.6.1',ui:'v2.53',sync:'v2.63',vsai:'v6.45',tutorial:'v0.68'};
 function j(p){return JSON.parse(fs.readFileSync(path.join(ROOT,p),'utf8'));}
 function write(p,v){fs.mkdirSync(path.dirname(path.join(ROOT,p)),{recursive:true});fs.writeFileSync(path.join(ROOT,p),v);}
 function copy(a,b){fs.mkdirSync(path.dirname(path.join(ROOT,b)),{recursive:true});fs.copyFileSync(path.join(ROOT,a),path.join(ROOT,b));}
@@ -75,6 +75,6 @@ function build(){
  for(const f of ['cards.runtime.v0.16.2.json','effect-recipes.runtime.v0.15.2.json','effect-checkpoint.v0.15.2.json','hero-components.runtime.v1.1.0.json','gameplay-authority.runtime.v1.9.0.json','card-preview.generated.v1.6.0.json','legality-map.runtime.v1.6.0.json'])copy('data/season1/'+f,'tutorial/data/season1/'+f); copy('data/config/active-runtime-source-stack.v1.95.json','tutorial/data/config/active-runtime-source-stack.v1.95.json'); write('tutorial/js/static-data.js',out); copy('js/runtime-authority.js','tutorial/js/runtime-authority.js');
  syncSharedApplicationMirrors();
  syncRuntimeMirror();
- console.log('PASS: OSA v1.9.5 / Shared Runtime v1.94.2 / UI v2.53 -> VS AI v6.44 + Tutorial v0.68; 5 unchanged starters / 200 canonical cards.');
+ console.log('PASS: OSA v1.9.5 / Shared Runtime v1.94.2 / UI v2.53 -> VS AI v6.45 + Tutorial v0.68; 5 unchanged starters / 200 canonical cards.');
 }
 build();

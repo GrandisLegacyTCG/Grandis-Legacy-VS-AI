@@ -23,25 +23,25 @@
     "pool": "Shard Pool"
   },
   "applications": {
-    "vs_ai": "v6.44",
+    "vs_ai": "v6.45",
     "tutorial": "v0.68",
     "deck_builder": "v1.31",
     "pvp_reference": "v3.42",
     "website_reference": "v1.31"
   },
-  "visual_battlefield_baseline": "VS AI v6.44",
+  "visual_battlefield_baseline": "VS AI v6.45",
   "runtime_source_tree": {
     "osa_expected_hash": "87d65f125bbe840649be5daa6f4e0f7a85ec2ec16469820f844405a1608f4a6e",
     "files": 68
   },
-  "shared_gameplay_sha256": "a10200a7a769a8eecaf24befb4d8f57e97edbaca82c691b00c598cf59a1ff974",
-  "shared_gameplay_deployment_sha256": "d1cbe9178b76298e53e45caea87548c4cc98654c45dd66abda74ab8e4d83b4a5",
+  "shared_gameplay_sha256": "e0dc636b191087dd740fa83e8810b02866d3842103c861260b96dcf504078b99",
+  "shared_gameplay_deployment_sha256": "420eeb3d4a154b636d24b10b2f88578198511bb1725596ce1b86ef7e1a070ade",
   "active_starters_sha256": "6ef77cb9508465c6569698fc65ef77e0ea04cb5a1abfb09cfd8b098e3b340f31",
   "active_starter_count": 5,
   "active_starter_reference": "OSA v1.9.5 / Starter Deck Authority v1.6.1 (unchanged compositions)",
   "runtime_authority_sha256": "58a09b947a1d25b2e5e6018c6e0dac9508b5d534dd2a51192cd6dbaf2e1d4399",
   "runtime_source_browser_sha256": "bacafbe720fa83ddb68267114ba7a718f16c44a4b20453decc86ed63b190c8f4",
-  "static_data_sha256": "9bb011cbbbae8fdee83fc6158cafe42e9708cc3d5c2f91ca457a0b8e5511d8bb",
+  "static_data_sha256": "5902ebb03b2e02334b22753db243a213cd4c66523afb2fcb7370f76780abf62f",
   "shared_battlefield_ui_js_sha256": "110394df12e3052bbcc961de24dad29b5734af65d0a7c0afdd2c8ffdaf8a81cb",
   "shared_battlefield_ui_css_sha256": "2b70d63c74081a8809b2a2d456ec1b620a9a078ab84f597c0607a928503a9378",
   "mobile_app_nav_sha256": "5be991d8083c56f744f4499eb0f86031968d178dc55f5aacf8bcfcea3f6586d6",
