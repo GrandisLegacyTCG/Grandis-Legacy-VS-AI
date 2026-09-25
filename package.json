@@ -15,11 +15,11 @@
     "test:tutorial": "cd tutorial && npm test",
     "verify": "npm run prepare:release && npm run check && npm run test:tutorial && npm run test:browser && npm run manifest && node tutorial/tests/run-manifest-verification.cjs && node tests/run-manifest-verification.cjs",
     "verify:stable": "npm run verify",
-    "test:browser": "node tests/run-v645-opponent-hand-browser.cjs && node tests/run-v644-ai-lobby-card-presentation-browser.cjs && node tests/run-v643-lobby-browser.cjs && node tests/run-v642-browser-suite.cjs",
+    "test:browser": "node tests/run-v645-opponent-hand-browser.cjs && node tests/run-v069-tutorial-turn-handoff-browser.cjs && node tests/run-v644-ai-lobby-card-presentation-browser.cjs && node tests/run-v643-lobby-browser.cjs && node tests/run-v642-browser-suite.cjs",
     "test:v643:lobby": "node tests/run-v643-lobby.cjs",
     "test:v643:lobby-browser": "node tests/run-v643-lobby-browser.cjs",
     "test:v644:presentation": "node tests/run-v644-ai-lobby-card-presentation.cjs",
     "test:v644:presentation-browser": "node tests/run-v644-ai-lobby-card-presentation-browser.cjs"
   },
-  "description": "Grandis Legacy VS AI v6.45 + Tutorial v0.68 \u2014 opponent-hand visual cleanup + tactical AI Reposition upgrade; OSA v1.9.5 / Shared Runtime v1.94.2 / UI Contract v2.53 consumer"
+  "description": "Grandis Legacy VS AI v6.45 + Tutorial v0.69 \u2014 opponent-hand visual cleanup + tactical AI Reposition upgrade; OSA v1.9.5 / Shared Runtime v1.94.2 / UI Contract v2.53 consumer"
 }

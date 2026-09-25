@@ -6,10 +6,10 @@ const json=r=>JSON.parse(read(r));
 const sha=r=>crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT,r))).digest('hex');
 const app=read('shared-app/app.bundle.js'),css=read('shared-app/app.css'),index=read('index.html');
 assert.strictEqual(json('package.json').version,'6.45.0');
-assert.strictEqual(json('tutorial/package.json').version,'0.68.0');
+assert.strictEqual(json('tutorial/package.json').version,'0.69.0');
 const stack=json('data/config/active-runtime-source-stack.v1.95.json');
-assert.strictEqual(stack.vs_ai,'v6.45');assert.strictEqual(stack.tutorial,'v0.68');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
-assert(index.includes('shared-app/app.bundle.js?v=gl-vs-ai-645-opponent-hand-ai-reposition'),'Root does not load canonical v6.44 shared-app bundle');
+assert.strictEqual(stack.vs_ai,'v6.45');assert.strictEqual(stack.tutorial,'v0.69');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
+assert(index.includes('shared-app/app.bundle.js?v=gl-vs-ai-645-ui-turnhandoff-r2'),'Root does not load canonical v6.44 shared-app bundle');
 // AI and Player deliberately share the approved v6.43 Style 1 component family.
 const swapFn=app.match(/function swapSetupFormation\(side,leftLane,rightLane\)\{[\s\S]*?\n  \}/)?.[0]||'';
 const rankFn=app.match(/function cycleSetupRank\(side,delta\)\{[\s\S]*?\n  \}/)?.[0]||'';
@@ -38,6 +38,6 @@ assert(!/combined-played-card[^}]*transform\s*:\s*scale\s*\(/i.test(css),'Card P
 // No image assets were invented for the controls.
 assert(!/vsai-v643-(?:swap-button|rank-control)[^\n]*(?:\.svg|\.png|\.webp)/i.test(app+css),'New Hero swap/Rank asset invented');
 // Tutorial-specific controller is a hard lock for this release.
-assert.strictEqual(sha('tutorial/js/tutorial-guide.js'),'7a5f56729cd20bd173321cef7958c78ee7c6c652ec17f56fa2f01c6121e3a367','Tutorial-specific guide changed');
+assert.strictEqual(sha('tutorial/js/tutorial-guide.js'),'3b5601a3e0ec9587ac4fbae8b144eb566d5c2d2ba19ce7f2e10bd993d33dfd64','Tutorial-specific guide changed');
 assert.strictEqual(sha('tutorial/css/tutorial-guide.css'),'ef2c532b3eccb2c43a5810f4538c897862bd54051e31805e81d5553a9bbdcc2f','Tutorial-specific guide CSS changed');
 console.log('PASS VS AI v6.45 static AI Lobby parity + passive card presentation + equal-size phone Card Played + Tutorial-specific hard lock.');

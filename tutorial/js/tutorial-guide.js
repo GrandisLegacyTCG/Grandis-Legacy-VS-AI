@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.68 — VS AI v6.42 / OSA v1.9.5. Tutorial overlay/controller on the shared v2.53 battlefield; Shard lessons wait for runtime presentation completion; Next Phase guidance only completes after a real phase transition. */
+/* Grandis Legacy Tutorial Guide v0.69 — VS AI v6.42 / OSA v1.9.5. Tutorial overlay/controller on the shared v2.53 battlefield; Shard lessons wait for runtime presentation completion; Next Phase guidance only completes after a real phase transition. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;
@@ -37,10 +37,11 @@
   function isPreviewOpen(){var el=q('#previewOverlay');return !!(el&&el.classList.contains('open'));}
   function isSafe(state){return !!state&&!state.gameOver&&!state.responseWindow&&!(state.pending&&state.pending.type);}
   function markSeen(id){if(id)seen[id]=true;}
-  function guideHasBlockingWork(){
+  function hasRealBlockingTutorialWork(){
     return !!(active||queue.length||packageLock||anatomy.initialSequence||anatomy.activeFamily||anatomy.waitingFamily||document.body.classList.contains('gl-tutorial-card-pick-lock'));
   }
-  function syncGuideHold(){if(bridge&&typeof bridge.setGuideHold==='function')bridge.setGuideHold(guideHasBlockingWork());}
+  function guideHasBlockingWork(){return hasRealBlockingTutorialWork();}
+  function syncGuideHold(){if(bridge&&typeof bridge.setGuideHold==='function')bridge.setGuideHold(hasRealBlockingTutorialWork());}
   function isMobileTutorialViewport(){return !!(document.documentElement&&document.documentElement.classList&&document.documentElement.classList.contains('gl-ui-mobile'));}
   function firstHighlightElement(){
     for(var i=0;i<highlightEntries.length;i++){
@@ -605,6 +606,16 @@
     }
     if(state.phase==='End'&&!seen.phase_end)queueEndPhaseInformation();
   }
+
+  // v0.69: runtime may synchronously reach Player End before the 250ms guide poll.
+  // Queue any unseen mandatory End lesson immediately, then report only real blockers.
+  bridge.hasRealBlockingWork=function(){return hasRealBlockingTutorialWork();};
+  bridge.reconcileEndTurnHandoff=function(){
+    var state=bridge.getState();
+    if(state&&state.turn==='PLAYER'&&state.phase==='End')phaseMessage(state);
+    syncGuideHold();
+    return hasRealBlockingTutorialWork();
+  };
 
   function firstFamilyCard(fam){
     var hand=sideHand(bridge.getState(),'PLAYER');
@@ -1447,6 +1458,14 @@
     classifyPlayCard:function(cardId){return{requiresSource:cardRequiresSource(cardId),requiresTarget:cardRequiresTarget(cardId),opensDeck:isDeckOpeningCard(cardId)};},
     practiceCategory:function(cardId){return practiceCategory(cardId);},
     classifyPracticeBoundary:function(cardId){var source=cardRequiresSource(cardId),target=cardRequiresTarget(cardId);return !source&&!target?'BEFORE_PLAY':(target?'BEFORE_TARGET':'BEFORE_SOURCE');},
-    trigger:function(id){seen[id]=false;return tick();}
+    trigger:function(id){seen[id]=false;return tick();},
+    resetBlockingForHandoffTest:function(phaseEndSeen){
+      active=null;queue.length=0;packageLock=false;
+      anatomy.initialSequence=false;anatomy.activeFamily=null;anatomy.waitingFamily=null;anatomy.pendingFamilies=[];
+      document.body.classList.remove('gl-tutorial-card-pick-lock');
+      seen.phase_end=!!phaseEndSeen;syncGuideHold();
+      return{phaseEndSeen:!!seen.phase_end,blocking:hasRealBlockingTutorialWork()};
+    },
+    hasRealBlockingWork:function(){return hasRealBlockingTutorialWork();}
   };
 })();

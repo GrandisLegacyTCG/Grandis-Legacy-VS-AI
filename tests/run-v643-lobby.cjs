@@ -6,10 +6,10 @@ const json=r=>JSON.parse(read(r));
 const sha=r=>crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT,r))).digest('hex');
 const app=read('shared-app/app.bundle.js'),css=read('shared-app/app.css'),index=read('index.html'),tutorialIndex=read('tutorial/index.html');
 assert.strictEqual(json('package.json').version,'6.45.0');
-assert.strictEqual(json('tutorial/package.json').version,'0.68.0');
+assert.strictEqual(json('tutorial/package.json').version,'0.69.0');
 const stack=json('data/config/active-runtime-source-stack.v1.95.json');
-assert.strictEqual(stack.vs_ai,'v6.45');assert.strictEqual(stack.tutorial,'v0.68');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
-assert(/shared-app\/app\.bundle\.js\?v=gl-vs-ai-645-opponent-hand-ai-reposition/.test(index),'Root Lobby does not load canonical shared-app bundle');
+assert.strictEqual(stack.vs_ai,'v6.45');assert.strictEqual(stack.tutorial,'v0.69');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
+assert(/shared-app\/app\.bundle\.js\?v=gl-vs-ai-645-ui-turnhandoff-r2/.test(index),'Root Lobby does not load canonical shared-app bundle');
 assert(/window\.GL_APP_MODE="LOCAL_AI"/.test(index));assert(/window\.GL_APP_MODE="TUTORIAL"/.test(tutorialIndex));
 // Navigation authority.
 for(const url of ['https://grandislegacytcg.github.io/','https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/','https://grandislegacytcg.github.io/pvp/']) assert(index.includes(url),`Missing route ${url}`);
@@ -41,11 +41,11 @@ assert(!/vsai-v643[^\n]*(?:\.svg|\.png|\.webp)/i.test(app+css),'New Rank/swap im
 const locked={
   'shared-ui/battlefield-ui.js':'110394df12e3052bbcc961de24dad29b5734af65d0a7c0afdd2c8ffdaf8a81cb',
   'shared-ui/battlefield-ui.css':'2b70d63c74081a8809b2a2d456ec1b620a9a078ab84f597c0607a928503a9378',
-  'shared-app/battlefield-authority.css':'ddc769fed48f8f9ad7de15e5630d7babc7d60cfb6365db5eb30b9415932a15a0',
-  'tutorial/js/tutorial-guide.js':'7a5f56729cd20bd173321cef7958c78ee7c6c652ec17f56fa2f01c6121e3a367'
+  'shared-app/battlefield-authority.css':'2e9ac3d815e366bbfc0972966dc1ee845121fc54ed58490f838268a0a5d93944',
+  'tutorial/js/tutorial-guide.js':'3b5601a3e0ec9587ac4fbae8b144eb566d5c2d2ba19ce7f2e10bd993d33dfd64'
 };
 for(const [f,h] of Object.entries(locked))assert.strictEqual(sha(f),h,`${f} hard lock changed`);
-assert.strictEqual(json('tutorial/package.json').version,'0.68.0');
+assert.strictEqual(json('tutorial/package.json').version,'0.69.0');
 assert(!/vsai-v643-(?:formation-grid|swap-button|rank-control)/.test(tutorialIndex),'Tutorial HTML unexpectedly owns VS AI Lobby controls');
 // Generated mirrors must stay synchronized to canonical shared source architecture.
 assert.strictEqual(sha('js/app.bundle.js'),sha('tutorial/js/app.bundle.js'),'Generated JS deployment mirrors diverged');

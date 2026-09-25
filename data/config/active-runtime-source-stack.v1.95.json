@@ -11,7 +11,7 @@
   "ui_contract": "v2.53",
   "application_runtime_sync": "v2.63",
   "vs_ai": "v6.45",
-  "tutorial": "v0.68",
+  "tutorial": "v0.69",
   "canonical_registry_hash": "7ac1f90f6a9654cf575ac41db64a052901005905b1cf01f3bfc7532873cc9389",
   "hero_component_registry_hash": "f36f1cc83eb9845743176c3af71f7823125353eae73e832588e9d8b42c6818be",
   "card_count": 200,

@@ -406,3 +406,37 @@ html.gl-ui-tablet.gl-tablet-landscape-desktop .gl-lab-racial .coin{flex:1 1 0!im
   filter:none!important;
   text-shadow:none!important;
 }
+
+
+/* VS AI v6.45 / Tutorial v0.69 final opponent-hand perimeter ownership.
+   Desktop/tablet-landscape use Battlefield authority; tablet-portrait/phone use v96. */
+html .gl-lab-authority .gl-lab-hand--opponent .opponent-hand-slot,
+html .gl-lab-authority .gl-lab-hand--opponent .opponent-hand-slot > img.back,
+html .v96-app .hand-area--opponent .opponent-hand-slot,
+html .v96-app .hand-area--opponent .opponent-hand-slot > img.back{
+  border-width:0!important;
+  border-style:none!important;
+  border-color:transparent!important;
+  border-image:none!important;
+  outline:0!important;
+  outline-offset:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+  padding:0!important;
+}
+html .gl-lab-authority .gl-lab-hand--opponent .opponent-hand-slot > img.back,
+html .v96-app .hand-area--opponent .opponent-hand-slot > img.back{
+  border-radius:0!important;
+  filter:none!important;
+  text-shadow:none!important;
+}
+html .gl-lab-authority .gl-lab-hand--opponent .opponent-hand-slot::before,
+html .gl-lab-authority .gl-lab-hand--opponent .opponent-hand-slot::after,
+html .v96-app .hand-area--opponent .opponent-hand-slot::before,
+html .v96-app .hand-area--opponent .opponent-hand-slot::after{
+  content:none!important;
+  display:none!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}

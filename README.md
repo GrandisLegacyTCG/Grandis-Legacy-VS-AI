@@ -1,6 +1,6 @@
-# Grandis Legacy VS AI v6.45 + Tutorial v0.68
+# Grandis Legacy VS AI v6.45 + Tutorial v0.69
 
-This repository contains the Grandis Legacy local **VS AI v6.45** application and **Tutorial v0.68**. Candidate **(10)** consumes **Grandis Legacy Source Authority v1.9.5** and keeps canonical gameplay authority outside the application repository.
+This repository contains the Grandis Legacy local **VS AI v6.45** application and **Tutorial v0.69**. Candidate **(10)** consumes **Grandis Legacy Source Authority v1.9.5** and keeps canonical gameplay authority outside the application repository.
 
 ## Active authority baseline
 
@@ -14,7 +14,7 @@ This repository contains the Grandis Legacy local **VS AI v6.45** application an
 - UI Contract: v2.53
 - Application Runtime Sync: v2.63
 - VS AI: v6.45
-- Tutorial: v0.68
+- Tutorial: v0.69
 
 Canonical registry SHA256: `7ac1f90f6a9654cf575ac41db64a052901005905b1cf01f3bfc7532873cc9389`
 

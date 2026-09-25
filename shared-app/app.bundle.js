@@ -1,4 +1,4 @@
-/* Grandis Legacy shared gameplay application v3.4 — ONE EDITABLE SOURCE for VS AI v6.45 + Tutorial v0.68.
+/* Grandis Legacy shared gameplay application v3.4 — ONE EDITABLE SOURCE for VS AI v6.45 + Tutorial v0.69.
    One Source Authority v1.9.5 + Runtime Foundation v1.94.2 / Runtime Core v0.61 / Runtime Data v0.16.2.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
@@ -6,7 +6,7 @@
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
   var IS_TUTORIAL_APP=GL_APP_MODE==='TUTORIAL';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.41 · VS AI v6.42 Battlefield · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.68 GitHub Pages · VS AI v6.42 Base · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61':'Grandis Legacy VS AI v6.45 · Shared Gameplay Bundle v3.4 · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61');
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.41 · VS AI v6.42 Battlefield · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.69 GitHub Pages · VS AI v6.42 Base · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61':'Grandis Legacy VS AI v6.45 · Shared Gameplay Bundle v3.4 · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61');
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
@@ -17,7 +17,7 @@
   var GL_LAB_MANA_ASSET={Generic:'https://grandislegacytcg.github.io/shared/season1/v1/mana-shards/Generic.webp',Warrior:'https://grandislegacytcg.github.io/shared/season1/v1/mana-shards/Warrior.webp',Mage:'https://grandislegacytcg.github.io/shared/season1/v1/mana-shards/Mage.webp',Archer:'https://grandislegacytcg.github.io/shared/season1/v1/mana-shards/Archer.webp',Cleric:'https://grandislegacytcg.github.io/shared/season1/v1/mana-shards/Cleric.webp',Thief:'https://grandislegacytcg.github.io/shared/season1/v1/mana-shards/Thief.webp'};
   var GL_SHARED_CARD_BASE='https://grandislegacytcg.github.io/shared/season1/v1/cards/';
   var GL_REMOTE_CARD_BASE='https://grandislegacytcg.github.io/shared/season1/v1/cards/';
-  var GL_ASSET_REV=IS_TUTORIAL_APP?'gl-tutorial-0.68-osa-1.9.0':'gl-vs-ai-6.45-osa-1.9.0';
+  var GL_ASSET_REV=IS_TUTORIAL_APP?'gl-tutorial-0.69-osa-1.9.0':'gl-vs-ai-6.45-osa-1.9.0';
   var GL_CARD_ZOOM_ID=null;
   var GL_LAST_PLAYER_TURN_BANNER_KEY='', GL_PLAYER_TURN_BANNER_TIMER=null;
   var GL_MODAL_HOVER_GUARD_BOUND=false;
@@ -149,6 +149,15 @@
   var GL_TUTORIAL_GUIDE_HOLD=false;
   var GL_TUTORIAL_DRAW_LESSON_HOLD=false;
   function tutorialGuideHoldActive(){return !!(IS_TUTORIAL_APP&&GL_TUTORIAL_GUIDE_HOLD);}
+  function tutorialGuideHasRealBlockingWork(state){
+    if(!IS_TUTORIAL_APP)return false;
+    var bridge=window.GL_TUTORIAL_BRIDGE;
+    if(bridge&&typeof bridge.reconcileEndTurnHandoff==='function'&&state&&state.autoEndTurnPending&&state.turn==='PLAYER'&&state.phase==='End'){
+      try{return !!bridge.reconcileEndTurnHandoff();}catch(e){}
+    }
+    if(bridge&&typeof bridge.hasRealBlockingWork==='function'){try{return !!bridge.hasRealBlockingWork();}catch(e){}}
+    return !!GL_TUTORIAL_GUIDE_HOLD;
+  }
   function setTutorialGuideHold(hold){var before=GL_TUTORIAL_GUIDE_HOLD;GL_TUTORIAL_GUIDE_HOLD=!!hold;if(before&&!GL_TUTORIAL_GUIDE_HOLD&&appState&&appState.autoEndTurnPending)setTimeout(function(){continueAutomaticPlayerEndTurn(appState);},0);return GL_TUTORIAL_GUIDE_HOLD;}
   function clearTutorialAIPhaseGate(){GL_TUTORIAL_AI_PHASE_GATE.waiting=false;GL_TUTORIAL_AI_PHASE_GATE.phase=null;GL_TUTORIAL_AI_PHASE_GATE.resume=null;GL_TUTORIAL_AI_PHASE_GATE.sequence++;}
   function tutorialGateAIPhase(state,phase,resume){
@@ -5358,6 +5367,14 @@
     sideAreaShouldWait:function(state,action){return aiSideAreaAttackShouldWaitForCenter(state,action);},
     perform:function(state,pair){return performAIReposition(state,pair);}
   };
+  if(typeof window!=='undefined') window.GL_OPPONENT_HAND_QA={
+    renderProductionHand:function(count){
+      initCards();var s=buildInitialMatchState();appState=s;matchStarted=true;s.preGame=null;s.pending=null;s.responseWindow=null;s.turn='PLAYER';s.phase='Deploy';
+      var ids=['S1-WAR-001','S1-MAG-001','S1-ARC-001','S1-CLE-001','S1-THF-001','S1-ITM-001','S1-EVT-001'];
+      s.aiHand=ids.slice(0,Math.max(1,Math.min(ids.length,Number(count)||5)));syncCounts(s);render();
+      return{count:s.aiHand.length,rendered:document.querySelectorAll('.opponent-hand-slot .back').length};
+    }
+  };
   function performAIReposition(state, pair){ if(!state || !pair || pair.length<2 || manualRepositionUsedThisTurn(state,'AI')) return false; var chosenPlan=aiChooseRepositionPlan(state); var reason=chosenPlan&&chosenPlan.pair&&chosenPlan.pair[0]===pair[0]&&chosenPlan.pair[1]===pair[1]?(chosenPlan.reason||'TACTICAL_REPOSITION'):'TACTICAL_REPOSITION'; state.aiLastRepositionDecision={reason:reason,pair:pair.slice(),round:Number(state.round||0),phase:state.phase}; var pairs=manualRepositionPairsForSide(state,'AI'); var ok=pairs.some(function(p){return p[0]===pair[0]&&p[1]===pair[1];}); if(!ok) return false; var h=sideHeroes(state,'AI'); swapBoardStateLanes(state,'AI',pair[0],pair[1]); h=sideHeroes(state,'AI'); var exhausted=[]; [pair[0],pair[1]].forEach(function(l){ var u=h[l]; if(repositionHeroEligible(u)){ u.exhausted=true; u.exhaust_reason='AI Reposition.'; exhausted.push(l); } }); var exhaustLine=exhausted.length===2?'Both moved Heroes Exhaust.':(exhausted.length===1?'Only the moved Hero Exhausts; Legacy does not Exhaust.':'No Hero Exhausted.'); pushLog(state,'AI Reposition ['+reason+']: '+pair[0]+' ↔ '+pair[1]+'. '+exhaustLine); recordOpponentAction(state,'REPOSITION',null,'AI Reposition','AI repositioned '+pair[0]+' ↔ '+pair[1]+'.',{action_line:'Action: AI Reposition.', result_lines:['Swapped '+pair[0]+' and '+pair[1]+'.',exhaustLine]}); markManualRepositionUsed(state,'AI'); syncCounts(state); return true; }
   function openManualRepositionChoice(){
     if(!manualRepositionAvailable(appState)){ showInfo('Reposition',manualRepositionUsedThisTurn(appState,'PLAYER')?'Manual Reposition can be used at most once during your active turn. Deploy and Reform share this limit.':'Manual Reposition is only available during your Deploy or Reform Phase when no action is pending.'); return false; }
@@ -6294,13 +6311,17 @@ function getActivatedHeroAbilities(state, side, lane){
     resolveEndPhaseCleanupForSide(state,'PLAYER');
     if(finalizeEndPhaseTerminalState(state))return true;
     if(state.pending||state.responseWindow){syncCounts(state);render();return true;}
-    if(IS_TUTORIAL_APP&&tutorialGuideHoldActive()){syncCounts(state);render();return true;}
+    if(IS_TUTORIAL_APP&&tutorialGuideHoldActive()){
+      if(tutorialGuideHasRealBlockingWork(state)){syncCounts(state);render();return true;}
+      setTutorialGuideHold(false);
+    }
     state.autoEndTurnPending=false;
     finishPlayerEndToAI(state);
     return true;
   }
   function scheduleAutomaticPlayerEndResume(state){
-    if(!state||!state.autoEndTurnPending||state.autoEndResumeScheduled||state.turn!=='PLAYER'||state.phase!=='End'||state.pending||state.responseWindow||state.gameOver||(IS_TUTORIAL_APP&&tutorialGuideHoldActive()))return false;
+    if(!state||!state.autoEndTurnPending||state.autoEndResumeScheduled||state.turn!=='PLAYER'||state.phase!=='End'||state.pending||state.responseWindow||state.gameOver)return false;
+    if(IS_TUTORIAL_APP&&tutorialGuideHoldActive()){if(tutorialGuideHasRealBlockingWork(state))return false;setTutorialGuideHold(false);}
     state.autoEndResumeScheduled=true;
     setTimeout(function(){if(!state)return;state.autoEndResumeScheduled=false;continueAutomaticPlayerEndTurn(state);},0);
     return true;
@@ -12285,7 +12306,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
       // Opponent Shard blind selector randomizes view before selection without mutating real pool order/deck.
       s=fresh('PLAYER','Deploy');s.aiManaPoolCards=[makeManaShard('GENERIC','','AI','B1'),makeManaShard('CLASS','Warrior','AI','B2'),makeManaShard('GENERIC','','AI','B3')];syncManaCountForSide(s,'AI');var poolOrder=s.aiManaPoolCards.map(function(x){return x.uid;});var deckOrder=(s.aiManaDeck||[]).map(function(x){return x.uid;});if(!startOpponentManaSelection(s,{side:'PLAYER',amount:1,mode:'REMOVE_ONLY',reason:'V642 blind QA'}))return{ok:false,reason:'Opponent Shard blind selector did not open'};var shown=(s.pending&&s.pending.candidates||[]).map(function(x){return x.uid;});if(shown.length>1&&shown.join('|')===poolOrder.join('|'))return{ok:false,reason:'Opponent blind mapping preserved full original positional identity'};if((s.pending.candidates||[]).some(function(x){return Object.prototype.hasOwnProperty.call(x,'kind')||Object.prototype.hasOwnProperty.call(x,'class_name');}))return{ok:false,reason:'Opponent Shard identity leaked before commit'};if((s.aiManaPoolCards||[]).map(function(x){return x.uid;}).join('|')!==poolOrder.join('|')||(s.aiManaDeck||[]).map(function(x){return x.uid;}).join('|')!==deckOrder.join('|'))return{ok:false,reason:'Blind selector mutated canonical Shard Pool/Deck state before commit'};
 
-      return{ok:true,version:'VS AI v6.45 / Tutorial v0.68',canonicalCards:200,starter60:'v1.6.1',starterDecks:5,warpScrollPlayer:true,warpScrollAI:true,freezeBombPlayer:true,freezeBombAI:true,freezeManualReposition:true,freezeSkillMovement:true,freezeDodge:true,freezeBlock:true,freezeAutoCenter:true,freezeDuration:true,freezeStacking:true,tripleShotNoBinding:true,tripleShotThisTurnLifecycle:true,whirlwind:50,blindHandSelection:true,blindSelection:true,heroDefeatCleanup:true,shieldBashDeflect:true,aiTurnContinuation:true};
+      return{ok:true,version:'VS AI v6.45 / Tutorial v0.69',canonicalCards:200,starter60:'v1.6.1',starterDecks:5,warpScrollPlayer:true,warpScrollAI:true,freezeBombPlayer:true,freezeBombAI:true,freezeManualReposition:true,freezeSkillMovement:true,freezeDodge:true,freezeBlock:true,freezeAutoCenter:true,freezeDuration:true,freezeStacking:true,tripleShotNoBinding:true,tripleShotThisTurnLifecycle:true,whirlwind:50,blindHandSelection:true,blindSelection:true,heroDefeatCleanup:true,shieldBashDeflect:true,aiTurnContinuation:true};
     }catch(e){return{ok:false,error:String(e&&e.stack||e)}}finally{appState=oldState;matchStarted=oldStarted;SUPPRESS_RENDER=oldSuppress;try{closeChoice();closeResponseWindowUI();}catch(_){}}
   };
 
@@ -12328,6 +12349,25 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     releaseInitialDrawLesson:function(){GL_TUTORIAL_DRAW_LESSON_HOLD=false;if(appState&&appState.turn==='PLAYER'&&appState.phase==='Draw')autoAdvancePlayerDrawWhenReady(appState);return true;},
     isInitialDrawLessonHeld:function(){return !!GL_TUTORIAL_DRAW_LESSON_HOLD;},
     isRuntimePresentationBusy:function(){return !!(animationBusy()||battleFeedbackBusy()||(appState&&appState.drawPresentationPending)||(GL_HIDDEN_DRAW_TOKENS.PLAYER||[]).length||(GL_PENDING_DRAW_RESERVATIONS.PLAYER||[]).length);},
+    qaEndTurnHandoffScenario:function(iterations){
+      if(!IS_TUTORIAL_APP)return{ok:false,reason:'Tutorial mode required'};
+      var oldApp=appState,oldMatch=matchStarted,oldSuppress=SUPPRESS_RENDER,oldHold=GL_TUTORIAL_GUIDE_HOLD;
+      try{
+        SUPPRESS_RENDER=true;matchStarted=true;
+        var st=buildInitialMatchState();appState=st;st.preGame=null;st.round=4;st.pending=null;st.responseWindow=null;st.gameOver=false;
+        var total=Math.max(1,Math.min(8,Number(iterations)||1)),history=[],before=null;
+        for(var i=0;i<total;i++){
+          st.turn='PLAYER';st.phase='End';st.pending=null;st.responseWindow=null;st.gameOver=false;st.autoEndTurnPending=true;GL_TUTORIAL_GUIDE_HOLD=true;
+          if(!before)before={turn:st.turn,phase:st.phase,round:st.round,mainDeck:st.mainDeck?st.mainDeck.length:null,manaRegen:st.manaRegen};
+          continueAutomaticPlayerEndTurn(st);
+          history.push({turn:st.turn,phase:st.phase,round:st.round,autoEndTurnPending:!!st.autoEndTurnPending,guideHold:tutorialGuideHoldActive()});
+          if(st.turn==='PLAYER'&&st.phase==='End'&&st.autoEndTurnPending)break;
+        }
+        var last=history[history.length-1]||{};
+        return{ok:true,before:before,iterationsRequested:total,iterationsCompleted:history.length,history:history,after:{turn:last.turn,phase:last.phase,round:last.round,mainDeck:st.mainDeck?st.mainDeck.length:null,manaRegen:st.manaRegen,autoEndTurnPending:!!last.autoEndTurnPending,guideHold:!!last.guideHold}};
+      }catch(err){return{ok:false,reason:String(err&&err.message||err),stack:String(err&&err.stack||'')};}
+      finally{appState=oldApp;matchStarted=oldMatch;SUPPRESS_RENDER=oldSuppress;GL_TUTORIAL_GUIDE_HOLD=oldHold;}
+    },
     resetTutorialMatch:function(){return resetMatch();}
   };
 

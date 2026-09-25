@@ -1,8 +1,10 @@
 {
-  "schema": "GL-APPLICATION-RUNTIME-SYNC-2.63-CONSUMER",
-  "version": "v2.63",
+  "schema": "GL-TUTORIAL-GITHUB-LOCK-0.69",
+  "version": "v0.69",
+  "tutorial": "v0.69",
+  "base_vs_ai": "v6.45",
+  "delivery": "GitHub Pages",
   "date": "2026-09-25",
-  "policy": "REFERENCE_OSA_CANONICAL_AUTHORITY_DO_NOT_REDEFINE",
   "source_authority": "v1.9.5",
   "canonical_card_authority": "v1.6.0",
   "shared_runtime": "v1.94.2",
@@ -22,29 +24,19 @@
     "classShard": "Class Shard",
     "pool": "Shard Pool"
   },
-  "applications": {
-    "vs_ai": "v6.45",
-    "tutorial": "v0.69",
-    "deck_builder": "v1.31",
-    "pvp_reference": "v3.42",
-    "website_reference": "v1.31"
-  },
-  "visual_battlefield_baseline": "VS AI v6.45",
-  "runtime_source_tree": {
-    "osa_expected_hash": "87d65f125bbe840649be5daa6f4e0f7a85ec2ec16469820f844405a1608f4a6e",
-    "files": 68
-  },
-  "shared_gameplay_sha256": "f58a897e7a07c37826158bdedadceb38413a595ead65aba4703789d34f4ef6c4",
-  "shared_gameplay_deployment_sha256": "60bba6a768fbc17b4794b62adc084bca3f37eee75a47d2c70870cd641e97e4a5",
+  "visual_battlefield_baseline": "VS AI v6.42 / Shared Battlefield UI v2.53",
+  "runtime_source_role": "GENERATED_MIRROR_OF_ROOT_RUNTIME_SOURCE",
+  "shared_app_bundle_sha256": "f58a897e7a07c37826158bdedadceb38413a595ead65aba4703789d34f4ef6c4",
+  "app_bundle_sha256": "60bba6a768fbc17b4794b62adc084bca3f37eee75a47d2c70870cd641e97e4a5",
   "active_starters_sha256": "6ef77cb9508465c6569698fc65ef77e0ea04cb5a1abfb09cfd8b098e3b340f31",
   "active_starter_count": 5,
-  "active_starter_reference": "OSA v1.9.5 / Starter Deck Authority v1.6.1 (unchanged compositions)",
+  "tutorial_guide_sha256": "3b5601a3e0ec9587ac4fbae8b144eb566d5c2d2ba19ce7f2e10bd993d33dfd64",
+  "tutorial_css_sha256": "ef2c532b3eccb2c43a5810f4538c897862bd54051e31805e81d5553a9bbdcc2f",
   "runtime_authority_sha256": "58a09b947a1d25b2e5e6018c6e0dac9508b5d534dd2a51192cd6dbaf2e1d4399",
-  "runtime_source_browser_sha256": "bacafbe720fa83ddb68267114ba7a718f16c44a4b20453decc86ed63b190c8f4",
   "static_data_sha256": "709c8d4079223a5b11d752695f5a0e0e2a3e0691a69ac20d93d54c60250001f6",
+  "runtime_source_browser_sha256": "bacafbe720fa83ddb68267114ba7a718f16c44a4b20453decc86ed63b190c8f4",
   "shared_battlefield_ui_js_sha256": "110394df12e3052bbcc961de24dad29b5734af65d0a7c0afdd2c8ffdaf8a81cb",
   "shared_battlefield_ui_css_sha256": "2b70d63c74081a8809b2a2d456ec1b620a9a078ab84f597c0607a928503a9378",
-  "mobile_app_nav_sha256": "5be991d8083c56f744f4499eb0f86031968d178dc55f5aacf8bcfcea3f6586d6",
   "counter_asset_sha256": {
     "1": "0163a05b27ab59f3a94cf379ccd5b61e69e9d0819fb3a56e79fc7e13e31a047a",
     "2": "ad7f17e7ffe9290df4ed06810b6bd80417133e56a14eaa9a14cf8db3310d6bb4",
@@ -53,6 +45,5 @@
     "5": "85f314ae9c68b8e05b27c08f89a9e208b12969e6cb113ef45acd2967928266de",
     "6": "9b45066100db47a512cea48d91f277899eff1a1b03a97524a634a7b7a438a4ae"
   },
-  "current_authority_status": "OSA v1.9.5 / Starter Deck Authority v1.6.1 / Shared Runtime v1.94.2 / UI Contract v2.53",
-  "playtest_lab_v014": "HISTORICAL_ONLY_NOT_ACTIVE_AUTHORITY"
+  "tutorial_scope": "Tutorial overlay/controller on the shared generated application mirror; Tutorial v0.69 adds deterministic stale Guide Hold / Player End handoff reconciliation while preserving legitimate blocking lessons."
 }

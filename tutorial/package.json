@@ -1,14 +1,14 @@
 {
   "name": "grandis-legacy-tutorial",
-  "version": "0.68.0",
+  "version": "0.69.0",
   "private": true,
-  "description": "Grandis Legacy Tutorial v0.68 \u2014 VS AI v6.42 shared battlefield/runtime baseline, OSA v1.9.5 / Shared Runtime v1.94.2 / UI Contract v2.53 consumer",
+  "description": "Grandis Legacy Tutorial v0.69 \u2014 VS AI v6.42 shared battlefield/runtime baseline, OSA v1.9.5 / Shared Runtime v1.94.2 / UI Contract v2.53 consumer",
   "scripts": {
     "build:data": "node ../tools/build-static-data.cjs",
     "metadata": "node ../tools/update-release-metadata.cjs",
     "syntax": "node --check js/app.bundle.js && node --check js/tutorial-guide.js && node --check js/static-data.js && node --check js/runtime-authority.js && find runtime-source/runtime -type f \\( -name '*.js' -o -name '*.mjs' \\) -print0 | sort -z | xargs -0 -r -n1 node --check",
     "test:base": "node ../tests/run-v642-application-integration.cjs && node ../tests/run-v642-ui-contract.cjs",
-    "test:tutorial": "node tests/run-tutorial-v068.cjs",
+    "test:tutorial": "node tests/run-tutorial-v069.cjs",
     "test": "npm run syntax && npm run test:base && npm run test:tutorial",
     "verify": "npm test && node tests/run-manifest-verification.cjs"
   }
