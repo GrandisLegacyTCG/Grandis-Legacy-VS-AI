@@ -8,7 +8,7 @@ const rootIndex=read('index.html'),tutorialIndex=read('tutorial/index.html');
 assert.strictEqual(json('package.json').version,'6.42.0');
 assert.strictEqual(json('tutorial/package.json').version,'0.68.0');
 const stack=json('data/config/active-runtime-source-stack.v1.95.json');
-assert.deepStrictEqual({osa:stack.source_authority,shared:stack.shared_runtime,data:stack.runtime_data,recipe:stack.effect_recipe,checkpoint:stack.effect_checkpoint,sync:stack.application_runtime_sync,ui:stack.ui_contract,starter:stack.starter60},{osa:'v1.9.5',shared:'v1.94.2',data:'v0.16.2',recipe:'v0.15.2',checkpoint:'v0.15.2',sync:'v2.63',ui:'v2.53',starter:'v1.6.1'});
+assert.deepStrictEqual({osa:stack.source_authority,shared:stack.shared_runtime,data:stack.runtime_data,recipe:stack.effect_recipe,checkpoint:stack.effect_checkpoint,sync:stack.application_runtime_sync,ui:stack.ui_contract,starter:stack.starter60},{osa:'v1.9.5',shared:'v1.94.2',data:'v0.16.2',recipe:'v0.15.2',checkpoint:'v0.15.2',sync:'v2.64',ui:'v2.53',starter:'v1.6.1'});
 
 // Issue #1: fix the existing gate. Passive Landscape Shard preview is allowed only through transient presentation locks.
 assert(/function v642TabletLandscapePassiveShardPreviewTarget\(target\)/.test(app),'Landscape passive Shard target classifier missing');

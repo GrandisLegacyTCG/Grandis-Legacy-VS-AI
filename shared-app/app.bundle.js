@@ -1,4 +1,4 @@
-/* Grandis Legacy shared gameplay application v3.4 — ONE EDITABLE SOURCE for VS AI v6.45 + Tutorial v0.69.
+/* Grandis Legacy shared gameplay application v3.4 — ONE EDITABLE SOURCE for VS AI v6.46 + Tutorial v0.69.
    One Source Authority v1.9.5 + Runtime Foundation v1.94.2 / Runtime Core v0.61 / Runtime Data v0.16.2.
    This gameplay/UI bundle is the next shared authority for Local AI and the future PvP rebuild; only intent controller and network transport may differ. */
 (function(){
@@ -6,7 +6,7 @@
   var GL_APP_MODE=String((typeof window!=='undefined'&&window.GL_APP_MODE)||'LOCAL_AI').toUpperCase();
   var IS_PVP_APP=GL_APP_MODE==='PVP';
   var IS_TUTORIAL_APP=GL_APP_MODE==='TUTORIAL';
-  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.41 · VS AI v6.42 Battlefield · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.69 GitHub Pages · VS AI v6.42 Base · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61':'Grandis Legacy VS AI v6.45 · Shared Gameplay Bundle v3.4 · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61');
+  var GL_VERSION=IS_PVP_APP?'Grandis Legacy PvP v3.41 · VS AI v6.42 Battlefield · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61':(IS_TUTORIAL_APP?'Grandis Legacy Tutorial v0.69 GitHub Pages · VS AI v6.42 Base · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61':'Grandis Legacy VS AI v6.46 · Shared Gameplay Bundle v3.4 · One Source v1.9.5 · Runtime Data v0.16.2 · Foundation v1.94.2 · Core v0.61');
   var PHASES=['Draw','Deploy','Battle','Reform','End'];
   var LANE_ORDER=['LEFT','CENTER','RIGHT'];
   var EXP_MAX_TOTAL=700;
@@ -254,8 +254,9 @@
     if(!src)return false;
     var now=Date.now();
     if(GL_LAST_BATTLE_AUDIO.src===src&&now-GL_LAST_BATTLE_AUDIO.at<180)return false;
-    GL_LAST_BATTLE_AUDIO={src:src,at:now};
-    return playPreloadedAudio(src,volume||.58);
+    var played=playPreloadedAudio(src,volume||.58);
+    if(played) GL_LAST_BATTLE_AUDIO={src:src,at:now};
+    return played;
   }
   function battleVfxTier(cls){
     if(/pattack|mattack/.test(String(cls||'')))return 11854;
@@ -896,7 +897,7 @@
   var CARDS=[], CARD_BY_ID={};
 
   function sanitizeStaleSkillRuntimePayloads(){return true;}
-  function assertActiveRuntimeSourceStack(){var stack=window.GL_SOURCE_STACK||{},defs=window.GL_CARD_DEFINITIONS||{},recipes=window.GL_EFFECT_RECIPES||{},gate=window.GRANDIS_LEGACY_ONE_SOURCE_READY||{},cardCount=Array.isArray(defs.cards)?defs.cards.length:flattenCards(defs).length,effectCount=Array.isArray(recipes.effect_recipes)?recipes.effect_recipes.length:0,hash='7ac1f90f6a9654cf575ac41db64a052901005905b1cf01f3bfc7532873cc9389';if(stack.runtime_data!=='v0.16.2'||defs.version!=='v0.16.2'||cardCount!==200)throw new Error('Active Runtime Data guard failed; v0.16.2 / 200 cards required.');if(stack.effect_checkpoint!=='v0.15.2'||stack.effect_recipe!=='v0.15.2'||recipes.version!=='v0.15.2'||effectCount!==200)throw new Error('Active Effect guard failed.');if(stack.shared_runtime!=='v1.94.2'||stack.runtime_foundation!=='v1.94.2'||stack.application_runtime_sync!=='v2.63')throw new Error('Active Runtime source stack guard failed.');if(!window.GL_RUNTIME_AUTHORITY||window.GL_RUNTIME_AUTHORITY.version!=='v1.94-browser')throw new Error('Browser Runtime Authority v1.94 is not loaded.');if(gate.canonical_registry_hash!==hash||defs.canonical_registry_hash!==hash||recipes.canonical_registry_hash!==hash)throw new Error('One Source Authority v1.9.5 consumer baseline hash mismatch.');assertCanonicalCardMirror(defs);return true;}
+  function assertActiveRuntimeSourceStack(){var stack=window.GL_SOURCE_STACK||{},defs=window.GL_CARD_DEFINITIONS||{},recipes=window.GL_EFFECT_RECIPES||{},gate=window.GRANDIS_LEGACY_ONE_SOURCE_READY||{},cardCount=Array.isArray(defs.cards)?defs.cards.length:flattenCards(defs).length,effectCount=Array.isArray(recipes.effect_recipes)?recipes.effect_recipes.length:0,hash='7ac1f90f6a9654cf575ac41db64a052901005905b1cf01f3bfc7532873cc9389';if(stack.runtime_data!=='v0.16.2'||defs.version!=='v0.16.2'||cardCount!==200)throw new Error('Active Runtime Data guard failed; v0.16.2 / 200 cards required.');if(stack.effect_checkpoint!=='v0.15.2'||stack.effect_recipe!=='v0.15.2'||recipes.version!=='v0.15.2'||effectCount!==200)throw new Error('Active Effect guard failed.');if(stack.shared_runtime!=='v1.94.2'||stack.runtime_foundation!=='v1.94.2'||stack.application_runtime_sync!=='v2.64')throw new Error('Active Runtime source stack guard failed.');if(!window.GL_RUNTIME_AUTHORITY||window.GL_RUNTIME_AUTHORITY.version!=='v1.94-browser')throw new Error('Browser Runtime Authority v1.94 is not loaded.');if(gate.canonical_registry_hash!==hash||defs.canonical_registry_hash!==hash||recipes.canonical_registry_hash!==hash)throw new Error('One Source Authority v1.9.5 consumer baseline hash mismatch.');assertCanonicalCardMirror(defs);return true;}
   function validateHeroComponentRuntimeData(){
     var registry=window.GL_HERO_COMPONENTS||window.GRANDIS_LEGACY_HERO_COMPONENTS||{}, racialIndex={},classIndex={};
     (registry.racial_traits||[]).forEach(function(x){racialIndex[x.racial_trait_id]=x.definition;});
@@ -3675,16 +3676,15 @@
     if(isSpectralGrapplingHookCard(rc)) return incoming && !incoming.cannot_dodge ? 'dodge' : null;
     if(isThiefDodgeResponseCard(rc) || isDodgeResponseCard(rc)) return incoming && !incoming.cannot_dodge ? 'dodge' : null;
     if(isBrilliantRadianceCard(rc)) return 'negate_discard';
-    if(incoming && incoming.cannot_block) return null;
-    if(isSacredBulwarkCard(rc)) return 'block';
+    if(isSacredBulwarkCard(rc)) return incoming && incoming.cannot_block ? null : 'block';
     if(isBlessingDivinityCard(rc)) return 'immunity';
-    if(isDefensiveFormationCard(rc)) return incoming && /Area|All|Dual/i.test(String(incoming.attack_type||'')) ? 'area_reduce' : null;
+    if(isDefensiveFormationCard(rc)) return incoming && !incoming.cannot_block && /Area|All|Dual/i.test(String(incoming.attack_type||'')) ? 'area_reduce' : null;
     for(var i=0;i<rc.effect.length;i++){ var e=rc.effect[i];
       if(e.kind==='negate_incoming_attack' && (!e.damage_types || e.damage_types.indexOf(incoming.damage_type)!==-1)) return 'negate_return';
       if(e.kind==='damage_immunity') return 'immunity';
       if(e.kind==='damage_prevention_active_effect') return 'immunity';
-      if(e.kind==='protective_def_response_block') return 'block';
-      if(e.kind==='block_damage' && (!e.damage_types || e.damage_types.indexOf(incoming.damage_type)!==-1)) return 'block';
+      if(e.kind==='protective_def_response_block') return incoming && incoming.cannot_block ? null : 'block';
+      if(e.kind==='block_damage' && (!incoming.cannot_block) && (!e.damage_types || e.damage_types.indexOf(incoming.damage_type)!==-1)) return 'block';
       if((e.kind==='dodge_incoming_attack_damage' || e.kind==='dodge_incoming_damage') && !incoming.cannot_dodge && (!e.damage_types || e.damage_types.indexOf(incoming.damage_type)!==-1)) return 'dodge';
     }
     return null;
@@ -3700,7 +3700,7 @@
   }
   function isDragonbornHero(hero){ return racialActionMatches(hero,'dragon_scale','response_damage_block'); }
   function dragonScaleResponseOptionsFor(state, responderSide, incoming){
-    if(!state || !incoming) return [];var lanes=responseAffectedLanes(state,responderSide,incoming), out=[];
+    if(!state || !incoming || incoming.cannot_block) return [];var lanes=responseAffectedLanes(state,responderSide,incoming), out=[];
     lanes.forEach(function(lane){var h=sideHeroes(state,responderSide)[lane],r=resolvedRacialTrait(h),a=r&&r.action||{},e=a.effect||{},types=e.damage_types||[],cost=Number((a.cost&&a.cost.racial_token)||0);if(h&&Number(h.hp||0)>0&&!isLegacyModeHero(h)&&a.type==='response_damage_block'&&types.indexOf(String(incoming.damage_type||''))!==-1&&Number(state[racialTokenKey(responderSide)]||0)>=cost&&!racialAbilityUsedThisTurnByHero(state,h))out.push({card_id:h.card_id,source_lane:lane,response_kind:'dragon_scale',racial_ability:a.action_key||'dragon_scale',label:(r.name||'Dragon Scale')+' — '+cardName(card(h.card_id))+' from '+lane,block:Number(e.block_damage||0),cost_racial:cost,chosen_affected_lane:lane});});
     return out;
   }
@@ -7521,7 +7521,7 @@ var desktopMarkup='<div class="gl-lab-authority '+(state.turn==='AI'?'turn-ai':'
       var formationChunks=[];
       LANE_ORDER.forEach(function(lane,index){
         formationChunks.push(setupFormationCard(side,d,lane,rankView));
-        if(index<LANE_ORDER.length-1){var nextLane=LANE_ORDER[index+1];formationChunks.push('<button class="vsai-v643-swap-button" type="button" data-vsai-side="'+esc(side)+'" data-vsai-swap-left="'+esc(lane)+'" data-vsai-swap-right="'+esc(nextLane)+'" aria-label="Swap '+esc(lane)+' and '+esc(nextLane)+'">↔</button>');}
+        if(index<LANE_ORDER.length-1){var nextLane=LANE_ORDER[index+1];formationChunks.push('<button class="vsai-v643-swap-button" type="button" data-vsai-side="'+esc(side)+'" data-vsai-swap-left="'+esc(lane)+'" data-vsai-swap-right="'+esc(nextLane)+'" aria-label="Swap '+esc(lane)+' and '+esc(nextLane)+'"><img class="vsai-v646-swap-icon" src="assets/lobby/Swap.png" alt="" aria-hidden="true"></button>');}
       });
       formation='<div class="vsai-v643-formation-grid clean-hero-preview">'+formationChunks.join('')+'</div><div class="vsai-v643-rank-control" data-vsai-rank-side="'+esc(side)+'" aria-label="Hero rank preview"><button type="button" data-vsai-side="'+esc(side)+'" data-vsai-rank-delta="-1" aria-label="Previous rank">‹</button><strong data-vsai-rank-label>RANK '+['I','II','III'][rankView-1]+'</strong><button type="button" data-vsai-side="'+esc(side)+'" data-vsai-rank-delta="1" aria-label="Next rank">›</button></div>';
     }else{
@@ -10361,6 +10361,9 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
     testCandidate6NormalShardDrawPresentation:function(side){side=side==='AI'?'AI':'PLAYER';return !!queueStagedManaRegenDraws(appState,side,1,'Candidate 6 normal Shard Draw',{onComplete:function(){}});},
     testCandidate6StealShardPresentation:function(side){side=side==='AI'?'AI':'PLAYER';var target=oppositeSide(side),pool=manaPoolCardsForSide(appState,target);if(!pool.length)return false;return !!finishOpponentManaInteraction(appState,{side:side,target_side:target,mode:'REMOVE_AND_GAIN_OWN',reason:'Candidate 6 Steal test'},[{uid:pool[0].uid}]);},
     testCandidate6ResponseOwnerFlow:function(targetSide){var oldApp=appState,oldMatch=matchStarted,oldSuppress=SUPPRESS_RENDER;try{SUPPRESS_RENDER=true;matchStarted=true;var s=buildInitialMatchState();appState=s;s.preGame=null;s.pending=null;s.responseWindow=null;s.pvpHumanVsHuman=false;targetSide=targetSide==='AI'?'AI':'PLAYER';var sourceSide=targetSide==='AI'?'PLAYER':'AI',action={card_id:'S1-WAR-001',source_side:sourceSide,source_lane:'CENTER',target_side:targetSide,target_lane:'CENTER'},result=resolveAttackWithOwnerGating(s,action,{damage:10,persistent:false,attachmentSlot:-1});return{result:result,response_window_exists:!!s.responseWindow,response_owner:s.responseWindow&&s.responseWindow.response_owner||null,target_side:targetSide};}finally{appState=oldApp;matchStarted=oldMatch;SUPPRESS_RENDER=oldSuppress;}},
+    testV646ResponseKind:function(cardId,incoming){initCards();var rc=card(String(cardId||''));return responseKind(rc,clone(incoming||{}));},
+    testV646ResponseOptions:function(responderSide,incoming,handIds){var oldApp=appState,oldMatch=matchStarted,oldSuppress=SUPPRESS_RENDER;try{SUPPRESS_RENDER=true;matchStarted=true;var s=buildInitialMatchState();appState=s;s.preGame=null;s.pending=null;s.responseWindow=null;responderSide=responderSide==='AI'?'AI':'PLAYER';var hk=responderSide==='AI'?'aiHand':'playerHand';s[hk]=(handIds||[]).slice();var opts=responseOptionsFor(s,responderSide,clone(incoming||{}));return opts.map(function(o){return{card_id:o.card_id,response_kind:o.response_kind,source_lane:o.source_lane||null};});}finally{appState=oldApp;matchStarted=oldMatch;SUPPRESS_RENDER=oldSuppress;}},
+    testV646AudioDedupSequence:function(){var oldEnabled=GL_CARD_SOUND_ENABLED,oldLedger=clone(GL_LAST_BATTLE_AUDIO),src=GL_BATTLE_AUDIO&&GL_BATTLE_AUDIO.pAttack||'';try{GL_LAST_BATTLE_AUDIO={src:'',at:0};setCardMotionSoundEnabled(false);var muted=battlePlayAudio(src,.58),afterMuted=clone(GL_LAST_BATTLE_AUDIO);setCardMotionSoundEnabled(true);var audible=battlePlayAudio(src,.58),afterAudible=clone(GL_LAST_BATTLE_AUDIO);return{src:src,muted:!!muted,audible:!!audible,afterMuted:afterMuted,afterAudible:afterAudible};}finally{setCardMotionSoundEnabled(oldEnabled);GL_LAST_BATTLE_AUDIO=oldLedger;}},
     testCandidate7EndPhaseTerminal:function(side,isFinal,withPending){var oldApp=appState,oldMatch=matchStarted,oldSuppress=SUPPRESS_RENDER;try{SUPPRESS_RENDER=true;matchStarted=true;side=side==='AI'?'AI':'PLAYER';var s=buildInitialMatchState();appState=s;s.preGame=null;s.turn=side;s.phase='End';s.pending=null;s.responseWindow=null;s.gameOver=false;s.winner=null;s.autoEndTurnPending=side==='PLAYER';s.autoEndResumeScheduled=false;var heroes=sideHeroes(s,side),lane='CENTER',h=heroes[lane];h.hp=5;h.statuses=[];h.attachments=['S1-ITM-001',null];addStatus(h,'Poison',1,'Candidate 7 lethal End Phase test',{source_card_id:'S1-THF-012',source_name:'Poison Mist'});if(isFinal){['LEFT','RIGHT'].forEach(function(l){var x=heroes[l];x.hp=0;x.mode='LEGACY';x.legacy_mode=true;x.statuses=[];x.attachments=[null,null];});}if(withPending){s.pending={type:'source_selection',side:side,decision_side:side,source_side:side,source_lane:lane,source_hero_card_id:h.card_id,card_id:'S1-WAR-001'};s.pendingCastings=[{side:side,source_lane:lane,original_source_lane:lane,source_hero_card_id:h.card_id,card_id:'S1-MAG-009',remaining_count:1}];}resolveEndPhaseCleanupForSide(s,side);return{gameOver:!!s.gameOver,winner:s.winner||null,pending:s.pending?String(s.pending.type||'pending'):null,response:!!s.responseWindow,autoEnd:!!s.autoEndTurnPending,pendingCastings:(s.pendingCastings||[]).length,statuses:(h.statuses||[]).length,attachments:(h.attachments||[]).filter(Boolean).length,gameEndLogs:(s.log||[]).filter(function(line){return /GAME END:/i.test(String(line));}).length,hp:Number(h.hp||0)};}finally{appState=oldApp;matchStarted=oldMatch;SUPPRESS_RENDER=oldSuppress;}},
     testCandidate7DirectLethal:function(){var oldApp=appState,oldMatch=matchStarted,oldSuppress=SUPPRESS_RENDER;try{SUPPRESS_RENDER=true;matchStarted=true;var s=buildInitialMatchState();appState=s;s.preGame=null;s.pending=null;s.responseWindow=null;s.gameOver=false;s.winner=null;var heroes=s.aiHeroes;['LEFT','RIGHT'].forEach(function(l){heroes[l].hp=0;heroes[l].mode='LEGACY';heroes[l].legacy_mode=true;heroes[l].statuses=[];heroes[l].attachments=[null,null];});heroes.CENTER.hp=10;heroes.CENTER.statuses=[];var src=s.playerHeroes.CENTER;src.hp=Math.max(1,Number(src.hp||100));applyResolvedAttackDamage(s,'S1-WAR-001','PLAYER','CENTER','AI','CENTER',20,'Physical',false,0,false,false);return{gameOver:!!s.gameOver,winner:s.winner||null,gameEndLogs:(s.log||[]).filter(function(line){return /GAME END:/i.test(String(line));}).length,hp:Number(heroes.CENTER.hp||0)};}finally{appState=oldApp;matchStarted=oldMatch;SUPPRESS_RENDER=oldSuppress;}},
     testGameplayFoundationFixes:simulateV559GameplayFixes,
@@ -12306,7 +12309,7 @@ function withUnshuffledSelfTest(fn){ return function(){ var old=STARTUP_SHUFFLE_
       // Opponent Shard blind selector randomizes view before selection without mutating real pool order/deck.
       s=fresh('PLAYER','Deploy');s.aiManaPoolCards=[makeManaShard('GENERIC','','AI','B1'),makeManaShard('CLASS','Warrior','AI','B2'),makeManaShard('GENERIC','','AI','B3')];syncManaCountForSide(s,'AI');var poolOrder=s.aiManaPoolCards.map(function(x){return x.uid;});var deckOrder=(s.aiManaDeck||[]).map(function(x){return x.uid;});if(!startOpponentManaSelection(s,{side:'PLAYER',amount:1,mode:'REMOVE_ONLY',reason:'V642 blind QA'}))return{ok:false,reason:'Opponent Shard blind selector did not open'};var shown=(s.pending&&s.pending.candidates||[]).map(function(x){return x.uid;});if(shown.length>1&&shown.join('|')===poolOrder.join('|'))return{ok:false,reason:'Opponent blind mapping preserved full original positional identity'};if((s.pending.candidates||[]).some(function(x){return Object.prototype.hasOwnProperty.call(x,'kind')||Object.prototype.hasOwnProperty.call(x,'class_name');}))return{ok:false,reason:'Opponent Shard identity leaked before commit'};if((s.aiManaPoolCards||[]).map(function(x){return x.uid;}).join('|')!==poolOrder.join('|')||(s.aiManaDeck||[]).map(function(x){return x.uid;}).join('|')!==deckOrder.join('|'))return{ok:false,reason:'Blind selector mutated canonical Shard Pool/Deck state before commit'};
 
-      return{ok:true,version:'VS AI v6.45 / Tutorial v0.69',canonicalCards:200,starter60:'v1.6.1',starterDecks:5,warpScrollPlayer:true,warpScrollAI:true,freezeBombPlayer:true,freezeBombAI:true,freezeManualReposition:true,freezeSkillMovement:true,freezeDodge:true,freezeBlock:true,freezeAutoCenter:true,freezeDuration:true,freezeStacking:true,tripleShotNoBinding:true,tripleShotThisTurnLifecycle:true,whirlwind:50,blindHandSelection:true,blindSelection:true,heroDefeatCleanup:true,shieldBashDeflect:true,aiTurnContinuation:true};
+      return{ok:true,version:'VS AI v6.46 / Tutorial v0.69',canonicalCards:200,starter60:'v1.6.1',starterDecks:5,warpScrollPlayer:true,warpScrollAI:true,freezeBombPlayer:true,freezeBombAI:true,freezeManualReposition:true,freezeSkillMovement:true,freezeDodge:true,freezeBlock:true,freezeAutoCenter:true,freezeDuration:true,freezeStacking:true,tripleShotNoBinding:true,tripleShotThisTurnLifecycle:true,whirlwind:50,blindHandSelection:true,blindSelection:true,heroDefeatCleanup:true,shieldBashDeflect:true,aiTurnContinuation:true};
     }catch(e){return{ok:false,error:String(e&&e.stack||e)}}finally{appState=oldState;matchStarted=oldStarted;SUPPRESS_RENDER=oldSuppress;try{closeChoice();closeResponseWindowUI();}catch(_){}}
   };
 

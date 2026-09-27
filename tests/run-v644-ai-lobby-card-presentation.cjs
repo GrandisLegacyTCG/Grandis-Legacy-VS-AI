@@ -5,11 +5,11 @@ const read=r=>fs.readFileSync(path.join(ROOT,r),'utf8');
 const json=r=>JSON.parse(read(r));
 const sha=r=>crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT,r))).digest('hex');
 const app=read('shared-app/app.bundle.js'),css=read('shared-app/app.css'),index=read('index.html');
-assert.strictEqual(json('package.json').version,'6.45.0');
+assert.strictEqual(json('package.json').version,'6.46.0');
 assert.strictEqual(json('tutorial/package.json').version,'0.69.0');
 const stack=json('data/config/active-runtime-source-stack.v1.95.json');
-assert.strictEqual(stack.vs_ai,'v6.45');assert.strictEqual(stack.tutorial,'v0.69');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
-assert(index.includes('shared-app/app.bundle.js?v=gl-vs-ai-645-ui-turnhandoff-r2'),'Root does not load canonical v6.44 shared-app bundle');
+assert.strictEqual(stack.vs_ai,'v6.46');assert.strictEqual(stack.tutorial,'v0.69');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
+assert(index.includes('shared-app/app.bundle.js?v=gl-vs-ai-646-response-swap-r1'),'Root does not load canonical v6.46 shared-app bundle');
 // AI and Player deliberately share the approved v6.43 Style 1 component family.
 const swapFn=app.match(/function swapSetupFormation\(side,leftLane,rightLane\)\{[\s\S]*?\n  \}/)?.[0]||'';
 const rankFn=app.match(/function cycleSetupRank\(side,delta\)\{[\s\S]*?\n  \}/)?.[0]||'';
@@ -36,8 +36,8 @@ const phoneSlice=phoneStart>=0?css.slice(phoneStart,phoneStart+700):'';
 for(const t of ['width:25px!important','min-width:25px!important','height:35px!important','min-height:35px!important','flex:0 0 25px!important','aspect-ratio:63/88!important'])assert(phoneSlice.includes(t),'Phone Card Played equal-size token missing '+t);
 assert(!/combined-played-card[^}]*transform\s*:\s*scale\s*\(/i.test(css),'Card Played uses scale() depth shrink');
 // No image assets were invented for the controls.
-assert(!/vsai-v643-(?:swap-button|rank-control)[^\n]*(?:\.svg|\.png|\.webp)/i.test(app+css),'New Hero swap/Rank asset invented');
+assert(app.includes('assets/lobby/Swap.png'),'Required shared Swap.png visual missing');
 // Tutorial-specific controller is a hard lock for this release.
 assert.strictEqual(sha('tutorial/js/tutorial-guide.js'),'3b5601a3e0ec9587ac4fbae8b144eb566d5c2d2ba19ce7f2e10bd993d33dfd64','Tutorial-specific guide changed');
 assert.strictEqual(sha('tutorial/css/tutorial-guide.css'),'ef2c532b3eccb2c43a5810f4538c897862bd54051e31805e81d5553a9bbdcc2f','Tutorial-specific guide CSS changed');
-console.log('PASS VS AI v6.45 static AI Lobby parity + passive card presentation + equal-size phone Card Played + Tutorial-specific hard lock.');
+console.log('PASS VS AI v6.46 static AI Lobby parity + passive card presentation + equal-size phone Card Played + Tutorial-specific hard lock.');

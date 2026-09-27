@@ -5,10 +5,10 @@ const read=r=>fs.readFileSync(path.join(ROOT,r),'utf8');
 const json=r=>JSON.parse(read(r));
 const app=read('shared-app/app.bundle.js'),fieldCss=read('shared-app/battlefield-authority.css');
 const rootIndex=read('index.html'),tutorialIndex=read('tutorial/index.html');
-assert.strictEqual(json('package.json').version,'6.45.0');
+assert.strictEqual(json('package.json').version,'6.46.0');
 assert.strictEqual(json('tutorial/package.json').version,'0.69.0');
 const stack=json('data/config/active-runtime-source-stack.v1.95.json');
-assert.deepStrictEqual({osa:stack.source_authority,shared:stack.shared_runtime,data:stack.runtime_data,recipe:stack.effect_recipe,checkpoint:stack.effect_checkpoint,sync:stack.application_runtime_sync,ui:stack.ui_contract,starter:stack.starter60},{osa:'v1.9.5',shared:'v1.94.2',data:'v0.16.2',recipe:'v0.15.2',checkpoint:'v0.15.2',sync:'v2.63',ui:'v2.53',starter:'v1.6.1'});
+assert.deepStrictEqual({osa:stack.source_authority,shared:stack.shared_runtime,data:stack.runtime_data,recipe:stack.effect_recipe,checkpoint:stack.effect_checkpoint,sync:stack.application_runtime_sync,ui:stack.ui_contract,starter:stack.starter60},{osa:'v1.9.5',shared:'v1.94.2',data:'v0.16.2',recipe:'v0.15.2',checkpoint:'v0.15.2',sync:'v2.64',ui:'v2.53',starter:'v1.6.1'});
 
 // Candidate 14 transient-lock fix remains intact and Landscape-only.
 assert(/function v642TabletLandscapePassiveShardPreviewTarget\(target\)/.test(app),'Landscape passive Shard target classifier missing');
@@ -42,7 +42,7 @@ assert(/\.heroActions:has\(\.racialAbilityAction,\.classAbilityAction,\.legacyAb
 assert(/html\.gl-ui-tablet\.gl-tablet-landscape-desktop \.gl-lab-positions \.heroActions\{right:3px!important;top:3px!important;max-width:32%!important;width:min\(92px,32%\)!important;\}/.test(fieldCss),'Hero-control X/width baseline changed');
 assert(/function compactTabletAbilityLabel\(fullName\)/.test(app),'Compact Class/Racial label logic changed');
 
-assert(/gl-vs-ai-645-ui-turnhandoff-r2/.test(rootIndex),'root VS AI v6.44 shared Lobby cache-buster missing');
+assert(/gl-vs-ai-646-response-swap-r1/.test(rootIndex),'root VS AI v6.44 shared Lobby cache-buster missing');
 assert(/gl-shared-v645-069-r2/.test(tutorialIndex),'Tutorial shared-app cache-buster must follow regenerated v6.44 shared bytes');
 for(const [name,text] of [['root',rootIndex],['tutorial',tutorialIndex]]){
   assert(/gl-authority-v645-opponent-hand-final-r2/.test(text),`${name} Candidate 15 authority cache-buster missing`);

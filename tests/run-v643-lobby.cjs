@@ -5,11 +5,11 @@ const read=r=>fs.readFileSync(path.join(ROOT,r),'utf8');
 const json=r=>JSON.parse(read(r));
 const sha=r=>crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT,r))).digest('hex');
 const app=read('shared-app/app.bundle.js'),css=read('shared-app/app.css'),index=read('index.html'),tutorialIndex=read('tutorial/index.html');
-assert.strictEqual(json('package.json').version,'6.45.0');
+assert.strictEqual(json('package.json').version,'6.46.0');
 assert.strictEqual(json('tutorial/package.json').version,'0.69.0');
 const stack=json('data/config/active-runtime-source-stack.v1.95.json');
-assert.strictEqual(stack.vs_ai,'v6.45');assert.strictEqual(stack.tutorial,'v0.69');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
-assert(/shared-app\/app\.bundle\.js\?v=gl-vs-ai-645-ui-turnhandoff-r2/.test(index),'Root Lobby does not load canonical shared-app bundle');
+assert.strictEqual(stack.vs_ai,'v6.46');assert.strictEqual(stack.tutorial,'v0.69');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
+assert(/shared-app\/app\.bundle\.js\?v=gl-vs-ai-646-response-swap-r1/.test(index),'Root Lobby does not load canonical shared-app bundle');
 assert(/window\.GL_APP_MODE="LOCAL_AI"/.test(index));assert(/window\.GL_APP_MODE="TUTORIAL"/.test(tutorialIndex));
 // Navigation authority.
 for(const url of ['https://grandislegacytcg.github.io/','https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/','https://grandislegacytcg.github.io/pvp/']) assert(index.includes(url),`Missing route ${url}`);
@@ -36,7 +36,9 @@ for(const token of [
   'height:31px;padding:0;border:0;border-radius:0;background:transparent;color:#fff;font-size:22px',
   'text-align:center;color:#f0d27f;font-size:10px'
 ]) assert(css.includes(token),`Deck Builder Style 1 token missing: ${token}`);
-assert(!/vsai-v643[^\n]*(?:\.svg|\.png|\.webp)/i.test(app+css),'New Rank/swap image asset invented');
+assert(app.includes('assets/lobby/Swap.png'),'Required Swap.png asset is not wired into shared Lobby swap control');
+assert(fs.existsSync(path.join(ROOT,'assets/lobby/Swap.png')),'Root Swap.png missing');
+assert(fs.existsSync(path.join(ROOT,'tutorial/assets/lobby/Swap.png')),'Tutorial Swap.png mirror missing');
 // Candidate 15 Battlefield + Tutorial-specific controller hard locks.
 const locked={
   'shared-ui/battlefield-ui.js':'110394df12e3052bbcc961de24dad29b5734af65d0a7c0afdd2c8ffdaf8a81cb',
@@ -50,4 +52,4 @@ assert(!/vsai-v643-(?:formation-grid|swap-button|rank-control)/.test(tutorialInd
 // Generated mirrors must stay synchronized to canonical shared source architecture.
 assert.strictEqual(sha('js/app.bundle.js'),sha('tutorial/js/app.bundle.js'),'Generated JS deployment mirrors diverged');
 assert.strictEqual(sha('css/app.css'),sha('tutorial/css/app.css'),'Generated CSS deployment mirrors diverged');
-console.log('PASS VS AI v6.45 static Lobby authority: canonical active bundle, navigation repair, Style 1 formation/Rank controls, local-only Rank preview, locked Battlefield/Tutorial controller, and synchronized generated mirrors.');
+console.log('PASS VS AI v6.46 static Lobby authority: canonical active bundle, navigation repair, Style 1 formation/Rank controls, local-only Rank preview, locked Battlefield/Tutorial controller, and synchronized generated mirrors.');
