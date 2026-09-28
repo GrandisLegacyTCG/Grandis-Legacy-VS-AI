@@ -5,11 +5,11 @@ const read=r=>fs.readFileSync(path.join(ROOT,r),'utf8');
 const json=r=>JSON.parse(read(r));
 const sha=r=>crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT,r))).digest('hex');
 const app=read('shared-app/app.bundle.js'),css=read('shared-app/app.css'),index=read('index.html'),tutorialIndex=read('tutorial/index.html');
-assert.strictEqual(json('package.json').version,'6.47.0');
-assert.strictEqual(json('tutorial/package.json').version,'0.70.0');
+assert.strictEqual(json('package.json').version,'6.48.0');
+assert.strictEqual(json('tutorial/package.json').version,'0.71.0');
 const stack=json('data/config/active-runtime-source-stack.v1.95.json');
-assert.strictEqual(stack.vs_ai,'v6.47');assert.strictEqual(stack.tutorial,'v0.70');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
-assert(/shared-app\/app\.bundle\.js\?v=gl-vs-ai-647-gameplay-exp-r1/.test(index),'Root Lobby does not load canonical shared-app bundle');
+assert.strictEqual(stack.vs_ai,'v6.48');assert.strictEqual(stack.tutorial,'v0.71');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
+assert(/shared-app\/app\.bundle\.js\?v=gl-vs-ai-648-import-hf-r1/.test(index),'Root Lobby does not load canonical shared-app bundle');
 assert(/window\.GL_APP_MODE="LOCAL_AI"/.test(index));assert(/window\.GL_APP_MODE="TUTORIAL"/.test(tutorialIndex));
 // Navigation authority.
 for(const url of ['https://grandislegacytcg.github.io/','https://grandislegacytcg.github.io/Grandis-Legacy-Deck-Builder/style-1/','https://grandislegacytcg.github.io/pvp/']) assert(index.includes(url),`Missing route ${url}`);
@@ -45,9 +45,9 @@ const locked={
   'tutorial/js/tutorial-guide.js':'8486de7d49dd77ef6d00f8db3b790f8ad8abdaac0b5c2ecdc3b80f4e890dd9f1'
 };
 for(const [f,h] of Object.entries(locked))assert.strictEqual(sha(f),h,`${f} hard lock changed`);
-assert.strictEqual(json('tutorial/package.json').version,'0.70.0');
+assert.strictEqual(json('tutorial/package.json').version,'0.71.0');
 assert(!/vsai-v643-(?:formation-grid|swap-button|rank-control)/.test(tutorialIndex),'Tutorial HTML unexpectedly owns VS AI Lobby controls');
 // Generated mirrors must stay synchronized to canonical shared source architecture.
 assert.strictEqual(sha('js/app.bundle.js'),sha('tutorial/js/app.bundle.js'),'Generated JS deployment mirrors diverged');
 assert.strictEqual(sha('css/app.css'),sha('tutorial/css/app.css'),'Generated CSS deployment mirrors diverged');
-console.log('PASS VS AI v6.47 static Lobby authority: canonical active bundle, navigation repair, Style 1 formation/Rank controls, local-only Rank preview, locked Battlefield/Tutorial controller, and synchronized generated mirrors.');
+console.log('PASS VS AI v6.48 static Lobby authority: canonical active bundle, navigation repair, Style 1 formation/Rank controls, local-only Rank preview, locked Battlefield/Tutorial controller, and synchronized generated mirrors.');

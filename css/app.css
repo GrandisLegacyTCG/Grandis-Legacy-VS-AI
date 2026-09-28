@@ -6150,7 +6150,7 @@ html.gl-active-vs-match,body.gl-active-vs-match{overscroll-behavior-y:contain}
   .v96-app .hero-row--player .hero-lane.legacy-slot{grid-template-rows:minmax(0,1fr) 22px!important}
 }
 
-/* VS AI v6.47 / Tutorial v0.70 — orientation-aware physical Tribute EXP stack with Ready/Exhausted size parity.
+/* VS AI v6.48 / Tutorial v0.71 — retained orientation-aware physical Tribute EXP stack with Ready/Exhausted size parity.
    Ready: the four fixed EXP card edges live on the Hero's right edge.
    Exhausted: the Hero artwork rotates independently and the same four EXP card
    instances move to the Hero's upper edge, stacked bottom-to-top (oldest/slot 1
@@ -6536,3 +6536,8 @@ html.gl-ui-tablet.gl-tablet-landscape-desktop body.deck-setup-active .deck-setup
 .deck-setup-screen.runtime-ui-v14-setup .vsai-v643-rank-control button:hover{background:#24262e}
 .deck-setup-screen.runtime-ui-v14-setup .vsai-v643-rank-control strong{text-align:center;color:#f0d27f;font-size:10px;font-weight:700;line-height:normal}
 
+
+/* v6.48 exclusive modal ownership: inert is the primary input lock; this class is the pointer-event fallback for older engines. */
+.gl-modal-underlay-blocked{pointer-events:none!important;user-select:none!important}
+.gl-invalid-import-message{white-space:pre-wrap;overflow-wrap:anywhere}
+.gl-invalid-import-note{color:#b8c6d8;font-size:12px;margin-top:10px}

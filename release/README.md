@@ -1,5 +1,5 @@
-# Grandis Legacy VS AI Release Records
+# Grandis Legacy Release
 
-Current release: **VS AI v6.47 / Tutorial v0.70**.
+Current release: **VS AI v6.48 / Tutorial v0.71**.
 
-Current release documents live in this folder. Historical release documents live in `release/history/`.
+Historical release reports are retained under `release/history/`.

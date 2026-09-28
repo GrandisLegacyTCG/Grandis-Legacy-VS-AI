@@ -1,0 +1,11 @@
+'use strict';
+const path=require('path');
+const {loadLocalAI}=require('./vm-local-ai-harness.cjs');
+const root=path.resolve(__dirname,'..');
+const ctx=loadLocalAI(root);
+const fn=ctx.GL_V648_AI_QA_SELF_TEST;
+if(typeof fn!=='function')throw new Error('v6.48 Heaven Fury QA self-test missing');
+const result=fn();
+if(!result||result.ok!==true)throw new Error('v6.48 Heaven Fury AI QA failed: '+JSON.stringify(result));
+for(const key of ['rank2TargetMatchesAttacker','rank2NextTurnPersistence','rank2SameHeroFallback','rank2Invalidation','rank3TargetMatchesAttacker','noFollowUpNoPlay','multipleHeroEvaluation','enemyTargetReevaluation','doubleCastingRegression'])if(result[key]!==true)throw new Error('Missing v6.48 AI lock '+key+': '+JSON.stringify(result));
+console.log('PASS v6.48 Heaven Fury AI setup planning:',JSON.stringify(result));

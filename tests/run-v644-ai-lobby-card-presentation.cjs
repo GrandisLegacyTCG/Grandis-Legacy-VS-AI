@@ -5,11 +5,11 @@ const read=r=>fs.readFileSync(path.join(ROOT,r),'utf8');
 const json=r=>JSON.parse(read(r));
 const sha=r=>crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT,r))).digest('hex');
 const app=read('shared-app/app.bundle.js'),css=read('shared-app/app.css'),index=read('index.html');
-assert.strictEqual(json('package.json').version,'6.47.0');
-assert.strictEqual(json('tutorial/package.json').version,'0.70.0');
+assert.strictEqual(json('package.json').version,'6.48.0');
+assert.strictEqual(json('tutorial/package.json').version,'0.71.0');
 const stack=json('data/config/active-runtime-source-stack.v1.95.json');
-assert.strictEqual(stack.vs_ai,'v6.47');assert.strictEqual(stack.tutorial,'v0.70');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
-assert(index.includes('shared-app/app.bundle.js?v=gl-vs-ai-647-gameplay-exp-r1'),'Root does not load canonical v6.47 shared-app bundle');
+assert.strictEqual(stack.vs_ai,'v6.48');assert.strictEqual(stack.tutorial,'v0.71');assert.strictEqual(stack.card_count,200);assert.strictEqual(stack.active_starter_count,5);
+assert(index.includes('shared-app/app.bundle.js?v=gl-vs-ai-648-import-hf-r1'),'Root does not load canonical v6.48 shared-app bundle');
 // AI and Player deliberately share the approved v6.43 Style 1 component family.
 const swapFn=app.match(/function swapSetupFormation\(side,leftLane,rightLane\)\{[\s\S]*?\n  \}/)?.[0]||'';
 const rankFn=app.match(/function cycleSetupRank\(side,delta\)\{[\s\S]*?\n  \}/)?.[0]||'';
@@ -40,4 +40,4 @@ assert(app.includes('assets/lobby/Swap.png')&&css.includes('.vsai-v643-swap-butt
 // Tutorial-specific controller is a hard lock for this release.
 assert.strictEqual(sha('tutorial/js/tutorial-guide.js'),'8486de7d49dd77ef6d00f8db3b790f8ad8abdaac0b5c2ecdc3b80f4e890dd9f1','Tutorial-specific guide changed beyond version metadata');
 assert.strictEqual(sha('tutorial/css/tutorial-guide.css'),'ef2c532b3eccb2c43a5810f4538c897862bd54051e31805e81d5553a9bbdcc2f','Tutorial-specific guide CSS changed');
-console.log('PASS VS AI v6.47 static AI Lobby parity + passive card presentation + equal-size phone Card Played + Tutorial-specific hard lock.');
+console.log('PASS VS AI v6.48 static AI Lobby parity + passive card presentation + equal-size phone Card Played + Tutorial-specific hard lock.');

@@ -1,13 +1,12 @@
-# Grandis Legacy VS AI v6.47 + Tutorial v0.70
+# Grandis Legacy VS AI v6.48 + Tutorial v0.71
 
-This repository contains Grandis Legacy **VS AI v6.47** and **Tutorial v0.70**, consuming **Source Authority v1.9.5** and Player Rulebook v2.6 unchanged.
+This repository contains Grandis Legacy **VS AI v6.48** and **Tutorial v0.71**, consuming **Source Authority v1.9.5** and Player Rulebook v2.6 unchanged.
 
-## v6.47 / v0.70 correction scope
+## v6.48 / v0.71 correction scope
 
-1. Generic family-driven nested committed Responses now allow Flashpowder Bomb to counter an opponent's committed Flashpowder Bomb when legal.
-2. Custom imported Main Deck legality is **50 through 60 cards inclusive** for both Player and AI import paths; the five official Starter Decks remain unchanged at 60 cards.
-3. Ready and Exhausted Hero EXP-stack cards use identical physical size; Exhausted state changes only anchor/orientation.
+- Invalid custom-deck imports use the existing top-modal authority so Deck Setup is inert while the validation dialog is open, the current deck remains unchanged, and the same file can be selected again immediately.
+- Heaven's Fury AI setup planning binds the setup target to the Hero selected for the intended compatible Attack follow-up, including Rank II next-turn persistence, Rank III same-turn execution, same-Hero fallback, and clean invalidation.
 
-Application Runtime Sync: **v2.65**. OSA remains **v1.9.5**. Shared Runtime remains **v1.94.2**. UI Contract remains **v2.53**.
+Custom Main Deck legality remains **50–60 inclusive**. Previous v6.47 nested Flashpowder, EXP Ready/Exhaust parity, battle presentation, and Tutorial handoff behavior remain locked.
 
-Root and Tutorial deployment bundles are generated from `shared-app/` via `npm run build:data`. Do not hand-edit generated mirrors.
+Application Runtime Sync: **v2.66**. OSA remains **v1.9.5**. Shared Runtime remains **v1.94.2**. UI Contract remains **v2.53**.

@@ -4,7 +4,7 @@
   "application_release": "VS AI v6.42 / Tutorial v0.68",
   "source_authority": "v1.9.5",
   "starter_authority_version": "v1.6.1",
-  "application_runtime_sync": "v2.65",
+  "application_runtime_sync": "v2.66",
   "composition_authority": "OSA v1.9.5 consumer of unchanged Starter Deck Authority v1.6.1",
   "canonical_registry_hash": "7ac1f90f6a9654cf575ac41db64a052901005905b1cf01f3bfc7532873cc9389",
   "osa_active_starters_authority_sha256": "d818646d13bf41414d81aedeb14495e8308b2882c7f9bd2e50215be5e615dd10",
