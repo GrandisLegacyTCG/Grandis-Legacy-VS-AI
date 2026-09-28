@@ -1,4 +1,4 @@
-/* Grandis Legacy Tutorial Guide v0.69 — VS AI v6.42 / OSA v1.9.5. Tutorial overlay/controller on the shared v2.53 battlefield; Shard lessons wait for runtime presentation completion; Next Phase guidance only completes after a real phase transition. */
+/* Grandis Legacy Tutorial Guide v0.70 — VS AI v6.47 / OSA v1.9.5. Tutorial overlay/controller on the shared v2.53 battlefield; Shard lessons wait for runtime presentation completion; Next Phase guidance only completes after a real phase transition. */
 (function(){
   'use strict';
   var bridge=window.GL_TUTORIAL_BRIDGE;

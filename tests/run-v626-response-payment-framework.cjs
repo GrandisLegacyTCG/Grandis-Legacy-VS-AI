@@ -26,5 +26,5 @@ for(const cardId of ['S1-ITM-012','S1-ARC-003']){
   assert.strictEqual(b.s.players.AI.hand.filter(x=>x===cardId).length,0,'committed Response + same-ID payment copy were not removed from Hand');
 }
 const app=fs.readFileSync(path.join(root,'js/app.bundle.js'),'utf8');
-assert.ok(app.includes('function beginResponsePayment(state,rw,responseOption)')&&app.includes('function openCommittedResponseCounterWindow(state,attackWindow,responseOption,incomingFamily)'),'application UI is not using generic committed payment framework');
-console.log('PASS VS AI v6.31: SGH and Escape Arrow use one generic Confirm -> close Response -> mandatory payment -> new counter-Response hierarchy, including exact-instance self exclusion.');
+assert.ok(app.includes('function beginResponsePayment(state,rw,responseOption)')&&app.includes('function openCommittedResponseCounterWindow(state,continuationWindow,responseOption,incomingFamily)'),'application UI is not using generic committed payment framework');
+console.log('PASS VS AI v6.47: SGH and Escape Arrow use one generic Confirm -> close Response -> mandatory payment -> new counter-Response hierarchy, including exact-instance self exclusion.');

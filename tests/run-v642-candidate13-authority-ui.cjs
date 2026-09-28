@@ -15,7 +15,7 @@ assert.strictEqual(tpkg.version,'0.68.0');
 const stack=json('data/config/active-runtime-source-stack.v1.95.json');
 assert.deepStrictEqual(
   {osa:stack.source_authority,shared:stack.shared_runtime,data:stack.runtime_data,recipe:stack.effect_recipe,checkpoint:stack.effect_checkpoint,sync:stack.application_runtime_sync,ui:stack.ui_contract,starter:stack.starter60},
-  {osa:'v1.9.5',shared:'v1.94.2',data:'v0.16.2',recipe:'v0.15.2',checkpoint:'v0.15.2',sync:'v2.64',ui:'v2.53',starter:'v1.6.1'}
+  {osa:'v1.9.5',shared:'v1.94.2',data:'v0.16.2',recipe:'v0.15.2',checkpoint:'v0.15.2',sync:'v2.63',ui:'v2.53',starter:'v1.6.1'}
 );
 assert(!/GL_TABLET_PORTRAIT_HAND_TAP_STATE|v642TabletPortraitHandCardTap|portrait second-tap armed/i.test(app),'Obsolete Tablet Portrait Hand armed/two-tap logic reappeared');
 

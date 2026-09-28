@@ -5,8 +5,8 @@ const checks=[
   ['inside-card clipping',/function battleVfxClip\(/.test(js)&&/gl-battle-vfx-clip\{[^}]*overflow:hidden/.test(css)],
   ['heal inside card',/function battleHealNode\(/.test(js)&&/node\.style\.width='46%'/.test(js)],
   ['dodge attack simultaneous',/var dodgeAttack=battleVfxNode\(attackSrc/.test(js)&&/glBattleDodgeCard/.test(css)],
-  ['physical defense 1.5x attack inside card',/fresh,1\.5,isMagicDefense\?false:true/.test(js)&&/insideScale/.test(js)&&/glBattlePDefense/.test(css)],
-  ['magical defense 1.5x attack outside card',/fresh,1\.5,isMagicDefense\?false:true/.test(js)&&/glBattleMDefense/.test(css)],
+  ['physical defense approved scale inside card',/fresh,1\.08,isMagicDefense\?false:true/.test(js)&&/insideScale/.test(js)&&/glBattlePDefense/.test(css)],
+  ['magical defense approved scale outside card',/fresh,1\.08,isMagicDefense\?false:true/.test(js)&&/glBattleMDefense/.test(css)],
   ['damage shake',/has_damage:Number\(result&&result\.hp_damage/.test(js)&&/glBattleDamageShake/.test(css)]
 ];
 const bad=checks.filter(x=>!x[1]);
